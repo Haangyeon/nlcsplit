@@ -3,13 +3,14 @@
 核定义（与 libxc 的 VV10 一致，已由数值对照验证）：
     w0(r)  = sqrt( C |grad rho|^4 / rho^4 + (4 pi / 3) rho )
     kappa(r) = b (3 pi / 2) (rho / 9 pi)^(1/6)
-    g  = w0(r') R^2 + kappa(r),  g' = w0(r) R^2 + kappa(r')
+    g  = w0(r) R^2 + kappa(r),  g' = w0(r') R^2 + kappa(r')   # 同中心配对：与 libxc/ORCA 一致
     Phi = -3 / (2 g g' (g + g'))
     E_NL  = 1/2 sum_i sum_j w_i rho_i w_j rho_j Phi_ij
     E_loc = beta int rho dr,   beta = (1/32)(3/b^2)^(3/4)
     E_NLC = E_loc + E_NL
 
-这里是 O(N^2) 的显式实现：它是"真值"，也是待被次二次方方案替代的对象。
+这里是 O(N^2) 的显式实现：价值不在"真值"，在于把 libxc 折叠成点值的核重新摊回 (i,j) 对，
+从而可按片段归属；对表用 libxc + ref/ 里的 ORCA 两个独立程序（见 step_e_kernel.py）。
 """
 import numpy as np
 
@@ -37,16 +38,23 @@ def local_term(beta, wr):
     return beta * wr.sum()
 
 
-def pair_energy(coords, wr, w0, kap, iA, iB, block=256, wB=None):
+def pair_energy(coords, wr, w0, kap, iA, iB, block=256, wB=None, pairing="same-centre"):
     """0.5 * sum_{i in A} sum_{j in B} wr_i wr_j Phi_ij
 
     传同一个索引集合即得该子块的自身项；A != B 时给的是"半份"成对项，
     因此总和有 E = sum_A E_AA + 2 sum_{A<B} E_AB 的关系（可加性可校验）。
     wB 给定时，B 侧用 wB 而 A 侧用 wr —— 软分区要靠它传两套归属权重。
 
+    pairing 决定 g/g' 怎么配对（`step_e_kernel.py` 用 libxc 判别，kcal/mol 偏差）：
+      "same-centre"  g = w0_i R² + κ_i , g' = w0_j R² + κ_j   → 与 libxc、ORCA 6.0.1 一致（0.0000）
+      "cross"        g = w0_j R² + κ_i , g' = w0_i R² + κ_j   → 高 +0.13(水)/+0.42(Ar)，是错的
+    默认取 same-centre；cross 留着做"定义敏感性"的可审计对照。
+
     R² 用极化恒等式 |a-b|² = |a|²+|b|²-2a·b 走一次 gemm，而不是先做
     (block,n,3) 的位移张量：后者在水苯二聚体尺度上要多占 5 倍内存。
     """
+    if pairing not in ("same-centre", "cross"):
+        raise ValueError(f"未知 pairing {pairing!r}，可选 'same-centre' / 'cross'")
     iA = np.asarray(iA)
     iB = np.asarray(iB)
     cA = coords[iA]
@@ -63,8 +71,12 @@ def pair_energy(coords, wr, w0, kap, iA, iB, block=256, wB=None):
         A = cA[sl]
         R2 = np.einsum("ij,ij->i", A, A)[:, None] + r2B[None, :] - 2.0 * (A @ cB.T)
         np.maximum(R2, 0.0, out=R2)
-        g = R2 * w0B[None, :] + kA[sl][:, None]
-        gp = R2 * w0A[sl][:, None] + kapB[None, :]
+        if pairing == "same-centre":
+            g = R2 * w0A[sl][:, None] + kA[sl][:, None]
+            gp = R2 * w0B[None, :] + kapB[None, :]
+        else:
+            g = R2 * w0B[None, :] + kA[sl][:, None]
+            gp = R2 * w0A[sl][:, None] + kapB[None, :]
         phi = -1.5 / (g * gp * (g + gp))
         phi *= wrB[None, :]
         s += float(np.dot(phi.sum(axis=1), wrA[sl]))
