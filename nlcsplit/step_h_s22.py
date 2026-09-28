@@ -135,3 +135,18 @@ if __name__ == "__main__":
     for r in rows:
         print(f"    {r['name']:10s} ΔE_NLC {r['dnlc']:+7.3f}   P_frz 跨度 "
               f"{r['span']:6.3f} ({(r['span']/abs(r['pint']['becke'])*100 if r['pint']['becke'] else 0):5.1f}%)")
+    # 机器可读侧车：图脚本读它，不去解析日志文本（日志排版一改就崩）
+    import json
+    os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs"), exist_ok=True)
+    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs", "step_h.json")
+    prev = []
+    if os.path.exists(out):
+        try:
+            prev = json.load(open(out, encoding="utf-8")).get("rows", [])
+        except Exception:
+            prev = []
+    seen = {r["name"]: r for r in prev + rows}
+    json.dump({"basis": BASIS, "level": LEVEL, "cpcorr": CPCORR, "geometry_source": DATA,
+               "rows": [seen[k] for k in seen]},
+              open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print(f"\n  侧车 → {out}（累计 {len(seen)} 个体系）")

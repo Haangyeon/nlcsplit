@@ -129,6 +129,13 @@ S22 = {
     "苯-甲烷":         "S22_10.xyz",
 }
 
+# 图件/表格里用英文（期刊要求），中文只作日志里的叫法
+S22_EN = {
+    "水二聚体": "(H2O)2", "氨二聚体": "(NH3)2", "甲烷二聚体": "(CH4)2",
+    "苯二聚体(A)": "benzene dimer A", "苯二聚体(B)": "benzene dimer B",
+    "苯-水": "benzene···H2O", "苯-氨": "benzene···NH3", "苯-甲烷": "benzene···CH4",
+}
+
 
 def read_xyz(path):
     """读 struc.xyz（首列可能是原子序数或元素符号），返回 [(symbol, (x,y,z Å)), ...]。"""

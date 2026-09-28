@@ -17,3 +17,5 @@ dist/
 *.egg-info/
 __pycache__/
 *.pyc
+figs/
+!figs/*.png
