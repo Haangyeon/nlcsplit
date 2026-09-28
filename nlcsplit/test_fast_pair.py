@@ -1,0 +1,47 @@
+"""快版 pair_energy 与朴素位移张量版的逐位对照 + 对 libxc 的绝对校验。"""
+import sys, os
+import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pyscf import gto, dft
+from nlcsplit import partition, nlc, geomlib
+
+
+def naive(coords, wr, w0, kap, iA, iB):
+    s = 0.0
+    for p0 in range(0, len(iA), 64):
+        ii = iA[p0:p0 + 64]
+        dX = coords[ii][:, None, :] - coords[iB][None, :, :]
+        R2 = np.einsum("ijk,ijk->ij", dX, dX)
+        g = w0[iB][None, :] * R2 + kap[ii][:, None]
+        gp = w0[ii][:, None] * R2 + kap[iB][None, :]
+        phi = -3.0 / (2.0 * g * gp * (g + gp))
+        s += (wr[ii][:, None] * wr[iB][None, :] * phi).sum()
+    return 0.5 * s
+
+
+mol = gto.M(atom=geomlib.h2o_dimer(), basis="6-31g*", verbose=0, unit="Angstrom")
+mf = dft.RKS(mol); mf.xc = "wb97x_v"; mf.grids.level = 0; mf.kernel()
+b, C = mf._numint.nlc_coeff("wb97x_v")[0][0]
+X, W, owner = partition.atom_partition(mol, level=0, scheme="becke")
+ni = mf._numint
+rho = ni.eval_rho(mol, ni.eval_ao(mol, X, deriv=1), mf.make_rdm1(), xctype="GGA")
+sig = rho[1] ** 2 + rho[2] ** 2 + rho[3] ** 2
+w0, kap, keep = nlc.vv10_fields(rho[0], sig, b, C)
+wr = W * rho[0]
+idx = np.where(keep)[0]
+fA = np.where(np.isin(owner, [0, 1, 2]) & keep)[0]
+fB = np.where(np.isin(owner, [3, 4, 5]) & keep)[0]
+
+for tag, (iA, iB) in [("full", (idx, idx)), ("cross", (fA, fB))]:
+    a = naive(X, wr, w0, kap, iA, iB)
+    c = nlc.pair_energy(X, wr, w0, kap, iA, iB)
+    print(f"{tag:6s} naive={a:.17e} fast={c:.17e} 相对差={abs(a-c)/abs(a):.3e}")
+
+# 绝对校验：整份 E_NLC 必须等于 libxc 的 nr_nlc_vxc
+from pyscf.dft import numint
+_, exc_libxc, _ = numint.nr_nlc_vxc(mf._numint, mol, mf.grids, "wb97x_v", mf.make_rdm1())
+libxc_tot = float(exc_libxc)
+beta = (1.0 / 32.0) * (3.0 / (b * b)) ** 0.75
+mine = beta * wr.sum() + nlc.pair_energy(X, wr, w0, kap, idx, idx)
+print(f"网格点数 N={len(X)}  我的 E_NLC={mine:.10f} Ha   libxc(同网格求和)={libxc_tot:.10f} Ha"
+      f"   差={(mine-libxc_tot)*627.509474:+.4f} kcal/mol")

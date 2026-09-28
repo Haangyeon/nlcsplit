@@ -1,0 +1,9 @@
+source/
+*.tar
+*.tar.gz
+scratch/
+ref/
+nlcsplit/logs/
+nlcsplit/step*.out
+__pycache__/
+*.pyc
