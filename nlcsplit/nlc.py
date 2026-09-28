@@ -37,11 +37,12 @@ def local_term(beta, wr):
     return beta * wr.sum()
 
 
-def pair_energy(coords, wr, w0, kap, iA, iB, block=256):
+def pair_energy(coords, wr, w0, kap, iA, iB, block=256, wB=None):
     """0.5 * sum_{i in A} sum_{j in B} wr_i wr_j Phi_ij
 
     传同一个索引集合即得该子块的自身项；A != B 时给的是"半份"成对项，
     因此总和有 E = sum_A E_AA + 2 sum_{A<B} E_AB 的关系（可加性可校验）。
+    wB 给定时，B 侧用 wB 而 A 侧用 wr —— 软分区要靠它传两套归属权重。
 
     R² 用极化恒等式 |a-b|² = |a|²+|b|²-2a·b 走一次 gemm，而不是先做
     (block,n,3) 的位移张量：后者在水苯二聚体尺度上要多占 5 倍内存。
@@ -52,8 +53,9 @@ def pair_energy(coords, wr, w0, kap, iA, iB, block=256):
     cB = coords[iB]
     if len(iA) == 0 or len(iB) == 0:
         return 0.0
+    wb = wr if wB is None else wB
     r2B = np.einsum("ij,ij->i", cB, cB)
-    w0B, kapB, wrB = w0[iB], kap[iB], wr[iB]
+    w0B, kapB, wrB = w0[iB], kap[iB], wb[iB]
     w0A, kA, wrA = w0[iA], kap[iA], wr[iA]
     s = 0.0
     for p0 in range(0, len(iA), block):
@@ -118,16 +120,12 @@ def fragment_decomposition(coords, weights, rho, sigma, fragments,
     return out
 
 
-def _soft_pair(coords, wr, w0, kap, fA, fB, block=384):
+def _soft_pair(coords, wr, w0, kap, fA, fB):
+    """软分区块：0.5·ΣΣ (wρf^A)_i (wρf^B)_j Φ_ij。
+
+    直接复用 pair_energy 的 gemm 路径：把逐点归属权重折进 wr，全点求和。
+    f 里已乘过 keep，被丢掉的点权重为 0，不必再传索引。
+    """
     n = len(coords)
-    s = 0.0
     allr = np.arange(n)
-    for p0 in range(0, n, block):
-        ii = allr[p0:p0 + block]
-        dX = coords[ii][:, None, :] - coords[None, :, :]
-        R2 = np.einsum("ijk,ijk->ij", dX, dX)
-        g = w0[None, :] * R2 + kap[ii][:, None]
-        gp = w0[ii][:, None] * R2 + kap[None, :]
-        phi = -3.0 / (2.0 * g * gp * (g + gp))
-        s += ((wr[ii] * fA[ii])[:, None] * (wr * fB)[None, :] * phi).sum()
-    return 0.5 * s
+    return pair_energy(coords, wr * fA, w0, kap, allr, allr, wB=wr * fB)
