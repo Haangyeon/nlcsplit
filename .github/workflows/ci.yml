@@ -1,0 +1,17 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pyscf: ["2.12.1", ">=2.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install "pyscf==${{ matrix.pyscf }}" numpy pytest
+      - run: python -m pytest -q -m "not slow"
+      - run: python -m pytest -q            # 含 slow：与 PySCF 原生核对照 + 几何护栏
