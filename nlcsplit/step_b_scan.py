@@ -85,9 +85,13 @@ def run_one(name, level):
 
 
 def main():
+    names = os.environ.get("NLCSYS", "").split(",") if os.environ.get("NLCSYS") else \
+        ["He", "Ne", "Ar", "H2O", "NH3", "CH4", "benzene", "(H2O)2", "(C6H6)2"]
+    levels = [int(x) for x in os.environ.get("NCLV", "").split(",")] \
+        if os.environ.get("NCLV") else LEVELS
     rows = []
-    for name in ["He", "Ne", "Ar", "H2O", "NH3", "CH4", "benzene", "(H2O)2", "(C6H6)2"]:
-        for lv in LEVELS:
+    for name in names:
+        for lv in levels:
             if name == "(C6H6)2" and lv > 0:
                 continue   # 显式双重和是 O(N²)：level>0 的苯二聚体在本机不可行
             try:
