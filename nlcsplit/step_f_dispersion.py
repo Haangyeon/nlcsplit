@@ -125,8 +125,14 @@ def report(key, level):
     print(f"    ΔE_loc(β∫ρ)={dloc:+.3e} kcal/mol"
           f"（∫ρ=电子数是网格恒等式，故此项在 superposition 中**精确抵消** ⇒ "
           f"片间分解只谈双重和是严格的）")
-    print(f"    ⇒ 非局域项占 ΔE_xc 的 {dnlc/dxc*100:.1f}%"
-          f"（'其余'那项混着静电与交换排斥，所以这条只是量级对照，不是 SAPT 分解）")
+    # 占比只在分母远离零时才有意义：苯 sandwich 里 +2.62 与 -3.26 几乎抵消，
+    # "非局域占 ΔE_xc 510%" 这种数毫无信息量，必须改报绝对项。
+    if dxc == 0 or abs(dnlc / dxc) > 2.0:
+        print(f"    ⚠ 分母抵消：|ΔE_NLC|/|ΔE_xc|={abs(dnlc/dxc):.1f} ⇒ 不报占比，"
+              f"只报两个绝对项（吸引与排斥分开看）")
+    else:
+        print(f"    ⇒ 非局域项占 ΔE_xc 的 {dnlc/dxc*100:.1f}%")
+    print(f"    （'其余'那项混着静电与交换排斥，所以这条只是量级对照，不是 SAPT 分解）")
     print(f"    ⇒ ΔE_NLC 应与 step_b 的 dE_NLC / step_c 的 CP 同量级同符号，互为独立复核")
     return dsemi, dnlc
 
@@ -137,7 +143,9 @@ if __name__ == "__main__":
     out = {}
     for key in keys:
         out[key] = report(key, SYSTEMS[key])
-    print("\n  汇总（superposition，ωB97X-V/6-31G*）")
+    print("\n  汇总（superposition，ωB97X-V/6-31G*；吸引与排斥分开设，不做占比排名）")
     for key, (dsemi, dnlc) in out.items():
+        dxc = dsemi + dnlc
+        flag = "⚠ 分母抵消" if dxc == 0 or abs(dnlc / dxc) > 2.0 else f"{dnlc/dxc*100:5.1f}%"
         print(f"    {key:9s} ΔE_xc其余 {dsemi:+8.3f}  ΔE_NLC {dnlc:+8.3f}  "
-              f"非局域占 ΔE_xc {dnlc/(dsemi+dnlc)*100:5.1f}%")
+              f"ΔE_xc {dxc:+8.3f}  非局域占比 {flag}")
