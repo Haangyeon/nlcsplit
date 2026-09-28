@@ -20,6 +20,22 @@ import numpy as np
 DEG = np.pi / 180.0
 
 
+def _assert_angle(pts, i, j, k, target_rad, label, tol=1e-6):
+    """在 j 处量角并与标称值硬核对。
+
+    本项目已有两次"半角当极角"的几何错（水二聚体、NH3），两次都是靠事后
+    对文献才发现。角度这种能闭嘴检验的量，构造时就该自己验掉。
+    """
+    v1 = np.array(pts[i][1], dtype=float)
+    v2 = np.array(pts[k][1], dtype=float)
+    v3 = np.array(pts[j][1], dtype=float)
+    v1, v2 = v1 - v3, v2 - v3
+    got = np.arccos(v1 @ v2 / np.linalg.norm(v1) / np.linalg.norm(v2))
+    assert abs(got - target_rad) < tol, \
+        f"{label}: 实得 {np.degrees(got):.4f} 度，标称 {np.degrees(target_rad):.4f} 度"
+    return got
+
+
 def _h2o_monosys(offset=(0.0, 0.0, 0.0), axis_z=True):
     r, th = 0.9572, 104.52 * DEG / 2
     h = [(0.0, r * np.sin(th), r * np.cos(th)), (0.0, -r * np.sin(th), r * np.cos(th))]
@@ -32,13 +48,23 @@ def h2o():
 
 
 def nh3():
-    r, th = 1.012, 106.7 * DEG / 2
-    # 三个 H 对称分布在 C3 轴两侧
+    """NH3：rNH=1.012 Å，∠HNH=106.7 度，C3v（三个 H 方位角互差 120 度）。
+
+    极角不能取半角！三个 H 的方位互差 120 度时
+        cos∠HNH = cos²θ + sin²θ·cos120° = (3cos²θ − 1)/2
+    反解 cosθ = sqrt((1 + 2cos∠HNH)/3) = 0.37650 ⇒ θ = 67.86 度。
+    历史坑（2026-09-29 修，IDE 审计发现）：旧代码把半角 53.35 度当极角用，
+    实测 ∠HNH = 88.06 度，与标称 106.7 度差 17.5%；step_b 的 NH3 单体两行
+    是变形几何下的数，须重跑。与水二聚体那次是同一类错（半角/极角混用）。
+    """
+    r, ang = 1.012, 106.7 * DEG
+    th = np.arccos(np.sqrt((1.0 + 2.0 * np.cos(ang)) / 3.0))
     pts = [("N", (0.0, 0.0, 0.0))]
     for k in range(3):
         phi = 2 * np.pi * k / 3
         pts.append(("H", (r * np.sin(th) * np.cos(phi), r * np.sin(th) * np.sin(phi),
                           r * np.cos(th))))
+    _assert_angle(pts, 1, 0, 2, ang, "NH3 ∠HNH")     # 顶点是 N(index 0)
     return pts
 
 
