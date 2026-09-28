@@ -9,7 +9,7 @@
 静电与交换排斥），只给量级对照；论文的相应段落必须带同一限定。
 
 取数与核对：
-  E_NLC 两条独立实现 —— A) libxc：numint.nr_nlc_vxc(...)  B) 本包显式对分解
+  E_NLC 两条独立实现 —— A) PySCF 原生核：numint.nr_nlc_vxc -> libdft.VXC_vv10nlc（不经 libxc）  B) 本包显式对分解
         （V2 核，已与 A、ORCA 对齐到 1e-3 kcal/mol）
   E_xc 两条独立入口 —— C) get_veff 返回的 vhf.exc  D) SCF 自己记的 scf_summary['exc']
   闭合式 —— e_tot == e_nuc + e1 + e_coul + e_xc，残差 >1e-8 Ha 当场报错
@@ -57,7 +57,7 @@ def terms(mol, level, tag):
     idx = np.where(keep)[0]   # 与 fragment_decomposition 同口径：低于 floor 的点不参与
     beta = (1.0 / 32.0) * (3.0 / (b * b)) ** nlc.BETA_EXP
     e_loc = float(nlc.local_term(beta, wr))
-    # libxc/ORCA 报的"非局域项"是 双重和 + β∫ρ 两块之和，这里必须补齐再比
+    # PySCF 原生核/ORCA 报的"非局域项"= 双重和 + β∫ρ 两块，这里必须补齐再比
     e_nlc_mine = nlc.pair_energy(X, wr, w0, kap, idx, idx) + e_loc  # A==B ⇒ 0.5·ΣΣ
 
     vhf = mf.get_veff(mol, dm)

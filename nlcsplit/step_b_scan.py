@@ -1,9 +1,12 @@
-"""(b) libxc VV10 插值核偏差 + 片段分解，跨体系扫描。
+"""(b) VV10 核偏差 + 片段分解，跨体系扫描。
+
+参照实现是 PySCF 原生 C 核 libdft.VXC_vv10nlc（nr_nlc_vxc 不经 libxc，
+libxc 只管半局域那部分）；下面列名沿用 "libxc" 是历史称呼，正式表里要改成 "pyscf核"。
 
 每个体系给出四个量（kcal/mol）：
   exact   本包的显式双重和 E_NLC = β∫ρdr + 1/2∬ρρΦ
-  libxc   PySCF nr_nlc_vxc 的插值加速值
-  bias    exact - libxc；若随网格不变即为插值核的系统偏差
+  libxc   PySCF 原生 _vv10nlc 的加速值（列名为历史称呼，非 libxc 本尊）
+  bias    exact - 参照；若随网格不消失即为两套核实现之间的系统差
   E_AB    冻密度片间成对项 2·Σ_{i∈A,j∈B}（仅二聚体；pair_energy 返回半份，此处乘 2）
   dE_NLC  超位置差 E_NLC(复合物) - Σ E_NLC(单体@复合物几何)（仅二聚体）
 """
@@ -101,7 +104,7 @@ def main():
                 print(f"{name} lvl={lv} 失败: {type(e).__name__}: {str(e)[:150]}", flush=True)
                 traceback.print_exc()
     print("\n===== 汇总 =====")
-    print(f"{'体系':10s} {'lvl':4s} {'bias(exact-libxc)':>18s} {'网格表示差':>14s} {'E_AB':>10s} {'dE_NLC':>10s}")
+    print(f"{'体系':10s} {'lvl':4s} {'bias(exact-参照核)':>18s} {'网格表示差':>14s} {'E_AB':>10s} {'dE_NLC':>10s}")
     for r in rows:
         print(f"{r['name']:10s} {r['level']:<4d} {(r['exact']-r['libxc'])*KCAL:+18.4f} "
               f"{(r['exact']-r['common'])*KCAL:+14.4f} "

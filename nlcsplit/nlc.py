@@ -1,16 +1,24 @@
 """VV10 / rVV10 非局域关联能的显式双重积分与片断-成对分解。
 
-核定义（与 libxc 的 VV10 一致，已由数值对照验证）：
+核定义（参照 = PySCF 原生 C 核 `libdft.VXC_vv10nlc`，不是 libxc；见下方"裁判是谁"）：
     w0(r)  = sqrt( C |grad rho|^4 / rho^4 + (4 pi / 3) rho )
     kappa(r) = b (3 pi / 2) (rho / 9 pi)^(1/6)
-    g  = w0(r) R^2 + kappa(r),  g' = w0(r') R^2 + kappa(r')   # 同中心配对：与 libxc/ORCA 一致
+    g  = w0(r) R^2 + kappa(r),  g' = w0(r') R^2 + kappa(r')   # 同中心配对
     Phi = -3 / (2 g g' (g + g'))
     E_NL  = 1/2 sum_i sum_j w_i rho_i w_j rho_j Phi_ij
     E_loc = beta int rho dr,   beta = (1/32)(3/b^2)^(3/4)
     E_NLC = E_loc + E_NL
 
-这里是 O(N^2) 的显式实现：价值不在"真值"，在于把 libxc 折叠成点值的核重新摊回 (i,j) 对，
-从而可按片段归属；对表用 libxc + ref/ 里的 ORCA 两个独立程序（见 step_e_kernel.py）。
+这里是 O(N^2) 的显式实现：价值不在"真值"，在于把核折叠成点值后再摊回 (i,j) 对，
+从而可按片段归属；对表用两个独立程序（见 step_e_kernel.py）。
+
+**裁判是谁**（2026-09-29 读源码纠正，此前一律误标为 "libxc"）：
+`pyscf.dft.numint.nr_nlc_vxc` 内部调的是 PySCF 自己的 `_vv10nlc`，**不经过 libxc**
+（libxc 只负责半局域那部分）。所以本项目实际的对照是
+  (1) PySCF 原生 VV10 核（同一程序库的另一套实现，逐点差 ≤3e-5 kcal/mol）
+  (2) ORCA 6.0.1（`ref/h2o_wb97xv.out`，真正独立程序，差 6e-4 kcal/mol）
+论文与日志里凡"与 libxc 一致"的说法都要按此改写；若要引入 libxc 本尊的 VV10
+作第三方裁判，得直接调 libxc 的 `xc_nlc_vxc`，PySCF 这条路径给不了。
 """
 import numpy as np
 
@@ -45,8 +53,8 @@ def pair_energy(coords, wr, w0, kap, iA, iB, block=256, wB=None, pairing="same-c
     因此总和有 E = sum_A E_AA + 2 sum_{A<B} E_AB 的关系（可加性可校验）。
     wB 给定时，B 侧用 wB 而 A 侧用 wr —— 软分区要靠它传两套归属权重。
 
-    pairing 决定 g/g' 怎么配对（`step_e_kernel.py` 用 libxc 判别，kcal/mol 偏差）：
-      "same-centre"  g = w0_i R² + κ_i , g' = w0_j R² + κ_j   → 与 libxc、ORCA 6.0.1 一致（0.0000）
+    pairing 决定 g/g' 怎么配对（`step_e_kernel.py` 用 PySCF 原生核判别，kcal/mol 偏差）：
+      "same-centre"  g = w0_i R² + κ_i , g' = w0_j R² + κ_j   → 与 PySCF 原生核、ORCA 6.0.1 一致（0.0000）
       "cross"        g = w0_j R² + κ_i , g' = w0_i R² + κ_j   → 高 +0.13(水)/+0.42(Ar)，是错的
     默认取 same-centre；cross 留着做"定义敏感性"的可审计对照。
 

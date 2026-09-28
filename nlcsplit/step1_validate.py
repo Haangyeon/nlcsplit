@@ -60,7 +60,7 @@ def main():
     nelec_ref = float(np.dot(rho0, W0))
     print(f"常规网格 N={len(X0)} ∫ρ={nelec_ref:.6f} (应 {mol.nelectron})")
     nelec_ref2, exc_ref, _ = numint.nr_nlc_vxc(mf._numint, mol, mf.grids, "wb97x_v", mf.make_rdm1())
-    print(f"[libxc] E_NLC(总) = {exc_ref*KCAL:+.4f} kcal/mol\n")
+    print(f"[PySCF 原生 _vv10nlc 核] E_NLC(总) = {exc_ref*KCAL:+.4f} kcal/mol\n")
 
     allok = True
     for scheme in partition.SCHEMES:

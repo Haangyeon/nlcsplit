@@ -2,4 +2,6 @@
 
 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。
 """
-from . import partition, nlc  # noqa: F401
+from . import partition, nlc, geomlib  # noqa: F401
+
+__version__ = "0.1.0"

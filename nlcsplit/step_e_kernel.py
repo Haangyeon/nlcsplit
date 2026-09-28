@@ -1,9 +1,11 @@
-"""核函数写法判别：把 Φ 的候选定义逐个与 libxc 在同一张网格上对比。
+"""核函数写法判别：把 Φ 的候选定义逐个与参照核在同一张网格上对比。
 
-背景：IDE 在 ref/h2o_wb97xv.out 里找到 ORCA 6.0.1 的独立 NL Energy，与 libxc 差 6e-4
+参照 = PySCF 原生 libdft.VXC_vv10nlc（nr_nlc_vxc 不经 libxc）。
+
+背景：IDE 在 ref/h2o_wb97xv.out 里找到 ORCA 6.0.1 的独立 NL Energy，与 PySCF 原生核差 6e-4
 kcal/mol，而我们的显式双重和高出 +0.14（水）～+0.91（苯）kcal/mol ⇒ 错在我们这边。
 `step_b_scan.py` 的"公共网格"列已排除网格与密度：同一份密度、同一张 PySCF 网格上，
-我的核仍然比 libxc 高 +0.138。所以差异在 Φ 的写法里。
+我的核仍然比参照核高 +0.138。所以差异在 Φ 的写法里。
 
 候选（全部只在同一网格、同一密度上比 E_loc + E_nl 的总和）：
   V0 现状    g = w0_j R² + κ_i , g' = w0_i R² + κ_j , κ = b(3π/2)(ρ/9π)^{1/6}
@@ -57,13 +59,13 @@ def run(name, level=1):
     kapA = b * (1.5 * PI) * (rho / (9.0 * PI)) ** (1.0 / 6.0)          # 现状
     kapB = b * (1.5 * PI * PI) ** (1.0 / 3.0) * rho ** (1.0 / 6.0)     # (3π²/2)^{1/3}
     kapC = b * (3.0 * PI * PI) ** (1.0 / 3.0) * rho ** (1.0 / 6.0)
-    print(f"\n{name}  N={len(X)}  libxc 总={exc_ref*KCAL:+.4f}  E_loc={loc*KCAL:+.4f} kcal/mol")
+    print(f"\n{name}  N={len(X)}  参照核总={exc_ref*KCAL:+.4f}  E_loc={loc*KCAL:+.4f} kcal/mol")
     for tag, kap, pair in [("V0 现状", kapA, "V0"), ("V1 交换", kapA, "V1"),
                            ("V2 同点", kapA, "V2"), ("V3 κ=(3π²/2)^1/3", kapB, "V0"),
                            ("V4 κ=(3π²)^1/3", kapC, "V0")]:
         t0 = time.time()
         e = loc + kernel_total(X, wr, w0, kap, pair=pair)
-        print(f"   {tag:20s} 总={e*KCAL:+.4f}  与 libxc 差={(e-exc_ref)*KCAL:+.4f}  "
+        print(f"   {tag:20s} 总={e*KCAL:+.4f}  与参照核差={(e-exc_ref)*KCAL:+.4f}  "
               f"相对={abs(e-exc_ref)/abs(exc_ref)*100:.3f}%   {time.time()-t0:.0f}s", flush=True)
 
 

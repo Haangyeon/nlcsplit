@@ -40,7 +40,7 @@ def one(mol, level, basis, scheme="becke"):
 
 def main():
     print(f"{'基组':13s} {'lvl':3s} {'N':>7s} {'E_AB':>10s} {'E_nl':>10s} "
-          f"{'E_NLC总':>10s} {'libxc':>10s} {'我-libxc':>10s} {'秒':>6s}")
+          f"{'E_NLC总':>10s} {'pyscf核':>10s} {'我-参照核':>10s} {'秒':>6s}")
     rows = []
     for basis, levels in PLAN:
         mol = gto.M(atom=geomlib.h2o_dimer(), basis=basis, verbose=0, unit="Angstrom")
