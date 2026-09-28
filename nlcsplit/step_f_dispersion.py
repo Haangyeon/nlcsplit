@@ -81,7 +81,7 @@ def terms(mol, level, tag):
           f"E_coul={ecoul*KCAL:+12.4f}  NLC两实现差={dev*KCAL:.1e} "
           f"闭合={closure*KCAL:.1e} kcal/mol")
     return dict(e_xc=e_xc, e_nlc=e_nlc_libxc, e_loc=e_loc, e1=e1,
-                ecoul=ecoul, e_nuc=e_nuc, e_tot=mf.e_tot)
+                ecoul=ecoul, e_nuc=e_nuc, e_tot=mf.e_tot, mf=mf, mol=mol)
 
 
 def report(key, level):

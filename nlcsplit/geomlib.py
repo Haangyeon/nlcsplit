@@ -108,3 +108,81 @@ FRAGS = {
     "(H2O)2":  [[0, 1, 2], [3, 4, 5]],
     "(C6H6)2": [list(range(0, 12)), list(range(12, 24))],
 }
+
+# ---------------------------------------------------------------- S22 官方几何
+# 来源：Grimme 实验室官方仓库 https://github.com/grimme-lab/GMTKN55 (tag v1) 的
+# S22/NN/struc.xyz，原始出处 Jureček et al., Phys. Chem. Chem. Phys. 5, 1811 (2003)。
+# 用官方坐标而不是自己构造，是为了让"S22 子集"这张表可复现、可引，且免掉
+# "你的二聚体几何是哪来的"这类质疑。取回脚本见 tools/get_s22.sh。
+_Z2S = {1: "H", 6: "C", 7: "N", 8: "O", 16: "S"}
+# 片段划分阈值(Å)：最长共价键(C–C 1.54) < 1.65 < 最短氢键(O···H 1.81)
+COV_CUTOFF = 1.65
+
+S22 = {
+    "水二聚体":        "S22_02.xyz",
+    "氨二聚体":        "S22_01.xyz",
+    "甲烷二聚体":      "S22_08.xyz",
+    "苯二聚体(A)":     "S22_11.xyz",
+    "苯二聚体(B)":     "S22_20.xyz",
+    "苯-水":           "S22_17.xyz",
+    "苯-氨":           "S22_18.xyz",
+    "苯-甲烷":         "S22_10.xyz",
+}
+
+
+def read_xyz(path):
+    """读 struc.xyz（首列可能是原子序数或元素符号），返回 [(symbol, (x,y,z Å)), ...]。"""
+    lines = open(path, encoding="utf-8").read().splitlines()
+    nat = int(lines[0].split()[0])
+    out = []
+    for l in lines[2:2 + nat]:
+        t = l.split()
+        if len(t) < 4:
+            raise ValueError(f"{path}: 原子行不足 4 列 -> {l!r}")
+        sym = _Z2S[int(t[0])] if t[0].isdigit() else t[0].capitalize()
+        out.append((sym, tuple(float(x) for x in t[1:4])))
+    if len(out) != nat:
+        raise ValueError(f"{path}: 声明 {nat} 个原子，实到 {len(out)}")
+    return out
+
+
+def split_frags(atoms, cutoff=COV_CUTOFF):
+    """按共价连通性把复合物切成片段。返回 list[list[int]]，按原子序号升序。
+
+    不写死索引：S22 文件里的原子顺序不保证按分子分组，硬写会静默错切。
+    切不出恰好 2 段就直接报错，交人工核对。
+    """
+    n = len(atoms)
+    adj = [[] for _ in range(n)]
+    for i in range(n):
+        for j in range(i + 1, n):
+            d = sum((atoms[i][1][k] - atoms[j][1][k]) ** 2 for k in range(3)) ** 0.5
+            if d < cutoff:
+                adj[i].append(j)
+                adj[j].append(i)
+    seen, frags = set(), []
+    for s in range(n):
+        if s in seen:
+            continue
+        stack, comp = [s], set()
+        while stack:
+            x = stack.pop()
+            if x in comp:
+                continue
+            comp.add(x)
+            stack += [y for y in adj[x] if y not in comp]
+        seen |= comp
+        frags.append(sorted(comp))
+    return frags
+
+
+def s22_system(name, data_dir, cutoff=COV_CUTOFF):
+    """返回 (atoms, frags)：S22 官方几何 + 自动片段划分，并做一致性检查。"""
+    import os
+    atoms = read_xyz(os.path.join(data_dir, S22[name]))
+    frags = split_frags(atoms, cutoff)
+    assert len(frags) == 2, f"{name}: 切成 {len(frags)} 段，不是二聚体，需人工核对"
+    assert sorted(i for f in frags for i in f) == list(range(len(atoms))), \
+        f"{name}: 片段划分没覆盖全部原子"
+    return atoms, frags
+

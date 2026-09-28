@@ -5,7 +5,7 @@
 
   P_frz  = 2·Σ_{i∈A}Σ_{j∈B} w_iρ_i w_jρ_j Φ_ij |_{ρ=SC}      复合物自洽密度下的片间成对项
   P_sup  = 同上但 ρ = ρ_A + ρ_B（在同一张网格、同一套 AO 上叠加）
-  CP     = E_nl[ρ_SC] - E_nl[ρ_A] - E_nl[ρ_B]                 超位置差（单体各自网格）
+  DSUP     = E_nl[ρ_SC] - E_nl[ρ_A] - E_nl[ρ_B]                 超位置差（单体各自网格）。刻意不叫 CP：文献里 CP 默认是 counterpoise
   relax  = E_nl[ρ_SC] - E_nl[ρ_sup]                           纯密度弛豫，无网格重划分假象
 
 先前一版把 P_frz 少乘了 2（pair_energy 返回的是半份交叉块），得到的
@@ -110,7 +110,7 @@ def run(tag, mol, frags):
     k = KCAL
     P_frz, P_sup = _cross(p_sc, frags) * k, _cross(p_sup, frags) * k
     E_sc, E_sup = _nl_all(p_sc) * k, _nl_all(p_sup) * k
-    CP = E_sc - e_mono_nl * k
+    DSUP = E_sc - e_mono_nl * k
     print(f"  {tag}")
     print(f"    ∫ρ: SC={p_sc['ne']:.6f}  SUP={p_sup['ne']:.6f}  (N_e={mol.nelectron}) "
           f"→ β∫ρ 项在两密度下相同，相互作用差里精确抵消")
@@ -118,15 +118,15 @@ def run(tag, mol, frags):
           f"E_nl[A]+E_nl[B]={e_mono_nl*k:+9.4f}   (kcal/mol)")
     print(f"    片间成对项  P_frz={P_frz:+8.4f}   P_sup={P_sup:+8.4f}   "
           f"弛豫对成对项的贡献={P_frz-P_sup:+8.4f}")
-    print(f"    超位置差 CP={CP:+8.4f}   同网格纯弛豫 relax={E_sc-E_sup:+8.4f}   "
-          f"P_frz/CP={P_frz/CP:6.3f}   relax/CP={(E_sc-E_sup)/CP:6.3f}")
+    print(f"    超位置差 Δsup={DSUP:+8.4f}   同网格纯弛豫 relax={E_sc-E_sup:+8.4f}   "
+          f"P_frz/Δsup={P_frz/DSUP:6.3f}   relax/Δsup={(E_sc-E_sup)/DSUP:6.3f}")
     # 一致性：E_nl[SC] = intra_A + intra_B + P_frz（此处只验证交叉块与总和对得上）
     idA = np.where(np.isin(p_sc["owner"], frags[0]) & p_sc["keep"])[0]
     idB = np.where(np.isin(p_sc["owner"], frags[1]) & p_sc["keep"])[0]
     blk = lambda i, j: nlc.pair_energy(p_sc["X"], p_sc["wr"], p_sc["w0"], p_sc["kap"], i, j)
     recon = blk(idA, idA) + blk(idB, idB) + P_frz / k
     print(f"    可加性校验 |E_nl-Recon|={abs(E_sc/k-recon):.2e}\n")
-    return dict(P_frz=P_frz, P_sup=P_sup, CP=CP, relax=E_sc - E_sup)
+    return dict(P_frz=P_frz, P_sup=P_sup, DSUP=DSUP, relax=E_sc - E_sup)
 
 
 def main():
