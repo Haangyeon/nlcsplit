@@ -28,6 +28,14 @@ nlcsplit/logs/20260928T142013Z_step2.out 里 6-31g* lvl1/lvl2 的 E_AB 与 E_nl
 （同几何、同基组、同 level、同 scheme、同默认 floor）；对不上就说明本脚本的调用方式有误。
 
 本文件不改动 nlc.py / partition.py / geomlib.py / step1..step_c / run_all.sh。
+
+跑后补记（22:5x，只改本 docstring，未动计算路径）：本次运行期间另一 agent 给
+nlc.pair_energy 加了可选关键字 wB（默认 None）。已用独立朴素双重和复核当前源：
+wB=None 与显式 wB=wr 逐位相同（差 0.00e+00）、block 无关（差 0.00e+00）、物理远区
+关系 σ=(2β)²ρ² 下 self/cross 相对差 1.4e-15 / 0.0，可加性 E_all=(A,A)+(B,B)+2(A,B)
+成立（5.8e-28 Ha）⇒ 上面日志里的数字对当前 nlc.py 依然成立。
+（注：若把 σ/ρ⁴ 造得病态大，w0 会到 1e10，此时 gemm 对角项 R²≈0 与 R²=0 有 1e-6
+相对差——那是合成数据的产物，不是真实密度下的行为。）
 """
 import os
 # 必须在 import numpy 之前设：这台机器只有 8 核且另有任务在跑。
