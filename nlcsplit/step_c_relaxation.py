@@ -147,7 +147,7 @@ def main():
     # 优化放在最后：它最慢，别让它挡住上面两个体系的数
     mopt, eopt, gn = optimize(m0)
     ang = 1.8897261254
-    print(f"  优化后 O..O = {np.linalg.norm(mopt.atom_coord(0)-mopt.atom_coord(3))*ang:.3f} Å")
+    print(f"  优化后 O..O = {np.linalg.norm(mopt.atom_coord(0)-mopt.atom_coord(3))/ang:.3f} Å")
     run("水二聚体 / 优化后结构", mopt, fr)
 
 

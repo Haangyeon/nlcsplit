@@ -46,12 +46,13 @@ def check(mol, mf, X, W, owner, label, b, C):
 def main():
     mol = gto.M(atom=geomlib.h2o_dimer(), basis="6-31g*", verbose=0, unit="Angstrom")
     # 几何自检：今天两次误判都源于手打坐标把 O-H 键长写错，先把键长暴露出来
-    d = [np.linalg.norm(mol.atom_coord(i) - mol.atom_coord(j)) * 1.8897261254
+    C = mol.atom_coords()   # 复数形式返回 Bohr（已实测），单数 atom_coord() 的默认单位不同，别混用
+    d = [np.linalg.norm(C[i] - C[j]) / 1.8897261254
          for i in range(mol.natm) for j in range(i + 1, mol.natm)]
     oh = [x for x in d if x < 1.5]
     print(f"  几何自检：成键距离 n={len(oh)} 范围 {min(oh):.4f}-{max(oh):.4f} Å"
-          f"（应为 6 条 O-H ≈0.957 Å）")
-    assert len(oh) == 6 and abs(max(oh) - 0.9572) < 0.02, "水二聚体成键数或键长不对"
+          f"（两个水共 4 条 O-H ≈0.957 Å）")
+    assert len(oh) == 4 and abs(max(oh) - 0.9572) < 0.02, "水二聚体成键数或键长不对"
     mf, X0, W0, rho0, sig0 = partition.scf_grid(mol, xc="wb97x_v", level=1)
     b, C = mf._numint.nlc_coeff("wb97x_v")[0][0]
     print(f"水二聚体 6-31g* ωB97X-V  E_SCF={mf.e_tot:.8f}  b={b} C={C}")
