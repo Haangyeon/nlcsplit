@@ -1,0 +1,120 @@
+{
+ "basis": "6-31g*",
+ "level": 1,
+ "cpcorr": false,
+ "geometry_source": "GMTKN55 tag v1 (S22)",
+ "rows": [
+  {
+   "name": "苯二聚体(A)",
+   "natm": 24,
+   "dmin": 3.37,
+   "dtot": -3.795,
+   "dcp": null,
+   "dxc": -4.457,
+   "dnlc": -4.448,
+   "pint": {
+    "becke": -4.062
+   },
+   "span": 0.072,
+   "level": 0
+  },
+  {
+   "name": "苯二聚体(B)",
+   "natm": 24,
+   "dmin": 2.8,
+   "dtot": -3.095,
+   "dcp": null,
+   "dxc": -4.464,
+   "dnlc": -2.401,
+   "pint": {
+    "becke": -2.454
+   },
+   "span": 0.31,
+   "level": 0
+  },
+  {
+   "name": "水二聚体",
+   "natm": 6,
+   "dmin": 1.95,
+   "dtot": -7.816,
+   "dcp": null,
+   "dxc": -3.708,
+   "dnlc": -0.593,
+   "pint": {
+    "becke": -0.601
+   },
+   "span": 0.043,
+   "level": 1
+  },
+  {
+   "name": "氨二聚体",
+   "natm": 8,
+   "dmin": 2.15,
+   "dtot": -5.167,
+   "dcp": null,
+   "dxc": -0.881,
+   "dnlc": -0.678,
+   "pint": {
+    "becke": -0.649
+   },
+   "span": 0.029,
+   "level": 1
+  },
+  {
+   "name": "甲烷二聚体",
+   "natm": 10,
+   "dmin": 3.16,
+   "dtot": -0.664,
+   "dcp": null,
+   "dxc": -0.232,
+   "dnlc": -0.517,
+   "pint": {
+    "becke": -0.474
+   },
+   "span": 0.004,
+   "level": 1
+  },
+  {
+   "name": "苯-水",
+   "natm": 15,
+   "dmin": 2.6,
+   "dtot": -4.342,
+   "dcp": null,
+   "dxc": -4.012,
+   "dnlc": -1.259,
+   "pint": {
+    "becke": -1.36
+   },
+   "span": 0.247,
+   "level": 1
+  },
+  {
+   "name": "苯-氨",
+   "natm": 16,
+   "dmin": 2.76,
+   "dtot": -2.928,
+   "dcp": null,
+   "dxc": -2.915,
+   "dnlc": -1.327,
+   "pint": {
+    "becke": -1.393
+   },
+   "span": 0.224,
+   "level": 1
+  },
+  {
+   "name": "苯-甲烷",
+   "natm": 17,
+   "dmin": 2.98,
+   "dtot": -1.785,
+   "dcp": null,
+   "dxc": -2.322,
+   "dnlc": -1.404,
+   "pint": {
+    "becke": -1.442
+   },
+   "span": 0.213,
+   "level": 1
+  }
+ ]
+}

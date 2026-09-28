@@ -18,9 +18,10 @@ from nlcsplit import partition, nlc, geomlib
 FRAG = geomlib.FRAGS["(H2O)2"]
 KCAL = 627.509474
 
-# (基组, 最高 level)。成本随 N^2 增长。6-31g* 必须跑到 2：step1 发现
-# lvl0 的 E_AB=-0.6316 与 lvl1 的 -0.5537 差 14%，"level 0 已收敛"这个
-# 旧结论是在另一套几何上得到的，不成立。
+# (基组, 最高 level)。成本随 N^2 增长。6-31g* 跑到 2 是为了给"网格是否收敛"一条
+# 独立于 level 0 的证据：V2 核 + 修正几何下实测 E_AB = -0.5316(lvl0) / -0.5237(lvl1) /
+# -0.5235(lvl2)，散布 0.008 kcal/mol（1.5%）。旧注释里那两个数是不同年代口径混来的
+# （-0.6316 是错核错几何的 lvl0，-0.5537 其实是 aug-cc-pVDZ lvl1），不能当参照。
 PLAN = [("sto-3g", (0, 1, 2)), ("6-31g*", (0, 1, 2)), ("aug-cc-pvdz", (0, 1))]
 
 

@@ -41,7 +41,7 @@ def fig1(rows):
            label=r"$\Delta E_{\rm xc}$ rest (semilocal + exact exch.)", color="#c05621")
     ax.axhline(0, color="k", lw=0.8)
     ax.set_xticks(list(x))
-    ax.set_xticklabels(labels, fontsize=8)
+    ax.set_xticklabels(labels, fontsize=8, rotation=30, ha="right")
     ax.set_ylabel("kcal/mol")
     ax.set_title("Attraction vs repulsion inside $E_{\\rm xc}$ (superposition, no BSSE)",
                  fontsize=9)
@@ -62,7 +62,8 @@ def fig2(rows):
         ax.text(o[1] + 0.15, i, f"{o[1]:.1f}%  (spread {o[2]:.3f})", va="center", fontsize=7)
     ax.set_xlabel("scheme spread / |P_frz|  (%)")
     ax.set_xlim(0, max(o[1] for o in order) * 1.5)
-    ax.set_title("Attribution-scheme uncertainty: H-bonded ~7% vs dispersion ~2%", fontsize=9)
+    ax.set_title("Scheme uncertainty is system-dependent (0.8-18%): report per system,\n"
+                 "not as one blanket percentage", fontsize=8.5)
     fig.tight_layout()
     f = os.path.join(OUT, "fig2_scheme_sensitivity.png")
     fig.savefig(f, dpi=200)
