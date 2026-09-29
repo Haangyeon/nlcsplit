@@ -1,8 +1,34 @@
-# nlcsplit — fragment and pair resolution of the VV10 nonlocal-correlation energy
+---
+title: 'nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation energy'
+authors:
+  - name: Angran Xia
+    orcid: TBD  # 需本人提供，禁止代填
+    affiliation: 1
+    corresponding: true  # 待本人确认
+  - name: TBD  # 若有第二作者（含 IDE 侧贡献者），由本人指定署名与贡献
+    orcid:
+    affiliation: 1
+affiliations:
+  - name: 'Shaanxi Normal University, Xi'an, China  # 院系与官方英文全称由本人补，此处刻意不猜'
+    index: 1
+date: 29 September 2026
+bibliography: references.bib  # 尚未生成；DOI 已在 §Sources 逐条回查
+keywords:
+  - nonlocal correlation
+  - VV10
+  - density functional theory
+  - energy decomposition
+  - PySCF
+---
 
-*Draft for a software venue (SoftwareX / JOSS shape). Numerical claims carry a
-`[S#]` tag into `paper/main.md` and `MAIN-skeleton.md`; scripts named here are in
-the repository and their archived stdout under `nlcsplit/logs/` is the source.*
+*SoftwareX / JOSS shape. Numerical claims carry a `[S#]` tag into
+`paper/main.md` and `MAIN-skeleton.md`; scripts named here are in the repository
+and their archived stdout under `nlcsplit/logs/` is the source. **The front matter
+above contains fields only the author can supply (ORCID, corresponding status, exact
+affiliation string, co-author list); they are marked rather than filled.**
+`references.bib` does not exist yet — building it is a submission blocker, and every
+DOI quoted below has been reverse-checked against Crossref by DOI, not by title
+search (see `RESEARCH-20260929-lit.md` §9 for why that distinction mattered here).*
 
 ## Abstract
 
