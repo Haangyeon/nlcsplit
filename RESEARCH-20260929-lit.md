@@ -146,9 +146,25 @@ D=3.81 Å 构造几何，其平衡几何来自 CCSD(T)/CBS 扫描）三项解释
 
 | 校准 | 期望 | 实测最高分 | 命中的实际题名 |
 |---|---|---|---|
-| K1 | Van der Waals Density Functional for General **Use** (Dion PRL 92,246401) | 0.857 | "...for General **Geometries**"（**是另一篇**，Yıldırım PRL 100,063001） |
+| K1 | Van der Waals Density Functional for General **Use** (Dion PRL 92,246401) | 0.857 | "...for General **Geometries**" |
 | K2 | vdW density formalism: … interactions in rings (Thonhauser PRB 69,235111) | 0.667 | 未召回 |
 | K3 | Hartree-Fock-Swap … Gibbs energy (Smith 等) | 0.125 | 未召回 |
+
+⚠ **11:50 更正本表的一条判词**：我上面写 K1 命中的是"**另一篇**"，**这个判断错了**。
+用 Crossref DOI 精确回查（`scratch/doi_chk.js`）：`10.1103/PhysRevLett.92.246401`
+的正式题名就是 **"Van der Waals Density Functional for General Geometries"**
+（Dion, Rydberg, Schröder, PRL 92, 246401, 2004）。也就是说 Crossref 那一次
+**检索到了正确的那篇**，错的是我手里"期望标题"——我把 "for General Geometries"
+记成了不存在的 "for General Use"。
+⇒ 结论方向不变但理由要换：**K1 其实是命中**；校准失败只成立于 **K2、K3**
+（0.667 / 0.125，两篇都没召回）。仪器判定"不可作为负证据来源"仍然成立，
+因为两篇确知在库的文献召不回来；但**不得再说"它给了伪命中"**。
+同一轮回查还顺手抓出两个我记错的 DOI：`10.1103/PhysRevB.70.235111` 不是
+Thonhauser 那篇（解析到 Chernyshev 等），`10.1063/1.2189230` 是 Thonhauser 2006
+JCP 的"单取代苯二聚体"而非"rings 形式体系"。
+⇒ 教训比原判断更重要：**"期望值"本身也要验**。我用一个记错的标题去校准一台
+搜索引擎，差点把一次正确的检索结果划成仪器的失败。
+以后写校准表时，期望题名必须与 DOI 同时从 Crossref 回查得到，不许凭记忆填。
 
 * 判据本身也暴露了：0.85 词元重叠会把 K1 判成**伪命中**（一字之差、另一篇文献）。
   收紧就会把 K2/K3 判死——**这台仪器没有可调和的工作点**。
@@ -169,3 +185,52 @@ D=3.81 Å 构造几何，其平衡几何来自 CCSD(T)/CBS 扫描）三项解释
 * ⇒ 正文里这句必须这么写：**"据 OpenAlex 与对最近先例的全文比对，未见对 VV10
   非局域关联双重和的片段/原子对归属；正式库检索待补"**——
   在补齐 8.1 之前不得写"经 Web of Science 检索确认"。
+cat >> RESEARCH-20260929-lit.md << 'MDEOF'
+
+## 9. 上一节的两处判词需要更正（2026-09-29 12:10，Crossref 重测）
+
+§8.2 的结论方向留着，**理由换掉**，并且要记下我错在哪。
+
+### 9.1 我错在"期望值凭记忆填"
+用 Crossref DOI 精确回查（`scratch/doi_chk.js`）逐条打开我自己写的对照：
+
+| 我写的期望 | 回查结果 |
+|---|---|
+| Dion "…for General **Use**" | **该标题不存在**；PRL 92, 246401 的正名是 *…for General **Geometries*** |
+| Thonhauser "…rings" (PRB 69 或 70, 235111) | **两个 DOI 都是别的论文**（69→非晶 GdSi 输运；70→强关联有效理论） |
+| ωB97X-V = 10.1039/C7CP04995J | **此 DOI Crossref 查无**；真身是 **10.1039/c3cp54374a**, PCCP **16**, 9904 (2014) |
+
+⇒ 我把"检索到了正确论文"判成"伪命中"，因为我的标准答案是编的。
+反向对照也证明 API 无辜：随手猜的 `10.1002/qua.21004` 解析到一篇真实但完全无关的
+IJQC 2006 论文——**精确回查是可靠的，不可靠的是我脑子里的题名与卷号**。
+
+### 9.2 重测：分两层，结论不同
+* **精确题名层：可用。** 先 DOI→题名钉住四条对照，再拿各自题名回喂
+  `query.bibliographic`：**4/4 全部 rank=0 命中**（`scratch/xref_calib2.js`）。
+* **主题层：召回不完备。** 用最近邻先例 JCTC 2023 (10.1021/acs.jctc.3c00903) 的
+  语汇组三条合法主题式查询，**只有 1/3 把它召回**（rank=2），另两条 rank=-1
+  （`scratch/xref_r3.js`）。它确实存在、确实同题，却漏了两次。
+
+⇒ **判词（替换 §8.2 那句"没有可调和的工作点"）**：
+Crossref 适合**已知条目核验**（DOI、题名、卷页），
+**不适合支撑"没有先例"这类否定主张**——理由不是它误报，而是它的主题召回
+被证明会漏掉一篇确定在库的同题论文。
+所以 §8 的 N1–N7 那批 0 命中仍然不作数，**新的、更强的**理由是上面这句。
+
+### 9.3 重跑七条主题式：没有一条是本项目的主张，但冒出一个必须查的名字
+N1–N7 的 top 命中逐条看过（`scratch/xref_r3.json`），无一涉及
+"VV10 双重和的片段/原子对归属"。三条要记下来：
+* **`10.1016/bs.arcc.2015.09.002` — Calbo, Ortí, Sancho-García, Aragó,
+  "The Nonlocal Correlation Density Functional VV10", Annu. Rep. Comput. Chem. 11,
+  37–102 (2015)**：VV10 专题综述。**审稿人极可能拿它问"你与这篇综述的关系"**，
+  正文相关工作一节必须引并说清它不涉及片内/片间归属。
+* **Lazić, Atodiresei, Alaei, Caciuc, Blügel, Brako,
+  "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF
+  correlation energy", *Comput. Phys. Commun.* **181**, 371–379 (2010),
+  DOI 10.1016/j.cpc.2009.09.016（卷页已 DOI 回查确认）**：
+  这是一个**把 vdW-DF 非局域关联项做后处理求值**的程序，是本项目"显式双重和"
+  最接近的**实现级**先例。**待办：取全文确认它是否做过空间/片段归属**——
+  若做过，新颖性表述要收窄到"归属"而不是"显式求值"。这是当前最该查的一条。
+* `10.1039/c3cp54374a`（ωB97X-V 原文，2014）与 `10.1063/1.4952647`（ωB97M-V，2016）
+  经回查确认，可直接进参考文献表；Becke 划分 `10.1063/1.454033`、
+  Stratmann `10.1016/0009-2614(96)00600-8` 同样已回查确认。
