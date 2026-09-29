@@ -1,3 +1,290 @@
+# RESEARCH-20260930-p2-novelty — prior-art gate for P2's remaining novelty claim
+
+> **Round structure (2026-09-30).** This file carries TWO E5 rounds. **Round 2** = §§0–9 below (formal
+> Web-of-Science sweep of the *certified-screening* axis, 44 strings, endpoint-replay with ndjson batch
+> accumulation and RecordsFound reconciliation; arXiv with the OR-quoted calibration that passes; OpenAlex
+> cited-by on the fast-NLC hubs; full-text adjudication of Laikov arXiv:2511.04169). **Round 1** = the
+> 2026-09-29-UTC open-index pass by the peer agent, **preserved verbatim, unedited, at the end** — its own
+> declared gaps (no WoS export yet; Sabatini/Vydrov bodies unverified; “is anyone citing Laikov?”) are
+> precisely what Round 2 closed. Read §10 for the cross-round errata before quoting anything from Round 1's
+> table (three of its citation strings carry wrong page numbers, all corrected and DOI-verified in §10).
+
+
+Date of all searches: **2026-09-30** (one session, 00:15–01:10 local; WoS `RecordsSearched = 58,669,534`,
+WoS Core Collection, all sub-databases, lemmatization `On` — both read from WoS's own `searchInfo` row,
+not assumed). Executor: cn-qoder subagent (this file), per the gate tasking in `paper/p2_skeleton.md` E5
+("NLC 屏蔽先例正式检索 … 未做；现稿一律不写 first").
+
+**The claim under test (verbatim from the tasking):**
+"nobody has previously applied a certified (rigorous upper-bound) multipole/tree screening criterion
+specifically to the VV10 nonlocal-correlation double sum while preserving per-pair (i,j) attribution."
+
+Method note (project-specific, learned 2026-09-29): WoS numbers come from the site's own record endpoint
+`POST /api/wosnx/core/runQuerySearch?SID=…` (request template captured by hooking `window.fetch` on one
+real UI submit; `search.query[0].rowText` replaced per query; `retrieve.count` raised). ndjson `records`
+batches were **accumulated**, and for every query the harvested unique-UT count was compared against the
+server's own `RecordsFound` before anything was written down (§13.1 lesson: a [20,13] batch stream is 33,
+not 13). No results-DOM scraping was used. Session state: institutional egress `202.117.147.182`
+(CERNET), persistent profile `scratch/pw_profile`; yesterday's user-completed SNNU login still valid —
+every query executed. Nothing of ours was sent anywhere; all strings are generic terms.
+Raw evidence: `scratch/p2novelty/` (per-query ndjson `wos_*.ndjson`, manifests `wos_manifest*.json`,
+arXiv XMLs `arx2_*.xml`, OpenAlex `oa3_*.json`/`cites2_*.json`, Laikov full text `laikov_2511.txt`).
+
+---
+
+## 0. Instrument status (today, measured — not inferred)
+
+| Index | Status today | Evidence |
+|---|---|---|
+| **WoS CC** (clarivate.cn mirror) | **WORKING, logged-in session, 44 strings executed** | counts + full record harvest below; calibration K1–K6 all pass |
+| arXiv API | WORKING, **but usable only in the OR-quoted form** | `abs:"VV10"` = 5 (known item arXiv:2208.02841 absent — calibration FAIL reproduced); `abs:"VV10" OR abs:"rVV10"` = 36 and **does** recall 2208.02841 (calibration PASS) ⇒ all arXiv strings below use the quoted-OR form |
+| OpenAlex — known-item/title routes | WORKING (budget-late-session) | resolved Grafenstein-Cremer `10.1063/1.3079822`, Steinmann-Corminboeuf `10.1021/ct1001494`, Sabatini `10.1103/physrevb.87.041108`, Laikov `10.48550/arxiv.2511.04169` |
+| OpenAlex — search routes | RATE-LIMITED | screening-axis battery CAL1–S8: 12/12 "FAILED(rate-limited)" — recorded as **queried-not-executed**, draws no conclusion |
+| OpenAlex — cited-by routes | PARTIAL (final state) | RS09 hub enumerated **FULL** (fetched 1,596 vs server 1,590; reconciliation passed; one two-dimensional title hit — the Hyldgaard "screening nature" review, noise); Laikov hub **FULL = 0 citations** (so no indexed follow-up exists yet); Sabatini (738), Gulans (167), JuNoLo (47) hit 429 at page 0 ⇒ **TRUNCATED (0 read)**; my noloco seed used a wrong DOI guess and resolved to an unrelated paper — corrected record above, but its citation hub was **not** swept |
+| Semantic Scholar — search | 429 (4/4 attempts) — same as 2026-09-29; keyword dimension **NOT QUERIED** | direct `DOI:` reads work (200) |
+| Crossref | known-item layer works; `query.title` for GELLER/ShortRange-SPI → only name-noise | used for title/DOI verification only, per §9 |
+| Scopus | **not queried today** (measured unsubscribed/401-403 on 2026-09-29) | carried as known gap |
+| Open web (DDG-lite, Bing, CP2K manual fetch) | DDG returned empty; Bing "Object moved"; CP2K manual pages fetched empty via curl | used only to look for the program names, see §4 |
+
+---
+
+## 1. WoS calibration (strings as executed; hits; records read)
+
+| # | exact string | hits | records read | verdict |
+|---|---|---|---|---|
+| K1 | `TI=("Van der Waals density functional for general geometries")` | 2 | 2/2 | Dion PRL 92,246401 + **its erratum** (art.no.109902). Known item recalled ✔ |
+| K2 | `TI=("JuNoLo")` | 1 | 1/1 (abs read) | Lazić CPC 181,371 (2010) ✔ — abstract confirms explicit N² post-processing, total energy |
+| K3 | `TS=("energy decomposition analysis")` | 3,317 | 20/3317 (titles) | breadth identical to 2026-09-29's 3,317 ✔ (count-cap 20 by design) |
+| K4 | `TI=("Nonlocal van der Waals density functional made simple and efficient")` | 1 | 1/1 | Sabatini PRB 87,041108 (2013) ✔; abstract: plane-wave FFT route "along the lines pioneered by Román-Pérez and Soler" |
+| K5 | `TI=("Efficient implementation of a van der Waals density functional")` | 1 | 1/1 | Román-Pérez & Soler PRL 103,096102 ✔; abstract: "factorize the integration kernel and use fast Fourier transforms … in O(NlogN) … dramatic speedup over the O(N²) evaluation of the double integral" |
+| K6 | `TS=("Barnes-Hut")` | 134 | 20 (titles) | tree-code literature is indexed in CC ⇒ a 0 from a vdW×tree string is a real 0 ✔ |
+| D1 | `AU=(Dion* AND Lundqvist*)` | 9 | 9/9 | AU-row syntax works and returns the Dion/Rydberg/Lundqvist papers ⇒ the **zero** intersections D2′(B7)/D4 are meaningful ✔ |
+
+All 28 round-1 and 10 round-2 and 6 round-3 strings (44 total) are listed in §2–§5 exactly as executed.
+
+## 2. Axis 1 — VV10/rVV10/vdW-DF/nonlocal × fast-algorithm vocabulary (WoS)
+
+| # | exact string | hits | read | per-record verdict |
+|---|---|---|---|---|
+| A1 | `TS=(("VV10" OR "rVV10") AND ("fast multipole" OR Barnes-Hut OR "tree code" OR multipole))` | **1** | 1/1 (abs) | Nepal–Ruzsinszky–Bates PRB 97,115140 (2018): Cs-halide RPA/SCAN+rVV10 structural stability; "multipole" = higher-order multipole moments of dispersion. **No conflict** |
+| A2 | `TS=(("van der Waals density functional" OR "vdW-DF") AND ("fast multipole" OR Barnes-Hut OR "tree code"))` | **0** | — | Zero, and every constituent vocabulary independently recalls (K6=134, C5=171, A1=1, vdW side K1/K4/K5/A4/A6). **Valid negative** |
+| A3 | `TS=(("nonlocal correlation" OR "non-local correlation") AND (multipole OR "tree code" OR Barnes-Hut))` | **0** | — | Same argument ("nonlocal correlation" recalls 58 in B0). **Valid negative** |
+| A4 | `TS=(("VV10" OR "rVV10" OR "vdW-DF" OR "van der Waals density functional" OR "nonlocal correlation" OR "non-local correlation") AND ("linear scaling" OR "order-N" OR N-scaling))` | 5 | 5/5 (abs #1) | **#1 Gulans–Puska–Nieminen PRB 79,201105 (2009) "Linear-scaling self-consistent implementation of the vdW-DF"** — adaptive real-space quadrature grids, nonlocal **potential** + forces; no certified bound, no pair attribution ⇒ **cite & bound** (fast-eval lineage). #2 Londero (application, noise), #3 Liu (noise), #4 eQE 2.0 (subsystem DFT), #5 Gundelach–Skylaris (ONETEP application). **No conflict** |
+| A5 | `TS=(("VV10" OR "rVV10") AND (screening OR screened OR cutoff OR "cut-off"))` | 9 | 9/9 (titles) | all "screening" = **physical** screening (image-charge/dielectric) or "screened hybrid" vocab: Ambrosetti–Silvestrelli ×2, Yu RPA+rVV10, Bakar, Sharada ADS41, Mardirossian ωB97M(2), etc. **No conflict** |
+| A6 | `TS=(("nonlocal correlation" OR "non-local correlation" OR "vdW-DF") AND (screening OR cutoff OR "cut-off"))` | 28 | 28/28 (titles), 1 abs | same vocabulary collision; Hyldgaard "screening nature" review, vdW-DF-ahcx, Marom benchmark, "Putting error bars on DFT" (statistical bars, not truncation bounds). **No conflict** |
+
+## 3. Axis 2 — fast summation of the vdW-DF nonlocal term (WoS + placement of named leads)
+
+| # | exact string | hits | read | verdict |
+|---|---|---|---|---|
+| B0 | `TI=("nonlocal correlation" OR "non-local correlation")` | 58 | **58/58 titles** | full title sweep of the topical literature; relevant items: Rydberg–Lundqvist–Dion PRB 62,6997 (2000) separable/tractable kernel **for flat surfaces/slabs** (abs read; no general-molecule screening, no bound, no attribution); Schwabe–Grimme (functional); ωB97X-V/ωB97M-V/B97M-rV (functionals); Gao-Ren (RPA-type construction). **GELLER/ShortRange-SPI/Toepfer-Fritscher/Fong-Ortiz DO NOT APPEAR** |
+| B1 | `TS=("GELLER" AND ("vdW-DF" OR "non-local correlation" OR "nonlocal correlation"))` | **0** | — | see §4: name unlocatable |
+| B2 | `TS=("ShortRange-SPI" OR "shortrange-spi")` | **0** | — | see §4 |
+| B3 | `TS=(("vdW-DF" OR "van der Waals density functional" OR "nonlocal correlation" OR "non-local correlation" OR VV10) AND Ewald)` | 1 | 1/1 (abs) | Futera–Blumberger JCTC 2019 (GolP-CHARMM force field; "Ewald" in MD context). **No conflict; zero real-space-Ewald-for-vdW-DF paper in CC** |
+| B4 | `TS=(("vdW-DF" OR "van der Waals density functional" OR VV10 OR "nonlocal correlation" OR "non-local correlation") AND ("separable expansion" OR "separable approximation" OR Chebyshev OR "Gaussian expansion"))` | **0** | — | **uncalibrated** (no known item recalls under these exact phrases; the separable-kernel classics are indexed without those words). Registered, no conclusion drawn |
+| B5 | `TS=(("van der Waals density functional" OR "vdW-DF" OR VV10) AND ("atoms-in-molecules" OR "atoms to molecules" OR stockholder OR Hirshfeld))` | 4 | 4/4 titles, 1 abs | Shahbaz–Szalewicz TCA (2019, abs read): *benchmark accuracy* of AIM/atom-pair dispersion models vs SAPT — no certified screening, not the VV10 double sum; 2 applications; 1 D3/D4 extension. **No conflict** (Heßelmann NLDFT already bounded in `novelty_crosscheck.md` §1.2) |
+| B6 | `TS=(("vdW-DF" OR "van der Waals density functional" OR VV10 OR "nonlocal correlation" OR "non-local correlation") AND ("fast fourier transform" OR "Fourier transform" OR FFT))` | 3 | 3/3 (all noise) | **CALIBRATION FAILED as negative evidence**: the FFT-route papers K5/K4 are NOT recalled (their TS fields don't use the words) ⇒ B6 count cannot support any absence claim. The FFT route itself is established by K4/K5 known-items |
+| B7 | `AU=(Toepfer* AND Fritscher*)` | **0** | — | no co-authored Toepfer×Fritscher document anywhere in CC; AU syntax verified by D1. **Lead unlocatable** |
+
+## 4. The unresolved named leads: GELLER, ShortRange-SPI, Toepfer–Fritscher, Fong–Ortiz
+
+Provenance check first: these four names appear **only** in our own unverified to-do list
+(`paper/p2_skeleton.md:51`, E5) with **no DOI, no citation, no ref/ record** (`grep -rn "GELLER\|ShortRange"
+HANDOFF…, PLAN…, MAIN-skeleton, PROGRESS-nlcsplit, ref/, evidence/` → nothing but the skeleton line).
+Searches executed to locate them today:
+
+| route | string (exact) | result |
+|---|---|---|
+| WoS | B1, B2, B7 (above) | 0, 0, 0 |
+| WoS | `TI=(GELLER)` (D5) | 44 — all surname hits (Geller syndrome, Geller reviews); **no program paper**. 44/44 titles read |
+| WoS | `TI=(ShortRange*)` (D6) | 1 — wastewater photocatalysis (Env. Res. 2025). 1/1 read |
+| WoS | `AU=(Toepfer*)` (D2) | 1,124 — 50 read (relevance cap); medicine/entomology/materials; no comp-chem Toepfer |
+| WoS | `AU=(Fritscher*)` (D3) | 439 — 50 read; RRAM electronics, microbiology, dentistry; no comp-chem Fritscher |
+| WoS | `AU=(Ortiz* AND Fong*)` (D4) | 19 — all clinical/astronomy |
+| OpenAlex | title_and_abstract for GELLER×non-local, ShortRange, Toepfer/Fritscher/Byls author routes | 0 / garbage / rate-limited (§0) |
+| Crossref | `query.title=GELLER…`, `ShortRange-SPI`, Toepfer/Fong title routes | surname noise / empty (§0) |
+| arXiv | `all:"GELLER" AND abs:"non-local correlation"` (X5) ; `abs:"ShortRange-SPI"` (X6) | 0, 0 (presence probes, uncalibratable) |
+| open web | DDG-lite / Bing / CP2K manual fetch | blocked/empty (§0) |
+
+**Verdict: NOT FOUND in any reachable index under any spelling tried.** Per the 2026-09-29 lesson (§9:
+"the expectation itself must be verified"), the honest classification is: these leads were **unverified
+expectations**, most likely garbled from the planning stage (closest real analogues that do exist and ARE
+placed: JuNoLo 2010, noloco 2011 (CPC 182, 1657), Gulans 2009, Sabatini 2013, Román-Pérez 2009, Vydrov–Wu–VanVoorhis 2008,
+Grafenstein–Cremer 2009, Burow–Sierka 2011, Laikov 2025). If the reviewer means a *specific* paper, the
+draft's §1 should be re-checked the moment its real title/DOI is supplied; until then P2 must not say
+"GELLER did X", only "we could not locate any method paper under this name" — or better, not mention the
+names at all. (This is the same handling the file `novelty_crosscheck.md` gave the Vidali/Klippenhein
+leads: UNVERIFIED.)
+
+## 5. Axis 3 — certified/rigorous bounds in molecular DFT (WoS + arXiv)
+
+| # | exact string | hits | read | verdict |
+|---|---|---|---|---|
+| C1 | `TS=(("VV10" OR "rVV10" OR "vdW-DF" OR "nonlocal correlation" OR "non-local correlation" OR "van der Waals density functional") AND ("error bound" OR rigorous OR certified OR "a posteriori" OR "guaranteed accuracy"))` | 14 | 14/14 titles; 4 abs | **the claim-literal string.** Zero algorithmic hits: quantum-foundations noise ("rigorous proof for the nonlocal correlation function in the transverse Ising model", "Certification of quantum nonlocal correlations"), applications, Steinmann–Corminboeuf Chimia (a-posteriori *dispersion correction*, abs read), Sabatini phonons PRB 93,235120 (abs read — "rigorous" = DFPT formalism for nonlocal functionals, not error bounds). **No conflict** |
+| C2 | `TS=(("Kohn-Sham" OR "density functional") AND ("a posteriori error estimation" OR "a posteriori error bound" OR "rigorous error bound"))` | 2 | 2/2 abs | Shen–Kuang–Hu J Sci Comput 2019 + **Herbst–Levitt–Cancès Faraday Discuss 2020** ("fully-guaranteed bounds … basis-set finiteness / convergence thresholds / rounding error" of the **KS eigenproblem**). Certified error exists in DFT numerics — different object. **Cite as boundary** |
+| C3 | `TS=(("numerical integration" OR quadrature) AND "density functional" AND ("error bound" OR "a posteriori"))` | 1 | 1/1 abs | Davydov–Young–Steinmann IJNME adaptive FEM for KS. Same boundary as C2 |
+| C4 | `TS=("multipole acceptance")` | 5 | 5/5 titles; 1 abs | tree-code mathematics only (Bull–Engblom; **Engblom "On well-separated sets and FMM", Appl Numer Math 2011 — rigorous MAC relative-error analysis, abs read**; Dehnen; Wünsch; Wang). No molecular-DFT application. **Cite as MAC-with-bound lineage** |
+| C5 | `TS=("fast multipole" AND ("Hartree-Fock" OR "density functional" OR molecules))` | 171 | **171/171 titles**; 5 abs | certified/sharp-bound literature exists for **other sums**: #19 Lambrecht–Ochsenfeld **MBIE** (JCP 123,184101 (2005), "rigorous and tight upper bounds to four-center two-electron integrals", abs read), #55 **QQR** distance-dependent Schwarz bounds (2012, abs read), #61 density-matrix purification "with rigorous error control" (2008, abs read), #53 CFMM/H² compression (2020), #65 Bubblepole RI-J (2025). None touches a nonlocal-correlation double sum. **Cite as "bounds for the Coulomb sum, new object here"** |
+| C6 | `TS=("Gaussian charge distributions" AND (multipole OR screening) AND ("upper bound" OR "error bound"))` | **0** | — | **uncalibrated** (no known item pairs these phrases); registered only |
+| C7 | `TS=(("VV10" OR "vdW-DF" OR "nonlocal correlation" OR "non-local correlation") AND ("upper bound" OR "error bound"))` | 4 | 4/4 titles | quantum-noise only. **No conflict** |
+| C8 | `TS=("fast multipole method" AND ("exchange-correlation" OR "nonlocal correlation" OR "van der Waals"))` | 19 | 19/19 titles; 4 abs | Sierka CFMM/RI-DFT gradients+stress (TURBOMOLE) — Coulomb only; **Burow–Sierka JCTC 7,3097 (2011) "Linear Scaling Hierarchical Integration Scheme for the Exchange-Correlation Term", abs read: octree hierarchical grouping + "efficient screening of negligible contributions" — of the SEMILOCAL xc single integral, no rigorous bound claimed, no pair attribution.** Srinivasan–Sarin treecode for r^−λ kernels (2007, abs read) — generalized power-law tree sums, not the VV10 Φ. **Closest mechanism-level neighbours; bound the claim** |
+
+arXiv corroboration (OR-quoted form, calibrated — see §0):
+| # | exact `search_query=` | total | verdict |
+|---|---|---|---|
+| X1 | `(abs:"VV10" OR abs:"rVV10" OR abs:"nonlocal correlation" OR abs:"non-local correlation" OR abs:"van der Waals density functional") AND (abs:"fast multipole" OR abs:"Barnes-Hut" OR abs:"tree code" OR abs:"multipole expansion")` | **1** | the one hit is **arXiv:2511.04169 Laikov** ⇒ known-item recall works AND the FMM×NLC intersection on arXiv is exactly one paper, which we read in full |
+| X2 | `(...) AND (abs:"error bound" OR abs:"rigorous" OR abs:"a posteriori" OR abs:"certified")` | 54 | exploration; 52/54 quantum-foundations noise; zero certify a nonlocal-functional evaluation. Negative rests with WoS C1–C7 |
+| X3 | `(...) AND (abs:"linear scaling" OR abs:"order-N" OR abs:"O(N)")` | 3 | Londero, eQE 2.0, FRI — no new fast-NLC paper (Gulans/RS09 predates/never posted) ⇒ exploration only, not a calibrated negative |
+| X4 | `(...) AND abs:"screening"` | 22 | physics-screening noise, mirrors WoS A6 |
+| X5/X6/X7 | `all:"GELLER" AND abs:"correlation"` / `abs:"ShortRange-SPI"` / `abs:"JuNoLo"` | 6 / 0 / 0 | X5 galaxy noise; X6 zero (§4); **X7 calibration note**: `abs:` searches the abstract only and JuNoLo's abstract lacks its own name ⇒ X7=0 is expected, not a failure — but shows exact-phrase abs strings are brittle |
+| X8 | `(...) AND abs:"Ewald"` | 0 | uncalibrated negative (see B6 for the same caution) |
+| X9 | `(...) AND (abs:"separable" OR abs:"Chebyshev" OR abs:"Gaussian expansion")` | 146 | dominated by QI "nonlocal/separable" noise; exploration only |
+
+## 6. Full-text adjudication of the closest candidate (mandatory, since it is the one real overlap)
+
+**arXiv:2511.04169v2, D. N. Laikov, "Nonlocal van der Waals density functional made faster"** (submitted
+2025-11-06, v2 dated 2026-01-21; no Crossref/OpenAlex journal version found; **not indexed in WoS CC** —
+verified via `TI=("made faster")` = 8 unrelated). Text downloaded from arXiv and extracted
+(`scratch/laikov_2511.{pdf,txt}`, 6 pp, read in full 2026-09-30). What it does: replaces the VV10
+integrand with an *approximation* — ω(r₁)≈ω(r₂) (Eq. 12), then a 3-term rational expansion ṽ = Σ βⁿ/(s+β)^(3+n)
+with a **system-independent** β tuned by hand (√β = 4 bohr, chosen so noble-gas-dimer errors are small) —
+so the 6-D integral becomes a few Newton-potential-type convolutions "opening the way to fast multipole
+methods" (cites Rokhlin 1985; "should be straightforward … plane-wave implementation using [RS09]"), plus
+a Gaussian density-fitted analytic version (new special functions U_mn, DE quadrature).
+**Error handling**: purely empirical — Table I reports well-depth deviations from the VV10 reference in
+**microhartree**; the largest single value is 103.6 µEh for the first approximation (Eq. 12) on the
+762.5 µEh XeXe well (≈14%), 84.2 µEh (≈11%) for the final adopted scheme (Eqs. 29+30); the author's own
+summary is "below 1.2% (3.3% for HeHe) for bond lengths and below 18% for bond energies". A tanh filter μ̄
+is justified by "numerical stability", not by a bound. **There is no theorem that the computed energy is
+within ε of the exact VV10 value; there cannot be, since the functional being evaluated is no longer
+VV10.**
+**Attribution**: computes total Ë₆ + compensation only; explicitly positions against "atoms-in-molecules
+kind of approximation" (ref 23–24 = Grafenstein-Cremer, Steinmann-Corminboeuf). No (i,j) bookkeeping.
+Overlap with our claim: **partial (fast multipole × VV10), not full** — it is neither certified nor
+pair-preserving, and it approximates the kernel instead of screening the exact sum. Threat level: highest
+ever recorded for this axis because of the vocabulary overlap — it MUST be cited, and P2's novelty sentence
+must be phrased so that it stays true against Laikov (see §8).
+
+## 7. Verdict table (task format)
+
+| program / paper | what it does | bounds the error rigorously? | preserves per-pair (i,j) attribution? | overlap with our claim |
+|---|---|---|---|---|
+| **Laikov arXiv:2511.04169 (2025/26)** [FULLTEXT] | replaces VV10 integrand by separable rational expansion → FMM-able Newton-type sums + Gaussian analytic version ("LPBEVVV") | **NO** — empirical dimer-error table only; changes the functional itself | **NO** — total E₆ only, explicitly not AIM | **partial** (multipole/FMM × VV10; uncertified, no attribution) |
+| Román-Pérez & Soler PRL 103,096102 (2009) [K5 abs] | factorizes kernel, FFT convolution, O(N log N) NLC energy/potential/forces (SIESTA) | NO | NO (point-value grid folding) | partial (fast route, our cost-axis foil) |
+| Sabatini–Gorni–de Gironcoli PRB 87,041108R (2013) [K4 abs] | revises VV10 for efficient plane-wave evaluation + derivatives | NO | NO | partial |
+| Gulans–Puska–Nieminen PRB 79,201105 (2009) [A4#1 abs] | linear-scaling self-consistent vdW-DF, adaptive real-space quadrature grids | NO | NO | partial |
+| JuNoLo CPC 181,371 (2010) [K2 abs + 2026-09-29 FULLTEXT §10] | explicit N² post-processing of vdW-DF total energy, massively parallel | NO | NO (pushes fragmentable systems to other theories) | partial on explicitness; none on screening |
+| **noloco CPC 182, 1657–1662 (2011)** Nabok–Puschnig–Ambrosch-Draxl [D8 full record + abs read; DOI 10.1016/j.cpc.2011.04.015] | "Since the vdW-DF requires the evaluation of a six-dimensional integral, it scales unfavorably" — Monte-Carlo multi-dimensional integration replaces the grid double sum; works for different vdW-DF versions; applications from dimers to molecular crystals and adsorbates | NO (stochastic estimator; no certified error bound) | NO — total energy / potential | **partial** (attacks the same 6-D integral, escape route = sampling not screening) |
+| Vydrov–Wu–VanVoorhis JCP 129,014106 (2008) [E2 abs] | first self-consistent Gaussian-basis vdW-DF; explicit numerical double integration, grid study | NO | NO | partial |
+| Gräfenstein–Cremer JCP 130,124105 (2009) [E1 abs] | QSCF-DC-DFT: a-posteriori (uncoupled) evaluation of ALL dispersion term via coordinate-space partitioning (ALL functional, not VV10) | NO | fragment-level by construction, for a different functional | partial (attribution-axis neighbour) |
+| Burow–Sierka JCTC 7,3097 (2011) + Sierka CFMM line (C8) [abs] | **octree hierarchical screening of the xc (single) integral**, O(N), TURBOMOLE | NO (screening is adaptive, not bounded) | NO | **partial — closest tree-screening mechanism in molecular DFT** |
+| Lambrecht–Ochsenfeld MBIE (2005) + QQR (2012) [C5 abs] | rigorous multipole-based upper bounds for **ERI screening** | **YES (but for ERIs)** | n/a | partial on the bounding idea, different sum |
+| Engblom, Appl Numer Math (2011) [C4 abs] | rigorous relative-error MAC for tree/FMM **Newton** sums | **YES (but for Newton potentials)** | n/a | partial on the criterion form |
+| Schwegler–Challacombe–Head-Gordon, JCP 109, 8764 (1998) [Round-1 lead; DOI verified today] | first **proven multipole acceptability criterion** written for electronic-structure integrals (linear-scaling Coulomb/exchange, Gaussian charges) | **YES (but for Coulomb/ERI sums)** | n/a | partial on the criterion form — cite beside MBIE/Engblom |
+| Herbst–Levitt–Cancès Faraday D. (2020); Shen (2019); Davydov (2013) [C2/C3 abs] | a-posteriori certified error bounds for the **KS eigenproblem / FEM discretization** | **YES (different object)** | n/a | boundary context only |
+| Rydberg–Lundqvist–Dion PRB 62,6997 (2000) [B0#13 abs] | separable/tractable kernel — restricted to flat surfaces & slabs | NO | NO | partial (separable-kernel lineage) |
+| Srinivasan–Sarin IJCM (2007) [C8#5 abs] | treecode for r^−λ kernels (molecular dynamics potentials) | NO (order-error by truncation of series, not certified drop) | NO | partial |
+| Steinmann–Corminboeuf SDD JCTC 6,1990 (2010); Shahbaz–Szalewicz TCA 2019; Heßelmann NLDFT JCTC 9,273 (2013) | atom-pair dispersion *models* derived from density partitioning; benchmarks vs SAPT | NO | own pair models, not screening of the exact VV10 sum | partial (attribution axis; already bounded yesterday) |
+| VASP production route [vasp.at wiki, fetched 2026-09-30] | "the algorithm of Román-Pérez and Soler … based on FFTs and the convolution theorem"; kernel read from `vdw_kernel.bindat` | NO | NO | documentation of the foil; cite wiki/version |
+
+**Full-overlap candidates: none found.** (Claim = certified × multipole/tree MAC × exact VV10 double sum ×
+pair-preserving. No record satisfies even three conjuncts; Laikov satisfies two.)
+
+## 8. Recommendation — in the required form
+
+**"P2 may say X."** Exact sentence I would allow in the abstract/§1 (and its §4 echo):
+
+> "To the best of our knowledge — backed by a Web of Science Core Collection search of 44 strings on the
+> certified-screening axis (58,669,534 records, 2026-09-30, calibration-passed) and a full-text check of
+> the closest candidate — no previous work applies a rigorous-upper-bound multipole/tree screening
+> criterion to the *exact* VV10 nonlocal-correlation double sum while preserving its per-pair (i,j)
+> attribution: existing fast evaluations of the nonlocal term factorize or replace the kernel and discard
+> the pair structure with no certified error bound [Román-Pérez & Soler, PRL 103, 096102 (2009); Sabatini
+> et al., PRB 87, 041108 (2013); Gulans et al., PRB 79, 201105 (2009); Lazić et al., CPC 181, 371 (2010);
+> Nabok et al., CPC 182, 1657 (2011) [noloco]; Vydrov et al., JCP 129, 014106 (2008)], the recent separable-kernel
+> acceleration with fast multipoles [Laikov, arXiv:2511.04169 (2025)] replaces VV10 itself with an
+> empirically benchmarked approximation, and rigorous multipole bounds in molecular electronic structure
+> have been written for other sums — two-electron-integral screening [Lambrecht & Ochsenfeld, JCP 123,
+> 184101 (2005)] and Newton-potential tree codes [Engblom, Appl. Numer. Math. 61, 1174 (2011)] — not for
+> the nonlocal-correlation pair sum."
+
+Conditions attached to that permission (all are wording constraints, not evidence gaps):
+1. Keep **"to the best of our knowledge" + the dated-search hedge** — one formal index (WoS CC) plus
+   open-index corroboration; Laikov is a preprint **not** covered by the formal index; Semantic Scholar
+   keyword and OpenAlex search dimensions were not executed today (429).
+2. §4 must cite Laikov 2025 as the concurrent fast-multipole attempt and mark it *uncertified / kernel-
+   replacing / attribution-discarding*; and Burow–Sierka 2011 as the octree-screening precedent for the
+   **single** xc integral (uncertified) — these two are what a reviewer will throw first.
+3. §1 "the bounds idea is not ours either, the object is": cite MBIE/QQR (rigorous multipole bounds for
+   ERIs), Schwegler–Challacombe–Head-Gordon 1998 (proven MAC for electronic-structure integrals, DOI
+   10.1063/1.477546, JCP 109, 8764) and Engblom (rigorous MAC) as the criterion lineage, and
+   Herbst–Levitt–Cancès as the certified-error-in-DFT lineage with a different error object.
+4. Do **not** write "no fast algorithm for VV10 exists" (false — Laikov, RS09, Sabatini, Gulans) and do
+   not write "no error bounds in DFT numerics exist" (false — KS a-posteriori line). The allowed claim is
+   exactly the four-conjunct intersection above.
+5. The skeleton's leads "GELLER / ShortRange-SPI / Toepfer & Fritscher / Fong & Ortiz" are **unlocatable
+   in every index tried today (WoS/OpenAlex/Crossref/arXiv/open web)** — same handling as the Vidali/
+   Klippenhein leads: mark UNVERIFIED in the skeleton; do not cite, do not refute-by-name in the paper.
+   If the advisor supplies a real DOI later, re-run B1/B2/B7 with it as known item.
+
+## 9. Coverage & residual gaps (declared)
+
+- Read exhaustively: every query below ~60 hits was read record-by-record (titles; 30+ abstracts), with
+  UT-vs-`RecordsFound` reconciliation per query (all "full" except the two by-design 20-caps K3/K6 and the
+  capped D2/D3, declared). Partial reads: D2 50/1,124, D3 50/439 (negative results for those do not rest
+  on them — B7 intersection + D1 calibration carries that), K3 20/3,317, K6 20/134.
+- Zero-hit strings and their status: A2/A3/B1/B2/B7/D9/D10/E-series zeros — **calibrated** via component
+  recall (K6, C5, A1, B0) or D1; B4/C6/X8/X6 — **uncalibrated, no conclusion drawn** (§3, §5).
+- Not covered: Scopus (unsubscribed), Embase/SciFinder, CNKI (out of scope for these terms),
+  arXiv-only/unindexed conference papers post 2026-09-29, WoS indexing latency (Laikov-class preprints),
+  OpenAlex search routes today (429) and 4/6 cited-by hubs (429 mid-sweep; RS09 hub was enumerated FULL —
+  1,596 citing works, two-dimensional title screen fired on exactly one title, the Hyldgaard "screening
+  nature" review, noise; Laikov hub FULL at 0 citations).
+- Two self-errors made during this round, corrected in place above, logged for the audit trail: (i) I wrote
+  the CPC-2011 Monte-Carlo program as "nolmo" from memory before reading its record — it is **noloco**,
+  CPC 182, 1657–1662; (ii) my cited-by sweep guessed `10.1016/j.cpc.2011.05.018` for it and OpenAlex
+  faithfully resolved the *wrong paper* ("A modern workflow for force-field development", 20 cites). The
+  corrected record/DOI came from the WoS D8 dump. Same failure mode as 2026-09-29 §9 (expectation filled
+  from memory) — caught by reading the record before writing the verdict.
+- The attribution axis itself was NOT re-run here (done 2026-09-29, §12–13 + `novelty_crosscheck.md`);
+  this file supersedes nothing there and adds the screening axis + Laikov full text.
+
+
+## 10. Cross-round notes: what Round 2 resolves in Round 1, and Round-1 errata (DOI round-trips, 2026-09-30)
+
+**(a) Round-1 gaps → status.** “WoS/Scopus formal sweep not run” → **run** (§1–§5, this file; Scopus still
+not — measured unsubscribed). “Sabatini & Vydrov bodies unverified” → **placed at full-abstract level**
+(K4/E2 here; both are total-energy grid/FFT implementations, no bound, no pair bookkeeping — nothing that
+could collapse claim (a)). “Any 2026 paper citing Laikov + adding a certified bound?” → **OpenAlex cited-by
+for arXiv:2511.04169 enumerated FULL at 0 citations**, and the Laikov text itself was read end-to-end (§6).
+
+**(b) Round-1 verdict alignment.** Round 1 graded claim (b) “novel-by-specific-construction, NOT
+first-to-apply-hierarchy-to-VV10” at confidence ≈0.6 *without* WoS; the Round-2 WoS battery (A1=1 noise,
+A2/A3/D9=0 calibrated, X1=1 Laikov-only on arXiv) raises that conjunction to the record of §8 — same
+direction, one formal index added, Laikov line strengthened from “WebFetch summary” to full local PDF read.
+
+**(c) Round-1 errata (verified today; Round-1 text kept as-is above/by the append marker)**:
+1. Schwegler–Challacombe–Head-Gordon “A multipole acceptability criterion for electronic structure
+   theory” is **JCP 109, 8764–8769 (1998)** per Crossref `10.1063/1.477546` — Round 1 wrote “109, 2726”.
+2. Vydrov & Van Voorhis “Implementation and assessment of a simple nonlocal vdW-DF”, **10.1063/1.3398840
+   resolves to JCP 132, 164113 (2010)** — Round 1 wrote “132, 154105”.
+3. Round 1’s JuNoLo row names “Skattebøl, Saleh, Reimers, et al., CPC 181, 546”; the record (WoS K2 +
+   Crossref, verified 2026-09-29 §9.3 and today) is **Lazić, Atodiresei, Alaei, Caciuc, Blügel, Brako,
+   Comput. Phys. Commun. 181, 371–379 (2010)**.
+4. Round 1’s table row 3 (“VV10 2010 introduces the separable finite-rank approximation”) conflates two
+   things: the *separable-kernel machinery* is Rydberg–Lundqvist–Dion PRB 62,6997 (2000) (B0 #13 here);
+   VV10 itself is a closed-form non-separable kernel. No downstream conclusion changes.
+
+**(d) Addition folded into §7 from Round 1** (verified): Schwegler–Challacombe–Head-Gordon 1998 is the
+earliest **proven** multipole-acceptability criterion written for *electronic-structure* sums (linear-scaling
+Coulomb/exchange integrals) — same family as MBIE/QQR and Engblom: certified MAC, wrong object (not the
+VV10 pair sum). P2 §4 should cite it next to Engblom.
+
+---
+
+# APPENDED VERBATIM — E5 Round 1 report (2026-09-29 UTC run, peer agent; do not edit; see §10 for errata)
+
+␞␞␞BEGIN-ROUND-1␞␞␞
 # E5 prior-art / novelty check for P2 — certified screening of the VV10 nonlocal-correlation double sum
 
 **Session:** E5 of the P2 novelty package (E1–E4 are already closed in `paper/p2_skeleton.md`).
@@ -259,3 +546,5 @@ These are real gaps in this report; the verdict in §1 should be read as *condit
 11. **Cited-by / forward-citation graph on the key anchors (Laikov 2025, Vydrov-Van Voorhis 2010, Sabatini 2013) — NOT RUN.** OpenAlex 429'd before I could; Crossref's `/works/{DOI}/citations` endpoint was not exercised this session. If anyone citing Laikov 2025 has already added a certified bound, that would collapse claim (a).
 
 **Bottom line on coverage:** the report reflects ~40 distinct queries on OpenAlex, ~20 on arXiv, ~30 on Crossref, all on 2026-09-29 UTC, within a 18-minute window, plus a full-text WebFetch of arXiv:2511.04169 and a title+abstract-level WebFetch of the ωB97X-V/VV10/JuNoLo anchors. That is a solid *screening* coverage but not an *exhaustive* one, and the "verdict" in §1 should be read as "no obvious prior work found within the screening" rather than "does not exist."
+
+␞␞␞END-ROUND-1␞␞␞

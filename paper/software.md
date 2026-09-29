@@ -230,12 +230,12 @@ fires on a fault we put in deliberately to prove it would.
 | A | no GAMESS source artefacts (matched on source patterns, not on the word "gamess", which the disclaimer itself contains) | real defect: a permanent false positive on our own disclaimer, which is why it matches patterns and not the word |
 | B | no credentials or internal network strings | real defect: a scrub that re-injected a proxy address into a comment |
 | C | every `evidence/*/MANIFEST.sha256` reproduces byte-for-byte | real defect: a Windows path making `sha256sum` report six mismatches that were not there |
-| C2 | the scrubbing changed no digit in any number | guard built after the fact; verified only on planted faults |
+| C2 | the scrubbing changed no digit in any number | added as a belt-and-braces check; no firing on real input is recorded in this repository, only on the faults we planted |
 | D | every path cited by the companion text's provenance appendix is actually shipped | real defect: three citations that resolved to nothing in the published tree |
 | E | every import in a shipped module is declared in `pyproject.toml` | real defect: `figures.py` importing matplotlib, which no dependency listed |
 | F | the wheel and sdist member lists are what we think they are | real defect: two script-style tests that survived a build already reported fixed |
 | G | `LICENSE` in the **source** file carries the real copyright line, not the Apache placeholder | real defect: the legal statement existed only in the generated copy; fires today on a restored placeholder |
-| T | nothing in the export tree is missing from the export manifest | guard built after the fact; verified only on planted faults |
+| T | nothing in the export tree is missing from the export manifest | added as a belt-and-braces check; no firing on real input is recorded in this repository, only on the faults we planted |
 
 Gate D exists because the first three could only fail in one direction. A, B, C
 catch material that should not be present; what actually went wrong repeatedly was

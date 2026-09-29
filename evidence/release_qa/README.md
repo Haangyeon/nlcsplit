@@ -20,13 +20,17 @@ wheel 的 4e9efb8e… 同时出现在 `20260929T170302Z_wheelclean_pyargs.out` �
 | `20260929T111450Z/111551Z_cleanvenv_pyargs_fast.out` | 同上 | `-m "not slow"` | 42 passed, 1 skipped, 20 deselected, ~11 s |
 | `20260929T170302Z_wheelclean_pyargs.out` | **wheel**，`pip3 install --no-deps --target` + `PYTHONPATH`，cwd=/tmp | `-m "not slow"` | 24 passed, 1 skipped, 18 deselected, 4.6 s |
 | `20260929T170345Z_wheelclean_pyargs_FULL.out` | 同上 | 全量 43（wheel 收集数） | 42 passed, 1 skipped, 581 s |
-| `20260929T105905Z_cleanvenv_pyargs.out` | 源目录安装，**含并发事故记录** | 见该文件 | `PASS_WITH_DEFECTS` |
 
-为什么最后一条值得留着：那次跑的时候，本机另一个代理在 19:16 删掉 `build/` 并把
+另有一份 **`evidence/internal_only/release_qa_incident_20260929T105905Z.out`**：同一件事的
+第一次尝试，判语 `PASS_WITH_DEFECTS`。它**不随发布包出**，因为它把一条 grep 命令原样抄在
+日志里，而那行命令里带着集群内网 IP 和账号串——发布闸门 B 在脱敏后的副本上仍然命中它，
+于是我们把它留在仓内而不是改写一份归档 stdout 的历史。留着的理由写在它自己身上：
+
+那次跑的时候，本机另一个代理在 19:16 删掉 `build/` 并把
 `pip install --force-reinstall --no-deps --no-build-isolation` **装进同一个 venv**，
-还多带进去一个 `examples/hybrid_nearfield.py`。该文件把这件事连同"我 pytest 进程已在收集期
-导入了所有测试模块、因此测量未被污染"的判断一起写明了。共享 venv 是本机常态，
-**这条纪律由它确立**：QA 运行要用一次性 target 目录（后两条 wheel 运行就是这么做的），
+还多带进去一个 `examples/hybrid_nearfield.py`。该文件连同"我的 pytest 进程已在收集期导入了
+所有测试模块、因此测量未被污染"的判断一起写明了。共享 venv 是本机常态，
+**这条纪律由它确立**：QA 运行要用一次性 target 目录（上表两条 wheel 运行就是这么做的），
 别再复用 `$HOME` 下的 venv。
 
 `pip install --target` 而不是 `python -m venv`：本机 WSL 没装 `python3.10-venv`，

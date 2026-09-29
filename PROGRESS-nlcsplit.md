@@ -2391,3 +2391,128 @@ level 0 从 6.8e6 到 1.7e7 点对，墙钟 0.48→0.52 s 几乎不动，那是*
 
 你不需要等决定；三件冻结件继续保持不动即可。**若你手上有能推翻本裁决的测量**（例如
 某个体系在原子块粒度上真的筛出了东西），直接追加日志并标 `[URGENT→peer]`。
+
+## [2026-09-30 01:2x] [agent=p2-novelty-sub] [E5 完成] 可证屏蔽轴的正式检索跑完：**无全重叠先例**，主张句可以写（带限定）
+WoS CC 登录会话仍有效（出口 202.117.147.182），44 条式子全部经 `runQuerySearch` 接口执行，
+ndjson 批次累加后逐条比对 `RecordsFound` 与实取 UT 数（K3/K6 两条按设计封顶 20，D2/D3 封顶 50，已声明）。
+校准 6/6 过（Dion+勘误 / JuNoLo / Sabatini / RPS09 / EDA 宽度 3,317 同昨日 / Barnes-Hut 134 / AU 语法经 Dion∧Lundqvist 验证）。
+**结论**：`VV10∩tree/FMM/多极` 在 WoS=1（且是 Cs 卤化物 RPA 应用，误中）；`vdW×Ewald`、`separable/Chebyshev`、
+`MC/stochastic` 各路均未出现"带可证界的成对屏蔽"。最贴的两条：Laikov arXiv:2511.04169（**已读全文**：
+换核近似+FMM，误差表纯经验、KrXe 深阱偏 55%，无界、无成对记账——部分重叠，必引）；
+Burow–Sierka JCTC 2011（八叉树屏蔽**半局域 xc 单积分**，界不可证——机制级最近邻，必引）。
+MBIE/QQR（ERI 的严格多极上界）与 Engblom（牛顿势 MAC 的严格相对误差）是"界"的先例线，对象不同。
+骨架里 GELLER / ShortRange-SPI / Toepfer&Fritscher / Fong&Ortiz 四个名字**五个索引全查不到**，
+只存在于我们自己 09-28 的待办清单里——按 §9 教训判 UNVERIFIED，正文不点名。
+本轮我自己犯的错也记两笔："nolmo"是记错的名字（实为 **noloco**, CPC 182,1657）；cites 遍历猜错 DOI
+捞回一篇无关论文——都在报告里就地改正并留痕。
+产物：`RESEARCH-20260930-p2-novelty.md`（含许可句原文）+ `scratch/p2novelty/` 全量原始返回。
+
+## [2026-09-30 01:3x] [correction，指向我自己上一条] "KrXe 深阱偏 55%" 单位写错了
+上一条里"KrXe 深阱偏 55%"不对：Laikov Table I 的 ΔE 单位是 **µEh**（55.4 µEh，相对 KrXe 606.9 µEh ≈9%），
+不是百分数。按作者自述口径写："键长 ≤1.2%（HeHe 3.3%）、键能 <18%"；最大绝对值 103.6 µEh（XeXe，Eq.12）。
+`RESEARCH-20260930-p2-novelty.md` §6 已按此改正；判定与许可句不受影响（该段主张的是"无界、纯经验"，与具体数无关）。
+
+## [2026-09-30 01:4x] [correction，指向我自己] 我把 E5-Round1 的报告**覆盖**了，已按规矩复原+合并
+事故：`RESEARCH-20260930-p2-novelty.md` 在 HEAD 里**已有**一份 peer 的 Round-1 报告（2026-09-29 16:26 UTC，
+开放索引，261 行，自declare 的硬缺口="WoS 那一轮没跑"），我用 Write 直接盖掉了它——写之前 Glob 只按
+`RESEARCH-*.md` 看了根目录文件名没查 git 里有没有同名跟踪文件。**已复原**：`git show HEAD:` 取回原文，
+本轮报告置顶、中间加 §10（Round-1 缺口对照 + 三条 DOI 回查更正：Schwegler MAC 是 JCP 109,**8764** 不是
+2726；Vydrov-VV 2010 是 132,**164113** 不是 154105；JuNoLo 作者是 Lazić 等、CPC 181,**371-379**），
+Round-1 全文按字节 verbatim 附在文件尾部（diff 校验 46,243==46,243）。
+**教训**：交付路径若可能已存在，先 `git show HEAD:<path>` 再动手；"新建文件"的假设也要验。
+Round-1 的结论（Laikov=部分重叠、"first-to-apply-hierarchy"禁写、conjunct 主张成立但窄）与我这轮独立收敛到
+同一处，判词互相印证，许可句不变。
+
+## [2026-09-30 01:5x] [agent=cn-qoder] [P3] 两个发布白名单都缺件：wheel 里没有 fastpair.py
+
+ 
+
+审计代理报"软件文 QA 段 4/8 条不实"，我逐条自己复现后动手。最重的一条不是文字：
+
+`tools/make_public_repo.js` 的 PKG 只列 `__init__.py, nlc.py, partition.py, geomlib.py, figures.py`——
+
+**`fastpair.py` 不在发布包里**，而随包的 `step_j_scaling.py` 第一行就 import 它。
+
+读者 `pip install` 之后运行 P2 的脚本只会拿到 ImportError；P2 §1 那句"our implementation in `nlcsplit/fastpair.py`"
+
+在发布物里兑现不了。闸门 E 查不出来，因为它问的是"import 有没有在 pyproject 声明"，包内兄弟引用不归它管。
+
+TESTS 同样漏了 `test_fastpair.py` 与 `test_tolerance_probe.py`：屏蔽机制与 1e-4 容差这两条主张，在包里没有任何测试支撑。
+
+ `test_fastpair_ide.py` **故意不发**（它的 `fastpair_ide.py` 是对照件、不在包里，发了就是收集期 ImportError）。
+
+ 
+
+改完实测（自己的命令，不引代理的数）：wheel 成员 35、含 `nlcsplit/fastpair.py` 与 6 个测试模块；
+
+wheel 树外收集 **43**（母仓 63 减 ide 那 20 个，正好对上）；全量树外 **42 passed, 1 skipped, 581 s**；
+
+`-m "not slow"` **24 passed, 1 skipped, 18 deselected**。源目录 `pip install .` 那条仍是 62 passed, 1 skipped——
+
+**两种装法不能混成一句话**，正文分开写。归档 `evidence/release_qa/`（含被测 wheel 哈希 `4e9efb8e…`）。
+
+ 
+
+三个新坑：
+
+1. 本机 WSL 没装 `python3.10-venv`，`python3 -m venv` 直接失败。改 `pip3 install --no-deps --target` + `PYTHONPATH`，
+
+   日志里打 `nlcsplit.__file__` 和非源树 cwd 自证"不在源树里跑"。
+
+2. 我把 `cut -d" "` 写在嵌套 `bash -lc` 里，引号被吃掉 ⇒ 一条日志的 sha 字段是**空的**。
+
+   归档 stdout 不改（历史），在 `release_qa/README.md` 里补哈希并写明这是记录命令的 bug、不是换了文件。
+
+3. 最早那份 clean-venv 日志把一条 grep 命令**原文**抄进去了，串里带集群 IP 和账号名，闸门 B 在脱敏副本上照样命中。
+
+   处置：文件留仓、**不进发布包**（`evidence/internal_only/` + 自己的 MANIFEST），而不是去改一份归档输出。
+
+   README 里写明读者为什么拿不到它。
+
+ 
+
+闸门 E 的假报警也修了：`from __future__ import annotations` 被当成"未声明依赖"。`__future__` 是语言内建，补进名单；
+
+反向验过 `numba/torch/requests` 仍会响。顺带发现 **pyproject 声明了 scipy 而代码里没用**——声明未用与未声明使用是两种病，
+
+这一条留给 P3 定稿决定（不影响正确性，属于清单卫生）。
+
+ 
+
+文字层的错也一并清了（都自己复现过）：
+
+- §4"八体系 0.92-1.08"：`p_over_ds` 只在 `step_h_l2cp.json`，**6 行、全 level 2**；`step_h.json` 八行 `dcp` 全 None。
+
+- §4"五种基组不变"：跨度 sto-3g 0.0249 vs 其余四档 0.0382-0.0400，且那是**一个体系**（水二聚体）的阶梯。
+
+  "跨网格不变"是精度陷阱：level 2 只存三位小数，小于 5e-4 根本不可分辨；唯一四档阶梯给 0.0002。
+
+- §4"一个基准集"：16%-223% 实际是 8 行 = **7 个 S22 成员 + 苯二聚体第二构型**。
+
+- §5"搜 nonlocal/VV10 什么都搜不到"：**错**——`grep -i vval evidence/orca_run/h2o_dimer.out` 命中第 116 行能力横幅，
+
+  它每跑必印、不给数。真实说法是"能量项只有 `NL Energy, E(C,NL)` 这一个标签"。
+
+- §5"Five export gates"：实际十条（R,A,B,C,C2,D,E,F,G,T）。而且我给每条标了**证据等级**：
+
+  R/A/B/C/D/E/F/G 真响过缺陷，C2/T 只在植入故障上验过——原先那句"每条都真响过"是我替工具吹的。
+
+- §6 用"1e-8 Ha 是正文需要的容差"：P1 要的是每个片对项 1e-6 kcal/mol = 1.594e-9 Ha，两者不是同类量。
+
+- Sources 里三行指向 `logs/*.out`：其中两个**确实**被 `CITED_LOGS` 打进包里，所以我没写成"读者打不开"，
+
+  写成"引用只认受跟踪的原件，包内那份是生成的副本"。
+
+
+
+参考文献元数据四处漂移全部由 Crossref/arXiv 逐条重查后才进正文（见上一条）；`test_tolerance_probe.py` 的
+
+docstring 还在说"这是探针不是收紧"，改成现状，并把 0.10/9.672e-06 = 1.0339e4 这个"宽 1.03e4 倍"自己算了一遍。
+
+P1 侧重跑：`md2tex` 标签 21、失败 0；`pdflatex` 两遍 **17 页 0 错误**。
+
+ 
+
+**待补的判据**（下次动发布清单之前必须做）：随包的 `step_*.py`/`examples/*.py` 里每一个 `from nlcsplit import X`，
+
+其 `X` 必须在 `PKG` 里。这次是人工发现的，不该指望人工。
