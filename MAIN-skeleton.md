@@ -19,7 +19,8 @@
 - 现有程序把非局域关联项**折叠成点值再插值加速**，成对结构在加速后不可恢复；
   因此拿不到"哪一对片段贡献了多少"。（代码事实：`pyscf.dft.numint.nr_nlc_vxc` 调
   PySCF 原生 C 核 `libdft.VXC_vv10nlc`，不经 libxc —— 我读源码确认 [nlc.py 头注]）
-- **先例查重**：OpenAlex `title_and_abstract.search` 十组检索式，其中
+- **先例查重**（⚠ 判词已于 `RESEARCH-20260929-lit.md` §11 撤回，下列计数只登记"查过"）：
+  OpenAlex `title_and_abstract.search` 十组检索式，其中
   `"nonlocal correlation" AND "energy decomposition"` = **0**、
   `"vdW-DF" AND "energy decomposition"` = **0**、
   `"nonlocal correlation" AND "many-body expansion"` = **0**、
@@ -163,7 +164,7 @@ lvl2 = −0.5235，与今天在**当前代码+当前几何**上重算的结果�
 
 ### 待补（按优先级）
 1. 其余体系的 CCSD(T)/CBS 色散分量参考值（水/氨/甲烷/苯-水等），带 DOI
-2. WoS/Scopus 正式检索一轮（OpenAlex 单层证据不够）
+2. WoS/Scopus 正式检索一轮（**现在是硬缺口**：开放索引层经 §11 实测已作废）
 3. 第三个真正独立的裁判（直接调 libxc `xc_nlc_vxc` 或 Psi4）
 4. 图 3：ΔE_NLC vs 文献 E_disp 的相关性（A 案的 go/no-go 判据）
 5. 苯二聚体两构型的 level 1（现在只有 level 0）
