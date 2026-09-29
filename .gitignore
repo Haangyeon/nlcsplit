@@ -3,7 +3,8 @@ source/
 *.tar.gz
 scratch/
 ref/
-nlcsplit/logs/
+nlcsplit/logs/*
+!nlcsplit/logs/step_h.json
 nlcsplit/step*.out
 __pycache__/
 *.pyc

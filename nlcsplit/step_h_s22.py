@@ -119,7 +119,10 @@ def one(name):
           f"方案跨度 {span:6.3f}  P/Δsup {pint['becke']/dnlc:5.2f}   "
           f"{time.time()-t0:4.0f}s", flush=True)
     return dict(name=name, natm=mol.natm, dmin=dmin, dtot=dtot, dcp=dcp, dxc=dxc,
-                dnlc=dnlc, pint=pint, span=span)
+                dnlc=dnlc, pint=pint, span=span,
+                # 逐行记档位：侧车是按体系名跨批次合并的，只有文件头的 level 会说谎
+                # （苯在 level 0 跑过一次、level 1 又跑一次，合并后头是 1、行是 0 的数）
+                level=LEVEL, basis=BASIS, cpcorr=bool(CPCORR))
 
 
 def geomlib_sub(mol, atoms):
@@ -149,7 +152,21 @@ if __name__ == "__main__":
         except Exception:
             prev = []
     seen = {r["name"]: r for r in prev + rows}
-    json.dump({"basis": BASIS, "level": LEVEL, "cpcorr": CPCORR, "geometry_source": DATA,
-               "rows": [seen[k] for k in seen]},
-              open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+
+    def finite(o):
+        """NaN/Inf 一律转 None：json.dump 默认 allow_nan=True 会写出 `NaN` 字面量，
+        那不是合法 JSON —— Python 能读回，jq / JSON.parse / 别的语言会直接报错。
+        侧车是给图脚本和外人读的，必须严格合法。"""
+        if isinstance(o, float) and not np.isfinite(o):
+            return None
+        if isinstance(o, dict):
+            return {k: finite(v) for k, v in o.items()}
+        if isinstance(o, (list, tuple)):
+            return [finite(v) for v in o]
+        return o
+
+    payload = {"basis": BASIS, "level": LEVEL, "cpcorr": CPCORR, "geometry_source": DATA,
+               "rows": [finite(seen[k]) for k in seen]}
+    with open(out, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=1, allow_nan=False)
     print(f"\n  侧车 → {out}（累计 {len(seen)} 个体系）")

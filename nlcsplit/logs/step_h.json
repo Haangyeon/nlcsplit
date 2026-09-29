@@ -1,50 +1,70 @@
 {
+ "note": "按 name 合并：同一体系的不同 level 不能并存，后者覆盖前者。因此每行自带 level/basis/cpcorr/run_source；跨档对照请看各自的日志文件。",
  "basis": "6-31g*",
  "level": 1,
  "cpcorr": false,
- "geometry_source": "GMTKN55 tag v1 (S22)",
+ "geometry_source": "/mnt/e/Project/GAMESS/scratch/lit/s22",
+ "updated_utc": "2026-09-29T04:10:43.214Z",
  "rows": [
   {
    "name": "苯二聚体(A)",
    "natm": 24,
-   "dmin": 3.37,
-   "dtot": -3.795,
+   "dmin": 3.374830010202341,
+   "dtot": -3.580307126166958,
    "dcp": null,
-   "dxc": -4.457,
-   "dnlc": -4.448,
+   "dxc": -4.486210273025024,
+   "dnlc": -4.366812838084419,
    "pint": {
-    "becke": -4.062
+    "becke": -4.037656678045749,
+    "becke-becke-rad": -4.0099745955894575,
+    "becke-treutler": -4.005690994909574,
+    "stratmann": -4.036505948415219
    },
-   "span": 0.072,
-   "level": 0
+   "span": 0.03196568313617476,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T213839Z_centos-step_h_benz_l1.out"
   },
   {
    "name": "苯二聚体(B)",
    "natm": 24,
-   "dmin": 2.8,
-   "dtot": -3.095,
+   "dmin": 2.8037159429732275,
+   "dtot": -3.188096022469119,
    "dcp": null,
-   "dxc": -4.464,
-   "dnlc": -2.401,
+   "dxc": -4.555462536487544,
+   "dnlc": -2.3880343911483055,
    "pint": {
-    "becke": -2.454
+    "becke": -2.3705365623203236,
+    "becke-becke-rad": -2.151647673262345,
+    "becke-treutler": -2.218748487510507,
+    "stratmann": -2.3648452848503814
    },
-   "span": 0.31,
-   "level": 0
+   "span": 0.21888888905797854,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T213839Z_centos-step_h_benz_l1.out"
   },
   {
    "name": "水二聚体",
    "natm": 6,
-   "dmin": 1.95,
-   "dtot": -7.816,
+   "dmin": 1.9516,
+   "dtot": -7.8158,
    "dcp": null,
-   "dxc": -3.708,
-   "dnlc": -0.593,
+   "dxc": -3.7081,
+   "dnlc": -0.5935,
    "pint": {
-    "becke": -0.601
+    "becke": -0.6012,
+    "becke-becke-rad": -0.5577,
+    "becke-treutler": -0.5748,
+    "stratmann": -0.5991
    },
-   "span": 0.043,
-   "level": 1
+   "span": 0.0435,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260929T040643Z_steph-wsl-repro.out (PySCF 2.12.1)"
   },
   {
    "name": "氨二聚体",
@@ -58,7 +78,10 @@
     "becke": -0.649
    },
    "span": 0.029,
-   "level": 1
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T193520Z_centos-step_h_l1.out"
   },
   {
    "name": "甲烷二聚体",
@@ -72,7 +95,10 @@
     "becke": -0.474
    },
    "span": 0.004,
-   "level": 1
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T193520Z_centos-step_h_l1.out"
   },
   {
    "name": "苯-水",
@@ -86,7 +112,10 @@
     "becke": -1.36
    },
    "span": 0.247,
-   "level": 1
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T193520Z_centos-step_h_l1.out"
   },
   {
    "name": "苯-氨",
@@ -100,7 +129,10 @@
     "becke": -1.393
    },
    "span": 0.224,
-   "level": 1
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T193520Z_centos-step_h_l1.out"
   },
   {
    "name": "苯-甲烷",
@@ -114,7 +146,10 @@
     "becke": -1.442
    },
    "span": 0.213,
-   "level": 1
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_source": "20260928T193520Z_centos-step_h_l1.out"
   }
  ]
 }

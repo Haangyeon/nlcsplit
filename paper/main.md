@@ -29,13 +29,13 @@ Applied to eight S22 complexes at official GMTKN55 geometries
 (omegaB97X-V/6-31G*), the decomposition gives a result that argues against a
 common shorthand: the share of the nonlocal term in the exchange-correlation
 contribution ranges from 16% (water dimer) to 223% (methane dimer), and the two
-geometries of the same benzene dimer give 100% and 54%. The nonlocal term is
+geometries of the same benzene dimer give 97% and 52%. The nonlocal term is
 therefore not a fixed fraction of the correlation energy and should not be
 reported as "the dispersion" without qualification. The inter-fragment pair term
 accounts for 0.92-1.08 of the frozen-density superposition difference, so
 association-time nonlocal correlation is carried almost entirely by point pairs
 straddling the fragments. The remaining, irreducible uncertainty is the choice of
-attribution scheme: 0.004-0.310 kcal/mol absolute, 0.8-18.2% relative to the
+attribution scheme: 0.004-0.247 kcal/mol absolute, 0.8-18.2% relative to the
 Becke-scheme value, invariant across five basis sets and across grid levels, and
 without any pattern by interaction type - hence error bars must be quoted per
 system. For absolute (not differential) fragment energies we show that the
@@ -91,9 +91,9 @@ not in how the sum is grouped. We therefore quantify the spread over four
 published real-space partitions — Becke, Becke with the radius adjustment,
 Becke–Treutler, and Stratmann's — on eight S22 complexes, and report it as a
 per-system uncertainty rather than asserting one scheme as correct. The spread
-is 0.004–0.310 kcal/mol in absolute terms and 0.8–18.2% relative to |E_AB|,
+is 0.004–0.247 kcal/mol in absolute terms and 0.8–18.2% relative to |E_AB|,
 and it shows no systematic ordering by interaction type: the benzene sandwich
-sits at 1.8% while benzene–water sits at 18.2% [S2]. Nor does a better
+sits at 0.8% while benzene–water sits at 18.2% [S2]. Nor does a better
 one-electron basis remove it: on the constructed water-dimer geometry the spread
 stays 0.038–0.040 kcal/mol across five basis sets while the quantity itself
 drifts by 0.17 kcal/mol along the same ladder (section 3.4, [S12]). A single
@@ -110,7 +110,7 @@ kcal/mol in our level-1 test [S3]. That leaves the double sum as the only part
 of the nonlocal term that can carry inter-fragment structure, and measuring it
 shows that treating it as "the dispersion" is unsafe. For the water dimer it
 supplies 16% of ΔE_xc. For the two benzene dimer configurations of S22 the
-same quantity ranges from 54% to 100% [S4] — and those two structures differ
+same quantity ranges from 52% to 97% [S4] — and those two structures differ
 only in the relative orientation of the same pair of molecules, so the failure
 of the identification is visible within one chemical system, without any
 cross-system comparison. In the methane dimer the nonlocal term exceeds the
@@ -273,8 +273,8 @@ the exchange-correlation term.
 
 | System | atoms | dE_int | dE_xc(rest) | dE_NLC | dE_NLC/dE_xc |
 |---|---|---|---|---|---|
-| benzene dimer (A, parallel-displaced) | 24 | -3.795 | -4.457 | -4.448 | 100% |
-| benzene dimer (B, T-shaped) | 24 | -3.095 | -4.464 | -2.401 | 54% |
+| benzene dimer (A, parallel-displaced) | 24 | -3.580 | -4.486 | -4.367 | 97% |
+| benzene dimer (B, T-shaped) | 24 | -3.188 | -4.555 | -2.388 | 52% |
 | benzene...water | 15 | -4.342 | -4.012 | -1.259 | 31% |
 | benzene...ammonia | 16 | -2.928 | -2.915 | -1.327 | 46% |
 | benzene...methane | 17 | -1.785 | -2.322 | -1.404 | 60% |
@@ -282,13 +282,13 @@ the exchange-correlation term.
 | ammonia dimer | 8 | -5.167 | -0.881 | -0.678 | 77% |
 | methane dimer | 10 | -0.664 | -0.232 | -0.517 | 223% |
 
-All entries in kcal/mol; grid level 1 except the two benzene dimers at level 0.
+All entries in kcal/mol, all at grid level 1. The two benzene rows were tabulated at level 0 in an earlier version of this table; moving them to level 1 shifts dE_NLC by 0.081 (A) and 0.013 (B) kcal/mol. Level 0 is therefore not adequate for a 24-atom aromatic dimer, unlike the six-atom water dimer where levels 1 and 2 agree to the last digit (section 3.2).
 The final column is the reason this decomposition is worth having: the nonlocal
 term ranges from one sixth to more than the whole of the rest of XC, and in the
 methane dimer it exceeds it, so that the remainder of the XC contribution is
 *repulsive* while the nonlocal term alone provides the binding. No single
 fraction of dE_xc can be assigned to VV10 across a benchmark set, and the two
-geometries of the same 24-atom benzene dimer (100% vs 54%) show that the ratio
+geometries of the same 24-atom benzene dimer (97% vs 52%) show that the ratio
 is a property of the arrangement, not of the pair of molecules.
 
 For the four smallest systems and benzene...ammonia we
@@ -332,17 +332,17 @@ is smaller because Pauli repulsion cancels most of it.
 ### 3.4 Attribution-scheme sensitivity is system-dependent
 
 Repeating dE_NLC for the four partition schemes of section 2.3 gives an absolute
-span that grows with system size, from 0.004 kcal/mol (methane dimer) to 0.310
-(benzene dimer B), and a relative span, expressed against the Becke-scheme
+span that grows with system size, from 0.004 kcal/mol (methane dimer and benzene
+dimer A) to 0.247 (benzene...water), and a relative span, expressed against the Becke-scheme
 interfragment term, of 0.8-18.2%:
 
 | System | P_frz (Becke) | span (4 schemes) | relative |
 |---|---|---|---|
 | methane dimer | -0.474 | 0.004 | 0.8% |
-| benzene dimer (A) | -4.062 | 0.072 | 1.8% |
+| benzene dimer (A) | -4.038 | 0.032 | 0.8% |
 | ammonia dimer | -0.649 | 0.029 | 4.5% |
 | water dimer | -0.601 | 0.043 | 7.2% |
-| benzene dimer (B) | -2.454 | 0.310 | 12.6% |
+| benzene dimer (B) | -2.371 | 0.219 | 9.2% |
 | benzene...methane | -1.442 | 0.213 | 14.8% |
 | benzene...ammonia | -1.393 | 0.224 | 16.1% |
 | benzene...water | -1.360 | 0.247 | 18.2% |
@@ -350,7 +350,7 @@ interfragment term, of 0.8-18.2%:
 Two observations follow. First, the relative span has no pattern by interaction
 type: hydrogen bonding spans 7.2% (water) and 4.5% (ammonia), dispersion-driven
 complexes span 0.8% (methane) and 18.2% (benzene...water), and the two benzene
-dimer geometries differ by a factor of seven. A single blanket uncertainty
+dimer geometries differ by a factor of eleven. A single blanket uncertainty
 percentage for this class of method would misstate the methane dimer by more than
 twenty-fold. Error bars must be reported per system. Second, the span is an
 attribution property rather than a one-particle-basis property. On the
@@ -402,8 +402,8 @@ it, which is precisely why it converges a grid level earlier than dE_int does
 
 **The nonlocal term is not the dispersion energy.** Section 3.2 is the evidence:
 dE_NLC ranges from 16% to 223% of dE_xc across eight complexes drawn from one
-benchmark set, and for the two geometries of the same benzene dimer it is 100%
-and 54%. A quantity whose share of another varies that far cannot be identified
+benchmark set, and for the two geometries of the same benzene dimer it is 97%
+and 52%. A quantity whose share of another varies that far cannot be identified
 with it. We use "dispersion" only when quoting external work, and the values in
 Table 1 should be read as "the contribution of the VV10 term", not as a
 dispersion energy.
@@ -426,7 +426,7 @@ own build. Until one of these exists, section 3.1 should be read as "two
 implementations inside one library boundary", and the agreement at 1e-8 Ha is a
 statement about our arithmetic, not about VV10.
 
-**The attribution uncertainty is intrinsic and per-system.** The 0.004-0.310
+**The attribution uncertainty is intrinsic and per-system.** The 0.004-0.247
 kcal/mol spread of section 3.4 does not shrink with a finer grid or a larger
 basis; it is a property of how grid points are assigned to atoms. Any number
 produced by this method carries it, and reporting a single percentage for the
@@ -480,13 +480,13 @@ point-value evaluation discards.
 
 Three things follow from applying it to eight S22 complexes at official
 geometries. The VV10 term is not a fixed share of the exchange-correlation
-contribution - 16% for the water dimer, 223% for the methane dimer, 100% and 54%
+contribution - 16% for the water dimer, 223% for the methane dimer, 97% and 52%
 for two geometries of the same benzene dimer - so reporting it as "the dispersion
 energy" is unsafe even within one benchmark set. The association-time change is
 almost entirely inter-fragment: the frozen-density pair term accounts for
 0.92-1.08 of the superposition difference, with relaxation a small correction of
 either sign rather than an additive channel. And the dominant uncertainty is the
-attribution scheme, not the numerics: 0.004-0.310 kcal/mol absolute,
+attribution scheme, not the numerics: 0.004-0.247 kcal/mol absolute,
 0.8-18.2% relative, unchanged across five basis sets and across grid levels, with
 no pattern by interaction type that would let a single percentage be quoted.
 
