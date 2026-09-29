@@ -53,7 +53,8 @@ const LEDGER_OUTSIDE = path.join(DIST, 'PATH-SCRUB-LEDGER.txt');
 const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'];
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
-  'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py'];
+  'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py',
+  'step_j_scaling.py'];
 const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py',
   'test_partition_factors.py', 'test_regression.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
@@ -69,7 +70,7 @@ const EXPLICITLY_EXCLUDED = ['nlcsplit/centos_run.sh', 'nlcsplit/centos_run2.sh'
 
 // 证据目录。recompute/ 与 orca_control/ 是 2026-09-29 补的：paper/main.md 的 [S8][S9][S12][S18]
 // 直接按文件名指它们，闸门 D 报"母仓里有、没随包发布"——引用落空。
-const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'recompute',
+const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'recompute', 'scaling',
   'orca_control', 'population', 'agentb_sweep'];
 
 // ================================================================ 脱敏（只发生在导出副本上）
@@ -323,17 +324,19 @@ const NOTE = 'PUBLISHED-VARIANT NOTE (path scrubbing)\n'
   + '记在 dist/PATH-SCRUB-LEDGER.txt（该账本不进发布树，因为它必须引用被抹掉的原文）。\n';
 copied.push(write('evidence/PUBLISHED-VARIANT-NOTE.txt', NOTE));
 
-// ---------------------------------------------------------------- LICENSE：填 Apache 附录占位符
-// Apache-2.0 的 APPENDIX 本身是"怎么套用本许可证"的模板，里面的 [yyyy]/[name of copyright
-// owner] 是给你填的空。仓库根 LICENSE 保持 Apache 原文一字不动（母仓里它是模板全文，是合规的）；
-// 发布副本按附录自己的指示把空填上，于是"LICENSE 里还留着模板占位符"这件事在公开产物里消失，
-// 且闸门 G 可以真的失败而不是恒真。
+// ---------------------------------------------------------------- LICENSE：核验，不代填
+// 以前这一步是"发布时把母仓的 [yyyy]/[name] 模板填空"，于是母仓 LICENSE 一直是未署名状态，
+// 而 dist 副本却已经写着作者名——两边不一致，且署名不是从源文件来的（2026-09-29 自查发现）。
+// 现在源文件署名，这里只做核验：占位符必须不在，署名行必须在。
 {
-  const lic = read(path.join(OUT, 'LICENSE'));
-  const filled = lic.replace(/Copyright \[yyyy\] \[name of copyright owner\]/,
-    'Copyright 2026 Angran Xia');
-  if (filled === lic) scrubLog.push({ rel: 'LICENSE', FATAL: 'Apache 附录占位符未被填写（原文格式变了？）' });
-  write('LICENSE', filled);
+  // LICENSE 由上面的 ROOT 循环原样拷贝，这里只核验母仓那一份已经署好名。
+  const lic = read(path.join(SRC, 'LICENSE'));
+  if (/Copyright \[yyyy\] \[name of copyright owner\]/.test(lic)) {
+    scrubLog.push({ rel: 'LICENSE', FATAL: '母仓 LICENSE 仍是 Apache 模板占位符，先去源文件署名' });
+  }
+  if (!/^   Copyright 2026 Angran Xia$/m.test(lic)) {
+    scrubLog.push({ rel: 'LICENSE', FATAL: '母仓 LICENSE 里没有预期的署名行（著作权人以源文件为准）' });
+  }
 }
 
 // ---------------------------------------------------------------- 检索记录与主表随包发布
