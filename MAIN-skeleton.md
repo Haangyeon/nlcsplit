@@ -31,10 +31,37 @@
   用**二阶 ALMO-EDA**（E_Int = E_Pol + E_Frz + E_CT + E_Disp）把
   **−VV10 整体当作色散能**，没有在这一项内部做片段/原子对归属。
   ⇒ 我们的对象是他们分解里那个"整块"的内部结构。
-- ⚠ **硬缺口**：WoS/Scopus 正式一轮仍未做。开放索引层已作废（`RESEARCH §11`：
-  近似标题 4/4 召回、合法主题式 0/4 稳定漏掉同一篇正题先例），
-  所以"未见先例"目前**只有两处全文比对支撑**（JCTC 3c00903 与 JuNoLo），
-  **投稿前必须补上这一轮**。
+- ✅ **WoS 正式检索已完成两轮**（`RESEARCH-20260929-lit.md` §12 UI 轮 + §13 记录接口轮，
+  2026-09-29，用户本人过一次机构登录）。**§13 是全量枚举**：每条式子返回的记录全部读到，
+  不再只看相关度首位。校准三条复算与 UI 轮逐条相同（`TS=("energy decomposition analysis")`
+  = 3,317；已知题名精确召回 = 1，WOS:001139458900001；
+  `TS=("van der Waals density functional" AND "nonlocal correlation")` = 33），
+  `RecordsSearched = 58,664,816`。
+  **零命中两条**：直接主张式（vdW-DF × 四种分解措辞）= 0，
+  以及最贴本文措辞的新式（VV10/nonlocal correlation/vdW-DF × pair-resolved / energy
+  attribution / per-fragment / resolved by fragment / contribution of each fragment）= **0**。
+  最近邻六条逐一读摘要判定不冲突：Sinha–Pavanello FDE-vdW（构造新泛函，方向相反）、
+  Kruse–Banáš–Sponer（SAPT 分解**总**相互作用能）、Hujo–Grimme（性能基准）、
+  Hamada–Tsukada（把**吸附能**归因给该项，反向）、Mollenhauer–Paulus（石墨片段尺寸基准）、
+  Vydrov–Van Voorhis JCP 130 (2009)（改 Φ 构造本身）。
+  两条 33 记录的宽式（整个 vdW-DF×非局域关联主题；以及"归属方案 Becke/Hirshfeld/Mulliken/AIM
+  × 非局域关联"的直接交叉）逐条题名扫完，**无人把原子划分用在 VV10 双重和上**。
+- ⚠ **§13 新查出一条第一轮完全漏掉的先例线，必须引用并划界**：
+  **Hyldgaard, Berland & Schröder, PRB 90, 075148 (2014)**, *Interpretation of van der Waals
+  density functionals*, DOI 10.1103/PhysRevB.90.075148 —— 把 vdW-DF 的非局域关联能
+  诠释为**半局域交换关联洞的零点能耦合**。这是对**同一个量**做实空间/物理诠释的既有线，
+  是"非局域项能不能被解释"这一质疑最好的代言人；但它不给"A 与 B 之间多少 kcal/mol"。
+  ⇒ 划界句：**他们读核与洞的内部结构，我们把已算好的 E_NLC 按已命名片段记账，
+  并报记账方案自身移动了多少。**
+  漏检原因：它的词表是 xc hole / interpretation，不含 decompose/partition/fragment/pair
+  任一词 ⇒ **五条关键词式子必然漏它**；这条要写进 §4 当"新颖性检索的固有宽度限制"。
+- ⚠ **引文缺口（已补）**：`references.bib` 原本有 Dion 2004 与 Calbo 综述，
+  **却没有 VV10 本人的两篇**。已补三条，bib 13 → 16：
+  `vydrov2009vv10`（PRL 103, 063004 (2009)，VV10 提出）、
+  `vydrov2010simple`（JCP 133, 244103 (2010)，`(b,C)` 参数化出处）、
+  `hyldgaard2014interp`。三条 DOI 均经 **Crossref 与 WoS 两个来源**交叉核对，
+  卷/期/文章号/年份/作者全一致（`scratch/bib_new3.js` → `scratch/bib_new3.json`）。
+  一篇标题含 "VV10" 的文章不引 VV10 原文是会被直接退回的错误。
 - **卖点必须收窄（2026-09-29 定案）**：显式双重和的价值**只在于保住 (i,j) 成对结构**，
   不在于"比插值核更准"。实测：PySCF 原生核的插值离散误差只有 ~4e-6 kcal/mol
   （IDE 的 S4 闸门实测：水 lvl0/1/2 残差 7.95/5.91/6.40e-9 Ha，对 rho_floor 变动 ≤1.8e-11），
@@ -168,10 +195,20 @@ lvl2 = −0.5235，与今天在**当前代码+当前几何**上重算的结果�
 
 ### 待补（按优先级）
 1. 其余体系的 CCSD(T)/CBS 色散分量参考值（水/氨/甲烷/苯-水等），带 DOI
-2. WoS/Scopus 正式检索一轮（**现在是硬缺口**：开放索引层经 §11 实测已作废）
-3. 第三个真正独立的裁判（直接调 libxc `xc_nlc_vxc` 或 Psi4）
+2. ~~WoS/Scopus 正式检索一轮~~ ⇒ **WoS 已完成两轮，第二轮为全量枚举**（见 §2 先例块）。
+   仍欠的是**第二个库**：Scopus 经 §2/§3 实测机构未订阅，Embase/SciFinder 未查 ⇒
+   正文 §5 已按"覆盖一个索引"如实交代，不假称多库。
+3. 第三个真正独立的裁判。**已查明为什么这么难**（`PROGRESS-agent-orca.md` 13:4x）：
+   ORCA 6.0.1 跑 ωB97X-V/6-31G\* 的普通 `NR-SCF` **根本不打印 VV10 项**——
+   `ref/01_h2o_orca.inp:2` 证明当年用的就是 ωB97X-V，而 `.out` 里 VV10/nloc/nonlocal
+   三个词 0 命中；它的 DFT 能量表只有 `EX` 与合计 `EC`（非局域部分折在 `EC` 里）。
+   grep "VV10" 会命中的 `E(VV10-nl)` 列属于**双杂泛函的 PT2 关联**，是另一个物理量
+   ⇒ 早先那张"对 libxc/ORCA 的系统差"表，**ORCA 一侧作废**（已停止引用）。
+   拿到可引的 VV10 值需要显式 `%noloc`/`nlpot` 或 `%molpairsel`（agent 正试）。
+   另一条独立路线：Psi4，或自建 libxc 直调 `xc_nlc_vxc`（PySCF 里的 libxc 静态链在
+   libdft.so，取不到符号）。
 4. 图 3：ΔE_NLC vs 文献 E_disp 的相关性（A 案的 go/no-go 判据）
-5. 苯二聚体两构型的 level 1（现在只有 level 0）
+5. 苯二聚体两构型的 level 1（现在只有 level 0）—— ⇒ **已完成**，表1 两行已按 level 1 重算
 
 ## 4. Limitations（必须自己先说，别等审稿人）
 - **不是 EDA**：没有分离静电/交换/极化/电荷转移。我们只给 ΔE_xc 的两分

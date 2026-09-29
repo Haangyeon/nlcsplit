@@ -1,0 +1,4 @@
+# 证据文件必须按字节存：MANIFEST.sha256 是按原始字节算的，
+# 若 git 做 LF/CRLF 归一化，checkout 出来的哈希就对不上，审计链当场断掉。
+evidence/** -text
+evidence/** binary

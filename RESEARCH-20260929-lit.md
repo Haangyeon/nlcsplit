@@ -368,3 +368,103 @@ Search History 面板读**，不从页面正则猜（见 12.3 那次差点猜错
 9 条式子与各自计数）。UI 提交方式：`#advancedSearchInputArea` 原生 setter + `input` 事件，
 再对面板内最后一个 `Search` 按钮派发 pointer/mouse 序列（导航栏也有一个同名按钮，
 点错会跳到 smart-search——踩过）。
+
+---
+
+## 13. 第二轮：改用 WoS 自己的记录接口，全量枚举（2026-09-29 13:4x）
+
+§12.3 那条"只能看到相关度首位"的限制**已解除**。做法不是 Export，是拦截前端调用：
+在结果页 hook `window.fetch`，重跑一次 UI 检索，抓下真实请求体，再用同一 SID 直接 POST
+`/api/wosnx/core/runQuerySearch`。请求体里 `retrieve.count` 是我能控制的字段（默认 20），
+响应是 ndjson，分四类行：`searchInfo`（计数）、`records`（正文与书目）、`analyze`、`link`。
+**每条式子拿到的是结构化记录，含题名、作者、期刊、卷期、DOI、UT 号与完整摘要**，
+不再依赖 DOM 物化了多少条。
+
+### 13.1 我自己的第二个仪器 bug：ndjson 是按 20 条一批流式发的
+`records` 不止一行。`TS=("van der Waals density functional" AND "nonlocal correlation")`
+报 `RecordsFound: 33`，第一版解析器把每行 `payload` **覆盖**进变量，于是只剩最后一批
+**13 条**——`33` 被我自己读成了 `13`。改成累加后 `batches:[20,13]`、`n:33`、去重后 33 个
+不同 UT，与 `RecordsFound` 对上才罢手。
+⇒ 与 §12.3 那条"超时不等于零命中"同源，但这次是**反向**的错：**"我只拿到 13 条"差点被
+写成"这个主题只有 13 篇"**。凡是分页/流式接口，"拿到的条数"必须与"接口自报的总数"
+逐条比对，两者不等就禁止下笔。（OpenAlex 那台是 429 冒充零命中，这台是批次覆盖冒充全量。）
+
+### 13.2 校准与先例式全部用接口重跑一遍（`RecordsSearched = 58,664,816`）
+| 式 | UI 轮 | 接口轮 | 一致性 |
+|---|---|---|---|
+| `TS=("energy decomposition analysis")` | 3,317 | **3,317** | ✔ |
+| `TI=("Balance between physical interpretability and energetic predictability")` | 1 | **1**，WOS:001139458900001，JCTC 2023 | ✔ |
+| `TS=("van der Waals density functional" AND "nonlocal correlation")` | 33 | **33** | ✔ |
+| #9 `TS=("vdW-DF" AND ("energy decomposition" OR "fragment decomposition" OR "pair decomposition" OR "partition of the correlation"))` | 0 | **0** | ✔ |
+| #7 `TS=("VV10" AND "energy decomposition")` | 1 | **1**：Kruse, H; **Banáš, P**; Sponer, J（WoS 作者字段 ASCII 化成 `Banás`，正字是 Banáš——§12 表里那个"?"就此填掉） | ✔ |
+| #4 `TS=("VV10" AND ("energy decomposition" OR "fragment" OR "pair-wise"))` | 2 | **2**：Hujo–Grimme PCCP 2011 + Kruse 2019 | ✔ |
+| #10 `TS=((ALMO-EDA OR "frozen density embedding" OR "energy decomposition analysis") AND (VV10 OR "nonlocal correlation" OR "non-local correlation"))` | 1 | **1**：Sinha–Pavanello，WOS:000360653900023，DOI 10.1063/1.4928531 | ✔ |
+
+计数与上一轮**逐条相同**，所以 §12 的判定不必改；改的是覆盖面。
+
+### 13.3 #6 与 #8 的四条命中，现在全部读到
+**#6 `TS=("nonlocal correlation" AND ("fragment" OR "atom pair" OR "pair decomposition" OR "subsystem"))` = 4**
+| 记录 | 判定 |
+|---|---|
+| Sinha & Pavanello, JCP 143(8) 084120 (2015), WOS:000360653900023 | FDE-vdW。用子系统响应函数**构造新的**非局域泛函，方向相反 ⇒ 不冲突，仍作最近邻引用 |
+| Vydrov & Van Voorhis, JCP 130(10) (2009), WOS:000264281800005，*Improving the accuracy of the nonlocal vdW density functional with minimal empiricism*（opt-VV10） | 改的是 Φ/κ 的构造与梯度项，不做归属 ⇒ 不冲突。**但它暴露了一个真缺陷，见 13.5** |
+| Mollenhauer, Brieger, Paulus, JPC C 119(4) 1898–1904 (2015), WOS:000348753000033 | 芳香分子/石墨片段 adsorption 的 DFT-D2/D3 vs vdW-DF vs CCSD(T) 性能比较；"fragment" 指把石墨烯切成小片的**模型尺寸**，不是能量归属 ⇒ 不冲突 |
+| Aldaghfag, Berrada, Abdel-Khalek, Results in Physics 16 (2020), WOS:000540004100017 | Kerr 非线性双量子比特的纠缠统计——纯词表噪声，非化学 ⇒ 不冲突 |
+
+**#8 `TS=("nonlocal correlation" AND (attribut* OR "fragment-wise" OR per-fragment OR "atomic contribution" OR "localization of"))` = 4**
+| 记录 | 判定 |
+|---|---|
+| Hamada & Tsukada, PRB 83, 245407 (2011), WOS:000292183300010 | C60/Au(111)：把**吸附能归因给**非局域关联项。归因方向与本文相反（本文把该项拆给片段，他们把现象拆给项） ⇒ 不冲突 |
+| Maity, JPCA (2002), WOS:000176161700021 | 2c-3e 键自由基阳离子；命中来自我词表里的 `"localization of"`（ localization of molecular **orbital**）⇒ 噪声。**这条说明 `localization of` 该从词表里去掉** |
+| Kossmann; Kirchner; Neese(?), Mol. Phys. (2007), WOS:000251714600006 | 超精细耦合基准；"nonlocal correlation" 指双杂泛函里的 PT2 轨道依赖项，与 VV10 无关 ⇒ 噪声 |
+| Ghosh & Sur, J. Multiscale Model. (2024), WOS:001440510600001 | 含记忆的热弹性质量扩散、非局部应力理论 ⇒ 噪声 |
+
+⇒ **#6/#8 里除 FDE-vdW 与 Hamada–Tsukada 外，四条全是词表噪声或性能基准，没有一条做片段归属。**
+
+### 13.4 三条新式（接口便宜，把§12没敢铺的宽度铺开）
+| 式 | 命中 | 逐条读后判定 |
+|---|---|---|
+| **A** `TS=(("VV10" OR "nonlocal correlation" OR "vdW-DF") AND ("pair-resolved" OR "pair resolved" OR "energy attribution" OR "per-fragment" OR "resolved by fragment" OR "contribution of each fragment"))` | **0** | **最贴主张的一条式子，零命中**。这就是"把非局域项按片段/原子对归属"的字面写法，库里没人这么写过 |
+| **B** `TS=("nonlocal correlation" AND ("energy density" OR "localization of the" OR "assigned to"))` | 7 | 首位相关的是 Gao, Zhu, Ren, PRB 101, 035113 (2020)：**构造**一个新的 nonlocal correlation-**energy-density** 泛函（rDW99，走 RPA 对应路线）——又是"拼出新的"，不是"拆开既有的"；其余是 Marom–Tkatchenko–Kronik JCTC 2011（基准）、Thonhauser 组的筛查类工作 ⇒ 不冲突 |
+| **C** `TS=("VV10" AND (implementation OR "real-space" OR grid OR "linear scaling" OR fast))` | 8 | 全是泛函开发/实现/基准（ωB97X-V PCCP 2014、ωB97M-V JCP 2016、VV10 解析频率 JCP 2023 等）⇒ 不冲突；顺带确认**没有已发表的 VV10 片段分解实现**这一软件文卖点也站得住 |
+| **D** `TS=("nonlocal correlation" AND (Becke OR Hirshfeld OR Mulliken OR "atoms in molecules"))` | 33 | **归属方案 × 非局域项**的直接交叉。全部 33 条题名扫完：Al 团簇、F 心、溶剂化偏电荷、AIM 之类，**没有一条把 Becke/Hirshfeld/Mulliken 划分用在 VV10 双重和上** |
+| **E** `TS=("van der Waals density functional" AND "nonlocal correlation")` | 33 | **整个 vdW-DF 非局域关联主题的穷举**。33 条题名全读，4 条摘出来读摘要（下节）。**发现一条必须引用并区分的近邻** |
+
+### 13.5 这一轮真正的新收获：一条我以前完全没查到的先例线
+`TS=("van der Waals density functional" AND "nonlocal correlation")` 33 条全枚举里，
+**Hyldgaard, Berland & Schröder, PRB 90, 075148 (2014), *Interpretation of van der Waals
+density functionals*, DOI 10.1103/PhysRevB.90.075148, WOS:000341268900001** 的摘要写的是：
+
+> "The nonlocal correlation energy in the vdW-DF method **can be interpreted in terms of a
+> coupling of zero-point energies of characteristic modes of semilocal exchange-correlation
+> (xc) holes** … We use these results to illustrate the nonlocality in the vdW-DF description
+> and analyze the vdW-DF formulation of nonlocal correlation."
+
+这是**对同一个量做实空间/物理诠释**的既有线。它不做片段归属、不给"A 与 B 之间多少 kcal/mol"，
+但它把"非局域项能不能被解释"这件事占了。我 §12 那五轮关键词式子全部漏了它——
+因为它的词表是 xc hole / interpretation，不含 decompose/partition/fragment 任一。
+⇒ **正文 §1/§2 必须显式与它划界**：本文不是给 Φ 或 xc hole 做物理诠释，而是把已经算好的
+`E_NLC` 按**已命名的片段/原子对**记账，并给出记账方案之间的跨度。同时它是"非局域项的
+空间归属是否有意义"这一质疑的**最好代言人**，审稿人若熟悉这条线，一定是拿它来问。
+
+另外两条是**引文缺口，不是先例冲突**：`references.bib` 里有 Dion 2004（原始 vdW-DF）和
+Calbo 综述，**却没有 VV10 本人的两篇**——
+Vydrov & Van Voorhis, PRL 103, 063004 (2009), DOI 10.1103/PhysRevLett.103.063004（VV10 提出，
+题名即本轮 #6 之外的 "Nonlocal van der Waals Density Functional Made Simple"）与
+Vydrov & Van Voorhis, JCP 133, 244103 (2010), DOI 10.1063/1.3521275（"the simpler the better"，
+`(b, C)` 参数化的出处）。一篇标题就叫 "Pair Attribution of the **VV10** Term" 的文章不引 VV10 原文，
+是会被直接退回的错误。三条一起补，bib 13 → 16 条。
+
+### 13.6 §12.3 的两条限制现在的状态
+1. ~~只读到相关度首位~~ ⇒ **解除**。#6/#8 各 4 条全读；另加 33+33+7+8 四条宽式全枚举。
+2. "超时不等于零命中"依然有效，且本轮又长了一次教训（13.1 的 20 条一批覆盖）。
+
+**仍然要说出口的残余限制**（写进正文 §4，别藏）：
+- 只覆盖 **WoS Core Collection** 一个库；Scopus 经 §2/§3 实测机构未订阅，走的是
+  CNKI+WoS 的替代口径，Embase/SciFinder 未查。
+- 请求体默认 `options.lemmatize = "On"`，我没改；也就是说词形还原开着的，
+  这是**召回更宽**的方向，不影响零命中的强度，但要在方法里写明。
+- 33+33 那两批噪声我只做了**题名级**判定，摘要级只读了 8 条；对"是否有人做片段归属"这个
+  问题题名足够（归属一定写在题名或摘要的方法句里），但这是判断不是证明，正文不得写成
+  "全部摘要已读"。
+- `RecordsSearched` 58,664,816 = WoS CC 全库规模；检索日期 2026-09-29，此后入库的不覆盖。

@@ -5,6 +5,7 @@ scratch/
 ref/
 nlcsplit/logs/*
 !nlcsplit/logs/step_h.json
+!nlcsplit/logs/orca_anchor.json
 nlcsplit/step*.out
 __pycache__/
 *.pyc
@@ -20,3 +21,8 @@ __pycache__/
 *.pyc
 figs/
 !figs/*.png
+
+# LaTeX 编译中间产物（本机没有 TeX，这些是外部编译带回的垃圾，不入库）
+paper/*.aux
+paper/*.out
+paper/*.log

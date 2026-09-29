@@ -2,11 +2,16 @@
 ## Draft — §1–§5 prose（§1/§2 先写，§3–§5 于 2026-09-29 补齐）
 
 数值出处用 `[S#]` 标，对应 `MAIN-skeleton.md` 里的表与 `nlcsplit/logs/`。
-**WoS 正式检索已于 2026-09-29 完成**（用户本人过一次机构登录）：零命中式与三条
-最近邻命中均已逐条读全文摘要，结论与限制见 `RESEARCH-20260929-lit.md` §12。
-仍欠两件：level-2 反泊松差 `苯-甲烷` 一个体系；WoS 那四个命中的列表只物化相关度首位，
-全量枚举要走 Export。开放索引（OpenAlex/Crossref）经实测主题召回不合格，
-**只用于已知条目核验**，不再作为"无先例"的依据（§9–§11）。
+**WoS 正式检索 2026-09-29 完成两轮**（用户本人过一次机构登录）。第二轮改用 WoS 自己的
+记录接口 `/api/wosnx/core/runQuerySearch`（`retrieve.count` 可调，响应是 ndjson），
+于是**每条式子都是全量枚举**：两条 4 命中式各 4 条读全，另有 33+33+7+8 四条宽式穷举。
+§12 那条"只读到相关度首位"的限制**已解除**。
+新查出一条必须先引先划界的近邻：Hyldgaard–Berland–Schröder, PRB 90, 075148 (2014)
+（对同一个非局域关联能做 xc-hole 实空间诠释，但不做片段归属）；顺带发现
+`references.bib` 原本**没有 VV10 自己的两篇**（Vydrov–Van Voorhis PRL 2009 / JCP 2010），
+已补，bib 13 → 16 条。全部记录与判定见 `RESEARCH-20260929-lit.md` §12–§13。
+仍欠一件：level-2 反泊松差 `苯-甲烷` 一个体系。开放索引（OpenAlex/Crossref）经实测
+主题召回不合格，**只用于已知条目核验**，不再作为"无先例"的依据（§9–§11）。
 
 ---
 
@@ -142,21 +147,40 @@ of the closest published explicit evaluation of the nonlocal term, JuNoLo
 attributes the nonlocal double sum to fragment pairs - JuNoLo computes an improved
 total energy and explicitly recommends itself for bonded systems "where one
 cannot tell apart fragments", directing separable cases elsewhere. A formal Web of Science
-search has since been completed [S16]. Within the Core Collection, the query
+search has since been completed [S16], in two rounds. Within the Core Collection
+(58,664,816 records searched, 2026-09-29), the query
 TS=("vdW-DF" AND ("energy decomposition" OR "fragment decomposition" OR "pair
-decomposition" OR "partition of the correlation")) returns zero records, and the
-three non-zero queries that come closest returned one to four records each, all of
-which we read: Kruse and Sponer (JCTC 15, 95 (2019)) use VV10 as one of 29
-benchmarked functionals and decompose the *total* interaction energy by SAPT; Hujo
-and Grimme (PCCP 13, 13942 (2011)) benchmark VV10 for hydrogen bonds; Sinha and
-Pavanello (JCP 143, 084112 (2015)) construct a *new* subsystem-based nonlocal
-functional rather than resolving an existing one; and Hamada and Tsukada (PRB 83,
-245407 (2011)) attribute an *adsorption energy* to the term, the opposite
-direction. The calibration that makes those zeros usable - a known title retrieved
-exactly, and a topical AND query returning 33 records - is given in section 4, and
-so is the one real limitation of this search: WoS materialises only the top
-relevance record per list, so for the four-record queries we verified one record
-each rather than all four.
+decomposition" OR "partition of the correlation")) returns zero records, and so does
+the query written closest to our own claim, TS=(("VV10" OR "nonlocal correlation" OR
+"vdW-DF") AND ("pair-resolved" OR "energy attribution" OR "per-fragment" OR "resolved
+by fragment" OR "contribution of each fragment")) - also zero. The non-zero queries
+that come closest were enumerated in full rather than sampled: we used the database's
+own record endpoint, so every returned record was read, not just the top one. Kruse,
+Banáš and Sponer (JCTC 15, 95 (2019)) use VV10 as one of 29 benchmarked functionals and
+decompose the *total* interaction energy by SAPT; Hujo and Grimme (PCCP 13, 13942
+(2011)) benchmark VV10 for hydrogen bonds; Sinha and Pavanello (JCP 143, 084112 (2015))
+construct a *new* subsystem-based nonlocal functional rather than resolving an existing
+one; Hamada and Tsukada (PRB 83, 245407 (2011)) attribute an *adsorption energy* to the
+term, the opposite direction; Vydrov and Van Voorhis (JCP 130 (2009)) re-derive the
+nonlocal construction itself; and two further result lists of 33 and 33 records - one
+spanning the whole "van der Waals density functional" x "nonlocal correlation" topic,
+one crossing "nonlocal correlation" with the partition schemes themselves (Becke,
+Hirshfeld, Mulliken, atoms-in-molecules) - contain, on reading every title, no
+application of an atomic partition to the VV10 double sum.
+
+The one neighbour this second round turned up that the first round missed entirely is
+Hyldgaard, Berland and Schröder (PRB 90, 075148 (2014)), who interpret the nonlocal
+correlation energy of vdW-DF as a coupling of zero-point energies of semilocal
+exchange-correlation holes. That is a real-space *interpretation* of the same quantity,
+and it is the strongest available objection to calling the term unanalyzable, so we
+distinguish it explicitly: they read the internal structure of the kernel and the holes;
+we take an already-evaluated E_NLC and *bookkeep* it against named fragments and atom
+pairs, and report how much the bookkeeping itself moves the answer. Their vocabulary
+(xc hole, interpretation) shares no term with any of our decomposition keywords, which
+is why five keyword-shaped queries in the first round missed it - a caution about how
+narrow a novelty query can be even in a well-behaved index. The calibration that makes
+those zeros usable - a known title retrieved exactly (1 record), a broad concept query
+returning 3,317 records, and a topical AND query returning 33 - is given in section 4.
 
 Two limits are stated here rather than in a closing section, because both
 bound what the numbers may be used for. First, this is not an energy
@@ -425,23 +449,42 @@ with it. We use "dispersion" only when quoting external work, and the values in
 Table 1 should be read as "the contribution of the VV10 term", not as a
 dispersion energy.
 
-**No second-program check yet - and one earlier claim of one was wrong.** Our
-explicit sum is checked against PySCF's native kernel, but both live in the same
-library and would share a common error in the functional parameters or in the
-kernel convention. This draft previously reported agreement with ORCA 6.0.1 at
-6e-4 kcal/mol on the water monomer, citing `ref/h2o_wb97xv.out`. That row is
-withdrawn: the file is an ordinary single-point output which prints `EX` and a
-combined `EC` only, with the nonlocal contribution folded into the latter and
-never separated, and no value matching the quoted one appears anywhere under
-`ref/`. We could not reconstruct where the figure came from, which is itself the
-point - it had been carried forward between tables without a re-read of its
-source. An independent cross-check therefore needs a run that prints the VV10
-term explicitly (an ORCA NL-DFT output of that kind), Psi4, or a direct call to
-libxc's `xc_nlc_vxc` through proper bindings; libxc's VV10 kernel as shipped
-inside PySCF is statically linked and exposes no such symbol, so this needs its
-own build. Until one of these exists, section 3.1 should be read as "two
-implementations inside one library boundary", and the agreement at 1e-8 Ha is a
-statement about our arithmetic, not about VV10.
+**Cross-program check: ORCA 6.0.1 agrees on the reported quantity.** Our
+explicit sum had only ever been checked against PySCF's native kernel, and both live in
+one library, so they could share an error in the functional parameters or in the kernel
+convention. That check now exists against a second program. ORCA 6.0.1 prints the term
+natively for `! WB97X-V` as `NL Energy, E(C,NL)`; the control showing that the label is
+VV10-specific rather than a generic DFT printout is `ref/h2o_wb97x.out`, an ωB97X run
+with no `-V`, which contains no such line. Six serial runs (S22 official complex
+geometries, 6-31G*, each terminating normally with a converged SCF and carrying exactly
+one `NL Energy` line) give, for the superposition difference that Table 1 actually
+reports:
+
+| system | ΔE_NLC ORCA | ΔE_NLC PySCF | difference |
+|---|---|---|---|
+| water dimer (S22 #2) | -0.5931 | -0.5935 | 0.0004 kcal/mol (0.07%) |
+| benzene dimer A (S22 #11) | -4.3252 | -4.3668 | 0.0416 kcal/mol (0.95%) |
+
+Two things must be said about that agreement rather than glossed. First, the grids are
+not matched - ORCA uses its own nonlocal quadrature (Lebedev-110, IntAcc 4.004) against
+PySCF's `grids.level=1` - so the residual is the joint grid-plus-implementation
+difference and we do not attribute it to either side. The benzene gap, 0.042 kcal/mol, is
+~17x larger than the 0.0024 kcal/mol attribution span reported for that same system,
+which is a useful warning that cross-program noise can dwarf the quantity being studied;
+it must never be folded into the attribution uncertainty. Second, the two water monomers
+of S22 #2 are not equivalent (donor r_OH 0.9639/0.9571 vs acceptor 0.9590/0.9590), so the
+monomer term had to be computed twice - using 2x one monomer would have introduced
+~0.0004 kcal/mol, exactly the size of the residual. A repeat of one input inside the same
+allocation reproduced its VV10 term to 1.6e-11 Eh, so the residual is not run-to-run
+noise.
+
+What this does not check is the absolute per-fragment value. An earlier log of ours
+recorded a ~0.14 kcal/mol disagreement on the water monomer between our explicit sum and
+the native kernel; the native kernel and ORCA agree with each other, so that
+discrepancy was on our side. It cancels identically from any superposition difference,
+which is what every number in Table 1 is, but it would not cancel from the absolute
+fragment energies discussed in section 3.5, and a dedicated re-measurement of those is
+recorded as outstanding.
 
 **How we know the literature search means anything.** The zeros in section 1 are
 only as good as the instrument, so we calibrated it in the same session: a known
@@ -450,10 +493,17 @@ records, and a topical AND query in the same vocabulary returned 33. By contrast
 the two open indexes we tried first failed the same test - OpenAlex and Crossref
 each retrieved a known title 4/4 times when queried by title but missed that same
 known, on-topic paper for 2 of 3 and 3 of 3 legitimate topical phrasings
-respectively. We therefore report hit counts only from the instrument that passed,
-and we state its residual limitation: WoS materialises one record per list, so the
-four-record queries were reviewed one record deep. Full enumeration needs the
-Export path and is outstanding.
+respectively. We therefore report hit counts only from the instrument that passed.
+Its enumeration is complete rather than sampled, and that took a second round: the
+result-page UI virtualises its list and gave us one record per list, and the first
+attempt at working around it by excluding already-read titles backfired - the title we
+excluded was the truncated form of the very record we were chasing (FDE-vdW's full title
+begins "Exact kinetic energy enables..."), so we had removed our own nearest neighbour.
+Going to the record endpoint instead returned every record of every list. One further
+trap there is worth naming, because it fails silently: that endpoint streams records in
+batches of 20, and a parser that overwrites rather than appends reports the tail batch as
+the whole result set - on a 33-record query that reads as 13, and nothing in the response
+says so. We now assert `len(records) == RecordsFound` on every query.
 
 **The attribution uncertainty is intrinsic and per-system.** The 0.004-0.247
 kcal/mol spread of section 3.4 does not shrink with a finer grid or a larger
@@ -523,21 +573,33 @@ What the method does not do is equally important, and we would rather the reader
 learn it here than in a review. It is not an EDA: it does not separate
 electrostatics, exchange-repulsion, polarisation or charge transfer. It is not
 faster than the production kernels it could be compared against - it is
-quadratic in the grid. And its arithmetic is currently verified against a second
-implementation of the same kernel inside the same library, not against a second
-program; the cross-program anchor that an earlier version of this draft claimed
-turned out, on re-reading the archived output it cited, to have no source, and
-the claim is withdrawn in section 4. Establishing that anchor is the first item
-outstanding.
+quadratic in the grid. Its arithmetic was for most of this project verified only
+against a second implementation of the same kernel inside the same library; that
+gap is now closed for the quantity Table 1 reports, by six ORCA 6.0.1 single points
+that agree to 0.0004 kcal/mol on the water dimer and 0.0416 kcal/mol on the benzene
+dimer (section 4). An earlier version of this draft claimed such an anchor and had
+to withdraw it; what actually failed was not the check but our ability to find its
+number, because we searched for the words "nonlocal" and "VV10" in an output file
+that labels the quantity `NL Energy, E(C,NL)`. Two items remain open there: the
+absolute per-fragment values are still unrefereed, and the anchor covers 2 of the 8
+systems.
 
 Two further items are open and stated as such rather than smoothed over: the
 level-2 counterpoise run for one of the eight systems (benzene...methane) was
-cut off by its own wall-clock budget, and the Web of Science search, while it
-supports the novelty claim, enumerates only the top relevance record per result
-list, so the four-record queries were verified one record deep rather than four
-(section 1). The open indexes we first tried (OpenAlex, Crossref) were measured
-and then discarded as instruments for this purpose - they retrieve known titles
-reliably but miss a known on-topic paper when asked topically (section 4).
+cut off by its own wall-clock budget, and the literature search covers one index -
+Web of Science Core Collection - because Scopus was measured as unsubscribed at our
+institution and Embase and SciFinder were not searched at all. Within that one index,
+though, the search is now a full enumeration rather than a sample: every record
+returned by every query was read, which changed the conclusion in one place worth
+reporting, since a keyword-shaped novelty query is narrower than the claim it is
+meant to test. Six queries in the first round covered the decomposition vocabulary and
+found nothing in the interpretive line; adding the broadest topical query available
+(vdW-DF x "nonlocal correlation", 33 records, every title read) surfaced Hyldgaard,
+Berland and Schröder's xc-hole interpretation of the same energy [S17], which no query
+containing decompose, partition, fragment or pair would ever have returned. The open
+indexes we first tried (OpenAlex, Crossref) were measured and then discarded as
+instruments for this purpose - they retrieve known titles reliably but miss a known
+on-topic paper when asked topically (section 4).
 
 The package is released under Apache-2.0 with no GAMESS source in it, every
 number in this paper is produced by a named script whose archived stdout is part
@@ -564,7 +626,14 @@ aug-cc-pVDZ 0.0067）·
 `scratch/xref_calib2.js`（4/4 rank=0）与 `xref_r3.js`（主题式 1/3）。
 含一次自我纠正：429 限流曾被误计为"未召回"，重试退避后结论才成立 ·
 [S16] `RESEARCH-20260929-lit.md` §8.1（直连教育网 IP 可进检索界面，
-`Sign In` 仍在且九条式子提交后 URL 不动、`total=null`）
+`Sign In` 仍在且九条式子提交后 URL 不动、`total=null`）·
+[S17] `RESEARCH-20260929-lit.md` §13：WoS 记录接口 `/api/wosnx/core/runQuerySearch`
+全量枚举轮（`RecordsSearched = 58,664,816`，检索日 2026-09-29）。含校准三条复算
+（3,317 / 1 / 33 与 UI 轮逐条相同）、零命中式两条、#6 与 #8 四命中各四条的完整书目
+与判定、以及新增三条宽式（归属词表式 0 命中、Becke/Hirshfeld/Mulliken/AIM ×
+非局域关联 33 条、vdW-DF × 非局域关联 33 条）的逐条题名判定。
+新增引文三条（`vydrov2009vv10`、`vydrov2010simple`、`hyldgaard2014interp`）
+的 DOI 均经 Crossref 与 WoS 两个来源交叉核对，卷期页码一致。
 
 [S1] `RESEARCH-20260929-lit.md` §1, §6 · [S2] `MAIN-skeleton.md` 表2/表4b、
 `nlcsplit/logs/step_h.json` · [S3] `step_f_dispersion.py` 输出 ·
