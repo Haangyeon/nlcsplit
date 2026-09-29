@@ -211,15 +211,17 @@ fraction of dE_xc can be assigned to VV10 across a benchmark set, and the two
 geometries of the same 24-atom benzene dimer (100% vs 54%) show that the ratio
 is a property of the arrangement, not of the pair of molecules.
 
-For the four smallest systems and benzene...water we additionally re-ran at grid
-level 2 with a full counterpoise correction. dE_NLC and the interfragment pair
-term below are unchanged to the last reported digit between levels 1 and 2
-(water dimer: -0.593 and -0.601 kcal/mol at both levels), while the
-counterpoise-corrected interaction energy comes out at -6.129 kcal/mol, i.e. a
-basis-set superposition error of 1.69, 1.49, 0.20 and 1.07 kcal/mol for water,
-ammonia, methane and benzene...water respectively [S10]. The core quantities of
-this method are therefore converged one grid level before the total binding
-energy is; a user who only wants dE_NLC can stop at level 1.
+For the four smallest systems plus benzene...water and benzene...ammonia we
+additionally re-ran at grid level 2 with a full counterpoise correction. dE_NLC
+and the interfragment pair term below are unchanged to the last reported digit
+between levels 1 and 2 (water dimer: -0.593 and -0.601 kcal/mol at both levels;
+benzene...ammonia: -1.327 to -1.328, and -1.393 unchanged), while the
+counterpoise-corrected interaction energy comes out at -6.129 kcal/mol for the
+water dimer, i.e. a basis-set superposition error of 1.69, 1.49, 0.20, 1.07 and
+0.76 kcal/mol for water, ammonia, methane, benzene...water and benzene...ammonia
+respectively [S10]. The core quantities of this method are therefore converged
+one grid level before the total binding energy is; a user who only wants dE_NLC
+can stop at level 1.
 
 ### 3.3 The interfragment pair term saturates the frozen-density limit
 
