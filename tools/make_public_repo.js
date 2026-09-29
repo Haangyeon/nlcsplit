@@ -50,13 +50,21 @@ const STAMP = '.exported-by-make_public_repo';
 const LEDGER_OUTSIDE = path.join(DIST, 'PATH-SCRUB-LEDGER.txt');
 
 // ---------------------------------------------------------------- 白名单
-const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'];
+const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py',
+  // fastpair.py 是 P2 的主体，也被 step_j_scaling.py 直接 import。它原先**不在发布清单里**：
+  // wheel 里没有这个模块，而随包发的 step 脚本却 import 它——读者从 wheel 里跑不出任何
+  // 一个 P2 的数字。闸门 E 只查"外部依赖有没有声明"，查不出这种**包内**依赖，所以没人响。
+  'fastpair.py'];
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
   'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py',
   'step_j_scaling.py'];
 const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py',
-  'test_partition_factors.py', 'test_regression.py'];
+  'test_partition_factors.py', 'test_regression.py',
+  // 不发 fastpair 的测试，等于"屏蔽机制已验证"这句话在发布物里没有证据。
+  // test_fastpair_ide.py 仍然不发：它 import 的 fastpair_ide.py 是对照件，不在包里，
+  // 发出去就是一道收集期 ImportError。
+  'test_fastpair.py', 'test_tolerance_probe.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
 const ROOT = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'pyproject.toml', 'conftest.py'];
 // CI 配置也属于"发布物"：只在工作区里有、公开仓里没有，等于闸门 E 之外的那道门禁
@@ -74,7 +82,7 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
   'orca_control', 'population', 'agentb_sweep',
   // P2 引的三份：核/尾界测量、A2b 双实现对账、几何判据与近场探针的原始 stdout。
   // p2.md 一旦被引用闸门扫到，这些目录没进白名单就会"引用落空"。
-  'coretail', 'fastpair_ab', 'bound_forms'];
+  'coretail', 'fastpair_ab', 'bound_forms', 'release_qa'];
 
 // ================================================================ 脱敏（只发生在导出副本上）
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
@@ -559,7 +567,10 @@ const gateD = (() => {
 // ---------------------------------------------------------------- 闸门 E：用到的依赖都得声明
 const STDLIB = new Set(['os', 'sys', 'json', 'time', 'math', 'ctypes', 'socket', 'traceback',
   'importlib', 'pathlib', 'argparse', 'functools', 'itertools', 'collections', 'warnings',
-  'dataclasses', 'typing', 'subprocess', 'shutil', 'tempfile', 're', 'io', 'abc', 'datetime']);
+  'dataclasses', 'typing', 'subprocess', 'shutil', 'tempfile', 're', 'io', 'abc', 'datetime',
+  // fastpair.py 一进口就被这条闸门拦住：`from __future__ import annotations` 是语言内建，
+  // 不是任何发行包。缺它不是代码问题，是这张名单不完整——补上，并让它别再假报警。
+  '__future__', 'textwrap', 'hashlib', 'glob', 'random', 'zipfile', 'tarfile']);
 const DECLARED = new Set([...read(path.join(SRC, 'pyproject.toml'))
   .matchAll(/"([A-Za-z][A-Za-z0-9_.\-]*)[<>=!~\[]?/g)].map(m => m[1].toLowerCase()));
 const DIST_OF = { matplotlib: 'matplotlib', scipy: 'scipy', pyscf: 'pyscf', numpy: 'numpy', pytest: 'pytest' };

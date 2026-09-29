@@ -1,16 +1,17 @@
-"""Measure the residual that `test_regression.py:46` allows at 0.10 kcal/mol.
+"""Measure the residual that `test_regression.py:46` is allowed to see.
 
-This is a probe, not a tightening: the assertion here is deliberately the same loose bound
-the existing test uses, so this file cannot turn the suite red by itself. The point is to
-get the distribution on record - across grid levels and across systems - so the choice of a
-real tolerance is made from measured spread instead of from what someone happened to get
-away with when the test was written.
+The bound on line 46 was tightened on 2026-09-29 from 0.10 to 1e-4 kcal/mol, from the
+distribution this probe produces: the largest measured residual is 9.672e-06 kcal/mol
+across grid levels 0/1/2, so 0.10 was 1.03e4 times wider than anything the code can
+actually produce. This file keeps the same shape of assertion as before (it reports the
+spread, it does not gate on it), so a slow-platform drift shows up here as a number rather
+than as a red suite.
 
-Context for why 0.10 is suspected loose: the cross-program anchor against ORCA 6.0.1 puts
-the agreement on the *reported* quantity at 4e-4 kcal/mol (water dimer), and the two
-internal implementations of the double sum agree to <=3e-5 kcal/mol at level 1. A guard
-that is 3 orders of magnitude looser than both cannot fail for any reason a reviewer would
-care about, and it will not catch a real regression either.
+Context for why 0.10 was loose: the cross-program anchor against ORCA 6.0.1 puts the
+agreement on the *reported* quantity at 4e-4 kcal/mol (water dimer), and the two internal
+implementations of the double sum agree to <=3e-5 kcal/mol at level 1. A guard three orders
+of magnitude looser than both cannot fail for any reason a reviewer would care about, and
+it will not catch a real regression either.
 """
 import pytest
 

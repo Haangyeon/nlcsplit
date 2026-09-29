@@ -95,15 +95,22 @@ function audit(text) {
     }
   }
 
-  lines.forEach((ln, i) => {
-    // 引号里的东西是**别人**的题名或行话（"Nonlocal ... made faster"、
-    // "which fast scheme is actually faster"），不是我们的主张。先剥掉再判，
-    // 否则每条文献引用都要来烦人一次，而这种闸门被人无视就等于没有。
-    const bare = ln.replace(/"[^"]*"/g, '');
-    const hasSpeed = SPEED.test(bare) || SPEED_X.test(bare);
+  // 加速措辞在**剥掉引号内容**的副本上逐行判：引号里是别人的题名或行话
+  // （"Nonlocal … made faster"），不是我们的主张。剥离必须整篇做——上一版按行剥，
+  // 遇到跨行书写的题名就剥不掉，真引用被当成主张报警。
+  // 代价是奇数个引号时正则一路吞到下一段，判据会**看瞎**，所以显式检查配对：
+  // 不配对就报一条 gate-blind，让失明可被发现，而不是静默放过。
+  const qcount = (text.match(/"/g) || []).length;
+  if (qcount % 2) {
+    fails.push({ kind: 'gate-blind', line: 1, token: 'unbalanced quotes (' + qcount + ')',
+      detail: 'quoted-title stripping is unreliable; the wording check on this file is VOID' });
+  }
+  const stripped = text.replace(/"[^"]*"/g, mm => mm.replace(/[^\n]/g, '')).split(/\r?\n/);
+  stripped.forEach((ln, i) => {
+    const hasSpeed = SPEED.test(ln) || SPEED_X.test(ln);
     if (!hasSpeed) return;
-    if (NEGATE.test(bare)) return;
-    fails.push({ kind: 'wording', line: i + 1, token: ln.trim().slice(0, 120),
+    if (NEGATE.test(ln)) return;
+    fails.push({ kind: 'wording', line: i + 1, token: lines[i].trim().slice(0, 120),
       detail: 'acceleration/scaling wording with no negation in the same line' });
   });
 
@@ -125,20 +132,27 @@ if (SELFTEST) {
     '`w0` contains `(4π/3)ρ` and the half-block convention of `nlc.pair_energy`.',
     'closest work is Laikov 2025, "Nonlocal van der Waals density functional made faster".',
     'our scheme is 4\u00d7 faster on the far field.',
+    'the "Linear Scaling Hierarchical Integration Scheme for the',
+    'Exchange-Correlation Term" of Burow & Sierka octrees the grid.',
   ].join('\n');
   const f = audit(probe);
   const kinds = f.map(x => x.kind);
   const want = ['wording', 'path', 'test-id'];
   const wrapped = f.filter(x => x.detail && x.detail.includes('across lines'));
+  // 第二个探针：引号不配对时，剥引号会把判据看瞎——必须自己喊出来。
+  const blind = audit('the "title stays open to the next paragraph\nour scheme is 10\u00d7 faster.');
   const ok = want.every(w => kinds.includes(w))
     && wrapped.length === 1 && wrapped[0].token === 'evidence/bound_forms/not_a_real_file.out'
     && !f.some(x => x.line === 4)      // 带行号的引用不许误报
     && !f.some(x => x.line === 8)      // 已否定的加速措辞不许误报
     && !f.some(x => x.line === 9)      // 式子与 API 名不是路径
     && !f.some(x => x.line === 10)     // 别人的题名在引号里，不是我们的主张
-    && f.some(x => x.line === 11 && x.kind === 'wording');   // 剥掉引号后判据仍然有效
+    && !f.some(x => x.line === 12 || x.line === 13)   // 跨行书写的题名同样豁免
+    && f.some(x => x.line === 11 && x.kind === 'wording')   // 剥掉引号后判据仍然有效
+    && blind.some(x => x.kind === 'gate-blind');   // 引号不配对必须自报失明（宁可多报也不静默）
   console.log('selftest findings:', JSON.stringify(f.map(x => `L${x.line} ${x.kind}: ${x.token}`), null, 1));
-  console.log(ok ? 'SELFTEST OK: 三类判据都会响（含跨行折引、剥引号后仍响），五种合法写法都不响'
+  console.log('blind probe:', JSON.stringify(blind.map(x => `${x.kind} @L${x.line}`)));
+  console.log(ok ? 'SELFTEST OK: 三类判据都会响，引号不配对时闸门自报失明，五种合法写法都不响'
                  : 'SELFTEST FAIL: gate is not discriminating');
   process.exit(ok ? 0 : 1);
 }
