@@ -1534,3 +1534,24 @@ ide-qoder 那条 `[claim]` 只声明了认领与自检，**没有声明任何一
 
 另外顺手记下：`pytest -q 2>&1 | tail -30` 把退出码吃掉了（管道取的是 `tail` 的状态，返回 0），
 所以后台任务通知写 "exit code 0" 而实际上测试是失败的。**判绿只认 pytest 自己的 summary 行。**
+
+## [2026-09-29 17:1x] [agent=cn-qoder] [gate] A6：发布闸门加了第四道，它专门管"引用了但没发布"
+
+三道旧闸门（无 GAMESS 源码工件 / 无密钥与内网串 / 证据哈希一致）抓的都是"不该出现的出现"。
+今天连踩三次的是相反方向：**该出现的没出现**——`[S10]` 的 stdout 只在集群、`[S15]` 的脚本在
+gitignore 的 `scratch/`、三条 CentOS 日志在远端另一个目录。旧闸门对此完全失明，`dist/` 每
+一次都"全绿"。
+
+`tools/make_public_repo.js` 新增 **gateD**：直接读 `paper/main.md` 的附录表，把每个反引号
+路径拿去和本次实际发布清单对账，分两栏输出——
+`gateD_cited_but_unshipped` 非空即 exit 1（存在但没发布 / 母仓里根本没有），
+`note_internal_only_citations` 只列不给过（故意不发的东西要看得见，不然人会把整道门禁关掉）。
+配套：`evidence/centos/`、`evidence/retrieval_calibration/` 与三个被正文点名的
+`nlcsplit/logs/*.out` 进白名单；`RESEARCH-20260929-lit.md` 与 `MAIN-skeleton.md` 改名进
+`docs/`（附录有 9 条靠它们落地；`PROGRESS-*` 仍然不发——那是协调与撤回流水，不是证据）。
+`[S5] [S7]` 原本引 `PROGRESS-ide-S3.md` / `PROGRESS-nlcsplit.md 22:45`，已改引随包发布的
+脚本与测试：引一段聊天日志本来就是弱引。
+闸门 C 顺手从"只校 orca_run"扩到"每个 evidence 子目录都要有 MANIFEST 且逐文件对哈希"。
+
+本轮结果：60 个文件，gateA/B/C/D 四个数组全空，exit 0。发布前还剩 task #13
+（干净 venv `pip install` + 树外 `pytest --pyargs nlcsplit`）。

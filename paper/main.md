@@ -609,9 +609,15 @@ that labels the quantity `NL Energy, E(C,NL)`. Two items remain open there: the
 absolute per-fragment values are still unrefereed, and the anchor covers 2 of the 8
 systems.
 
-Two further items are open and stated as such rather than smoothed over: the
-level-2 counterpoise run for one of the eight systems (benzene...methane) was
-cut off by its own wall-clock budget, and the literature search covers one index -
+Two further items are open and stated as such rather than smoothed over. The first is a
+number, not a missing run: re-running benzene-methane at level 2 with counterpoise on two
+PySCF releases reproduced every attributed quantity to within 4e-4 kcal/mol but the
+counterpoise interaction energy only to 0.139 kcal/mol (section 2), so a counterpoise
+denominator is not portable between versions while the pair term appears to be. The second
+is a scope limit: the basis-set ladder of section 3.4 was run before the water-dimer geometry
+fix, and although its level-1 column agrees with the post-fix recompute to four decimals for
+every base the two runs share, the full ladder has not been re-run on the relaxed geometry.
+Separately, the literature search covers one index -
 Web of Science Core Collection - because Scopus was measured as unsubscribed at our
 institution and Embase and SciFinder were not searched at all. Within that one index,
 though, the search is now a full enumeration rather than a sample: every record
@@ -646,9 +652,9 @@ hash-listed under `evidence/*/MANIFEST.sha256`, and were not re-typed by hand.
 | S2 | `MAIN-skeleton.md` tables 2 and 4b; `nlcsplit/logs/step_h.json` | the level-1 S22-subset table, incl. the 0.8% / 18.2% nonlocal fractions |
 | S3 | `nlcsplit/step_f_dispersion.py` | the level-1 dispersion-scale check that leaves the double sum as the only unaccounted term |
 | S4 | `MAIN-skeleton.md` table 4b | the 52%-97% range of the same quantity across partitions |
-| S5 | `nlcsplit/step_e_kernel.py`, `PROGRESS-ide-S3.md` | explicit pair sum vs PySCF's native VV10 kernel on a fixed grid |
+| S5 | `nlcsplit/step_e_kernel.py` | explicit pair sum vs PySCF's native VV10 kernel on a fixed grid |
 | S6 | `evidence/centos/20260928T165857Z_centos-step_c.out` line 19 | relaxed O-O = 2.901 A |
-| S7 | `nlcsplit/step_d_floor.py`, `PROGRESS-nlcsplit.md` 22:45 | the local term is beta x electron number, so it cancels in any superposition difference |
+| S7 | `nlcsplit/step_d_floor.py`, `nlcsplit/tests/test_kernel.py` | the local term is beta x electron number, so it cancels in any superposition difference |
 | S8 | `nlcsplit/logs/step_h.json`, `nlcsplit/logs/step_h_l2cp.json`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`, `evidence/centos/20260928T165857Z_centos-step_f_h2o2.out`, `nlcsplit/logs/20260929T010500Z_step1_geomfix.out` | cross-version pair (PySCF 2.12.1 vs 2.14.0) and the 18368 vs 20248 grid counts |
 | S9 | `nlcsplit/step_i_gridrepr.py`, `nlcsplit/logs/20260929T_step_i_gridrepr.out` | the two discrepancies that were previously reported as one number |
 | S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`, `nlcsplit/logs/step_h_l2cp.json` | level-2 with counterpoise, all six S22 subsystems complete |

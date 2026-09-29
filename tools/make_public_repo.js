@@ -31,8 +31,9 @@ const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py
   'test_partition_factors.py', 'test_regression.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
 const ROOT = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'pyproject.toml', 'conftest.py'];
-// 明确**不**带：centos_run*.sh, centos_setup.sh（集群 IP/绝对路径）, PROGRESS-*, RESEARCH-*,
-// HANDOFF-*, MAIN-skeleton.md, STEP0-*, paper/, scratch/, figs/
+// 明确**不**带：centos_run*.sh, centos_setup.sh（集群 IP/绝对路径）, PROGRESS-*（两代理的协调
+// 与撤回流水，不是证据）, HANDOFF-*, STEP0-*, paper/, scratch/, figs/。
+// RESEARCH-* 与 MAIN-skeleton.md 改为改名进 docs/，见下面 RELOCATED —— 附录要靠它们落地。
 const EXPLICITLY_EXCLUDED = ['nlcsplit/centos_run.sh', 'nlcsplit/centos_run2.sh', 'nlcsplit/centos_run3.sh',
   'nlcsplit/centos_run4.sh', 'nlcsplit/centos_run5.sh', 'nlcsplit/centos_setup.sh'];
 
@@ -110,18 +111,64 @@ copied.push(write('nlcsplit/logs/step_h.json', side));   // 不动：host 字段
 // level-2 + 反泊松 那一档单独成车（母仓 step_h.json 按体系名合并会冲掉同名高档行），
 // 它的原始 stdout 也已入库，见 evidence/l2cp/ + MANIFEST.sha256。
 copied.push(write('nlcsplit/logs/step_h_l2cp.json', read(path.join(SRC, 'nlcsplit/logs/step_h_l2cp.json'))));
-fs.mkdirSync(path.join(OUT, 'evidence'), { recursive: true });   // 必须在 cp -r 之前，否则目标父目录不存在
-cp.execSync(`cp -r "${path.join(SRC, 'evidence', 'l2cp')}" "${path.join(OUT, 'evidence', 'l2cp')}"`);
-for (const f of fs.readdirSync(path.join(OUT, 'evidence', 'l2cp'))) {
-  if (f !== 'MANIFEST.sha256') copied.push('evidence/l2cp/' + f);
-}
 
 // ---------------------------------------------------------------- 证据原件：字节不动 + 哈希校验
-fs.mkdirSync(path.join(OUT, 'evidence'), { recursive: true });
-cp.execSync(`cp -r "${path.join(SRC, 'evidence', 'orca_run')}" "${path.join(OUT, 'evidence', 'orca_run')}"`);
-for (const f of fs.readdirSync(path.join(OUT, 'evidence', 'orca_run'))) {
-  if (f.endsWith('.out')) copied.push('evidence/orca_run/' + f);
+// 每个 evidence 子目录整体复制；另外，母仓 nlcsplit/logs/ 里被论文正文按文件名引用过的
+// stdout 也必须随行 —— 缺哪一个，公开仓的读者就有一条打不开的出处。
+// 下面 gate D 会把这件事变成检查，而不是靠人记得。
+fs.mkdirSync(path.join(OUT, 'evidence'), { recursive: true });   // 必须在 cp -r 之前
+for (const dir of ['l2cp', 'orca_run', 'centos', 'retrieval_calibration']) {
+  cp.execSync(`cp -r "${path.join(SRC, 'evidence', dir)}" "${path.join(OUT, 'evidence', dir)}"`);
+  for (const f of fs.readdirSync(path.join(OUT, 'evidence', dir))) {
+    if (f !== 'MANIFEST.sha256') copied.push('evidence/' + dir + '/' + f);
+  }
 }
+const CITED_LOGS = ['20260929T_step_i_gridrepr.out', '20260929T003144Z_stepg-recompute.out',
+  '20260929T010500Z_step1_geomfix.out'];
+for (const f of CITED_LOGS) {
+  copied.push(write('nlcsplit/logs/' + f, read(path.join(SRC, 'nlcsplit/logs', f))));
+}
+
+// ---------------------------------------------------------------- 检索记录与主表随包发布
+// 附录里 S1/S2/S4/S11/S14/S16/S17 的落点是这两份工作笔记。不带它们，公开仓的读者手上一半
+// 出处是空指针，而"每条记录都读全了"正是新颖性主张的承重部分。改名进 docs/，内容不删。
+// PROGRESS-* 仍然不发：那是两个代理之间的协调与撤回流水，不是证据。
+const RELOCATED = {
+  'RESEARCH-20260929-lit.md': 'docs/literature_search_20260929.md',
+  'MAIN-skeleton.md': 'docs/tables_and_provenance.md',
+};
+for (const [src, dst] of Object.entries(RELOCATED)) {
+  copied.push(write(dst, read(path.join(SRC, src))));
+}
+
+
+// ---------------------------------------------------------------- 闸门 D：正文引用的每个出处都真的随包发布
+// 这一道是今天第三次栽在同一件事之后加的：[S10] 的 stdout 只在集群上、[S15] 的脚本在
+// gitignore 的 scratch/ 里、三条 CentOS 日志在远端另一个目录下。每次都靠人想起来复制，
+// 所以"引用了但没发布"这个失败模式一直没被发现。现在由 main.md 的附录表自动对账。
+//
+// 分两栏而不是一个布尔：母仓确实故意不发布工作日志（PROGRESS/RESEARCH/MAIN-skeleton），
+// 那是编辑决定不是缺陷；但"文件根本不存在"永远缺陷。两者混在一起会让人把整道门禁关掉。
+const gateD = (() => {
+  const app = read(path.join(SRC, 'paper/main.md'));
+  const rows = [...app.slice(app.indexOf('## Appendix')).matchAll(/^\| (S\d+) \|(.*)$/gm)];
+  const internal = /^(PROGRESS|HANDOFF|STEP0)/;
+  const absent = [], pubInternal = [];
+  for (const [, tag, cell] of rows) {
+    for (const m of cell.matchAll(/`([^`]+)`/g)) {
+      const rel = m[1];
+      if (/^(DOI|arXiv|§|\d)/.test(rel) || !/[/]|\.(out|json|py|md|js|txt|bib)$/.test(rel)) continue;
+      if (!fs.existsSync(path.join(SRC, rel))) { absent.push(`${tag}: 母仓里就没有 ${rel}`); continue; }
+      const published = RELOCATED[rel] || rel;
+      if (internal.test(rel) || EXPLICITLY_EXCLUDED.some(x => rel.startsWith(x))) {
+        pubInternal.push(`${tag}: ${rel}（故意只在母仓，公开读者打不开）`);
+        continue;
+      }
+      if (!copied.includes(published)) absent.push(`${tag}: 存在但未随包发布 ${rel}`);
+    }
+  }
+  return { absent, pubInternal };
+})();
 
 // ---------------------------------------------------------------- 闸门 A：无 GAMESS **源码**
 // 注意：/gamess/i 一律命中是**误报**——README/CONTRIBUTING/__init__ 里出现这个词，
@@ -152,14 +199,19 @@ for (const rel of copied) {
 }
 
 // ---------------------------------------------------------------- 闸门 C：证据哈希
-const manFile = path.join(OUT, 'evidence', 'orca_run', 'MANIFEST.sha256');
+// 每个带 MANIFEST.sha256 的 evidence 子目录都要过，不只是 orca_run —— 今天新收的两个
+// 目录（centos/、retrieval_calibration/）同样是"论文引它才存在"的东西。
 const gc = [];
-if (!fs.existsSync(manFile)) gc.push('MANIFEST.sha256 缺失');
-else for (const line of read(manFile).split(/\r?\n/).filter(Boolean)) {
-  const [h, name] = [line.split(/[\s*]+/)[0], line.split(/[\s*]+/)[1]];
-  const p = path.join(OUT, 'evidence', 'orca_run', name);
-  if (!fs.existsSync(p)) { gc.push('缺文件 ' + name); continue; }
-  if (sha256(p) !== h) gc.push('哈希不符 ' + name);
+for (const dir of fs.readdirSync(path.join(OUT, 'evidence'))) {
+  const manFile = path.join(OUT, 'evidence', dir, 'MANIFEST.sha256');
+  if (!fs.existsSync(manFile)) { gc.push(`evidence/${dir}: 没有 MANIFEST.sha256`); continue; }
+  for (const line of read(manFile).split(/\r?\n/).filter(Boolean)) {
+    const parts = line.split(/[\s*]+/);
+    const [h, name] = [parts[0], parts[1]];
+    const p = path.join(OUT, 'evidence', dir, name);
+    if (!fs.existsSync(p)) { gc.push(`evidence/${dir}: 缺文件 ${name}`); continue; }
+    if (sha256(p) !== h) gc.push(`evidence/${dir}: 哈希不符 ${name}`);
+  }
 }
 
 fs.writeFileSync(path.join(OUT, 'EXPORT-MANIFEST.txt'),
@@ -168,8 +220,11 @@ fs.writeFileSync(path.join(OUT, 'EXPORT-MANIFEST.txt'),
 console.log(JSON.stringify({
   out: OUT, files: copied.length,
   gateA_gamess: ga, note_word_only: wordOnly, gateB_secrets: gb, gateC_hashes: gc,
-  excluded_by_design: EXPLICITLY_EXCLUDED.concat(['PROGRESS-*.md', 'RESEARCH-*.md', 'HANDOFF-*.md',
-    'MAIN-skeleton.md', 'STEP0-*.md', 'paper/**', 'scratch/**', 'figs/**']),
+  gateD_cited_but_unshipped: gateD.absent,
+  note_internal_only_citations: gateD.pubInternal,
+  excluded_by_design: EXPLICITLY_EXCLUDED.concat(['PROGRESS-*.md', 'HANDOFF-*.md',
+    'STEP0-*.md', 'paper/**', 'scratch/**', 'figs/**']),
+  relocated_into_docs: RELOCATED,
 }, null, 1));
-const bad = ga.length + gb.length + gc.length;
+const bad = ga.length + gb.length + gc.length + gateD.absent.length;
 process.exit(bad ? 1 : 0);
