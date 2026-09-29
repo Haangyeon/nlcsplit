@@ -1283,3 +1283,83 @@ density functionals》——把非局域关联能诠释为半局域 xc 洞的零
   `paper/main.tex` 因此**从未编译验证过**，且它是我今天两次改 `main.md` 之前生成的 ⇒ 已过期。
 - `py227_vs_table1.md` 报的表 1 数值分歧（侧车 −0.2454 vs 图脚本硬编码 −0.2456）未解决。
   侧车是真值源，图脚本里那行硬编码该删。
+
+
+## [2026-09-29 15:1x] [agent=cn-qoder] [dispatch] 八代理并行开发分工 —— ide-qoder 请认领 A2b
+
+计划书：`C:\Users\Administrator\.qoder-cn\plans\crisp-brook-smew.md`（全文可读，本节自足，
+不读计划书也能开工；读了更好，B案推导在 §B案算法设计）。
+
+用户已定三件事：
+1. **B 案两边各写一版独立实现，互为裁判**；
+2. **本轮 P1 收尾优先，P2 并行但不挡路**；
+3. SNNU 上的 ORCA 网格扫描**只跑水二聚体一个体系**。
+
+### 文件所有权（冲突就按这张表判，别协商）
+
+| 产物 | owner |
+|---|---|
+| `nlcsplit/logs/step_h.json` | 只有 cn-qoder 合并（A1 只产候选文件）。它**非幂等**：按体系名 merge 累加（`step_h_s22.py:153-176`），文件头 `level` 会说谎，逐行才准（`:125`） |
+| `nlcsplit/logs/orca_anchor.json` | **冻结**，只有 cn-qoder 合并 |
+| `nlc.py` / `partition.py` / `geomlib.py` | **本轮双方都只读** |
+| 现有 4 个测试文件 | 冻结；新测试各用自己命名的文件 |
+| `pyproject.toml` / `.gitignore` | 只有 cn-qoder 合并，另一方写申请 |
+| `nlcsplit/fastpair.py` `tests/test_fastpair.py` `examples/check_screen_bound.py` | **cn-qoder 侧 A2a 独占** |
+| `nlcsplit/fastpair_ide.py` `tests/test_fastpair_ide.py` `examples/check_screen_bound_ide.py` | **ide-qoder 独占** |
+| `nlcsplit/step_j_scaling.py` `logs/step_j.json` `figs/fig3_scaling.png` | A3（cn-qoder 侧） |
+| `paper/main.md` `main.tex` `references.bib` `MAIN-skeleton.md` | 只有 cn-qoder |
+| `tools/make_public_repo.js` `dist/**` | A6（cn-qoder 侧） |
+
+### 给 ide-qoder：A2b 任务书
+
+**目标**：亚平方、且**保住 (i,j) 成对索引**的 VV10 双重和求值，带可证误差界。
+现状是纯绿地——`pair_energy`（`nlc.py:49`）在全网格点上 O(N²)，`block=256` 只是访存分块，
+**全仓不存在任何距离屏蔽或块截断**（唯一剪枝是密度掩膜 `RHO_FLOOR=1e-12`，`nlc.py:27`、
+应用于 `:37-38`）。
+
+**机器**：CentOS `ssh -p 24522 root@10.8.51.23`，venv `/root/gamess_work/nlcsplit/venv`，
+PySCF 2.14.0，8 核 23 GB，现已空闲。禁碰 `/root/GAMESS_BLW`。
+
+**设计口径**（别另起一套，会白干）：
+- 屏蔽判据 = **逐块 (w0,κ) 最小值 × 密度质量因子 m_P**。
+  全局最小值版本**无效**：`rho_floor=1e-12` 下 `κ_min=0.162`、`w0_min=2.05e-6`，
+  R⁻⁶ 渐近要到 **281 bohr ≈ 149 Å** 才接管 ⇒ 真正做剪枝的是密度质量，不是距离。
+- 分块粒度用**原子子网格**（`partition.atom_partition` 的 `owner`，
+  `partition.partition_factors` 的 `S` 列），**不要用几何 cell**——原子块让
+  `inter[(A,B)] = Σ_{a∈A,b∈B} block(a,b)` 天然是成对空间的一个划分，可加性由构造保证。
+- **ε ≤ 1e-8 Ha**。理由要说得出：P1 的头条数字是苯-甲烷 **0.004 kcal/mol = 6.4e-6 Ha**
+  的归属跨度（4 个方案之差），容差再松，截断噪声就吃掉主张本身。
+- 存活的块**原样调 `nlc.pair_energy`**；注意它返回**半份**交叉块
+  （`P_frz = 2×`，见 `step_d_floor.py:18`）⇒ ×2 只能在块级别施加一次。
+- 屏蔽**默认关闭**；总量必须从**同一份保留块清单**加出来，
+  绝不允许另跑一遍"带屏蔽的总量"去对账（`step_h_s22.py:60` 的 `<1e-10 Ha` 断言会给你放行假象）。
+- 软分区下界要改成逐片段 `m_P^A = Σ_{i∈P}|wr_i f^A_i|`，否则 `nlc.py:143` 的 `_soft_pair` 界不成立。
+- 现在有**两条独立截断**（rho_floor + 屏蔽），报告必须分开。
+
+**完成判据 L1–L4**：
+- L1 证得界 ≥ 实际 `|screened − full|`，水二聚体 lvl1 **与** 苯二聚体 lvl0 都要验；
+- L2 ε=1e-8 Ha 复现已入库 `step_h.json` 全部 8 个 `P_frz`，误差 ≤1e-6 kcal/mol；
+- L3 屏蔽开启时可加性仍 `<1e-10 Ha`；屏蔽关闭时 `pytest -q` 与现在逐条相同；
+- L4 ε→0 退回全量路径，差值等于浮点重排噪声（~1e-14 相对；`block=2` 的先例是能过 1e-13）。
+
+**最重要一条：裁判不是 A2a。** 两版各自过三个外部锚点——
+(a) 全量 O(N²) 路径（`nlc.pair_energy`，屏蔽关闭）；(b) PySCF 原生核 `numint.nr_nlc_vxc`；
+(c) ORCA 6.0.1 锚点：水 −0.5931、苯 −4.3252 kcal/mol（出处 `logs/orca_anchor.json` +
+`evidence/orca_run/*.out`，含行号与 sha256）。
+**两版互相吻合只算旁证。** 本项目栽过一次：2026-09-28 23:55 那条 [retract]，
+把 0.14 kcal/mol 的差解释成 libxc 的系统偏差，实际错在我们自己，而真值一直躺在 `ref/` 里。
+
+**冻结前不要读 `fastpair.py`**，否则"独立实现"名存实亡。
+接口契约等我发 `[freeze] fastpair API` 公告后对齐（对签名，不对实现）。
+比对由 cn-qoder 做，产物 `nlcsplit/logs/fastpair_ab_compare.json`；
+**界更紧的一版进主线**，另一版留作对照测试，不删。
+
+**其它纪律**：进度只写 `PROGRESS-ide-qoder.md`；撤回用 `[URGENT→peer]` 开头追加，
+不删旧记录；不要 `git commit`；计时类测量必须 `load < 0.5` 才出数，
+且 `setsid` 起完要从**第二条连接**复核存活（WSL 今天重启过一次，setsid 不跨重启）。
+
+### cn-qoder 本轮自己走（P1 优先道）
+A1 收两地 level-2 候选行 → 我合并 `step_h.json` → A4 用 MiKTeX（`D:\Program Files\MiKTeX\miktex\bin\x64`，
+不在 PATH 上）编译 `main.tex` 并逐条审计 `[S#]` → A5 清 `software.md` 过期断言 → A6 发布闸门。
+顺带改掉两处已过期表述：`paper/main.md` §5"level-2 差一个体系"、`MAIN-skeleton.md` 待补 #5
+（苯-甲烷 lvl2 已两地跑完：WSL 2.12.1 `dnlc −1.40467` / CentOS 2.14.0 `−1.405`，跨版本一致）。
