@@ -305,6 +305,78 @@ numerically the same thing, which is worth recording because the two are
 sometimes discussed as if they competed.
 
 ---
+
+## 4. Limitations
+
+**This is not an energy decomposition analysis.** We split dE_xc into the
+nonlocal term and everything else, and we resolve the nonlocal term into
+fragment pairs. We do not separate electrostatics, exchange-repulsion,
+polarisation or charge transfer, and the resulting components are therefore not
+comparable term-by-term with ALMO-EDA or SAPT(DFT) output. Counterpoise-corrected
+interaction energies are reported in section 3.2 for five of the eight systems,
+but dE_NLC itself needs no such correction: it is evaluated at fixed
+(non-self-consistent) superposed density, so basis-set flexisation does not enter
+it, which is precisely why it converges a grid level earlier than dE_int does
+[S10].
+
+**The nonlocal term is not the dispersion energy.** Section 3.2 is the evidence:
+dE_NLC ranges from 16% to 223% of dE_xc across eight complexes drawn from one
+benchmark set, and for the two geometries of the same benzene dimer it is 100%
+and 54%. A quantity whose share of another varies that far cannot be identified
+with it. We use "dispersion" only when quoting external work, and the values in
+Table 1 should be read as "the contribution of the VV10 term", not as a
+dispersion energy.
+
+**One independent referee so far.** Our explicit sum is checked against PySCF's
+native kernel, but both live in the same library and would share a common error
+in the functional parameters. The only cross-program check currently in hand is
+ORCA 6.0.1 on the water monomer, at 6e-4 kcal/mol [S3]. A third independent
+implementation - calling libxc's `xc_nlc_vxc` directly, or Psi4 - is outstanding,
+and until it exists the verification chain in section 3.1 should be read as
+"two implementations, one library boundary".
+
+**The attribution uncertainty is intrinsic and per-system.** The 0.004-0.310
+kcal/mol spread of section 3.4 does not shrink with a finer grid or a larger
+basis; it is a property of how grid points are assigned to atoms. Any number
+produced by this method carries it, and reporting a single percentage for the
+whole method would be wrong by more than twenty-fold for individual systems.
+
+**Absolute fragment energies inherit a population uncertainty.** As shown in
+section 3.5, the local term of a fragment is exactly beta*N_A, so a
+0.099-electron spread in the Becke population is a 0.300 kcal/mol spread in the
+reported fragment energy - larger than the scheme spread of the pair term itself
+for the water dimer. Differences are safe; absolutes are not, unless the
+population convention is stated alongside them.
+
+**Cost, and what it buys.** The explicit double sum is quadratic in the number of
+retained grid points; we have not implemented a sub-quadratic approximation, and
+the point-value kernels that PySCF and ORCA use are both cheaper and accurate to
+~1e-8 Ha on their own grid (section 3.1). We are therefore not claiming that this
+method computes dE_NLC better. What it buys is the (i, j) index structure: the
+0.92-1.08 frozen-density result of section 3.3, and the per-pair numbers behind
+Table 1, are not recoverable from a scheme that collapses the pair sum to point
+values first.
+
+**Scope of functionals.** Everything here is the VV10 kernel with the (b, C)
+parameters PySCF reports for omegaB97X-V, using the same-centre pairing
+convention of section 2.1. Functionals whose nonlocal term uses the regularised
+rVV10 form have not been tested and may not share the pairing convention.
+
+## 5. Code availability
+
+The package `nlcsplit` (Apache-2.0, containing no GAMESS source) implements the
+kernel, the four attribution schemes, the fragment decomposition and every table
+in this paper; each table is produced by exactly one `step_*.py` script whose
+stdout is archived under a UTC-stamped filename. Fragment boundaries come from
+covalent connectivity rather than hand-written atom lists, and both the geometry
+constructors and the official-geometry loader assert internal coordinates at
+construction time - three of the bugs this measure was added to catch are
+described in the supplementary notes. Grid, basis and scheme sensitivity are
+separate functions (`step2_convergence.py`, `step_g_basis.py`, `step_h_s22.py`)
+rather than one combined uncertainty, and `partition_factors()` verifies its own
+output against PySCF's partition weights before returning it.
+
+---
 ### 出处对照
 [S9] `step_i_gridrepr.py`，`logs/20260929T_step_i_gridrepr.out` ·
 [S10] CentOS `logs/20260928T213839Z_centos-step_h_l2cp.out`（level 2 + 反泊松，
