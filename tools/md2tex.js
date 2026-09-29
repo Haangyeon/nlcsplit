@@ -263,8 +263,12 @@ function verdict(paths) {
 const cut = md.indexOf('## Appendix');
 const appendix = cut < 0 ? '' : md.slice(cut);
 const bodyText = md.slice(0, cut < 0 ? md.length : cut);
-const usedInBody = [...new Set(bodyText.match(/\[S\d+\]/g) || [])]
-  .map(x => x.slice(1, -1)).sort((a, b) => +a.slice(1) - +b.slice(1));
+// `[S1, S5]` cites two tags. Matching only the single-tag form made every multi-tag
+// bracket invisible, which under-counted the citations and would have let a genuinely
+// uncited appendix row through as "never cited -> FAIL" for the wrong reason.
+const usedInBody = [...new Set((bodyText.match(/\[(S\d+(?:\s*,\s*S\d+)*)\]/g) || '')
+  .join(' ').match(/S\d+/g) || [])]
+  .map(x => x).sort((a, b) => +a.slice(1) - +b.slice(1));
 // Inline paths cited in the running text carry no tag, so the appendix gate cannot see
 // them - that is exactly how the `ref/` citation slipped past once. The filter has to be
 // stricter here than in the appendix: backticked text in prose is usually an API name

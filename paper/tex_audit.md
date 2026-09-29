@@ -2,10 +2,10 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 55622 chars, 762 lines
+- source `paper/main.md`: 56115 chars, 764 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
-- tags cited in the body: 20
+- tags cited in the body: 21
 - figures pulled in: 2 -> tracked
 - inline backticked paths in the body text: 9 scanned -> tracked
 - appendix rows never cited in the body: none
@@ -34,3 +34,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S18 | `nlcsplit/logs/orca_anchor.json`<br>`evidence/orca_run/h2o_dimer.out`<br>`evidence/orca_run/h2o_mono0.out`<br>`evidence/orca_run/h2o_mono1.out`<br>`evidence/orca_run/benz_dimer.out`<br>`evidence/orca_run/benz_mono0.out`<br>`evidence/orca_run/benz_mono1.out`<br>`evidence/orca_run/MANIFEST.sha256`<br>`evidence/orca_control/h2o_wb97x.out`<br>`evidence/orca_control/h2o_wb97xv.out`<br>`evidence/orca_control/MANIFEST.sha256` | tracked |
 | S19 | `evidence/centos/20260928T165857Z_centos-step_c.out` | tracked |
 | S20 | `nlcsplit/step_k_population.py`<br>`evidence/population/20260929T131530Z_stepk_pop-official.out`<br>`evidence/population/20260929T131055Z_stepk_pop-constructed.out` | tracked |
+| S21 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt` | tracked |
