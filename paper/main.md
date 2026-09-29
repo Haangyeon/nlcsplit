@@ -408,8 +408,8 @@ population convention is stated alongside them.
 
 **Cost, and what it buys.** The explicit double sum is quadratic in the number of
 retained grid points; we have not implemented a sub-quadratic approximation, and
-the point-value kernels that PySCF and ORCA use are both cheaper and accurate to
-~1e-8 Ha on their own grid (section 3.1). We are therefore not claiming that this
+the point-value kernel that PySCF ships is both cheaper and accurate to ~1e-8 Ha
+on its own grid (section 3.1). We are therefore not claiming that this
 method computes dE_NLC better. What it buys is the (i, j) index structure: the
 0.92-1.08 frozen-density result of section 3.3, and the per-pair numbers behind
 Table 1, are not recoverable from a scheme that collapses the pair sum to point
@@ -433,6 +433,52 @@ described in the supplementary notes. Grid, basis and scheme sensitivity are
 separate functions (`step2_convergence.py`, `step_g_basis.py`, `step_h_s22.py`)
 rather than one combined uncertainty, and `partition_factors()` verifies its own
 output against PySCF's partition weights before returning it.
+
+## 6. Conclusions
+
+We have shown that the VV10 nonlocal-correlation energy can be resolved into
+fragment pairs without giving up the total: the double sum is evaluated
+explicitly, the local part cancels identically from any superposition difference
+because it is exactly beta times the electron number, and the resulting blocks
+reproduce the total to machine precision while carrying an (i, j) index that the
+point-value evaluation discards.
+
+Three things follow from applying it to eight S22 complexes at official
+geometries. The VV10 term is not a fixed share of the exchange-correlation
+contribution - 16% for the water dimer, 223% for the methane dimer, 100% and 54%
+for two geometries of the same benzene dimer - so reporting it as "the dispersion
+energy" is unsafe even within one benchmark set. The association-time change is
+almost entirely inter-fragment: the frozen-density pair term accounts for
+0.92-1.08 of the superposition difference, with relaxation a small correction of
+either sign rather than an additive channel. And the dominant uncertainty is the
+attribution scheme, not the numerics: 0.004-0.310 kcal/mol absolute,
+0.8-18.2% relative, unchanged across five basis sets and across grid levels, with
+no pattern by interaction type that would let a single percentage be quoted.
+
+What the method does not do is equally important, and we would rather the reader
+learn it here than in a review. It is not an EDA: it does not separate
+electrostatics, exchange-repulsion, polarisation or charge transfer. It is not
+faster than the production kernels it could be compared against - it is
+quadratic in the grid. And its arithmetic is currently verified against a second
+implementation of the same kernel inside the same library, not against a second
+program; the cross-program anchor that an earlier version of this draft claimed
+turned out, on re-reading the archived output it cited, to have no source, and
+the claim is withdrawn in section 4. Establishing that anchor is the first item
+outstanding.
+
+Two further items are open and stated as such rather than smoothed over: the
+level-2 counterpoise run for one of the eight systems (benzene...methane) was
+cut off by its own wall-clock budget, and the search for prior fragment-level
+attribution of a nonlocal double sum currently rests on OpenAlex plus a
+full-text comparison with the closest published decomposition, not on a formal
+database run.
+
+The package is released under Apache-2.0 with no GAMESS source in it, every
+number in this paper is produced by a named script whose archived stdout is part
+of the repository, and the two structural guards we added after finding bugs in
+our own geometry builders - coordinate assertions at construction time, and
+`partition_factors()` verifying its own output against PySCF's partition weights
+before returning - are the part of this work we would most recommend copying.
 
 ---
 ### 出处对照
