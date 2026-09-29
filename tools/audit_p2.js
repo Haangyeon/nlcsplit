@@ -17,6 +17,25 @@ const TARGET = process.argv.slice(2).find(a => !a.startsWith('--')) || 'paper/p2
 const TRACKED = new Set((cp.spawnSync('git', ['ls-files'], { encoding: 'utf8' }).stdout || '')
   .split('\n').filter(Boolean));
 
+const byBase = new Map();
+for (const p of TRACKED) {
+  const b = p.split('/').pop();
+  if (!byBase.has(b)) byBase.set(b, []);
+  byBase.get(b).push(p);
+}
+const dirsWith = pre => [...TRACKED].some(p => p.startsWith(pre));
+
+// 引用解析：带目录分隔符的按整条路径查；**裸文件名按 basename 查**。
+// 软件文里 `figures.py`、`partition.py` 是行文用的模块名（真身在 nlcsplit/ 下），
+// 整条路径查会把它们全判成"文件不存在"，然后这个闸门就变成噪音、被无视。
+// 而 `RESEARCH-xxx.md` 这种"全仓根本没有"的名字必须仍然会响。
+function resolve(t) {
+  if (t.endsWith('/')) return dirsWith(t) ? [{ path: t, ok: true, dir: true }] : [];
+  if (t.includes('/')) return TRACKED.has(t) ? [{ path: t, ok: true }] : [];
+  const hits = byBase.get(t) || [];
+  return hits.length ? hits.map(h => ({ path: h, ok: true })) : [];
+}
+
 // 与 md2tex.js 保持同一套"看着像路径"的判据，别在这儿另起炉灶：
 // `x.md:700-707` 与 `evidence/**` 都不是路径，误报的闸门会被无视，比没有更糟。
 // 第一版把三种东西误判成了路径：API 名 `nlc.pair_energy`、式子 `(4π/3)ρ`、
@@ -60,7 +79,7 @@ function audit(text) {
     const flat = raw.replace(/\r?\n\s*/g, '');
     const one = stripNodeId(stripLines(flat));
     if (!pathToken(flat)) continue;
-    if (!TRACKED.has(one)) {
+    if (!resolve(one).length) {
       fails.push({ kind: 'path', line, token: one,
         detail: (fs.existsSync(one) ? 'exists but NOT tracked by git' : 'no such file')
           + (raw !== flat ? ' (citation is wrapped across lines)' : '') });
@@ -77,9 +96,13 @@ function audit(text) {
   }
 
   lines.forEach((ln, i) => {
-    const hasSpeed = SPEED.test(ln) || SPEED_X.test(ln);
+    // 引号里的东西是**别人**的题名或行话（"Nonlocal ... made faster"、
+    // "which fast scheme is actually faster"），不是我们的主张。先剥掉再判，
+    // 否则每条文献引用都要来烦人一次，而这种闸门被人无视就等于没有。
+    const bare = ln.replace(/"[^"]*"/g, '');
+    const hasSpeed = SPEED.test(bare) || SPEED_X.test(bare);
     if (!hasSpeed) return;
-    if (NEGATE.test(ln)) return;
+    if (NEGATE.test(bare)) return;
     fails.push({ kind: 'wording', line: i + 1, token: ln.trim().slice(0, 120),
       detail: 'acceleration/scaling wording with no negation in the same line' });
   });
@@ -100,6 +123,8 @@ if (SELFTEST) {
     'not_a_real_file.out`].',
     'the screened path is 1.08-10.28\u00d7 slower; it never won.',
     '`w0` contains `(4π/3)ρ` and the half-block convention of `nlc.pair_energy`.',
+    'closest work is Laikov 2025, "Nonlocal van der Waals density functional made faster".',
+    'our scheme is 4\u00d7 faster on the far field.',
   ].join('\n');
   const f = audit(probe);
   const kinds = f.map(x => x.kind);
@@ -109,9 +134,11 @@ if (SELFTEST) {
     && wrapped.length === 1 && wrapped[0].token === 'evidence/bound_forms/not_a_real_file.out'
     && !f.some(x => x.line === 4)      // 带行号的引用不许误报
     && !f.some(x => x.line === 8)      // 已否定的加速措辞不许误报
-    && !f.some(x => x.line === 9);     // 式子与 API 名不是路径
+    && !f.some(x => x.line === 9)      // 式子与 API 名不是路径
+    && !f.some(x => x.line === 10)     // 别人的题名在引号里，不是我们的主张
+    && f.some(x => x.line === 11 && x.kind === 'wording');   // 剥掉引号后判据仍然有效
   console.log('selftest findings:', JSON.stringify(f.map(x => `L${x.line} ${x.kind}: ${x.token}`), null, 1));
-  console.log(ok ? 'SELFTEST OK: 三类判据都会响（含跨行折行的引用），四种合法写法都不响'
+  console.log(ok ? 'SELFTEST OK: 三类判据都会响（含跨行折引、剥引号后仍响），五种合法写法都不响'
                  : 'SELFTEST FAIL: gate is not discriminating');
   process.exit(ok ? 0 : 1);
 }
