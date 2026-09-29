@@ -107,11 +107,14 @@ def one(name):
     dxc = (d["e_xc"] - m["e_xc"]) * KCAL
     dnlc = (d["e_nlc"] - m["e_nlc"]) * KCAL
     dtot = (d["e_tot"] - m["e_tot"]) * KCAL
-    dcp = counterpoise(mol, frags, LEVEL) if CPCORR else float("nan")
+    dcp = counterpoise(mol, frags, LEVEL) if CPCORR else None
+    # None 而不是 float("nan")：nan 经 {:+7.3f} 会印成 "+nan"，在日志里读起来像算错，
+    # 而它真正的意思是"这一档按 NCPC=0 关掉了"。
+    dcp_s = "   —  " if dcp is None else f"{dcp:+7.3f}"
     span = max(pint.values()) - min(pint.values())
     # 注意：这里的比值分母是"超位置差"Δ_sup，不是 counterpoise；命名上刻意避开 CP 缩写
     print(f"  {name:10s} 原子{mol.natm:3d} 片间min {dmin:4.2f}Å  "
-          f"ΔE_int {dtot:+7.3f}  ΔE_int(反泊松) {dcp:+7.3f}  ΔE_xc {dxc:+7.3f}  "
+          f"ΔE_int {dtot:+7.3f}  ΔE_int(反泊松) {dcp_s}  ΔE_xc {dxc:+7.3f}  "
           f"ΔE_NLC {dnlc:+7.3f}  P_frz[becke] {pint['becke']:+7.3f}  "
           f"方案跨度 {span:6.3f}  P/Δsup {pint['becke']/dnlc:5.2f}   "
           f"{time.time()-t0:4.0f}s", flush=True)
