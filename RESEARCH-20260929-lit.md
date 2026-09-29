@@ -117,3 +117,55 @@ D=3.81 Å 构造几何，其平衡几何来自 CCSD(T)/CBS 扫描）三项解释
   候选来源：Podeszwa et al.（该文引文 120，DFT-SAPT 扫苯二聚体 PES）、
   Heßelmann–Jansen SAPT(DFT)、S22/S66×8 原文。需要再次浏览器取全文。
 * WoS/Scopus 那一轮正式检索（OpenAlex 一层证据已给，不能替代正式库）。
+
+## 8. 正式检索这一轮的结果：**三台仪器全部不可用**（2026-09-29 09:20 实测，带复现物）
+
+结论先说：**新颖性主张目前仍只有 OpenAlex 一层证据**，不能写成"经正式库核查"。
+本轮试图补 WoS/Crossref/Semantic Scholar 三层，三层各自因不同原因不成立，
+证据如下（脚本 `scratch/pw_wos3.js`、`scratch/lit_x2.js`，输出
+`scratch/wos_r1.json`、`scratch/xref_s2_r2.json`）。
+
+### 8.1 Web of Science（中国镜像 clarivate.cn）——界面进得去，检索不给跑
+* 关键机制：**系统代理会把出口换成境外 IP**（browser-use 的 Chrome 实测出
+  `104.251.123.25`），该镜像按 IP 认机构 ⇒ 只会撞到 `access.clarivate.com/login`。
+  以 `--proxy-server=direct://` 直连则出 `202.117.147.182`（教育网），
+  落地页确实是检索界面（`#advancedSearchInputArea` 可见，placeholder
+  "Enter or edit your query here…"）。**这一步是本轮真正的进展：馆际通路是通的。**
+* 但 `Sign In` 按钮仍在（未获得会话），填入
+  `TS=("VV10" AND "decomposition")` 后回车 / "Add to query" 均**不提交**，
+  URL 停在 `/wos/woscc/advanced-search`，九条式子全部 `total=null`。
+  即该镜像**不允许匿名执行检索**，机构 IP 只解决"能看见界面"。
+* 两个额外实测坑：OneTrust 遮罩会让 "Add to query" 永远 `disabled`（要先点掉）；
+  技能里记的 `getByRole("button", {name: /^Search$/})` 在本版界面上**匹配不到**，
+  实际可见的是 "Add to query" 与一个 class 含 `search` 的按钮。
+* ⇒ 需要用户本人过一次 CARSI/机构登录（或明确授权我用其账号登录一次）。
+  按纪律不擅自代填口令走 IdP，也不在结果未知时重试。
+
+### 8.2 Crossref `query.bibliographic` ——**known-item 校准不通过**，故其 0 命中无效
+三篇确知在库的对照：
+
+| 校准 | 期望 | 实测最高分 | 命中的实际题名 |
+|---|---|---|---|
+| K1 | Van der Waals Density Functional for General **Use** (Dion PRL 92,246401) | 0.857 | "...for General **Geometries**"（**是另一篇**，Yıldırım PRL 100,063001） |
+| K2 | vdW density formalism: … interactions in rings (Thonhauser PRB 69,235111) | 0.667 | 未召回 |
+| K3 | Hartree-Fock-Swap … Gibbs energy (Smith 等) | 0.125 | 未召回 |
+
+* 判据本身也暴露了：0.85 词元重叠会把 K1 判成**伪命中**（一字之差、另一篇文献）。
+  收紧就会把 K2/K3 判死——**这台仪器没有可调和的工作点**。
+* 每条式子都返回 `rows` 顶格 8/20 条且相关性明显不对（N3 首条是"六维分子间势能面复核"），
+  说明它是纯相关度引擎，不能承载布尔式子。
+* ⇒ 本轮 N1–N7 的"没命中"**一律不作数**，第一版里那句结论已从证据链撤回
+  （`xref_s2_r1.json` 保留，标为无效实验）。
+
+### 8.3 Semantic Scholar —— 未授权 429 打满，连校准都跑不完
+`limit=20` 的 `/paper/search` 在未带 key 的共享池里 5 次退避（2.5–12.5 s）后仍
+`429 exhausted`。要用得 API key，属花钱/注册类事项，未擅自办。
+
+### 8.4 这一轮之后，新颖性主张的诚实表述
+* 已确立：OpenAlex（10 条 `title_and_abstract.search`，5 条返回 0 或 1）+
+  对最近先例 JCTC 3c00903 的**全文级**重叠判定（其把 −VV10 整块当色散能，
+  未在该项内部做片段/原子对归属）。
+* 未确立：WoS/Scopus 正式检索、第三个独立索引。
+* ⇒ 正文里这句必须这么写：**"据 OpenAlex 与对最近先例的全文比对，未见对 VV10
+  非局域关联双重和的片段/原子对归属；正式库检索待补"**——
+  在补齐 8.1 之前不得写"经 Web of Science 检索确认"。
