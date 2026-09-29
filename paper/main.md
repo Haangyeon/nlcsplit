@@ -70,7 +70,15 @@ B?" has no answer inside that evaluation.
 We provide that answer. `nlcsplit` evaluates the same double sum explicitly,
 keeping the (i, j) pair index, and attributes each grid point to a fragment
 through a real-space partition, so that E_NL decomposes into intra-fragment
-blocks E_AA and inter-fragment pair blocks E_AB. The decomposition is exact by
+blocks E_AA and inter-fragment pair blocks E_AB. Evaluating the sum explicitly is
+not itself new: JuNoLo post-processed a converged density from another code with
+the nonlocal term, at the same N² cost, in order to obtain an improved *total*
+energy on massively parallel hardware [S14]. What is absent from that work - and
+from the production kernels - is the attribution. JuNoLo in fact recommends
+against fragment-style treatments for the weakly-bound cases where fragments are
+distinguishable, reserving itself for chemisorption "where one cannot tell apart
+fragments of the bonded system" [S14]; the present paper works precisely in the
+regime where they are. The decomposition is exact by
 construction — the sum of the blocks reproduces the total to machine precision
 — but exactness is not the point and we do not sell it as such: grouping the
 summation indices is trivially additive. Two things are not trivial, and they
@@ -410,7 +418,9 @@ population convention is stated alongside them.
 **Cost, and what it buys.** The explicit double sum is quadratic in the number of
 retained grid points; we have not implemented a sub-quadratic approximation, and
 the point-value kernel that PySCF ships is both cheaper and accurate to ~1e-8 Ha
-on its own grid (section 3.1). We are therefore not claiming that this
+on its own grid (section 3.1). The cost is not prohibitive in itself - JuNoLo ran
+the same N² sum over massively parallel hardware for surface calculations [S14] -
+but it is a real constraint, and it is worth naming the trade honestly. We are therefore not claiming that this
 method computes dE_NLC better. What it buys is the (i, j) index structure: the
 0.92-1.08 frozen-density result of section 3.3, and the per-pair numbers behind
 Table 1, are not recoverable from a scheme that collapses the pair sum to point
@@ -490,7 +500,10 @@ DOI 10.1021/acs.jctc.3c00903（全文取 ChemRxiv 绿色 OA 10.26434/chemrxiv-20
 [S12] `logs/20260929T003144Z_stepg-recompute.out`（当前几何、当前代码、level 1
 五档基组阶梯），与 CentOS `logs/20260928T165857Z_centos-step2.out` 交叉一致 ·
 [S13] 网格收敛同上 step2 第 18–20 行（sto-3g 0.0010 / 6-31G\* 0.0081 /
-aug-cc-pVDZ 0.0067）
+aug-cc-pVDZ 0.0067）·
+[S14] Lazić, Atodiresei, Alaei, Caciuc, Blügel, Brako, *Comput. Phys. Commun.*
+**181**, 371–379 (2010)，DOI 10.1016/j.cpc.2009.09.016（卷页经 Crossref DOI 回查），
+开放预印本 arXiv:0810.2273v1；引文与判定依据见 `RESEARCH-20260929-lit.md` §10
 
 [S1] `RESEARCH-20260929-lit.md` §1, §6 · [S2] `MAIN-skeleton.md` 表2/表4b、
 `nlcsplit/logs/step_h.json` · [S3] `step_f_dispersion.py` 输出 ·
