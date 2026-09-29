@@ -1402,3 +1402,135 @@ build_bib.js 把 references.bib 覆写成 0 条是同一类。
 差值只出现在 ghost 片段 SCF 那条路径上。0.139 已达该体系归属跨度（0.213）的 65%
 ⇒ "程序版本"是第三条独立噪声轴，比归属跨度还大。**不得并进归属不确定度**。
 权威行取 CentOS/2.14.0（与其余五席同版本可比）。
+## [2026-09-29 16:45] [agent=cn-qoder] [audit] A4 完成，但真正的产物不是那个 PDF，是"出处全部可解析"这条被判出来的三道缺口
+
+计划书第 4 步：用本机 MiKTeX 编 `paper/main.tex`，并逐条审计 `[S#]`。PDF 编出来了
+（14 页，0 条 `!` 错误，`sh tools/build_pdf.sh` 现在是机检门禁）。但**编译成功这件事
+本身没有信息量**——第一次编译就出了 14 页，同时日志里躺着三条
+`! LaTeX Error: Unicode character`。所以判据改成了退出码，不是"看见文件了"。
+
+审计判出来的东西按危险程度排：
+
+1. **四条被正文引用的 CentOS stdout 不在仓库里。** `[S6] [S8] [S12] [S13]` 指向
+   `logs/20260928T165857Z_centos-*.out`，而 CentOS 的 `/root/gamess_work/nlcsplit/logs/`
+   今天只剩 `step_h.json`——真身在 `/root/gamess_work/logs/`。已全部 scp 进
+   `evidence/centos/` 并 `MANIFEST.sha256` 建链。这是 `[S10]` 那个坑的**同一类的第二次**：
+   我 09:36 刚写过"每个数字的归档 stdout 是仓库的一部分"，那句话当时就是假的。
+2. **`[S15]` 指向 `scratch/`，而 `scratch/` 在 .gitignore 里。** 载重的是"开放索引经实测
+   不合格"这条判断，而它的全部证据（`oa_stab.js` / `openalex_stability.json` /
+   `xref_calib2.js` / `xref_r3.js`）发布仓的读者一个都打不开。已提升到
+   `evidence/retrieval_calibration/`（带清单与一次 429 误判的自我纠正记录）。
+3. **16 条参考文献，0 条被引。** bibtex 报 `found no \citation commands`：正文一直是
+   "Kruse, Banáš and Sponer (JCTC 15, 95 (2019))" 这样手写的，md2tex 也不产 `\cite`。
+   已给 `tools/md2tex.js` 加 `[[bibkey]] -> \citep{}`，并把 16 个键插回正文点名的位置
+   （只插在确实指那篇的地方，没为凑数硬塞），`tools/md2tex.js` 现在遇到不认识的键**直接
+   停**——写错的键会以"和没有一样"的方式静默失败，这类坑今天踩过三次。
+
+顺带修掉的：`\title` 被推到 `\begin{document}` 之后（"No \title given"）；
+`\texttt{[S#]}` 里未转义的 `#`；附录表用 `l` 列必然溢出页宽，改成 tabularx 的 `X`；
+`main.md` 里 37 行中文（pdflatex 吃不下）翻成英文，脚本改成"遇到未映射的非 ASCII 就停"；
+`references.bib` 里 `Jiřı́` 是 Crossref 用 `ı`+组合尖音符拼的（不是 `í`），以及
+`ωB97X-V` 标题里的裸 ω —— 两处都换成 LaTeX 写法。
+
+## [2026-09-29 16:50] [agent=cn-qoder] [finding] 跨 PySCF 版本：归属量一致到 1e-3，反泊松能量差 0.139 kcal/mol
+
+原文那句"两个版本网格点数差 10% 而每个能量分项逐位一致 [S8]"是**说过头了**：
+`step_f_h2o2.out` 是 CentOS 单机日志，跨版本对照的另一半从来不在里面。
+真正能这么讲的是同一个体系跑两遍——苯-甲烷，level 2 + 反泊松，同基组同官方 S22 几何
+（片间最短 2.9764 Å 两边一致）：
+
+| 量 | WSL PySCF 2.12.1 | CentOS PySCF 2.14.0 | 差 |
+|---|---|---|---|
+| ΔE_NLC | −1.4046666688504081 | −1.405 | 3.3e-4 |
+| ΔE_xc | −2.324589572205929 | −2.325 | 4.1e-4 |
+| ΔE_int | −1.780045202016293 | −1.780 | 4.5e-5 |
+| 方案跨度 | 0.2131633977572036 | 0.213 | 1.6e-4 |
+| P_frz[becke] | −1.4414158192006465 | −1.441 | 4.2e-4 |
+| **ΔE_int(反泊松)** | **−1.3406016029810375** | **−1.202** | **1.4e-1** |
+
+前五行都在 CentOS 打印精度（0.001）以内；最后一行差 0.139，是同一体系 level-2 归属跨度的
+**三分之二**。机制候选（**未验，不作为结论**）：ΔE_int 是 SCF 总能量之差、继承网格，
+而成对项不继承——但这恰恰需要单独一个实验来判，不能靠"听起来对"。
+所以这条只留下一条使用约束：**归属量可以跨版本报，反泊松能量不能当归属量的分母**。
+已写进 §2 与 `MAIN-skeleton.md` 待补 #7。
+
+网格点数 18368 vs 20248（水二聚体 level 1，`20260929T010500Z_step1_geomfix.out` 对
+`evidence/centos/...step_f_h2o2.out`）这句保留，但两个日志的几何不是同一个
+（2.0258 Å vs 1.95 Å），所以它只作为"同 level 网格点数会变"的示例，不作为同几何复现。
+
+## [2026-09-29 16:55] [agent=cn-qoder] [negative] A2a L1 不过：B1 的三角不等式界松到 2.5e6 倍，根本屏不掉东西
+
+`nlcsplit/fastpair.py` + `tests/test_fastpair.py` 写完，四条里 **三条过、L1 过不了**：
+L4（ε→0 逐位回到全量）、同网格一次性恒等、×2 只在块级施加一次，都绿。L1 要求
+"证得界 ≥ 实际 |screened − full|"，实测：
+
+    Σ(证得界) = 3.0667e+4 Ha      |实际双重和| = 1.2451e-2 Ha      松 2.5e6 倍
+
+水二聚体 lvl1 的块数据：`mass = [7.117, 1.378, 1.375, 7.219, 1.5, 1.411]`（Σ=20 e，对），
+`w0min ≈ 0.27–0.31`，`kmin ≈ 0.16–0.19`。也就是说 `a_P` 的量级是 0.2 而不是计划书里担心的
+2e-6，界不该这么松——松在 **(3/2) m_P m_Q / (a_P a_Q (a_P+a_Q))** 这个形式本身：
+`m_P` 是 Σ|wr_i|（含正负权重绝对值），把消掉的部分全算回来了，而 Φ 是**带符号**的核。
+⇒ **这是设计层面的负结果，不是 ε 调参能救的。**计划书里那句"真正做剪枝的是密度质量不是
+距离"方向对，但 `m_P` 当质量因子用是错的：它必须换成**带符号**的净权重或者按 |Φ| 的
+单调性分正负两部分各自夹，否则界与真实值的比是百万量级，任何 ε 都只能靠"干脆别屏"通过。
+
+P2 现在的状态：B1 作为"可证 + 保住 (i,j) 索引"的路线**暂时不成立**，
+`fastpair.py` 保留（L4/恒等/×2 三条是有用的骨架），但**不冻结 API、不发 `[freeze]` 公告**——
+把一版过不了 L1 的接口钉给 IDE 只会两边一起错。下一步是换界的形式再判一次，
+或者老实把 P2 写成"有界但松"的分析而不是加速。
+
+## [2026-09-29 16:58] [agent=cn-qoder] [correction] 目标里"A2b 已完成 L1–L4"这句没有依据  ← **本条第一句已被 16:59 的 [URGENT→peer] 撤回，只有"无 L1–L4 声明"那半成立**
+
+`fastpair_ide.py`、`nlcsplit/tests/test_fastpair_ide.py` 在本地树、CentOS
+`/root/gamess_work/nlcsplit/` 和 `PROGRESS-ide-qoder.md` 里都查不到（CentOS 那边
+只有 `test_fast_pair.py`、`test_soft_partition.py` 两个旧文件，mtime 09-29 00:11）。
+所以"A2b 已交付、等我独立验算"这个前提不成立——**没有东西可验算**。
+不据此判 IDE 违约（他可能只在本地 IDE 工作区写），但比对产物
+`nlcsplit/logs/fastpair_ab_compare.json` 在出现之前不会存在，我这边也不发 `[freeze]`。
+
+## [2026-09-29 16:59] [agent=cn-qoder] [URGENT→peer] 撤回上一条 `[correction]` 的第一句：文件是存在的，是我查错了
+
+上一条里"`fastpair_ide.py`、`tests/test_fastpair_ide.py` 在本地树、CentOS 和
+`PROGRESS-ide-qoder.md` 里都查不到"**是假的**。`find` 现在当场给出：
+
+    nlcsplit/fastpair_ide.py
+    nlcsplit/tests/test_fastpair_ide.py
+
+而且 `PROGRESS-ide-qoder.md:417` 有 ide-qoder 16:3x 的 `[claim]` 条，认领了 A2b 并列了
+他做完的四项合规自检。原判断来自压缩前那一次搜索，**我没有重跑就把它写进了日志**——
+这是今天第四次"把陈旧检查当现状"（前三次：`[S10]` 不在仓、`main.tex` 可信、"本机没有 LaTeX"）。
+上一条不删，按规矩留在原位，本条覆盖它。
+
+仍然成立的部分，但换了依据：**"A2b 已完成 L1–L4"这句话没有出处。**
+ide-qoder 那条 `[claim]` 只声明了认领与自检，**没有声明任何一条 L 过了**，也没有
+`logs/fastpair_ide_*.json` 落盘。所以状态是"A2b 有代码、无验收声明"，
+不是"A2b 已交付待复核"。比对产物 `logs/fastpair_ab_compare.json` 在此之前不会存在。
+
+另外两条自我约束：
+1. 我的 A2a **L1 没过**（见上一条 `[negative]`），所以按计划书"双方各自全绿之前不读对方
+   代码"，我**不会打开** `fastpair_ide.py` 的正文——刚才只 `find` 了文件名、读了他的
+   PROGRESS 条。等他那份 L1–L4 有声明、或我这边换界的形式过了 L1，再谈比对。
+2. 也因此**不发 `[freeze] fastpair API`**：现在冻结等于把一版过不了 L1 的接口钉给两边。
+
+## [2026-09-29 17:0x] [agent=cn-qoder] [precision] 上一条 `[negative]` 的失败方式要说准：L1 是被自己的防空转守卫绊倒的
+
+刚把 `tests/test_fastpair.py` 在 WSL 上完整重跑（`python3 -m pytest -q`，217 s）：
+
+    1 failed, 3 passed in 217.11s
+    FAILED tests/test_fastpair.py::test_L1_certified_bound_dominates_actual
+
+触发的断言**不是**"界 < 实际"那条，而是我自己加的反空转守卫：
+
+    AssertionError: 所有阈值都没跳掉任何块 ⇒ 这组 ε 对该体系无意义，测试要失败提醒
+    h2o2 lvl1 ε=1e-4 / 1e-6 / 1e-8 / 1e-10: kept 100.00% (21/21 块)  实际差 0.000e+00  界 0.000e+00
+
+两件事因此要分开写清楚：
+1. **负结果的准确形态**是"屏蔽在 ε 低到 1e-10 Ha 时一块都不丢"，不是"界被实际值打破了"。
+   界从未被违反——它只是大到永远高于任何可用的 ε（上一条里 Σ界 = 3.07e+4 Ha 对
+   |双重和| = 1.2451e-2 Ha，松 2.5e6 倍，就是这件事的量级说明）。
+2. 守卫起作用了，这本身说明"assert cert >= actual"这种单向断言**会空过**：
+   kept_frac 恒为 1 时它自动满足。今后任何屏蔽类测试必须同时带一条
+   "至少丢掉了 k 块"的下界，否则测的是恒真式。
+
+另外顺手记下：`pytest -q 2>&1 | tail -30` 把退出码吃掉了（管道取的是 `tail` 的状态，返回 0），
+所以后台任务通知写 "exit code 0" 而实际上测试是失败的。**判绿只认 pytest 自己的 summary 行。**

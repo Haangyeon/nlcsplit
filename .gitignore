@@ -28,3 +28,6 @@ paper/*.aux
 paper/*.out
 paper/*.log
 dist/
+paper/*.bbl
+paper/*.blg
+paper/build_log.txt

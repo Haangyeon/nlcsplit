@@ -198,17 +198,27 @@ lvl2 = −0.5235，与今天在**当前代码+当前几何**上重算的结果�
 2. ~~WoS/Scopus 正式检索一轮~~ ⇒ **WoS 已完成两轮，第二轮为全量枚举**（见 §2 先例块）。
    仍欠的是**第二个库**：Scopus 经 §2/§3 实测机构未订阅，Embase/SciFinder 未查 ⇒
    正文 §5 已按"覆盖一个索引"如实交代，不假称多库。
-3. 第三个真正独立的裁判。**已查明为什么这么难**（`PROGRESS-agent-orca.md` 13:4x）：
-   ORCA 6.0.1 跑 ωB97X-V/6-31G\* 的普通 `NR-SCF` **根本不打印 VV10 项**——
-   `ref/01_h2o_orca.inp:2` 证明当年用的就是 ωB97X-V，而 `.out` 里 VV10/nloc/nonlocal
-   三个词 0 命中；它的 DFT 能量表只有 `EX` 与合计 `EC`（非局域部分折在 `EC` 里）。
-   grep "VV10" 会命中的 `E(VV10-nl)` 列属于**双杂泛函的 PT2 关联**，是另一个物理量
-   ⇒ 早先那张"对 libxc/ORCA 的系统差"表，**ORCA 一侧作废**（已停止引用）。
-   拿到可引的 VV10 值需要显式 `%noloc`/`nlpot` 或 `%molpairsel`（agent 正试）。
-   另一条独立路线：Psi4，或自建 libxc 直调 `xc_nlc_vxc`（PySCF 里的 libxc 静态链在
-   libdft.so，取不到符号）。
+3. 第三个真正独立的裁判 ⇒ **已成立**（2026-09-29 上午，见 `PROGRESS-nlcsplit.md` `[anchor]` 条）：
+   ORCA 6.0.1 确实打印 VV10 项，**标签是 `NL Energy, E(C,NL)`**（SCF 表里另有一列
+   `E(VV10-nl)`，那是**双杂泛函的 PT2 关联**，另一个物理量，不可混用）。
+   ⚠ 本条此前写的"ORCA 的普通 NR-SCF 根本不打印 VV10 项、`.out` 里
+   VV10/nloc/nonlocal 三个词 0 命中"**是错的**，错因就是只按字样 grep；
+   原文保留在此以留下轨迹。锚点数值：水二聚体 ΔE_NLC 差 **0.0004 kcal/mol**、
+   苯二聚体 A 差 **0.0416 kcal/mol**；证据
+   `evidence/orca_run/*.out` + `MANIFEST.sha256` + `nlcsplit/logs/orca_anchor.json`。
+   ⇒ 现在仍欠的是一条**独立实现**（Psi4，或直调 libxc 的 `xc_nlc_vxc`），
+   不是"第二个程序"。
 4. 图 3：ΔE_NLC vs 文献 E_disp 的相关性（A 案的 go/no-go 判据）
 5. 苯二聚体两构型的 level 1（现在只有 level 0）—— ⇒ **已完成**，表1 两行已按 level 1 重算
+6. level-2 + 反泊松全表 ⇒ **六个体系已全部到位**（此前"差苯-甲烷一个体系"的说法作废）。
+   侧车 `nlcsplit/logs/step_h_l2cp.json`，归档 stdout `evidence/l2cp/`（含 2026-09-29 补的
+   苯-甲烷那一次），两地数值 WSL 2.12.1 `dnlc −1.4046667` 对 CentOS 2.14.0 `−1.405`。
+7. **新：** 反泊松 ΔE_int 跨 PySCF 版本差 0.139 kcal/mol（苯-甲烷 lvl2，两地同几何同基组），
+   而 ΔE_NLC/ΔE_xc/方案跨度都一致到 1e-3 以内。机制候选 = 总能量差继承网格、成对项不继承，
+   **未验**，只作为"不得拿 CP 值当归属量的分母"这条使用约束的实证。
+8. **新：** 基组阶梯（`evidence/centos/...step2.out`）跑在几何修复**之前**的初始 S22 结构上；
+   其 level-1 一列与修复后的 `stepg-recompute` 在三种共有基组上吻合到 4 位小数，
+   所以结论不依赖这一点，但**整条阶梯仍需在弛豫几何上重跑一遍**。
 
 ## 4. Limitations（必须自己先说，别等审稿人）
 - **不是 EDA**：没有分离静电/交换/极化/电荷转移。我们只给 ΔE_xc 的两分

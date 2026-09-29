@@ -1,23 +1,28 @@
 # Fragment-Resolved Nonlocal Correlation: Pair Attribution of the VV10 Term
-## Draft — §1–§5 prose（§1/§2 先写，§3–§5 于 2026-09-29 补齐）
+## Draft — §1–§5 prose (written 2026-09-29)
 
-数值出处用 `[S#]` 标，对应 `MAIN-skeleton.md` 里的表与 `nlcsplit/logs/`。
-**WoS 正式检索 2026-09-29 完成两轮**（用户本人过一次机构登录）。第二轮改用 WoS 自己的
-记录接口 `/api/wosnx/core/runQuerySearch`（`retrieve.count` 可调，响应是 ndjson），
-于是**每条式子都是全量枚举**：两条 4 命中式各 4 条读全，另有 33+33+7+8 四条宽式穷举。
-§12 那条"只读到相关度首位"的限制**已解除**。
-新查出一条必须先引先划界的近邻：Hyldgaard–Berland–Schröder, PRB 90, 075148 (2014)
-（对同一个非局域关联能做 xc-hole 实空间诠释，但不做片段归属）；顺带发现
-`references.bib` 原本**没有 VV10 自己的两篇**（Vydrov–Van Voorhis PRL 2009 / JCP 2010），
-已补，bib 13 → 16 条。全部记录与判定见 `RESEARCH-20260929-lit.md` §12–§13。
-仍欠一件：level-2 反泊松差 `苯-甲烷` 一个体系。开放索引（OpenAlex/Crossref）经实测
-主题召回不合格，**只用于已知条目核验**，不再作为"无先例"的依据（§9–§11）。
+Number provenance is tagged `[S#]`; the tag-to-artefact table is the appendix at the end of
+this file, mirrored in `paper/tex_audit.md`. The formal Web of Science search was run twice
+on 2026-09-29 through the institutional login. The second round used WoS's own record
+endpoint (`/api/wosnx/core/runQuerySearch`), which returns ndjson and allows an arbitrary
+`retrieve.count`, so every query below was enumerated in full rather than sampled: two
+4-record strings read completely, plus four broad strings of 33, 33, 7 and 8 records. The
+"top-relevance-row only" limitation noted in the first round is lifted.
+That enumeration changed the novelty position in two ways: it surfaced a neighbour that must
+be cited and bounded (Hyldgaard, Berland and Schröder, PRB 90, 075148 (2014)), and it
+revealed that `references.bib` did not contain VV10's own two papers (Vydrov and Van Voorhis,
+PRL 2009 / JCP 2010), which are now added (bib 13 → 16). Full record lists and per-record
+judgements are in `RESEARCH-20260929-lit.md` §12–§13.
+Open indexes (OpenAlex, Crossref) were measured and then discarded as instruments for the
+no-precedent claim: they retrieve known titles but miss a known on-topic paper when asked
+topically (§9–§11).
 
 ---
 
 ## Abstract
 
-The VV10 nonlocal-correlation term of range-separated hybrid functionals is a
+The VV10 nonlocal-correlation term [[vydrov2009vv10]] of range-separated hybrid
+functionals is a
 double sum over grid-point pairs. Standard implementations collapse that sum to
 point values, which makes the inter-fragment content of the term unavailable. We
 evaluate the double sum explicitly, retaining the (i, j) pair index, and
@@ -56,7 +61,8 @@ script whose stdout is archived under a UTC-stamped filename.
 ## 1. Introduction
 
 Range-separated hybrid functionals with the VV10 nonlocal-correlation
-functional — ωB97X-V and ωB97M-V in particular — have become a default choice
+functional — ωB97X-V [[mardirossian2014wb97xv]] and ωB97M-V
+[[mardirossian2016wb97mv]] in particular [[calbo2015vv10review]] — have become a default choice
 for non-covalent interactions. The nonlocal term is a two-electron-density
 double integral over all pairs of grid points,
 
@@ -124,7 +130,7 @@ whole of ΔE_xc (ΔE_NLC = −0.517 against ΔE_xc = −0.232), i.e. the rest of
 exchange-correlation is net repulsive there.
 
 Our positioning relative to the closest prior work is deliberate. Dasgupta and
-Paesani (JCTC 2023, DOI 10.1021/acs.jctc.3c00903) also decompose interaction
+Paesani [[dasgupta2023]] also decompose interaction
 energies of dispersion-corrected functionals, using second-generation
 ALMO-EDA, E_Int = E_Pol + E_Frz + E_CT + E_Disp, and they obtain E_Disp as the
 difference against a dispersion-free reference calculation — that is, they
@@ -143,7 +149,7 @@ known-item lookup tools here, not topical search, and a low hit count from them
 cannot support a claim of absence. What we can say on evidence is narrower and
 stronger: we read the full text of the closest published decomposition [S1] and
 of the closest published explicit evaluation of the nonlocal term, JuNoLo
-(Lazić et al., Comput. Phys. Commun. 181, 371-379 (2010)) [S14], and neither
+[[lazic2010junolo]] [S14], and neither
 attributes the nonlocal double sum to fragment pairs - JuNoLo computes an improved
 total energy and explicitly recommends itself for bonded systems "where one
 cannot tell apart fragments", directing separable cases elsewhere. A formal Web of Science
@@ -156,20 +162,21 @@ the query written closest to our own claim, TS=(("VV10" OR "nonlocal correlation
 by fragment" OR "contribution of each fragment")) - also zero. The non-zero queries
 that come closest were enumerated in full rather than sampled: we used the database's
 own record endpoint, so every returned record was read, not just the top one. Kruse,
-Banáš and Sponer (JCTC 15, 95 (2019)) use VV10 as one of 29 benchmarked functionals and
-decompose the *total* interaction energy by SAPT; Hujo and Grimme (PCCP 13, 13942
-(2011)) benchmark VV10 for hydrogen bonds; Sinha and Pavanello (JCP 143, 084112 (2015))
-construct a *new* subsystem-based nonlocal functional rather than resolving an existing
-one; Hamada and Tsukada (PRB 83, 245407 (2011)) attribute an *adsorption energy* to the
-term, the opposite direction; Vydrov and Van Voorhis (JCP 130 (2009)) re-derive the
-nonlocal construction itself; and two further result lists of 33 and 33 records - one
-spanning the whole "van der Waals density functional" x "nonlocal correlation" topic,
+Banáš and Sponer [[kruse2019dna]] use VV10 as one of 29 benchmarked functionals and
+decompose the *total* interaction energy by SAPT; Hujo and Grimme [[hujo2011hbond]]
+benchmark VV10 for hydrogen bonds; Sinha and Pavanello [[sinha2015fdevdw]] construct a
+*new* subsystem-based nonlocal functional rather than resolving an existing one; Hamada
+and Tsukada [[hamada2011c60au]] attribute an *adsorption energy* to the term, the
+opposite direction; Vydrov and Van Voorhis [[vydrov2010simple]] re-derive the nonlocal
+construction itself; and two further result lists of 33 and 33 records - one
+spanning the whole "van der Waals density functional" [[dion2004]] x "nonlocal
+correlation" topic,
 one crossing "nonlocal correlation" with the partition schemes themselves (Becke,
 Hirshfeld, Mulliken, atoms-in-molecules) - contain, on reading every title, no
 application of an atomic partition to the VV10 double sum.
 
 The one neighbour this second round turned up that the first round missed entirely is
-Hyldgaard, Berland and Schröder (PRB 90, 075148 (2014)), who interpret the nonlocal
+Hyldgaard, Berland and Schröder [[hyldgaard2014interp]], who interpret the nonlocal
 correlation energy of vdW-DF as a coupling of zero-point energies of semilocal
 exchange-correlation holes. That is a real-space *interpretation* of the same quantity,
 and it is the strongest available objection to calling the term unanalyzable, so we
@@ -232,8 +239,9 @@ this system size.
 ### 2.3 Attribution schemes and the far-field cut
 
 Grid points are assigned to atoms by PySCF's own partition machinery
-(`gen_grid.get_partition` with `radi.BRAGG_RADII`), in four variants — Becke,
-Becke with the radius adjustment, Becke–Treutler, Stratmann — plus a nearest-
+(`gen_grid.get_partition` with `radi.BRAGG_RADII`), in four variants — Becke
+[[becke1988]], Becke with the radius adjustment, Becke–Treutler, Stratmann
+[[stratmann1996]] — plus a nearest-
 atom hard partition on the common grid as a control. Points with ρ below
 `rho_floor` (default 10⁻¹²) are excluded from the double sum; this removes
 10.7–22.6% of points while changing E_AB by 2.1×10⁻¹¹ kcal/mol between floors
@@ -247,7 +255,7 @@ sum.
 
 All dimer geometries are taken verbatim from the official GMTKN55 repository
 (github.com/grimme-lab/GMTKN55, `S22/NN/struc.xyz`), fetched by `tools/get_s22.sh`;
-the repository's own citation instruction is Goerigk et al., PCCP 19, 32184-32215
+the repository's own citation instruction is Goerigk et al. [[goerigk2017gmtkn55]], PCCP 19, 32184-32215
 (2017), DOI 10.1039/C7CP04913G, which we verified by reverse DOI lookup. The S22
 set itself compiles the complexes of an earlier hydrogen-bonded benchmark
 (Jurecka et al., PCCP 5, 1811 (2003)); we were unable to resolve that DOI through
@@ -273,10 +281,22 @@ requirement rather than as satisfied (§4, §3.1). Energy
 accounting is checked independently: for a hybrid functional the exact-exchange
 energy is folded into `vhf.exc` by `get_veff` and is absent from `nr_rks`, so
 we close e_tot = e_nuc + e₁ + e_coul + e_xc to ≤9×10⁻¹² kcal/mol rather than
-assuming any particular partition of the XC terms. Cross-version and
-cross-machine reproducibility is checked between PySCF 2.12.1 and 2.14.0,
-which generate 10% different numbers of grid points at the same level while
-reproducing every energy component digit for digit [S8].
+assuming any particular partition of the XC terms. Cross-version and cross-machine
+reproducibility is checked on one system run twice: benzene-methane at grid level 2 with
+counterpoise, on PySCF 2.12.1 on one machine and PySCF 2.14.0 on another. The two
+releases generate 10% different numbers of grid points at the same level (18368 vs 20248 for
+the water dimer at level 1), which is why the agreement is stated quantity by quantity rather
+than as a blanket "digit for digit". ΔE_NLC agrees to 3.3e-4 kcal/mol (-1.404667 vs -1.405),
+ΔE_xc to 4e-4 (-2.324590 vs -2.325), ΔE_int to 4.5e-5 (-1.780045 vs -1.780), the attribution span
+to 2e-4 (0.213163 vs 0.213) and P_frz[becke] to 1e-3 (-1.441416 vs -1.441), each inside the
+0.001 kcal/mol to which the second run prints. The one quantity that does not agree is the
+counterpoise interaction energy itself: -1.341 vs -1.202 kcal/mol, a difference of 0.139 that
+is two thirds of the level-2 attribution span of the same complex. We report the split, not a
+diagnosis of it - the candidate mechanism is that ΔE_int is a difference of SCF total energies,
+which inherit the grid, whereas an attributed pair term need not, and that is exactly what would
+have to be tested before the claim is made. What the observation does settle is a constraint on
+usage: the attributed quantities are the version-stable ones, and a counterpoise energy is not
+a safe denominator for them [S8].
 
 ---
 
@@ -402,7 +422,7 @@ five basis sets gives spans of 0.0400 (6-31G\*), 0.0382 (aug-cc-pVDZ), 0.0390
 0.17 kcal/mol across the basis ladder and the scheme spread stays put at ~0.04.
 No better basis set will remove it, which is why it - and not grid convergence,
 which is 0.0081 kcal/mol over level 0 to 2 at 6-31G\* and 0.0002 over level 1 to
-2 - is the error bar this method has to carry.
+2 [S13] - is the error bar this method has to carry.
 
 ### 3.5 A limit of fragment-resolved quantities
 
@@ -478,13 +498,18 @@ monomer term had to be computed twice - using 2x one monomer would have introduc
 allocation reproduced its VV10 term to 1.6e-11 Eh, so the residual is not run-to-run
 noise.
 
-What this does not check is the absolute per-fragment value. An earlier log of ours
-recorded a ~0.14 kcal/mol disagreement on the water monomer between our explicit sum and
-the native kernel; the native kernel and ORCA agree with each other, so that
-discrepancy was on our side. It cancels identically from any superposition difference,
-which is what every number in Table 1 is, but it would not cancel from the absolute
-fragment energies discussed in section 3.5, and a dedicated re-measurement of those is
-recorded as outstanding.
+What this also checks is the absolute value, not just the difference. An earlier log of
+ours recorded a ~0.14 kcal/mol disagreement on the water monomer between our explicit sum
+and the native kernel, and we flagged the absolute fragment energies as unrefereed. That
+flag is now retired: the archived level-2 run gives a water-dimer nonlocal term of
++52.9345 kcal/mol against ORCA's +0.084358235 Eh = +52.9356, and monomers +26.7635/+26.7644
+against ORCA's +26.7646/+26.7641 - agreement at the 1e-3 kcal/mol level on the absolute
+quantity as well. We have not re-established what that 0.14 was: the most likely cause is a
+comparison made before the beta·∫rho counterterm was added back - `step_f_dispersion.terms`
+now adds it before reporting, and the comment at that call site exists precisely because of
+this confusion - but we are stating the present agreement, not a diagnosis of the old
+number, so the section 3.5 identity is covered by this anchor without needing that story
+to be true.
 
 **How we know the literature search means anything.** The zeros in section 1 are
 only as good as the instrument, so we calibrated it in the same session: a known
@@ -609,35 +634,44 @@ our own geometry builders - coordinate assertions at construction time, and
 before returning - are the part of this work we would most recommend copying.
 
 ---
-### 出处对照
-[S9] `step_i_gridrepr.py`，`logs/20260929T_step_i_gridrepr.out` ·
-[S10] CentOS `logs/20260928T213839Z_centos-step_h_l2cp.out`（level 2 + 反泊松，
-进行中：已完 5/6 体系）· [S11] `RESEARCH-20260929-lit.md` §6.2–6.3，
-DOI 10.1021/acs.jctc.3c00903（全文取 ChemRxiv 绿色 OA 10.26434/chemrxiv-2023-nc64t）·
-[S12] `logs/20260929T003144Z_stepg-recompute.out`（当前几何、当前代码、level 1
-五档基组阶梯），与 CentOS `logs/20260928T165857Z_centos-step2.out` 交叉一致 ·
-[S13] 网格收敛同上 step2 第 18–20 行（sto-3g 0.0010 / 6-31G\* 0.0081 /
-aug-cc-pVDZ 0.0067）·
-[S14] Lazić, Atodiresei, Alaei, Caciuc, Blügel, Brako, *Comput. Phys. Commun.*
-**181**, 371–379 (2010)，DOI 10.1016/j.cpc.2009.09.016（卷页经 Crossref DOI 回查），
-开放预印本 arXiv:0810.2273v1；引文与判定依据见 `RESEARCH-20260929-lit.md` §10 ·
-[S15] 检索仪器召回率实测：`scratch/oa_stab.js` → `openalex_stability.json`
-（近似标题 4/4 rank=0；两条合法主题式各 0/4），Crossref 同构结论见
-`scratch/xref_calib2.js`（4/4 rank=0）与 `xref_r3.js`（主题式 1/3）。
-含一次自我纠正：429 限流曾被误计为"未召回"，重试退避后结论才成立 ·
-[S16] `RESEARCH-20260929-lit.md` §8.1（直连教育网 IP 可进检索界面，
-`Sign In` 仍在且九条式子提交后 URL 不动、`total=null`）·
-[S17] `RESEARCH-20260929-lit.md` §13：WoS 记录接口 `/api/wosnx/core/runQuerySearch`
-全量枚举轮（`RecordsSearched = 58,664,816`，检索日 2026-09-29）。含校准三条复算
-（3,317 / 1 / 33 与 UI 轮逐条相同）、零命中式两条、#6 与 #8 四命中各四条的完整书目
-与判定、以及新增三条宽式（归属词表式 0 命中、Becke/Hirshfeld/Mulliken/AIM ×
-非局域关联 33 条、vdW-DF × 非局域关联 33 条）的逐条题名判定。
-新增引文三条（`vydrov2009vv10`、`vydrov2010simple`、`hyldgaard2014interp`）
-的 DOI 均经 Crossref 与 WoS 两个来源交叉核对，卷期页码一致。
+## Appendix: provenance of every quoted number
 
-[S1] `RESEARCH-20260929-lit.md` §1, §6 · [S2] `MAIN-skeleton.md` 表2/表4b、
-`nlcsplit/logs/step_h.json` · [S3] `step_f_dispersion.py` 输出 ·
-[S4] 表4b · [S5] `step_e_kernel.py`、`PROGRESS-ide-S3.md` ·
-[S6] CentOS `logs/20260928T165857Z_centos-step_c.out` ·
-[S7] `step_d_floor.py`、`PROGRESS-nlcsplit.md` 22:45 ·
-[S8] CentOS `logs/20260928T165857Z_centos-step_f_h2o2.out`
+Each tag used above resolves to a file in this repository. "line N" means the value can be
+read literally at that line of the archived standard output; those stdout files are tracked,
+hash-listed under `evidence/*/MANIFEST.sha256`, and were not re-typed by hand.
+
+| Tag | Artefact | What it fixes |
+|---|---|---|
+| S1 | `RESEARCH-20260929-lit.md` §1, §6 | first-round WoS/Scopus search record: strings, hit counts, search date |
+| S2 | `MAIN-skeleton.md` tables 2 and 4b; `nlcsplit/logs/step_h.json` | the level-1 S22-subset table, incl. the 0.8% / 18.2% nonlocal fractions |
+| S3 | `nlcsplit/step_f_dispersion.py` | the level-1 dispersion-scale check that leaves the double sum as the only unaccounted term |
+| S4 | `MAIN-skeleton.md` table 4b | the 52%-97% range of the same quantity across partitions |
+| S5 | `nlcsplit/step_e_kernel.py`, `PROGRESS-ide-S3.md` | explicit pair sum vs PySCF's native VV10 kernel on a fixed grid |
+| S6 | `evidence/centos/20260928T165857Z_centos-step_c.out` line 19 | relaxed O-O = 2.901 A |
+| S7 | `nlcsplit/step_d_floor.py`, `PROGRESS-nlcsplit.md` 22:45 | the local term is beta x electron number, so it cancels in any superposition difference |
+| S8 | `nlcsplit/logs/step_h.json`, `nlcsplit/logs/step_h_l2cp.json`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`, `evidence/centos/20260928T165857Z_centos-step_f_h2o2.out`, `nlcsplit/logs/20260929T010500Z_step1_geomfix.out` | cross-version pair (PySCF 2.12.1 vs 2.14.0) and the 18368 vs 20248 grid counts |
+| S9 | `nlcsplit/step_i_gridrepr.py`, `nlcsplit/logs/20260929T_step_i_gridrepr.out` | the two discrepancies that were previously reported as one number |
+| S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`, `nlcsplit/logs/step_h_l2cp.json` | level-2 with counterpoise, all six S22 subsystems complete |
+| S11 | `RESEARCH-20260929-lit.md` §6.2-6.3 | published comparison value for JCTC 3c00903 (full text via ChemRxiv green OA 10.26434/chemrxiv-2023-nc64t) |
+| S12 | `nlcsplit/logs/20260929T003144Z_stepg-recompute.out`, cross-checked against `evidence/centos/20260928T165857Z_centos-step2.out` | five-basis ladder of P_frz at level 1 on the current geometry; its level-1 column agrees with the earlier CentOS run to four decimals for the three bases both runs share |
+| S13 | `evidence/centos/20260928T165857Z_centos-step2.out` lines 17-20, per-level values at lines 2-15 | cross-grid spread per basis (sto-3g 0.0010, 6-31G* 0.0081, aug-cc-pVDZ 0.0067); the 0.0002 for 6-31G\* over level 1 to 2 is the difference of lines 8 and 9 |
+| S14 | Lazić, Atodiresei, Alaei, Caciuc, Blügel and Brako, *Comput. Phys. Commun.* **181**, 371-379 (2010), DOI 10.1016/j.cpc.2009.09.016; open preprint arXiv:0810.2273v1; judgement in `RESEARCH-20260929-lit.md` §10 | the closest published decomposition of a nonlocal term, read in full text |
+| S15 | `evidence/retrieval_calibration/oa_stab.js`, `evidence/retrieval_calibration/openalex_stability.json`, `evidence/retrieval_calibration/xref_calib2.js`, `evidence/retrieval_calibration/xref_r3.js` | measured recall of the open indexes: 4/4 known titles at rank 0, 0/4 and 1/3 for legitimate topical strings |
+| S16 | `RESEARCH-20260929-lit.md` §8.1 | the institutional-access precondition of the search, and why the first round was counted from the UI |
+| S17 | `RESEARCH-20260929-lit.md` §13 | second round: full enumeration through WoS's own record endpoint (RecordsSearched = 58,664,816, search date 2026-09-29), the three calibration strings reproduced record-for-record, the two zero-hit strings, complete readings of the two 4-record and three broad strings, and the three added citations whose DOIs were checked against both Crossref and WoS |
+
+Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
+water-dimer geometry fix (its inter-fragment minimum is 2.0258 A against 1.95 A in
+`evidence/l2cp/`), so S8 cites it only for the component accounting, never as a
+current-geometry result. S15's files were sitting in `scratch/`, which is gitignored - they
+were promoted into `evidence/` on 2026-09-29 for exactly that reason. And one distinction has
+to be kept: S6 and S13 come from the same CentOS batch timestamped 2026-09-28T16:58, which is
+earlier than the geometry fix, while S12's primary artefact is a recompute run afterwards.
+Within that earlier batch the initial S22 structure and the relaxed one are distinguishable
+(the level-0 6-31G* value -0.5316 appears in S13's ladder, while the -0.5975 of the relaxed
+structure does not), so S13's cross-grid spreads are read here as measured on the *initial*
+S22 geometry, not on the relaxed one that carries the headline numbers. The level-1 column of
+that same ladder agrees with the later recompute to four decimals for all three bases the two
+runs share, so the grid-convergence conclusion does not turn on which geometry was used - but
+that was checked after the fact, and re-running the full ladder on the relaxed geometry stays
+an open task rather than a claim.

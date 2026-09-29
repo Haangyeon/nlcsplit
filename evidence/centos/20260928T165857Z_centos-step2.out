@@ -1,0 +1,21 @@
+基组            lvl       N       E_AB       E_nl     E_NLC总      libxc    我-libxc      秒
+sto-3g        0      4460   -0.3867   -7.1172   +53.534   +53.666    -0.132    0.3
+sto-3g        1     19936   -0.3857   -7.1974   +53.632   +53.631    +0.001    4.7
+sto-3g        2     43208   -0.3858   -7.1982   +53.631   +53.631    +0.000   34.8
+    ^ stratmann        lvl=1 E_AB=-0.3839 kcal/mol
+    ^ becke-treutler   lvl=1 E_AB=-0.3695 kcal/mol
+6-31g*        0      4460   -0.5316   -7.7736   +53.034   +53.062    -0.028    0.3
+6-31g*        1     19936   -0.5237   -7.8130   +53.017   +53.016    +0.002    4.7
+6-31g*        2     43208   -0.5235   -7.8137   +53.016   +53.016    +0.000   38.2
+    ^ stratmann        lvl=1 E_AB=-0.5215 kcal/mol
+    ^ becke-treutler   lvl=1 E_AB=-0.4986 kcal/mol
+aug-cc-pvdz   0      4460   -0.5604   -7.8926   +52.854   +52.910    -0.056    0.4
+aug-cc-pvdz   1     19936   -0.5537   -7.9466   +52.883   +52.882    +0.001    7.2
+    ^ stratmann        lvl=1 E_AB=-0.5516 kcal/mol
+    ^ becke-treutler   lvl=1 E_AB=-0.5295 kcal/mol
+
+E_AB 全体跨度 = 0.1747 kcal/mol  (判据 <0.05)
+  sto-3g        跨网格散布 = 0.0010 kcal/mol
+  6-31g*        跨网格散布 = 0.0081 kcal/mol
+  aug-cc-pvdz   跨网格散布 = 0.0067 kcal/mol
+Step 2: 需复核（见计划回退条件）
