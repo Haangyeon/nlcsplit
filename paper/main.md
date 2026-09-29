@@ -272,12 +272,13 @@ percentage for this class of method would misstate the methane dimer by more tha
 twenty-fold. Error bars must be reported per system. Second, the span is an
 attribution property rather than a one-particle-basis property. On the
 constructed water-dimer geometry, re-running the four schemes at level 1 across
-six basis sets gives spans of 0.0400 (6-31G\*), 0.0382 (aug-cc-pVDZ) and
-0.0390 (def2-SVP) kcal/mol while P_frz itself moves from -0.386 (STO-3G) to
--0.554 (aug-cc-pVDZ) [S12]: the quantity of interest drifts by 0.17 kcal/mol
-across the basis ladder and the scheme spread stays put at ~0.04. No better basis
-set will remove it, which is why it - and not grid convergence, which is
-<=0.008 kcal/mol from level 0 to 2 - is the error bar this method has to carry.
+five basis sets gives spans of 0.0400 (6-31G\*), 0.0382 (aug-cc-pVDZ), 0.0390
+(def2-SVP) and 0.0398 (def2-TZVP) kcal/mol while P_frz itself moves from -0.386
+(STO-3G) to -0.554 (aug-cc-pVDZ) [S12]: the quantity of interest drifts by
+0.17 kcal/mol across the basis ladder and the scheme spread stays put at ~0.04.
+No better basis set will remove it, which is why it - and not grid convergence,
+which is 0.0081 kcal/mol over level 0 to 2 at 6-31G\* and 0.0002 over level 1 to
+2 - is the error bar this method has to carry.
 
 ### 3.5 A limit of fragment-resolved quantities
 
@@ -307,7 +308,10 @@ sometimes discussed as if they competed.
 [S10] CentOS `logs/20260928T213839Z_centos-step_h_l2cp.out`（level 2 + 反泊松，
 进行中：已完 5/6 体系）· [S11] `RESEARCH-20260929-lit.md` §6.2–6.3，
 DOI 10.1021/acs.jctc.3c00903（全文取 ChemRxiv 绿色 OA 10.26434/chemrxiv-2023-nc64t）·
-[S12] CentOS `step_g.out`；`MAIN-skeleton.md` 表2
+[S12] `logs/20260929T003144Z_stepg-recompute.out`（当前几何、当前代码、level 1
+五档基组阶梯），与 CentOS `logs/20260928T165857Z_centos-step2.out` 交叉一致 ·
+[S13] 网格收敛同上 step2 第 18–20 行（sto-3g 0.0010 / 6-31G\* 0.0081 /
+aug-cc-pVDZ 0.0067）
 
 [S1] `RESEARCH-20260929-lit.md` §1, §6 · [S2] `MAIN-skeleton.md` 表2/表4b、
 `nlcsplit/logs/step_h.json` · [S3] `step_f_dispersion.py` 输出 ·
