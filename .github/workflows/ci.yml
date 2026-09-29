@@ -22,7 +22,11 @@ jobs:
       # 树外再跑一遍：验的是"发布出去的包"而不是工作目录，缺文件在这里才会露出来。
       - run: python -m pytest -q --pyargs nlcsplit -p no:cacheprovider
         working-directory: /tmp
-      # 发布闸门 A–E：无 GAMESS 源码工件 / 无密钥与内网串 / 证据哈希 / 引用可达 / 依赖声明。
+      # 发布闸门 R A B C C2 D E F G T U（十一条，exit!=0 就不出货）：
+      # R 发布树残留机器路径/账号 / A 无 GAMESS 源码工件 / B 无内网串 / C 证据哈希双向闭合 /
+      # C2 脱敏未动数字且母仓每份证据都登记过 / D 引用可达 / E 外部依赖已声明 /
+      # F wheel 与 sdist 成员清单 / G LICENSE 署名在源文件里 / T 导出清单完整 /
+      # U 包内 import 的兄弟模块真的随包发出去了（这条自检没响 = 恒真 = 不出货）
       - uses: actions/setup-node@v4
         with: {node-version: "20"}
       - run: node tools/make_public_repo.js

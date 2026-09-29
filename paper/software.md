@@ -189,7 +189,8 @@ the word appears in 5 published files, all of them the disclaimer or prose about
 path forms in 0. Two further defects were found while re-checking this section on
 2026-09-29, and both were of the kind a source-tree reading cannot see. The first: an
 earlier build was reported fixed and still shipped two script-style `test_*.py` modules at
-package top level; the wheel now has 35 members and none of them is a script-style test.
+package top level; the wheel now has 36 members and none of them is a script-style test - it grew again when
+`step_l_sweep_compare.py` was added to the whitelist, see below.
 The second is worse and was found only by looking at the artefact: **`fastpair.py` was not in
 the package at all**, while the shipped `step_j_scaling.py` imports it - so a reader
 installing the wheel could not run a single number from the companion algorithm paper, and
@@ -197,6 +198,17 @@ gate E (which checks that every import is *declared*) stayed silent because the 
 intra-package. `fastpair.py` and its test module are now in the manifest. In the same pass
 `test_tolerance_probe.py` was published too, because a tolerance tightened from 0.10 to
 1e-4 kcal/mol is a claim about measured spread and the measurement belongs beside it.
+
+A third omission of the same kind was found by asking the question the other way round:
+`run_all.sh` - the advertised one-command reproduction path - knew four of the thirteen
+`step_*.py` scripts, and `step_l_sweep_compare.py` was missing from the shipped step list
+altogether. That script is the only producer of the "agrees to 2e-3 kcal/mol with an
+independently written script" sentence in section 2.1, so until now the published tree
+contained neither that script nor any artefact carrying the comparison column. The driver
+now lists all thirteen with each one's precondition (which need an argument, which need a
+geometry download, which need an unloaded machine), derives the repository root from its own
+location instead of a hard-coded working path, and refuses to run the argument-taking ones
+rather than silently running them at their defaults.
 
 The suite collects 63 tests in the working repository - 43 under `-m "not slow"` and 20
 under `-m slow`, a partition of the same collection and not two numbers to be added. The
@@ -218,7 +230,7 @@ not cited as evidence. Including a naive triple-loop versus BLAS
 comparison of the kernel, per-scheme additivity checks, and geometry guards that
 assert bond lengths and angles at construction time.
 
-Ten export gates run locally on every rebuild (`node tools/make_public_repo.js`). They are
+Eleven export gates run locally on every rebuild (`node tools/make_public_repo.js`). They are
 not all of equal standing, and the difference matters: some exist because they caught a real
 defect, others only because we could not otherwise show the earlier ones were not vacuous.
 The last column says which, and "planted" means the gate has never fired on real input - it
@@ -230,12 +242,13 @@ fires on a fault we put in deliberately to prove it would.
 | A | no GAMESS source artefacts (matched on source patterns, not on the word "gamess", which the disclaimer itself contains) | real defect: a permanent false positive on our own disclaimer, which is why it matches patterns and not the word |
 | B | no credentials or internal network strings | real defect: a scrub that re-injected a proxy address into a comment |
 | C | every `evidence/*/MANIFEST.sha256` reproduces byte-for-byte | real defect: a Windows path making `sha256sum` report six mismatches that were not there |
-| C2 | the scrubbing changed no digit in any number | added as a belt-and-braces check; no firing on real input is recorded in this repository, only on the faults we planted |
+| C2 | the scrubbing changed no digit in any number, **and** every file in a published evidence directory is registered in that directory's own source manifest | the second half fired on real input the day it was written: a comparison JSON produced by a step script landed in `evidence/agentb_sweep/` with no manifest entry, and the build refused to ship it (`shipped: false`) |
 | D | every path cited by the companion text's provenance appendix is actually shipped | real defect: three citations that resolved to nothing in the published tree |
 | E | every import in a shipped module is declared in `pyproject.toml` | real defect: `figures.py` importing matplotlib, which no dependency listed |
 | F | the wheel and sdist member lists are what we think they are | real defect: two script-style tests that survived a build already reported fixed |
 | G | `LICENSE` in the **source** file carries the real copyright line, not the Apache placeholder | real defect: the legal statement existed only in the generated copy; fires today on a restored placeholder |
 | T | nothing in the export tree is missing from the export manifest | added as a belt-and-braces check; no firing on real input is recorded in this repository, only on the faults we planted |
+| U | every module a shipped file imports from `nlcsplit` (absolute, dotted or package-relative) is itself in the shipped tree; the gate also self-tests against a planted missing sibling, and a build where that self-test does not fire does not ship | real defect: it was written for `fastpair.py`, which gate E could not see because an intra-package import is not a declared dependency |
 
 Gate D exists because the first three could only fail in one direction. A, B, C
 catch material that should not be present; what actually went wrong repeatedly was

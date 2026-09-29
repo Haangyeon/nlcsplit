@@ -58,7 +58,11 @@ const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
   'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py',
-  'step_j_scaling.py'];
+  'step_j_scaling.py',
+  // step_l_sweep_compare.py 原先不在清单里：它是正文 §2.1 那个"与独立脚本一致到 2e-3"
+  // 的**唯一**生产者，而 S21 只挂了被比的那份 raw sweep（里面没有比对列）。
+  // 于是这句话在发布物里既没有脚本、也没有产物——正是闸门 D 存在的理由却被漏掉。
+  'step_l_sweep_compare.py'];
 const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py',
   'test_partition_factors.py', 'test_regression.py',
   // 不发 fastpair 的测试，等于"屏蔽机制已验证"这句话在发布物里没有证据。
@@ -306,6 +310,7 @@ for (const dir of EVIDENCE_DIRS) {
     hashLedger.push({
       rel, orig: sha256(path.join(from, f)), published: sha256(path.join(OUT, rel)),
       listedInSourceManifest: new RegExp('[* ]' + f.replace(/[.]/g, '\\.') + '$', 'm').test(origMan),
+      dirHasSourceManifest: fs.existsSync(origManFile),
       origManifestHash: (origMan.split(/\r?\n/).find(l => l.endsWith('*' + f)) || '').split(/[\s*]+/)[0] || null,
     });
   }
@@ -535,6 +540,13 @@ const origTouched = [];
 for (const h of hashLedger) {
   if (h.origManifestHash && h.orig !== h.origManifestHash) {
     origTouched.push(`${h.rel}: 母仓 MANIFEST 登记的哈希 ${h.origManifestHash} != 母仓现在的实际字节 ${h.orig} —— 原件被动过或被换过`);
+  }
+  // 发布树那份清单是重算的，所以"目录里有文件"在发布侧总是闭合的；
+  // **母仓**侧才是要守的地方：一个没进母仓 MANIFEST 的证据文件，意味着
+  // 没有任何人担保过它的字节（实测：step_l 写出的 sweep_compare.json 就是这样混进来的）。
+  if (h.origManifestHash === null && h.dirHasSourceManifest
+    && !/^MANIFEST\.(sha256|txt)$/.test(h.rel.split('/').pop())) {
+    origTouched.push(`${h.rel}: 母仓该目录有 MANIFEST.sha256，但这份文件没登记进去`);
   }
 }
 gc2.push(...origTouched);
@@ -796,6 +808,46 @@ if (process.env.NLCSPLIT_SELFTEST) {
   fs.writeFileSync(LEDGER_OUTSIDE, L.join('\n') + '\n');
 }
 
+// ---------------------------------------------------------------- 闸门 U：包内引用也得真的发出去
+// 闸门 E 问的是"这个 import 在 pyproject 里声明了吗"，于是它对**包内**兄弟模块完全沉默：
+// `from nlcsplit import fastpair` 没有"声明"这一步可言。实测就是这样漏的——
+// `fastpair.py` 不在 PKG 里，而随包的 step_j_scaling.py 第一行就 import 它，
+// 读者装完 wheel 跑 P2 的脚本只会拿到 ImportError。
+// 判据：随包 .py 里每一条对 nlcsplit 的引用（绝对 `from nlcsplit import X`、
+// `import nlcsplit.X`、以及相对的 `from . import X`），其 X 必须真的在导出树里。
+function importClosure(treeFiles, readFn) {
+  const shipped = new Set(treeFiles
+    .map(f => (f.match(/^nlcsplit\/([\w-]+)\.py$/) || [])[1])
+    .filter(Boolean));
+  const out = [];
+  for (const rel of treeFiles.filter(f => f.endsWith('.py') && f.startsWith('nlcsplit/'))) {
+    let src; try { src = readFn(rel); } catch (e) { continue; }
+    // 只有**直接位于 nlcsplit/ 下**的文件里 `from . import X` 才指 nlcsplit.X；
+    // tests/ 或 examples/ 里的相对引用指向它们自己的子包，不能按同一个口径判。
+    const depth0 = rel === 'nlcsplit/' + rel.slice('nlcsplit/'.length).split('/')[0];
+    const refs = [
+      ...[...src.matchAll(/^\s*from\s+nlcsplit(?:\.([\w-]+))?\s+import\s+([^(\n]+?)\s*(?:#.*)?$/gm)]
+        .map(m => m[1] ? [m[1]] : m[2].split(',').map(x => x.trim().split(/\s+as\s+/)[0]).filter(Boolean)),
+      ...[...src.matchAll(/^\s*import\s+nlcsplit\.(\w+)/gm)].map(m => [m[1]]),
+      ...(depth0 ? [...src.matchAll(/^\s*from\s+\.+\s+import\s+([^(\n]+?)\s*(?:#.*)?$/gm)]
+        .map(m => m[1].split(',').map(x => x.trim().split(/\s+as\s+/)[0]).filter(x => x && x !== '*')) : []),
+    ].flat().filter(r => r && r !== '__future__');
+    for (const r of refs) if (!shipped.has(r)) out.push(`${rel}: 引用 nlcsplit.${r}，但它不在导出树里`);
+  }
+  return [...new Set(out)];
+}
+const gateU = importClosure(tree, rel => read(path.join(OUT, rel)));
+// 自证非恒真：喂一份假树与一条假引用，必须**只**报那一条；
+// 同时假树里合法的那条（nlc）不许被报——否则这闸门可能只是在乱响。
+const gateUSelftest = (() => {
+  const fakeTree = ['nlcsplit/__init__.py', 'nlcsplit/nlc.py', 'nlcsplit/step_z.py'];
+  const fakeRead = rel => rel.endsWith('step_z.py')
+    ? 'from nlcsplit import nlc, notshipped\nfrom . import nlc\n' : 'pass\n';
+  const got = importClosure(fakeTree, fakeRead);
+  return { fired: got.length === 1 && /notshipped/.test(got[0]),
+    silent_on_valid: !got.some(x => /nlc\b/.test(x)), reported: got };
+})();
+
 const report = {
   out: OUT, files: copied.length, treeFiles: tree.length, artifacts,
   ledger: LEDGER_OUTSIDE.replace(/\\/g, '/'),
@@ -809,6 +861,8 @@ const report = {
   gateG_license: gateG,
   gateR_tree_residue: gr,
   gateT_not_in_export_manifest: notInManifest,
+  gateU_import_closure: gateU,
+  gateU_selftest: gateUSelftest,
   note_word_only_gamess: wordOnly,
   note_internal_only_citations: gateD.pubInternal,
   note_evidence_dirs_without_source_manifest: missingSourceManifest,
@@ -819,7 +873,9 @@ const report = {
 };
 
 const bad = ga.length + gb.length + gc.length + gc2.length + gateD.absent.length + gateE.length
-  + gateF.length + gateG.length + gr.length + notInManifest.length;
+  + gateF.length + gateG.length + gr.length + notInManifest.length + gateU.length
+  // 闸门 U 的自检没响 = 这条判据此刻是恒真的，等于没有 —— 不许出货。
+  + (gateUSelftest.fired && gateUSelftest.silent_on_valid ? 0 : 1);
 if (bad) {
   // 闸门没过：把还没搬进 dist/ 的新产物直接丢掉，旧产物原地不动。"不出货"必须是可验证的，
   // 不是口号 —— 之前那次"重打 wheel 已验证"就是因为先覆盖后检查，检查失败也回不去。

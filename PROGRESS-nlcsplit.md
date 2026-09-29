@@ -2516,3 +2516,43 @@ P1 侧重跑：`md2tex` 标签 21、失败 0；`pdflatex` 两遍 **17 页 0 错�
 **待补的判据**（下次动发布清单之前必须做）：随包的 `step_*.py`/`examples/*.py` 里每一个 `from nlcsplit import X`，
 
 其 `X` 必须在 `PKG` 里。这次是人工发现的，不该指望人工。
+
+## [2026-09-30 02:1x] [agent=cn-qoder] [code] 复现驱动器只认 13 个脚本里的 4 个；补闸门 U 与母仓清单反向闭合
+
+用户催的是代码不是文字。查下来确实有硬缺口，四条，全部当场补：
+
+1. **`run_all.sh` 只登记 step1/step2/step_c/step_b**，而母仓有 13 个 `step_*.py`。
+   也就是说主表 `step_h_s22.py`、标度阶梯 `step_j_scaling.py`、布居数 `step_k_population.py`
+   **从来不在任何入口里**，而软件文写着"每个表映射一个脚本"。重写：13 个 tag 全登记、
+   带 `--list` 打印每个的前置条件（要不要参数/几何下载/空载机器）、仓库根从脚本自身位置推导
+   （旧版写死 `cd /mnt/e/Project/GAMESS`，靠发布时脱敏蒙过去）、需要参数的 step_k/step_l
+   **拒绝裸跑**而不是拿默认值跑出一个看着对的数。
+   我自己第一版把 `GROUPS` 忘了 `-A`，`--list` 立刻打印出 `[0]=1000` 这种鬼东西——
+   留着这条，因为"驱动器写完必须 --list 跑一遍"就是这么来的。
+2. **闸门 U（包内 import 闭合）**：随包 .py 里 `from nlcsplit import X` / `import nlcsplit.X` /
+   相对 `from . import X` 的每个 X 必须真的在导出树里。这就是上次 `fastpair.py` 漏网的形状。
+   相对引用只在**直接位于 nlcsplit/ 下**的文件里按包根解释（tests/、examples/ 里的 `.` 是它们自己的子包）。
+   尾随注释 `# noqa: E402` 曾经让正则整条不匹配 ⇒ 静默漏检，正则改成允许 `#+.*$` 尾巴。
+   自检喂一份假树（`step_z.py` 引用 `nlcsplit.notshipped`）：必须**只**报这一条且不许误报合法的那条；
+   **自检不响就不出货**（已计入 `bad`）。今天它扫过真树：0 条。
+3. **母仓清单反向闭合**（并入 C2）：发布树那份 MANIFEST 是重算的，所以"目录里有文件没登记"
+   在发布侧永远闭合——真正会漏的是**母仓**。补完立刻响：`evidence/agentb_sweep/sweep_compare.json`
+   是 step_l 写出的、没有母仓登记 ⇒ `shipped: false`，构建拒发货。
+   处置：把这份**不完整**（level 0-8，level 9 还在算）的 JSON 移回 `scratch/pending/`，
+   而不是给它补一行哈希把半成品转正。
+4. `step_l_sweep_compare.py` 原先不在 `STEPS` 白名单里——它是 §2.1 那句
+   "与独立脚本一致到 2e-3 kcal/mol"的**唯一**生产者，发布物里既没脚本也没带比对列的产物。
+   已加入（wheel 成员 35→36）；`main.md` S21 行补上"比对由该脚本产生、给它一个上限档即可复现、
+   代价是网格点数的二次方，level 9 以小时计"。
+
+**审计代理的三条说法被我否证**（先复现再采信，这次是反过来）：
+- "pyproject 声明 scipy 而代码没用" ⇒ 假：`step_c_relaxation.py:72` 在用，且它是 `relax` extras，不是主依赖。
+- "闸门 C 的反向闭合会让构建失败" ⇒ 方向错：发布侧 MANIFEST 是重算的，永远闭合；缺的是母仓侧（上面第 3 条）。
+- "干净 clone 里 `nlcsplit/logs/` 不存在，step_j 会 open 失败" ⇒ 假：`git ls-files nlcsplit/logs` 有 3 个
+  受跟踪 .json，clone 必然带出目录。没为此加 `makedirs`（那不是缺陷，是猜测）。
+
+**留给下一轮**（都是代码，不是文字）：`step_d_floor.py:40-43` 在 import numpy 之前硬设
+`OMP/OPENBLAS/MKL_NUM_THREADS=2`，与 `run_all.sh` 的 4 与 P2 里写的 4 不一致——**不改**，
+因为它改线程数会改 BLAS 归约顺序，而那些数已带哈希归档；改法是让驱动器把每步实际生效的
+env 打进日志头。`NCSYS` 在 step_b 意为"体系"、在 step_g 意为"基组表"，`NCLV` 全局——
+驱动器不该把其中一个导出去影响另一个，这条也还没做。
