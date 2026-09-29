@@ -20,10 +20,12 @@ dist/
 *.egg-info/
 __pycache__/
 *.pyc
-figs/
+# 写成 `figs/*` 而不是 `figs/`：git 不会进入被整条忽略的目录，所以目录级忽略
+# 配上头的 `!…` 否定式是死规则（原来就是这样，figs/*.png 一直没被跟踪过）。
+figs/*
 !figs/*.png
 
-# LaTeX 编译中间产物（本机没有 TeX，这些是外部编译带回的垃圾，不入库）
+# LaTeX 编译中间产物（MiKTeX 在 D: 盘、本机编译；这几个每次重生成都变，不入库）
 paper/*.aux
 paper/*.out
 paper/*.log

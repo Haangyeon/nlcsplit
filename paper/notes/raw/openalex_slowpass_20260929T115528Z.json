@@ -1,0 +1,95 @@
+{
+ "S4": {
+  "query": "\"nonlocal correlation\" AND \"fragment decomposition\"",
+  "status": 429,
+  "result": "RATE_LIMITED (not a zero-recall)",
+  "ts": "20260929T114621Z"
+ },
+ "S6": {
+  "query": "\"nonlocal correlation\" AND \"pairwise decomposition\"",
+  "status": 200,
+  "meta_count": 3,
+  "n": 3,
+  "items": [
+   {
+    "doi": "https://doi.org/10.1063/1.3545971",
+    "year": 2011,
+    "title": "Density-functional approaches to noncovalent interactions: A comparison of dispersion corrections (DFT-D), exchange-hole dipole moment (XDM) theory, and specialized functionals",
+    "abstract": "A systematic study of techniques for treating noncovalent interactions within the computationally efficient density functional theory (DFT) framework is presented through comparison to benchmark-quality evaluations of binding strength compiled for molecular complexes of diverse size and nature. In particular, the efficacy of functionals deliberately crafted to encompass long-range forces, a posteriori DFT+dispersion corrections (DFT-D2 and DFT-D3), and exchange-hole dipole moment (XDM) theory is assessed against a large collection (469 energy points) of reference interaction energies at the CCSD(T) level of theory extrapolated to the estimated complete basis set limit. The established S22 [revised in J. Chem. Phys. 132, 144104 (2010)] and JSCH test sets of minimum-energy structures, as well as collections of dispersion-bound (NBC10) and hydrogen-bonded (HBC6) dissociation curves and a pairwise decomposition of a protein-ligand reaction site (HSG), comprise the chemical systems for this work. From evaluations of accuracy, consistency, and efficiency for PBE-D, BP86-D, B97-D, PBE0-D, B3LYP-D, B970-D, M05-2X, M06-2X, ωB97X-D, B2PLYP-D, XYG3, and B3LYP-XDM methodologies, it is concluded that distinct, often contrasting, groups of these elicit the best performance within the accessible double-ζ or robust triple-ζ basis set regimes and among hydrogen-bonded or dispersion-dominated complexes. For overall results, M05-2X, B97-D3, and B970-D2 yield superior values in conjunction with aug-cc-pVDZ, for a mean absolute deviation of 0.41 - 0.49 kcal/mol, and B3LYP-D3, B97-D3, ωB97X-D, and B2PLYP-D3 dominate with aug-cc-pVTZ, affording, together with XYG3/6-311+G(3df,2p), a mean absolute deviation of 0.33 - 0.38 kcal/mol."
+   },
+   {
+    "doi": "https://doi.org/10.1038/s41467-024-50030-8",
+    "year": 2024,
+    "title": "pH drives electron density fluctuations that enhance electric field-induced liquid flow",
+    "abstract": "Liquid flow along a charged interface is commonly described by classical continuum theory, which represents the electric double layer by uniformly distributed point charges. The electrophoretic mobility of hydrophobic nanodroplets in water doubles in magnitude when the pH is varied from neutral to mildly basic (pH 7 → 11). Classical continuum theory predicts that this increase in mobility is due to an increased surface charge. Here, by combining all-optical measurements of surface charge and molecular structure, as well as electronic structure calculations, we show that surface charge and molecular structure at the nanodroplet surface are identical at neutral and mildly basic pH. We propose that the force that propels the droplets originates from two factors: Negative charge on the droplet surface due to charge transfer from and within water, and anisotropic gradients in the fluctuating polarization induced by the electric field. Both charge density fluctuations couple with the external electric field, and lead to droplet flow. Replacing chloride by hydroxide doubles both the charge conductivity via the Grotthuss mechanism, and the droplet mobility. This general mechanism deeply impacts a plethora of processes in biology, chemistry, and nanotechnology and provides an explanation of how pH influences hydrodynamic phenomena and the limitations of classical continuum theory currently used to rationalize these effects."
+   },
+   {
+    "doi": "https://doi.org/10.1021/acs.jpcb.4c01466",
+    "year": 2024,
+    "title": "Software Infrastructure for Next-Generation QM/MM−ΔMLP Force Fields",
+    "abstract": "We present software infrastructure for the design and testing of new quantum mechanical/molecular mechanical and machine-learning potential (QM/MM-ΔMLP) force fields for a wide range of applications. The software integrates Amber's molecular dynamics simulation capabilities with fast, approximate quantum models in the xtb package and machine-learning potential corrections in DeePMD-kit. The xtb package implements the recently developed density-functional tight-binding QM models with multipolar electrostatics and density-dependent dispersion (GFN2-xTB), and the interface with Amber enables their use in periodic boundary QM/MM simulations with linear-scaling QM/MM particle-mesh Ewald electrostatics. The accuracy of the semiempirical models is enhanced by including machine-learning correction potentials (ΔMLPs) enabled through an interface with the DeePMD-kit software. The goal of this paper is to present and validate the implementation of this software infrastructure in molecular dynamics and free energy simulations. The utility of the new infrastructure is demonstrated in proof-of-concept example applications. The software elements presented here are open source and freely available. Their interface provides a powerful enabling technology for the design of new QM/MM-ΔMLP models for studying a wide range of problems, including biomolecular reactivity and protein-ligand binding."
+   }
+  ],
+  "ts": "20260929T114709Z"
+ },
+ "S15": {
+  "query": "\"nonlocal correlation\" AND \"Becke partition\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T114755Z"
+ },
+ "S14": {
+  "query": "\"van der Waals density functional\" AND \"real-space integration\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T114840Z"
+ },
+ "S13": {
+  "query": "\"nonlocal functional\" AND \"domain decomposition\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T114925Z"
+ },
+ "S3": {
+  "query": "\"rVV10\" AND \"energy decomposition\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115011Z"
+ },
+ "S7": {
+  "query": "\"vdW-DF\" AND \"energy decomposition\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115056Z"
+ },
+ "S8": {
+  "query": "\"nonlocal correlation\" AND \"atomic contributions\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115142Z"
+ },
+ "S9": {
+  "query": "\"VV10\" AND \"per-fragment\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115227Z"
+ },
+ "S16": {
+  "query": "\"VV10\" AND \"many-body expansion\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115313Z"
+ },
+ "S17": {
+  "query": "\"nonlocal correlation\" AND \"subsystem\" AND \"energy decomposition\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115358Z"
+ },
+ "S10": {
+  "query": "\"nonlocal correlation\" AND \"resolved into fragments\"",
+  "status": 503,
+  "err": "{\"error\":\"Search temporarily unavailable\",\"message\":\"Anonymous search is paused while the search cluster recovers from heavy load. Please retry shortly, or use a free API key for u",
+  "ts": "20260929T115443Z"
+ }
+}

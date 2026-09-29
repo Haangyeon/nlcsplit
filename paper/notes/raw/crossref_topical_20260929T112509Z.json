@@ -1,0 +1,198 @@
+[
+ {
+  "tag": "CR1",
+  "query": "VV10 nonlocal correlation fragment decomposition energy attribution",
+  "status": 200,
+  "total": 3324774,
+  "items": [
+   [
+    "10.1016/bs.arcc.2015.09.002",
+    "The Nonlocal Correlation Density Functional VV10"
+   ],
+   [
+    "10.1063/1.4952647",
+    "<i>ω</i>\n                    B97M-V: A combinatorially optimized, "
+   ],
+   [
+    "10.1021/acs.jpclett.2c00040.s001",
+    "Free Energy Decomposition Analysis Based on the Fragment Molecular"
+   ],
+   [
+    "10.1021/acs.jpca.0c03085.s001",
+    "Three-Body Energy Decomposition Analysis Based on the Fragment Mol"
+   ],
+   [
+    "10.1021/acs.jctc.7b01172.s002",
+    "Electronic Exchange and Correlation in van der Waals Systems: Bala"
+   ],
+   [
+    "10.1021/acs.jctc.7b01172.s001",
+    "Electronic Exchange and Correlation in van der Waals Systems: Bala"
+   ],
+   [
+    "10.1021/acs.jctc.3c00872.s001",
+    "Exactly Fragment Additive Breakdown of Polarization for Energy Dec"
+   ],
+   [
+    "10.1016/b978-0-08-031651-2.50016-1",
+    "NONLOCAL CONFIGURATIONAL ENERGY OF A NONUNIFORM BINARY ALLOY"
+   ],
+   [
+    "10.1016/j.enpol.2015.08.035",
+    "Changes in carbon intensity in China's industrial sector: Decompos"
+   ],
+   [
+    "10.1016/j.eneco.2011.04.011",
+    "Attribution of changes in Divisia real energy intensity index — An"
+   ]
+  ],
+  "ts": "20260929T112452Z"
+ },
+ {
+  "tag": "CR2",
+  "query": "nonlocal van der Waals correlation energy partitioned between fragments",
+  "status": 200,
+  "total": 10538231,
+  "items": [
+   [
+    "10.1021/acs.jctc.7b01172.s001",
+    "Electronic Exchange and Correlation in van der Waals Systems: Bala"
+   ],
+   [
+    "10.1021/acs.jctc.7b01172.s002",
+    "Electronic Exchange and Correlation in van der Waals Systems: Bala"
+   ],
+   [
+    "10.1021/acs.jctc.0c00471.s001",
+    "Next-Generation Nonlocal van der Waals Density Functional"
+   ],
+   [
+    "10.1021/acsami.2c21918.s001",
+    "Nonlocal Spin Valves Based on Graphene/Fe3GeTe2 van der Waals Hete"
+   ],
+   [
+    "10.1021/acs.jctc.7b01172",
+    "Electronic Exchange and Correlation in van der Waals Systems: Bala"
+   ],
+   [
+    "10.1016/b978-0-08-003229-0.50018-x",
+    "Asymptotic relation between total and direct correlation functions"
+   ],
+   [
+    "10.1016/0009-2614(71)85056-x",
+    "Interatomic correlation energy and the van der Waals attraction be"
+   ],
+   [
+    "10.1021/jp064681h.s001",
+    "Correlation of Polarizabilities with Van Der Waals Interactions in"
+   ],
+   [
+    "10.1021/jp064681h.s002",
+    "Correlation of Polarizabilities with Van Der Waals Interactions in"
+   ],
+   [
+    "10.1021/acs.jpcc.9b04911.s001",
+    "Time-Dependent Growth of Gold Nanoparticles: Experimental Correlat"
+   ]
+  ],
+  "ts": "20260929T112457Z"
+ },
+ {
+  "tag": "CR3",
+  "query": "VV10 double sum grid pair resolved contribution",
+  "status": 200,
+  "total": 1124334,
+  "items": [
+   [
+    "10.1021/jacs.5c10829.s001",
+    "Specifically Adsorbed Carbonate Ions and Copper Surface Reconstruc"
+   ],
+   [
+    "10.1364/cleo_at.2020.jth2a.20",
+    "High-Precision Spectral Measurements of Photon-Pair Sources via Fr"
+   ],
+   [
+    "10.1103/physrevb.91.235424",
+    "Spin-resolved Andreev transport through double-quantum-dot Cooper "
+   ],
+   [
+    "10.1021/acsphotonics.0c01940.s001",
+    "Femtosecond Time-Resolved Infrared-Resonant Third-Order Sum-Freque"
+   ],
+   [
+    "10.1007/jhep05(2026)237",
+    "Double logarithmic contribution to Higgs boson pair production in "
+   ],
+   [
+    "10.59646/crc9/278",
+    "Further Results on Edge Pair Sum Graphs"
+   ],
+   [
+    "10.2139/ssrn.4416163",
+    "Tridiagonal and Single-Pair Matrices and the Inverse Sum of Two Si"
+   ],
+   [
+    "10.1021/jp0708300.s001",
+    "Theory of Time-Resolved Sum-Frequency Generation and Its Applicati"
+   ],
+   [
+    "10.1021/acs.langmuir.3c02906.s001",
+    "Determination of the Thickness of Interfacial Water by Time-Resolv"
+   ],
+   [
+    "10.1007/bf02828792",
+    "$$Y_1^* + \\bar Y_1^* (\\sum + \\bar \\sum )$$ pair production in p-p "
+   ]
+  ],
+  "ts": "20260929T112501Z"
+ },
+ {
+  "tag": "CR4",
+  "query": "domain decomposition nonlocal density functional grid integration",
+  "status": 200,
+  "total": 2657197,
+  "items": [
+   [
+    "10.1021/acs.jpclett.9b03281.s001",
+    "Nonlocal Subsystem Density Functional Theory"
+   ],
+   [
+    "10.1007/978-1-4612-3136-3_12",
+    "Nonlocal Correlation Energy Functionals and Coupling Constant Inte"
+   ],
+   [
+    "10.1021/acs.jctc.0c00471.s001",
+    "Next-Generation Nonlocal van der Waals Density Functional"
+   ],
+   [
+    "10.1021/acs.jpclett.0c02956.s003",
+    "A New Mixing of Nonlocal Exchange and Nonlocal Correlation with Mu"
+   ],
+   [
+    "10.1021/acs.jpclett.0c02956.s001",
+    "A New Mixing of Nonlocal Exchange and Nonlocal Correlation with Mu"
+   ],
+   [
+    "10.1021/acs.jpclett.0c02956.s002",
+    "A New Mixing of Nonlocal Exchange and Nonlocal Correlation with Mu"
+   ],
+   [
+    "10.2172/2004191",
+    "Domain Decomposition Solvers for Nonlocal Equations."
+   ],
+   [
+    "10.1021/acs.jpca.9b01173.s001",
+    "Domain Separation in Density Functional Theory"
+   ],
+   [
+    "10.26434/chemrxiv.7706957.v1",
+    "Fully Nonlocal Functionals Along the Adiabatic Connection of Densi"
+   ],
+   [
+    "10.4324/9780203938485-13",
+    "Domain decomposition and model integration"
+   ]
+  ],
+  "ts": "20260929T112506Z"
+ }
+]

@@ -152,17 +152,35 @@ absolute, 0.8-18.2% relative, unchanged across five basis sets and across grid
 levels, with no ordering by interaction type or by system size), which is the error bar any future
 use of such numbers must carry [S12]. And it produces evidence about the quantity
 itself: ΔE_NLC ranges from 16% to 223% of ΔE_xc across one benchmark set, and
-100% versus 54% for two geometries of the same benzene dimer, so the VV10 term
+97% versus 52% for two geometries of the same benzene dimer, so the VV10 term
 cannot be reported as "the dispersion energy" without qualification [S2].
 
 ## 5. Availability and quality assurance
 
-Apache-2.0; no GAMESS source is included, linked or required - a claim checked by
-scanning every file of the published tree (61 files at the time of writing) for
-GAMESS source artefacts specifically, not for the word, which appears only in the
-disclaimer. Every table in the companion text maps to one `step_*.py`, and archived
-stdout is kept under a UTC-stamped filename. The test suite collects 18 tests in the
-published tree (15 fast, 3 marked slow), including a naive triple-loop versus BLAS
+Apache-2.0; no GAMESS source is included, linked or required. That claim is checked by
+scanning the published tree for GAMESS *source artefacts* specifically - `find` over
+`*.src`, `*.f`, `*.for` and `GAMESS*` returns 0 - and not for the word. An earlier version
+of this sentence asserted that the word appears only in the package docstring, and that
+assertion was false: 13 files contained it, 8 of them as part of a working-machine path
+(`/root/gamess_work/...`, `/mnt/e/Project/GAMESS/...`) including inside the shipped
+`step_h.json` and `run_all.sh`, which is how a repository name that reads as "this is the
+GAMESS project" got into a release that claims not to contain it. Two defects were behind
+that: the gate's patterns covered artefact extensions but not path forms, and it iterated
+the list of copied names rather than the directory tree, so 13 `.pyc` files that pytest had
+left inside the release directory were never opened at all. Both are now fixed - the gate
+walks the tree and fails by default on path forms, bare cluster addresses and account
+names - and the published copies are scrubbed of those paths while the numbers are left
+untouched, with a byte-level ledger of every replacement kept beside the release and the
+archived stdout in this repository still hashing to what was recorded for it. After the fix
+the word appears in 5 published files, all of them the disclaimer or prose about it, and the
+path forms in 0. The wheel was also found, after being reported fixed, to still ship two
+script-style `test_*.py` modules at package top level; it now has 30 members, none of them
+script-style tests, and the test directory holds only the four collected test modules plus
+`conftest.py`. Every table in the companion text maps to one `step_*.py`, and archived
+stdout is kept under a UTC-stamped filename. The suite collects 63 tests in the working
+repository - 43 under `-m "not slow"` and 20 under `-m slow`, a partition of the same
+collection and not two numbers to be added. Running it from outside the source tree against
+the installed package passes 62 with one skip (the S22 geometry fetch, by design). Including a naive triple-loop versus BLAS
 comparison of the kernel, per-scheme additivity checks, and geometry guards that
 assert bond lengths and angles at construction time.
 

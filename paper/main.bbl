@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{17}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -23,15 +23,15 @@ Narbe Mardirossian and Martin Head-Gordon.
 Narbe Mardirossian and Martin Head-Gordon.
 \newblock {$\omega$} b97m-v: A combinatorially optimized, range-separated
   hybrid, meta-gga density functional with vv10 nonlocal correlation.
-\newblock \emph{The Journal of Chemical Physics}, 144, 2016.
+\newblock \emph{The Journal of Chemical Physics}, 144:\penalty0 214110, 2016.
 \newblock \doi{10.1063/1.4952647}.
 
 \bibitem[Calbo et~al.(2015)Calbo, Ortí, Sancho-García, and
   Aragó]{calbo2015vv10review}
 Joaquín Calbo, Enrique Ortí, Juan~C. Sancho-García, and Juan Aragó.
 \newblock The nonlocal correlation density functional vv10.
-\newblock \emph{Annual Reports in Computational Chemistry}, pages 37--102,
-  2015.
+\newblock \emph{Annual Reports in Computational Chemistry}, 11:\penalty0
+  37--102, 2015.
 \newblock \doi{10.1016/bs.arcc.2015.09.002}.
 
 \bibitem[Dasgupta et~al.(2023)Dasgupta, Palos, Pan, and Paesani]{dasgupta2023}
@@ -71,14 +71,14 @@ Waldemar Hujo and Stefan Grimme.
 Debalina Sinha and Michele Pavanello.
 \newblock Exact kinetic energy enables accurate evaluation of weak interactions
   by the fde-vdw method.
-\newblock \emph{The Journal of Chemical Physics}, 143, 2015.
+\newblock \emph{The Journal of Chemical Physics}, 143:\penalty0 084120, 2015.
 \newblock \doi{10.1063/1.4928531}.
 
 \bibitem[Hamada and Tsukada(2011)]{hamada2011c60au}
 Ikutaro Hamada and Masaru Tsukada.
-\newblock Adsorption ofc60on au(111) revisited: A van der waals density
-  functional study.
-\newblock \emph{Physical Review B}, 83, 2011.
+\newblock Adsorption of {C}$_{60}$ on {Au}(111) revisited: A van der waals
+  density functional study.
+\newblock \emph{Physical Review B}, 83:\penalty0 245437, 2011.
 \newblock \doi{10.1103/physrevb.83.245437}.
 
 \bibitem[Vydrov and Voorhis(2010)]{vydrov2010simple}
@@ -91,8 +91,16 @@ Oleg~A. Vydrov and Troy~Van Voorhis.
   Lundqvist]{dion2004}
 M.~Dion, H.~Rydberg, E.~Schröder, D.~C. Langreth, and B.~I. Lundqvist.
 \newblock Van der waals density functional for general geometries.
-\newblock \emph{Physical Review Letters}, 92, 2004.
+\newblock \emph{Physical Review Letters}, 92:\penalty0 246401, 2004.
 \newblock \doi{10.1103/PhysRevLett.92.246401}.
+
+\bibitem[Heßelmann(2013)]{hesselmann2013nldft}
+Andreas Heßelmann.
+\newblock Assessment of a nonlocal correction scheme to semilocal density
+  functional theory methods.
+\newblock \emph{Journal of Chemical Theory and Computation}, 9:\penalty0
+  273--283, 2013.
+\newblock \doi{10.1021/ct300735g}.
 
 \bibitem[Hyldgaard et~al.(2014)Hyldgaard, Berland, and
   Schr{\"o}der]{hyldgaard2014interp}

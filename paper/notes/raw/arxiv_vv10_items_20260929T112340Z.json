@@ -1,0 +1,55 @@
+{
+ "retrieved_utc": "20260929T112340Z",
+ "note": "arXiv abs:\"VV10\" returns 5 items; known-item recall test FAILED (2208.02841 contains VV10 in abstract but is not retrieved)",
+ "items": [
+  {
+   "id": "http://arxiv.org/abs/2501.12925v2",
+   "title": "A Denser Hydrogen Inferred from First-Principles Simulations Challenges Jupiter's Interior Models",
+   "year": "2025",
+   "abstract": "First-principle modeling of dense hydrogen is crucial in materials and planetary sciences. Despite its apparent simplicity, predicting the ionic and electronic structure of hydrogen is a formidable challenge, and it is connected with the insulator-to-metal transition, a century-old problem in condensed matter. Accurate simulations of liquid hydrogen are also essential for modeling gas giant planets. Here we perform an exhaustive study of the equation of state of hydrogen using Density Functional Theory and quantum Monte Carlo simulations. We find that the pressure predicted by Density Functional Theory may vary qualitatively when using different functionals. The predictive power of first-principle simulations is restored by validating each functional against higher-level wavefunction theories, represented by computationally intensive variational and diffusion Monte Carlo calculations. Our simulations provide evidence that hydrogen is denser at planetary conditions, compared to currently used equations of state. For Jupiter, this implies a lower bulk metallicity (i.e., a smaller mass of heavy elements). Our results further amplify the inconsistency between Jupiter's atmospheric metallicity measured by the Galileo probe and the envelope metallicity inferred from interior models.",
+   "two_dim": false
+  },
+  {
+   "id": "http://arxiv.org/abs/1209.3038v1",
+   "title": "A van der Waals density functional for solids",
+   "year": "2012",
+   "abstract": "The recent non-local correlation functional of Vydrov and van Voorhis[J. Chem. Phys. 133, 244103 (2010)] is investigated and two new versions of the functional are suggested as being appropriate for describing van der Waals interactions in solids. A refitting of the original functional is demonstrated to result in very accurate interlayer binding energies for weakly bonded layered solids. A VV10 functional based on the generalized gradient approximation by Armiento and Mattsson[Phys. Rev. B 72, 085108 (2005)], while performing slightly worse for interlayer binding is highly successful in describing the equilibrium geometries of both weakly bonded and close packed solids.",
+   "two_dim": false
+  },
+  {
+   "id": "http://arxiv.org/abs/2101.00600v1",
+   "title": "Resolving the structure-energy dilemma at organic-inorganic interfaces: Adsorption of benzene, thiophene, and xenon over coinage metal surfaces",
+   "year": "2021",
+   "abstract": "Semilocal (SL) density functional approximations (DFAs) are widely applied but have limitations due to their inability to incorporate long-range van der Waals (vdW) interaction. Non-local functionals (vdW-DF, VV10, rVV10) or empirical methods (DFT+D, DFT+vdW, DFT+MBD) are used with SL-DFAs to account for such missing interaction. The physisorption of a molecule on the surface of the coinage metals (Cu, Ag, and Au) is a typical example of systems where vdW interaction is significant. However, it is difficult to find a general method that reasonably describes both adsorption energy and geometry of even the simple prototypes of cyclic and heterocyclic aromatic molecules like benzene (C6H6) and thiophene (C4H4S) respectively, with reasonable accuracy. In this work, we present an alternative scheme based on Zaremba-Kohn's theory, called DFT+vdW-dZK. We show that, unlike other popular methods, DFT+vdW-dZK and particularly SCAN+vdW-dZK gives an accurate description of the physisorption of a rare-gas atom (Xe) and two small albeit diverse prototype organic molecules on the (111) surfaces of the coinage metals.",
+   "two_dim": false
+  },
+  {
+   "id": "http://arxiv.org/abs/2202.13208v3",
+   "title": "Revisiting the performance of time-dependent density functional theory for electronic excitations: Assessment of 43 popular and recently developed functionals from rungs one to four",
+   "year": "2022",
+   "abstract": "In this paper, the performance of more than 40 popular or recently developed density functionals is assessed for the calculation of 463 vertical excitation energies against the large and accurate QuestDB benchmark set. For this purpose, the Tamm-Dancoff approximation offers a good balance between performance and accuracy. The functionals $ω$B97X-D and BMK are found to offer the best performance overall with a Root-Mean Square Error (RMSE) of 0.28 eV, better than the computationally more demanding CIS(D) wavefunction method with a RMSE of 0.36 eV. The results also suggest that Jacob's ladder still holds for TDDFT excitation energies, though hybrid meta-GGAs are not generally better than hybrid GGAs. Effects of basis set convergence, gauge invariance correction to meta-GGAs, and nonlocal correlation (VV10) are also studied, and practical basis set recommendations are provided.",
+   "two_dim": false
+  },
+  {
+   "id": "http://arxiv.org/abs/2208.14639v2",
+   "title": "Analytical harmonic vibrational frequencies with VV10-containing density functionals: Theory, efficient implementation, and benchmark assessments",
+   "year": "2022",
+   "abstract": "VV10 is a powerful nonlocal density functional for long-range correlation that is used to include dispersion effects in many modern density functionals such as the meta-generalized gradient approximation (mGGA), B97M-V, the hybrid GGA, ωB97X-V and the hybrid mGGA, ωB97M-V. While energies and analytical gradients for VV10 are already widely available, this study reports the first derivation and efficient implementation of the analytical second derivatives of the VV10 energy. The additional compute cost of the VV10 contributions to analytical frequencies is shown to be small in all but the smallest basis sets for recommended grid sizes. This study also reports the assessment of VV10-containing functionals for predicting harmonic frequencies using the analytical second derivative code. The contribution of VV10 to simulating harmonic frequencies is shown to be small for small molecules but important for systems where weak interactions are important, such as water clusters. In the latter cases, B97M-V, ωB97M-V, and ωB97X-V perform very well. The convergence of frequencies with respect to grid size and atomic orbital basis set size is studied and recommendations reported. Finally, scaling factors to allow comparison of scaled harmonic frequencies with experimental fundamental frequencies and to predict zero-point vibrational energy are presented for some recently developed functionals (including r2SCAN, B97M-V, ωB97X-V, M06-SX, and ωB97M-V).",
+   "two_dim": false
+  },
+  {
+   "id": "http://arxiv.org/abs/2208.02841v1",
+   "title": "Testing the r$^2$SCAN density functional for the thermodynamic stability of solids with and without a van der Waals correction",
+   "year": "2022",
+   "abstract": "A central aim of materials discovery is an accurate and numerically reliable description of thermodynamic properties, such as the enthalpies of formation and decomposition. The r$^2$SCAN revision of the strongly constrained and appropriately normed (SCAN) meta-generalized gradient approximation (meta-GGA) balances numerical stability with high general accuracy. To assess the r$^2$SCAN description of solid-state thermodynamics, we evaluate the formation and decomposition enthalpies, equilibrium volumes, and fundamental bandgaps of more than 1,000 solids using r$^2$SCAN, SCAN, and PBE, as well as two dispersion-corrected variants, SCAN+rVV10 and r$^2$SCAN+rVV10. We show that r$^2$SCAN achieves accuracy comparable to SCAN and often improves upon SCAN's already excellent accuracy. Whereas SCAN+rVV10 is often observed to worsen the formation enthalpies of SCAN, and makes no substantial correction to SCAN's cell volume predictions, r$^2$SCAN+rVV10 predicts marginally less-accurate formation enthalpies than r$^2$SCAN, and slightly more-accurate cell volumes than r$^2$SCAN. The average absolute errors in predicted formation enthalpies are found to decrease by a factor of 1.5 to 2.5 from the GGA level to the meta-GGA level. Smaller decreases in error are observed for decomposition enthalpies. For formation enthalpies r$^2$SCAN improves over SCAN for intermetallic systems. For a few classes of systems -- transition metals, intermetallics, weakly-bound solids, and enthalpies of decomposition into compounds -- GGAs are comparable to meta-GGAs. In total, r$^2$SCAN and r$^2$SCAN+rVV10 can be recommended as stable, general-purpose meta-GGAs for materials discovery.",
+   "two_dim": true
+  },
+  {
+   "id": "http://arxiv.org/abs/2511.04169v2",
+   "title": "Nonlocal van der Waals density functional made faster",
+   "year": "2025",
+   "abstract": "A simplification of the VV10 van der Waals density functional [J. Chem. Phys. 133, 244103 (2010)] is made by an approximation of the integrand of the six-dimentional integral in terms of a few products of three-dimensional density-like distributions and potential-like functions of the interelectronic distance only, opening the way for its straightforward computation by fast multipole methods. An even faster computational scheme for molecular systems is implemented where the density-like distributions are fitted by linear combinations of usual atom-centered basis functions of Gaussian type and the six-dimensional integral is then computed analytically, at a fraction of the overall cost of a typical calculation. The simplicity of the new approximation is commensurate with that of the original VV10 functional, and the same level of accuracy is seen in tests on molecules.",
+   "two_dim": false
+  }
+ ]
+}

@@ -1,0 +1,259 @@
+# P2 骨架（B 案）——换口径后的可辩护版本
+
+> 状态：大纲（2026-09-29）。P2 原口径"亚平方算法 + 保住 (i,j) 成对结构"中的**加速**部分
+> 已被当天实测否证（见 §6），本文档按换口径后的写法组织。
+> 写作纪律同 `MAIN-skeleton.md`：每个数字后面方括号是出处（文件/日志/PROGRESS 行）；
+> 没有出处的写 `PENDING` 或 `UNVERIFIED`，**不估数**。
+> 实测口径：WSL PySCF 2.12.1，`nlcsplit/fastpair.py`（我方实现），阶梯 L1–L4 已跑完。
+> 期刊定位：先按 JCCT/JoC 级别规划，**不替用户定死**；若 §E1/E2 实验翻盘（见文末），
+> 重新评估档次，但主张句在任何分支下都不许先写 sub-quadratic speedup。
+
+---
+
+## 0. 标题级主张（title-level claim，一句话）
+
+**中文**：VV10 非局域关联双重和可以被**带可证误差界的屏蔽**求值，且**逐 (i,j) 片间成对
+归属结构在屏蔽后原样保留**；我们给出该界在密度细化下的单调几何判据（轴对齐盒 + 每原子
+二分树 + MAC 接受/拒绝），实测界与最坏实际误差之比 32.1x，并给出此类屏蔽**何时才可能
+起效的定量精度门槛**——在 P1 所需精度（|dE| ≤ 1e-6 kcal/mol）下，可证屏蔽在 S22 二聚体
+上不省墙钟时间反而慢约 5.2 倍。
+
+**英文题目候选（二选一，都不含 speedup 字样）**：
+- *Pair-Preserving, Error-Certified Screening of the VV10 Nonlocal-Correlation Double
+  Sum: Monotone Bounds under Density Refinement and the Accuracy Threshold at Which
+  Screening Stops Paying*
+- *Certified bounds, preserved pairs, and a measured negative timing result for screening
+  the VV10 nonlocal-correlation double sum on S22 dimers*
+
+**主张只允许站住今天有的三样东西**：
+1. 可证误差界（L1 成立且紧：32.1x）[PROGRESS-nlcsplit.md 18:3x；
+   nlcsplit/logs/20260929T102220Z_pytest_fastpair_slow.out]
+2. 保住 (i,j) 成对归属（L4：τ→0 与原子块精确路径逐位相同，点对记账闭合
+   `pointpairs_evaluated == pointpairs_far`）[同上日志 L4 行]
+3. 密度的空间细分数学（球判据不单调 53,983/300,000，盒判据 0 违反；根上盒==球逐位相等）
+   [PROGRESS-nlcsplit.md 1648–1665；nlcsplit/tests/test_fastpair.py]
+
+**禁用**：sub-quadratic / linear-scaling / speedup / "faster than O(N²)" 作为主张句成分。
+允许在 §6 的**条件句**里出现加速数字（τ=1e-4 Ha 档 2.4 s 快 2.1x），但必须同句写明该档
+界已无意义（cert 1.8 Ha）[logs/20260929T101447Z_probe_bound_forms.out]。
+
+---
+
+## 正文分节大纲（9 节）
+
+### §1 Introduction——缺口与定位
+- 内容：P1 的显式双重和是 O(N²)（`nlc.pair_energy`，nlc.py:49，全仓无距离屏蔽——计划书
+  Context 节实测盘点 [crisp-brook-smew.md §Context]）；现有高速 NLC 实现把项折叠成点值
+  再插值，成对结构不可恢复（同 P1 §1 代码事实，`numint.nr_nlc_vxc` → `libdft.VXC_vv10nlc`）。
+  P2 的对象：**带证的**屏蔽能否在保住成对记账的前提下砍掉远场。
+- 需要但还没有：NLC 屏蔽/网格剪枝方向的**先例检索**（FMM/CUT3D 类、GELLER/ShortRange-SPI、
+  vdW-DF 线性标度文献各自的判据是否可证）→ `PENDING`，未检索前正文只写"我们不宣称
+  已穷尽先例"。审稿人会拿这段当 novelty 判据，**先检再投**。
+- 审稿人攻击点：为什么用 PySCF 而不是自己的核（答：P1 已锚 ORCA 6.0.1，锚点数字见 §7）。
+
+### §2 设定：双重和、成对归属、两条独立截断
+- 数字：核 `g = w0_i R² + κ_i`（同中心配对）；报告量 = 双重和 + β∫ρ，β∫ρ 不参与屏蔽、
+  在全部网格点求和 [fastpair.py:70-71；MAIN-skeleton §2.3]。
+  现有截断 `rho_floor=1e-12`（水 lvl1 上 19936 点只保留 17227）与**新增**的几何屏蔽是
+  **两条独立截断，必须分开报告** [crisp-brook-smew.md 冲突清单第 5 条；
+  PROGRESS-nlcsplit.md 1674]。
+- 审稿人攻击点：两条截断叠加后的总误差归谁管（答：rho_floor 的口径已由 P1 表 5 钉死，
+  1e-8…1e-16 五档片间项跨度 4e-11 kcal/mol [MAIN-skeleton §2.5]；本文只新增 cert_err 这一条）。
+
+### §3 可证块对界（construction）
+- 数字：
+  - 界 `bound(P,Q) = 0.75·m_P m_Q / (a_P a_Q (a_P+a_Q))`，`a_P = w0_P^min·D² + κ_P^min`，
+    界住**半块**（`pair_energy` 口径）[fastpair.py:9-16；计划书 §B案]。
+  - 块内**没有符号抵消可用**（ρ≥0、权重>0、Φ<0），质量取绝对值不是 looseness 来源
+    [fastpair.py:17-18]。
+  - 玩具夹具：证得界 3.13e-5 对实际 3.47e-6，松 9 倍 [test_kernel.py；计划书 §B案引]。
+  - 真实体系 L1：水二聚体 lvl1 界/实际最坏 **32.1x**；τ=1e-12 Ha ⇒ cert 3.29e-6、
+    实际 4.23e-7 kcal/mol、省 12.35% 点对（19936 点/17227 保留/697 叶/197,686 叶对）
+    [pytest_fastpair_slow.out L1 表]。
+  - 全局最小值版界**无用**（不是猜的）：rho_floor=1e-12 下 κ_min=0.162、w0_min=2.05e-6，
+    R⁻⁶ 渐近要到 281 bohr=149 Å 才接管 ⇒ 必须逐块 (w0,κ) 最小值 × 质量因子
+    [crisp-brook-smew.md §B案]。
+- 审稿人攻击点：界住的是 |ΣΦ| 不是带符号和，会不会保守到不可用 → 用 §4–§6 的
+  实测比值与门槛回答；"半块 ×2 只施加一次" 的记账（`test_x2_not_applied_twice`）。
+
+### §4 几何判据：球为什么死、盒为什么活（本轮最有价值的部分）
+- 数字/证据（**按原样写，不美化**）：
+  - 球版 `D = |c_P−c_Q| − r_P − r_Q` 在细化下**不单调**：随机 300,000 组试验，球版违反
+    单调 **53,983 次 (18%)**，盒版违反 **0 次** [PROGRESS-nlcsplit.md 1648–1650]。
+  - 可手算反例（四点正方形等质量 vs 子块 {(10,0),(10,10)}：父球间距 7.929 > 子球间距
+    5.0，子球顶出父球）已钉进
+    `test_ball_bound_can_lose_monotonicity_under_refinement` [nlcsplit/tests/test_fastpair.py:71]。
+  - 根因：质量加权质心+最大半径**不是最小外接球**，细化可以让界变大 ⇒ "父块界 ≤ τ 就
+    整块跳"不安全。⇒ **球版不能做自顶向下屏蔽**，这是判据层的负结果，独立于成本层。
+  - 盒版单调性是构造给的：子盒⊆父盒 ⇒ 最近距离下界不减；w0/κ 最小值细化不减、质量不增
+    ⇒ 界函数整体细化单调不增 ⇒ MAC 合法 [fastpair.py:20-31]。
+- **写法警示（差点犯的错，要如实写进正文或 SI）**：这条不是"直觉判断"，是测试拦住的——
+  作者一度准备写"换了判据就自动变紧"，被单调性计数与 §5 的根节点断言各打回一次
+  [PROGRESS-nlcsplit.md 1661–1669]。把它写成方法论句子（"几何表示的选择必须由细化
+  单调性计数来裁决，不能由包含关系直觉来裁决"），审稿人吃这一套，且真实。
+- 审稿人攻击点："你们只是把分子团 FMM 的 MAC 搬过来"→ 需要 §1 的先例检索支撑划界；
+  差别候选：界核是 Φ=−3/(2gg'(g+g')) 且 g 含逐点 w0·R²+κ（距离依赖是逐块的，不是 1/R 系），
+  以及必须**保住成对归属**（FMM 类方法不保留 pair 结构）。UNVERIFIED：先例是否已有人
+  对 VV10 做过可证 MAC，未检索。
+
+### §5 层级与根节点退化："紧"从往下走来，不从几何表示来
+- 数字：
+  - 根节点上盒界与球界**逐位相等**：21723.206496881914 == 21723.206496881914 kcal/mol
+    [test_fastpair.py:328 断言；PROGRESS-nlcsplit.md 1663]。
+  - 苯 lvl0：276 个原子对里根盒界 ≤ 1e-8 Ha 的 **0 个**；sum(exact)=38.3510 kcal/mol 对
+    sum(ball bound)=sum(box bound)=3.492e+08（box 1.0e+00x tighter at roots）
+    [logs/20260929T101447Z_probe_bound_forms.out]。
+  - 原因：低密度尾巴把每个原子的包围盒撑到互相重叠（一个 O：块半径 11.07 bohr，
+    整个 O···O 才 5.48 bohr [fastpair.py:36-38]）。
+  - ⇒ 结论句：**紧不来自几何表示，只来自往下走；球版的真正死因是没有可下走的层级。**
+  - 记账口径两条（必须进正文，否则当场被问倒）：
+    1. `screen`/τ 是**单个节点对**的接受常数，不是全局预算。苯 lvl0 有 **95,481** 个胞对
+       各自 ≤ 1e-8 Ha，全跳掉的**总**界约 **1e-3 Ha**。真实保证只读累加量 `cert_err`；
+       按预算用得压 τ 直到 cert_err 达标 [fastpair.py:60-63；PROGRESS-nlcsplit.md 1710–1713]。
+       示范行：L2 取 τ=1e-13 Ha ⇒ cert 4.688e-10 Ha ≤ 预算 1e-9，P_frz 屏蔽
+       −0.523653418 vs 精确 −0.523653446（差 2.763e-08 kcal/mol）
+       [pytest_fastpair_slow.out L2 行]。
+    2. 固定**绝对** τ 且工作量 ∝ N 会迫使截断半径 ∝ N^{1/3} ⇒ 渐近仍是 O(N²)；
+       **只有固定相对 τ 才给 O(N)**。当场可见的证据：最小质量那对原子的界要到
+       D≈42 bohr（22 Å）才降到 4e-9 Ha [crisp-brook-smew.md §B案"标度必须诚实"；
+       PROGRESS-nlcsplit.md 1591–1593]。**任何标度/加速声明必须写明用的是哪一种 τ**；
+       固定绝对精度下不得宣称线性。
+- 需要补的实验：无新实验；但 §5 结论句的证据表全部来自已有两日志，需整理成表。
+- 审稿人攻击点："root bound 都退化，你们的前庭遍历不是白付？"→ 正是 §6 的成本结论。
+
+### §6 成本实测与精度门槛（negative result 的落点）
+- 数字（全表照抄日志，不改写）：
+  - 水 lvl1：原子块精确路径 7.37 s，建树 6.74 s；τ=1e-12 Ha ⇒ cert 3.29e-6 kcal/mol、
+    实际 4.23e-7、省 12.35% 点对 [PROGRESS-nlcsplit.md 1674–1681；pytest 慢档日志]。
+    诚实句：二聚体上省 12% 点对**不等于**墙钟收益（省下的是最便宜的尾巴对）。
+  - 苯 lvl0：18792 保留点/24 原子/588,908 叶对；原子块基准 **5.03 s**，建树 4.80 s
+    [PROGRESS-nlcsplit.md 1687]。τ 阶梯（cert / 实际 / 省点对 / 墙钟）
+    [logs/20260929T101447Z_probe_bound_forms.out]：
+    | τ (Ha) | cert | 实际 | 省点对 | 墙钟 |
+    |---|---|---|---|---|
+    | 1e-12 | 1.10e-8 Ha ✓ | 1.2e-6 kcal/mol | 8.6% | 25.9 s（**慢 5.2x**） |
+    | 1e-8  | 4.44e-4 Ha | 6.13e-5 Ha | 48.4% | 17.9 s（仍慢） |
+    | 1e-6  | 4.26e-2 Ha | 2.92e-3 Ha | 74.6% | 8.4 s（仍慢） |
+    | 1e-4  | 1.80 Ha（无意义） | 4.69e-2 Ha | 89.2% | 2.4 s（快 2.1x） |
+  - 一句话结论：**在 P1 需要的精度（|dE|≤1e-6 kcal/mol）下，可证屏蔽在 S22 二聚体上不省
+    时间反而慢约 5 倍**；加速门槛出现在 τ≈1e-8 Ha 以上，而那已超过 P1 头条数字
+    （苯-甲烷 0.004 kcal/mol 的归属跨度 [crisp-brook-smew.md §B案容差段；
+    PROGRESS-nlcsplit.md 1699；S22 子表最小跨度 0.004 (0.8%)，logs/step_h.json，
+    经 MAIN-skeleton 表 4b 转引]）的容差。
+  - 根因两条（都量化在表里，都不是"再调调阈值"能救的）：根上 0/276 可用 ⇒ 近场必须
+    逐叶付全价；min_pts=32 的小叶让 gemm 退化成调用开销主导
+    [PROGRESS-nlcsplit.md 1700–1701]。
+- 需要补的实验：
+  - **E1 混合近场**（近场整对仍走原子块 BLAS，只有远场进树；另试 min_pts=256/1024）——
+    脚本 `nlcsplit/examples/hybrid_nearfield.py`，结果 `nlcsplit/logs/*_hybrid_nearfield.out`。
+    **两者现在都不存在，PENDING**。判据：τ≤1e-8 Ha 下墙钟 ≤ 原子块基准（5.03 s/苯 lvl0），
+    且 cert_err 口径不变。翻盘 ⇒ §0 主张允许升级为"加速 + 可证界"（另出修订版）；
+    不翻盘 ⇒ 本文按现口径不变。30 分钟廉价试错授权见 PROGRESS 18:3x 处理决定第 1 条。
+  - **E2 ε–加速比/标度曲线**（A3：`step_j_scaling.py`、`logs/step_j.json`、
+    `figs/fig3_scaling.png`，**均不存在，PENDING**）。判据：每计时样本 load<0.5 且记录
+    uptime/OMP_NUM_THREADS；**标度必须注明用绝对 τ 还是相对 τ**；加速比按**点对**计，
+    不按叶对计（叶对占比系统性高估收益）。
+- 审稿人攻击点："花了钱没省时间还发什么" → §8 的写法；"二聚体太小" → 承认，且这正是
+  门槛结论的前提（体系更大时尾巴更胖、根更退化，方向性推论标 UNVERIFIED，等 E2）。
+
+### §7 双实现互验与外部锚点
+- 规矩（写进正文的方法学小节）：两版独立实现——我方 `nlcsplit/fastpair.py` 与 ide-qoder 的
+  `nlcsplit/fastpair_ide.py`——**冻结前互不读对方源码**；比对只吃三条跨版本契约
+  [PROGRESS-nlcsplit.md 18:4x [freeze] 条]：
+  1. |E_screened − E_full| ≤ cert_err（E_full=同网格关屏蔽）；
+  2. `pairs` 为半块口径、×2 只在块级一次：E_pair = Σ_a v(a,a) + 2Σ_{a<b} v(a,b)；
+  3. E_loc = β∫ρ 在全部网格点求和。
+- 外部锚点（不是对方实现）：(a) 全量 O(N²) 路径 `nlc.pair_energy`；(b) PySCF 原生核
+  `numint.nr_nlc_vxc`（同网格算法离散差 6.35e-6 kcal/mol @lvl1 量级 [P1 表 1 行、
+  test_tolerance_probe 复现]）；(c) ORCA 6.0.1 锚点：水 ΔE_NLC 差 **0.0004**、
+  苯 A 差 **0.0416 kcal/mol** [nlcsplit/logs/orca_anchor.json；evidence/orca_run/ + sha256]。
+  "两版彼此吻合只算旁证" [crisp-brook-smew.md 裁判规矩]。
+- **比对结果：PENDING**。产物 `nlcsplit/logs/fastpair_ab_compare.json`（现在不存在，由另一
+  代理独立验算后落地）。本节内容留空位：两版在 τ=1e-8 Ha 下对 8 体系 P_frz 的逐行差、
+  各自证得界之和、谁更紧；界更紧的一版进主线，另一版留作对照测试
+  [crisp-brook-smew.md 规矩第 3 条]。骨架阶段**不引用对方任何数字**。
+- 审稿人攻击点："独立实现的比对是你们自己做的" → 比对方只跑对方测试/脚本不读正文
+  （a2b-verify 分工，PROGRESS 18:5x 表）。
+
+### §8 Negative result 的写法：把"慢 5.2 倍"写成可迁移判据
+写法模板（四步，缺一审稿人就会当成认错）：
+1. **先立正结果**：界成立且紧（L1 最坏 32.1x；L4 逐位闭合）。这是本文主张，不是陪衬。
+2. **再给定量门槛**（核心句，把它写成判据而不是失败）：
+   "任何此类**可证**屏蔽要在 S22 量级二聚体上产生墙钟收益，τ 必须 ≥ 约 1e-8–1e-6 Ha
+   区间（实测翻墙点介于二者之间：τ=1e-6 仍 8.4 s > 5.03 s 基准，τ=1e-4 才 2.4 s [probe 日志]）；
+   而该区间已超过把 E_NLC 按片段对记账所需的工作精度（P1 归属跨度 0.004 kcal/mol 量级，
+   |dE|≤1e-6 kcal/mol）。"——即：**在记账所需精度下，可证屏蔽的成本大于它省下的**。
+3. **给方向性原因**（已量化的两条）：根节点 0/276 可用（尾巴撑满包围盒）⇒ 近场必须逐叶
+   全价；小叶 gemm 开销主导。以及 §5 口径 2：绝对 τ 固定精度截断半径 ∝ N^{1/3} ⇒ 渐近
+   仍二次——所以"更大就好了"不是免费的方向性承诺，需要相对 τ + E2 标度实测支撑
+   （UNVERIFIED，明示）。
+4. **给出口**：B2（按 (w0,κ) 分箱 → Φ 可分展开 → 平移定理）能到真线性但**丢掉可证界**
+   [crisp-brook-smew.md §B2]，作为 future work，明码标价"本轮不开 5–10 天不确定投入"
+   [PROGRESS-nlcsplit.md 1707 原话口径]；E1 混合近场结果落地后本节改口或加固。
+- 禁句清单：不写"性能问题将在未来工作中解决"（无信息量）；不写"虽然慢但方法新颖"
+  （评价不是作者的事）；不把 32.1x 与 5.2x 之一藏进 SI（两个都是主张的一部分）。
+
+### §9 Limitations & code availability
+- 目前只有两种二聚体（水 lvl1、苯 lvl0）的成本实测；三原子以上片段/多片段链体系
+  `PENDING`（见 E4）。
+- 屏蔽默认关闭（`screen=None` 走原子块精确路径，现有测试逐条不变）[fastpair.py:65-69]——
+  这条同时是对 P1 数字不被污染的保护，写进 §9。
+- 计时受 load<0.5 门禁；6 计算代理并发期间**本骨架不新增任何计时数**（任务约束）。
+- 代码：`nlcsplit/fastpair.py` + `tests/test_fastpair.py` + `examples/probe_bound_forms.py`，
+  发布走 P3 的导出闸门（`tools/make_public_repo.js` 五闸门；白名单扩到 fastpair 的申请
+  状态 UNVERIFIED/PENDING，PROGRESS 18:5x p3-releasecheck 在跑）。
+
+---
+
+## 需要补的实验清单（汇总）
+
+| # | 实验 | 产物路径（现不存在） | 判据 | 卡哪节 | 状态 |
+|---|---|---|---|---|---|
+| E1 | 混合近场（近场原子块 BLAS，远场进树；min_pts=256/1024） | `nlcsplit/examples/hybrid_nearfield.py` + `nlcsplit/logs/*_hybrid_nearfield.out` | τ≤1e-8 Ha 下苯 lvl0 墙钟 ≤ 5.03 s 基准，且 L1/L4 复验通过 | §0 主张、§6、§8 第 4 步 | **PENDING**（另一代理在跑，30 分钟廉价试错） |
+| E2 | ε–加速比曲线 + 标度曲线（绝对/相对 τ 各一） | `nlcsplit/step_j_scaling.py`、`logs/step_j.json`、`figs/fig3_scaling.png` | load<0.5 逐样本记录；加速比按点对计；标度注明 τ 口径 | §5 口径 2、§6、§9 | **PENDING** |
+| E3 | 双实现互验比对 | `nlcsplit/logs/fastpair_ab_compare.json` | 三条 [freeze] 契约；8 体系 P_frz 逐行差 + 界和对比；不读对方正文 | §7 全节 | **PENDING**（a2b-verify 代理负责） |
+| E4 | 多片段体系（≥3 片或水链）成本 + 界 | 待定名 | 证明/证伪"更大体系上界退化缓解"的方向性推论 | §6 诚实边界、§8 第 3 步 | **未立项**（估 3–5 人日，见三选一） |
+| E5 | NLC 屏蔽先例正式检索（WoS/多库，划界 FMM/MAC/ShortRange 类） | `RESEARCH-*.md` 增量 | 主张句里"first/error-certified"类措辞的存废由检索结果定 | §1、§4 划界 | **未做**；现稿一律不写 first |
+| E6 | 第三裁判（libxc `xc_nlc_vxc` 直调） | `nlcsplit/examples/libxc_referee.py` + 日志 | 与 ORCA 锚点、原生核三方对账 | §7 锚点 (b)(c) 加固 | **PENDING**（referee-libxc 代理在跑） |
+
+---
+
+## 如果只做一件事能让 P2 变强（三选一排序）
+
+| 序 | 选项 | 直接收益 | 代价（人日，规划估计非实测） | 不确定度 | 判据 |
+|---|---|---|---|---|---|
+| **1** | **E1 混合近场跑完并落地** | 决定 §0 主张能否含"加速"；不翻盘也把"为什么换表示也不行"量化进 §6，正文按现口径**本来就要它** | 0.5–1（已有 30 分钟廉价试错授权；实现只是换近场调用粒度，不是新算法） | **中**：τ=1e-12 时苯保留 91.4% 点对，近场回收只砍遍历开销，能否吃回 5.2x 差距无先验支持——纯经验问题，等日志 | 墙钟 ≤ 原子块基准 @ τ≤1e-8 |
+| **2** | **E4+E2：多片段体系 + 相对 τ 标度曲线** | 把卖点是"记账精度下渐近可用"从推论变实测；即使二聚体慢也成立 | 3–5（几何构建、运行、load 门禁窗口、曲线整理） | **高→中**：绝对 τ 的 N^{1/3} 死路已当场可见（D≈42 bohr），相对 τ 版完全未测；体系选型影响结论方向 | 标度图注明 τ 口径；加速比按点对 |
+| **3** | B2（(w0,κ) 分箱 + 可分展开 + 平移） | 真线性加速 | 5–10 | **很高**，且**与当日主张正面冲突**：B2 丢可证界 [计划书 §B2]，等于换一篇论文的命题；已明确"本轮不开" | 不进 P2 主线，只进 §8 出口段 |
+
+**结论：先 1，再 2，3 不做。** 1 便宜且无论结果都强化正文（翻盘⇒主张升格；不翻盘⇒门槛
+判据多一条"换调用粒度也不行"的实证）；2 是现口径下唯一能新增的正面主张；3 否定今天的
+主张本身，留给 P2b 或 future work。
+
+---
+
+## 图表清单（每张：需要什么数据 / 现在有没有）
+
+| 图表 | 内容 | 数据 | 状态 |
+|---|---|---|---|
+| 表 1 | 界的构造与 L1 验证（公式、玩具 9x、水 32.1x、τ=1e-12 行） | fastpair.py:9-16；pytest_fastpair_slow.out | **有** |
+| 表 2 | 几何判据对照：球 53,983/300,000 不单调 vs 盒 0 违反；反例坐标 | PROGRESS 1648–1659；test_fastpair.py:71 | **有** |
+| 表 3 | 根节点退化：盒==球 21723.206496881914；苯 0/276；sum bound 3.492e+08 vs exact 38.3510 | test_fastpair.py:328；probe_bound_forms.out | **有** |
+| 表 4 | 成本全表（水三行 + 苯五行 τ 阶梯，含墙钟/省点对/cert/实际） | 两份日志 | **有** |
+| 表 5 | 口径对照：screen(单对接受) vs cert_err(预算)；95,481 胞对→总界 1e-3 Ha；L2 τ=1e-13 示范行 | fastpair.py:60-63；pytest 慢档 L2 行 | **有** |
+| 表 6 | 双实现比对（8 体系 P_frz 逐行差、界和、谁紧） | `fastpair_ab_compare.json` | **PENDING**（E3） |
+| 图 1 | 球不单调反例示意（四点正方形 + 子块顶出父球） | 反例坐标在手（表 2 源） | 数据**有**，图**未画** |
+| 图 2 | 界 vs 实际误差随 τ（双对数，水+苯同图，标 32.1x 带） | 表 4 同源日志 | 数据**有**，图**未画** |
+| 图 3 | ε–墙钟/加速比曲线（含混合近场对照臂） | E1+E2 | **PENDING** |
+| 图 4 | 标度曲线（绝对 τ vs 相对 τ 两条） | E2 | **PENDING** |
+| 图 5 | 树遍历记账（n_visited/n_accepted/leafpairs/pointpairs 瀑布） | probe 日志每行都有 accepted/visited/work_frac/flop_frac | 数据**有**，图**未画**（低优先） |
+
+---
+
+## 遗留口径冲突（写作前必须核一次，不改数）
+- "0.004 kcal/mol 归属跨度"的体系归属：计划书与 PROGRESS 18:3x 均写"**苯-甲烷** 0.004
+  [crisp-brook-smew.md §B案容差段；PROGRESS-nlcsplit.md 1699]"；而 MAIN-skeleton 表 4b
+  （源 `logs/step_h.json`）里 0.004 (0.8%) 记在**甲烷二聚体**行、苯···CH₄ 行是 0.213 (14.8%)。
+  两处均为仓内原文，本文档**不改任何数字**，投稿前由 owner 回读 `step_h.json` 原始行裁定
+  哪个体系携带 0.004，并同步修订计划书或骨架。主张句只依赖"最小跨度 ≈ 0.004 kcal/mol"
+  这一量级，裁定前不指定体系名。

@@ -1,0 +1,74 @@
+[
+ {
+  "query": "abs:\"VV10\"",
+  "status": 200,
+  "total": 5,
+  "ts": "20260929T112040Z"
+ },
+ {
+  "query": "abs:\"nonlocal correlation\"",
+  "status": 200,
+  "total": 531,
+  "ts": "20260929T112044Z"
+ },
+ {
+  "query": "ti:\"VV10\"",
+  "status": 200,
+  "total": 1,
+  "ts": "20260929T112048Z"
+ },
+ {
+  "query": "abs:\"van der Waals density functional\"",
+  "status": 200,
+  "total": 87,
+  "ts": "20260929T112052Z"
+ },
+ {
+  "query": "abs:\"VV10\" AND abs:\"nonlocal\"",
+  "status": 200,
+  "total": 2,
+  "ts": "20260929T112056Z"
+ },
+ {
+  "query": "abs:\"VV10\" AND abs:\"water dimer\"",
+  "status": 200,
+  "total": 0,
+  "ts": "20260929T112100Z"
+ },
+ {
+  "query": "abs:\"VV10\" AND abs:\"fragment\"",
+  "status": 200,
+  "total": 0,
+  "ts": "20260929T112104Z"
+ },
+ {
+  "query": "abs:\"VV10\" AND all:\"fragment\"",
+  "status": 200,
+  "total": 0,
+  "ts": "20260929T112108Z"
+ },
+ {
+  "query": "all:\"VV10\" AND all:\"energy decomposition\"",
+  "status": 200,
+  "total": 0,
+  "ts": "20260929T112111Z"
+ },
+ {
+  "query": "abs:\"nonlocal correlation\" AND abs:\"energy decomposition\"",
+  "status": 200,
+  "total": 0,
+  "ts": "20260929T112115Z"
+ },
+ {
+  "query": "abs:\"nonlocal correlation\" AND ti:\"fragment\"",
+  "status": 200,
+  "total": 0,
+  "ts": "20260929T112119Z"
+ },
+ {
+  "query": "ti:\"VV10\" AND ti:\"implementation\"",
+  "status": 200,
+  "total": 1,
+  "ts": "20260929T112123Z"
+ }
+]

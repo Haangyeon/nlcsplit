@@ -1,0 +1,92 @@
+[
+ {
+  "doi": "10.1021/acs.accounts.4c00085",
+  "year": 2024,
+  "title": "Local Energy Decomposition Analysis of London Dispersion Effects: From Simple Model Dimers to Complex Biomolecular Assemblies",
+  "authors": "Giovanni Bistoni; Ahmet Altun; Zikuan Wang; Frank Neese",
+  "journal": "Accounts of Chemical Research",
+  "cited_by": 33,
+  "abstract": "ConspectusLondon dispersion (LD) forces are ubiquitous in chemistry, playing a pivotal role in a wide range of chemical processes. For example, they influence the structure of molecular crystals, the selectivity of organocatalytic transformations, and the formation of biomolecular assemblies. Harnessing these forces for chemical applications requires consistent quantification of the LD energy across a broad and diverse spectrum of chemical scenarios. Despite the great progress made in recent years in the development of experimental strategies for LD quantification, quantum chemical methods remain one of the most useful tools in the hand of chemists for the study of these weak interactions. Unfortunately, the accurate quantification of LD effects in complex systems poses many challenges for electronic structure theories. One of the problems stems from the fact that LD forces originate from long-range electronic dynamic correlation, and hence, their rigorous description requires the use of complex, highly correlated wave function-based methods. These methods typically feature a steep scaling with the system size, limiting their applicability to small model systems. Another core challenge lies in disentangling short-range from long-range dynamic correlation, which from a rigorous quantum mechanical perspective is not possible.In this Account, we describe our research endeavors in the development of broadly applicable computational methods for LD quantification in molecular chemistry as well as challenging applications of these schemes in various domains of chemical research. Our strategy lies in the use of local correlation theories to reduce the computational cost associated with complex electronic structure methods while providing at the same time a simple means of decomposition of dynamic correlation into its long-range and short-range components. In particular, the local energy decomposition (LED) scheme at the domain-based local pair natural orbital coupled cluster (DLPNO-CCSD(T)) level has emerged as a powerful tool in our research, offering a clear-cut quantitative definition of the LD energy that remains valid across a plethora of different chemical scenarios. Typical applications of this scheme are examined, encompassing protein-ligand interactions and reactivity studies involving many fragments and complex electronic structures. In addition, our research also involves the development of novel cost-effective methodologies, which exploit the LED definition of the LD energy, for LD energy quantification that are, in principle, applicable to systems with thousands of atoms. The Hartree-Fock plus London Dispersion (HFLD) scheme, correcting the HF interaction energy using an approximate CCSD(T)-based LD energy, is a useful, parameter-free electronic structure method for the study of LD effects in systems with hundreds of molecular fragments. However, the usefulness of the LED scheme reaches beyond providing an interpretation of the calculated DLPNO-CCSD(T) or DLPNO-MP2 interaction energies. For example, the dispersion energies obtained from the LED can be fruitfully used in order to parametrize semiempirical dispersion models. We will demonstrate this in the context of an emerging semiempirical method, namely, the Natural Orbital Tied Constructed Hamiltonian (NOTCH) method. NOTCH incorporates LED-derived LD energies and shows promising accuracy at a minimum amount of empiricism. Thus, it holds substantial promise for large and complex systems.",
+  "nl_terms": []
+ },
+ {
+  "doi": "10.1063/5.0216596",
+  "year": 2024,
+  "title": "Kohn–Sham fragment energy decomposition analysis",
+  "authors": "Tommaso Giovannini",
+  "journal": "The Journal of Chemical Physics",
+  "cited_by": 6,
+  "abstract": "We introduce the concept of Kohn-Sham fragment localized molecular orbitals (KS-FLMOs), which are Kohn-Sham molecular orbitals (MOs) localized in specific fragments constituting a generic molecular system. In detail, we minimize the local electronic energies of various fragments, while maximizing the repulsion between them, resulting in the effective localization of the MOs. We use the developed KS-FLMOs to propose a novel energy decomposition analysis, which we name Kohn-Sham fragment energy decomposition analysis, which allows for rationalizing the main non-covalent interactions occurring in interacting systems both in vacuo and in solution, providing physical insights into non-covalent interactions. The method is validated against state-of-the-art energy decomposition analysis techniques and with high-level calculations.",
+  "nl_terms": []
+ },
+ {
+  "doi": "10.1146/annurev-physchem-090419-115149",
+  "year": 2021,
+  "title": "From Intermolecular Interaction Energies and Observable Shifts to Component Contributions and Back Again: A Tale of Variational Energy Decomposition Analysis",
+  "authors": "Yuezhi Mao; Matthias Loipersberger; Paul R. Horn; Akshaya Kumar Das; Omar Demerdash; Daniel S. Levine",
+  "journal": "Annual Review of Physical Chemistry",
+  "cited_by": 137,
+  "abstract": "Quantum chemistry in the form of density functional theory (DFT) calculations is a powerful numerical experiment for predicting intermolecular interaction energies. However, no chemical insight is gained in this way beyond predictions of observables. Energy decomposition analysis (EDA) can quantitatively bridge this gap by providing values for the chemical drivers of the interactions, such as permanent electrostatics, Pauli repulsion, dispersion, and charge transfer. These energetic contributions are identified by performing DFT calculations with constraints that disable components of the interaction. This review describes the second-generation version of the absolutely localized molecular orbital EDA (ALMO-EDA-II). The effects of different physical contributions on changes in observables such as structure and vibrational frequencies upon complex formation are characterized via the adiabatic EDA. Example applications include red- versus blue-shifting hydrogen bonds; the bonding and frequency shifts of CO, N 2 , and BF bound to a [Ru(II)(NH 3 ) 5 ] 2 + moiety; and the nature of the strongly bound complexes between pyridine and the benzene and naphthalene radical cations. Additionally, the use of ALMO-EDA-II to benchmark and guide the development of advanced force fields for molecular simulation is illustrated with the recent, very promising, MB-UCB potential.",
+  "nl_terms": []
+ },
+ {
+  "doi": "10.1063/1.4807332",
+  "year": 2013,
+  "title": "Nonlocal van der Waals functionals: The case of rare-gas dimers and solids",
+  "authors": "Fabien Tran; Jürg Hutter",
+  "journal": "The Journal of Chemical Physics",
+  "cited_by": 47,
+  "abstract": "Recently, the nonlocal van der Waals (vdW) density functionals [M. Dion, H. Rydberg, E. Schröder, D. C. Langreth, and B. I. Lundqvist, Phys. Rev. Lett. 92, 246401 (2004)] have attracted considerable attention due to their good performance for systems where weak interactions are important. Since the physics of dispersion is included in these functionals, they are usually more accurate and show less erratic behavior than the semilocal and hybrid methods. In this work, several variants of the vdW functionals have been tested on rare-gas dimers (from He2 to Kr2) and solids (Ne, Ar, and Kr) and their accuracy compared to standard semilocal approximations, supplemented or not by an atom-pairwise dispersion correction [S. Grimme, J. Antony, S. Ehrlich, and H. Krieg, J. Chem. Phys. 132, 154104 (2010)]. An analysis of the results in terms of energy decomposition is also provided.",
+  "nl_terms": []
+ },
+ {
+  "doi": "10.1103/physrevb.97.085115",
+  "year": 2018,
+  "title": "Signatures of van der Waals binding: A coupling-constant scaling analysis",
+  "authors": "Yang Jiao; Elsebeth Schröder; Per Hyldgaard",
+  "journal": "Physical review. B./Physical review. B",
+  "cited_by": 23,
+  "abstract": "The van der Waals (vdW) density functional (vdW-DF) method [Rep. Prog. Phys. 78, 066501 (2015)] describes dispersion or vdW binding by tracking the effects of an electrodynamic coupling among pairs of electrons and their associated exchange-correlation holes. This is done in a nonlocal-correlation energy term ${E}_{\\mathrm{c}}^{\\mathrm{nl}}$, which permits density functional theory calculation in the Kohn-Sham scheme. However, to map the nature of vdW forces in a fully interacting materials system, it is necessary to also account for associated kinetic-correlation energy effects. Here, we present a coupling-constant scaling analysis, which permits us to compute the kinetic-correlation energy ${T}_{\\mathrm{c}}^{\\mathrm{nl}}$ that is specific to the vdW-DF account of nonlocal correlations. We thus provide a more complete spatially resolved analysis of the electrodynamical-coupling nature of nonlocal-correlation binding, including vdW attraction, in both covalently and noncovalently bonded systems. We find that kinetic-correlation energy effects play a significant role in the account of vdW or dispersion interactions among molecules. Furthermore, our mapping shows that the total nonlocal-correlation binding is concentrated to pockets in the sparse electron distribution located between the material fragments.",
+  "nl_terms": [
+   "nonlocal correlation",
+   "vdw-df"
+  ]
+ },
+ {
+  "doi": "10.1021/acs.jctc.0c00471",
+  "year": 2020,
+  "title": "Next-Generation Nonlocal van der Waals Density Functional",
+  "authors": "Debajit Chakraborty; Kristian Berland; Timo Thonhauser",
+  "journal": "Journal of Chemical Theory and Computation",
+  "cited_by": 132,
+  "abstract": "The fundamental ideas for a nonlocal density functional theory-capable of reliably capturing van der Waals interactions-were already conceived in the 1990s. In 2004, a seminal paper introduced the first practical nonlocal exchange-correlation functional called vdW-DF, which has become widely successful and laid the foundation for much further research. However, since then, the functional form of vdW-DF has remained unchanged. Several successful modifications paired the original functional with different (local) exchange functionals to improve performance, and the successor vdW-DF2 also updated one internal parameter. Bringing together different insights from almost 2 decades of development and testing, we present the next-generation nonlocal correlation functional called vdW-DF3, in which we change the functional form while staying true to the original design philosophy. Although many popular functionals show good performance around the binding separation of van der Waals complexes, they often result in significant errors at larger separations. With vdW-DF3, we address this problem by taking advantage of a recently uncovered and largely unconstrained degree of freedom within the vdW-DF framework that can be constrained through empirical input, making our functional semiempirical. For two different parameterizations, we benchmark vdW-DF3 against a large set of well-studied test cases and compare our results with the most popular functionals, finding good performance in general for a wide array of systems and a significant improvement in accuracy at larger separations. Finally, we discuss the achievable performance within the current vdW-DF framework, the flexibility in functional design offered by vdW-DF3, as well as possible future directions for nonlocal van der Waals density functional theory.",
+  "nl_terms": [
+   "nonlocal correlation",
+   "van der waals density functional",
+   "vdw-df"
+  ]
+ },
+ {
+  "doi": "10.1103/physrevb.87.041108",
+  "year": 2013,
+  "title": "Nonlocal van der Waals density functional made simple and efficient",
+  "authors": "Riccardo Sabatini; Tommaso Gorni; Stefano de Gironcoli",
+  "journal": "Physical Review B",
+  "cited_by": 738,
+  "abstract": "We present a simple revision of the VV10 nonlocal density functional by Vydrov and Van Voorhis [J. Chem. Phys. 133, 244103 (2010)] for dispersion interactions. Unlike the original functional our modification allows nonlocal correlation energy and its derivatives to be efficiently evaluated in a plane wave framework along the lines pioneered by Rom\\'an-P\\'erez and Soler [Phys. Rev. Lett. 103, 096102 (2009)]. Our revised functional maintains the outstanding precision of the original VV10 in noncovalently bound complexes and performs well in representative covalent, ionic, and metallic solids.",
+  "nl_terms": [
+   "nonlocal correlation",
+   "vv10"
+  ]
+ },
+ {
+  "doi": "10.1063/1.5032175",
+  "year": 2018,
+  "title": "Geometry optimisations with a nonlocal density-functional theory method based on a double Hirshfeld partitioning",
+  "authors": "Andreas Heßelmann",
+  "journal": "The Journal of Chemical Physics",
+  "cited_by": 3,
+  "abstract": "Energy gradients have been derived for the nonlocal density-functional theory (NLDFT) method from Heßelmann [J. Chem. Theory Comput. 9, 273 (2013)]. It is shown that the derivative of the NLDFT functional can easily be obtained analytically due to the fact that the inherent Hirshfeld weights are described in terms of analytic expressions of the atomic densities determined by Slater's rules. The accuracy of the NLDFT gradient has been tested by performing geometry optimisations for a range of 76 tripeptide molecules and a number of small noncovalently bonded dimer systems for which high level coupled cluster reference structures are accessible. It was found that the resulting optimised structures are in good agreement with corresponding structures optimised using second-order Møller-Plesset or coupled cluster wave function electron correlation methods. Moreover, conformer energies as well as intermolecular interaction energies are shown to be in fair agreement with corresponding density-functional theory methods employing pairwise atom-atom dispersion models.",
+  "nl_terms": []
+ }
+]

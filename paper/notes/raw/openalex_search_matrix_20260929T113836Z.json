@@ -1,0 +1,2164 @@
+{
+ "retrieved_utc": "20260929T113836Z",
+ "ua": "anonymous, mailto set",
+ "ledger": [
+  {
+   "tag": "S1",
+   "route": "search",
+   "query": "\"VV10\" AND \"fragment decomposition\"",
+   "status": 200,
+   "meta_count": 3,
+   "returned": 3,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112609Z"
+  },
+  {
+   "tag": "S2",
+   "route": "search",
+   "query": "\"VV10\" AND \"energy decomposition\"",
+   "status": 200,
+   "meta_count": 139,
+   "returned": 25,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112644Z"
+  },
+  {
+   "tag": "S3",
+   "route": "search",
+   "query": "\"rVV10\" AND \"energy decomposition\"",
+   "status": 200,
+   "meta_count": 26,
+   "returned": 25,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112719Z"
+  },
+  {
+   "tag": "S4",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"fragment decomposition\"",
+   "status": 200,
+   "meta_count": 3,
+   "returned": 3,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112753Z"
+  },
+  {
+   "tag": "S5",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"energy decomposition\"",
+   "status": 200,
+   "meta_count": 174,
+   "returned": 25,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112829Z"
+  },
+  {
+   "tag": "S6",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"pairwise decomposition\"",
+   "status": 200,
+   "meta_count": 3,
+   "returned": 3,
+   "retry": "",
+   "ts": "20260929T112841Z"
+  },
+  {
+   "tag": "S7",
+   "route": "search",
+   "query": "\"vdW-DF\" AND \"energy decomposition\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112913Z"
+  },
+  {
+   "tag": "S8",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"atomic contributions\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T112945Z"
+  },
+  {
+   "tag": "S9",
+   "route": "search",
+   "query": "\"VV10\" AND \"per-fragment\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113017Z"
+  },
+  {
+   "tag": "S10",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"resolved into fragments\"",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "retry": "",
+   "ts": "20260929T113028Z"
+  },
+  {
+   "tag": "S11",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"double sum\"",
+   "status": 200,
+   "meta_count": 21,
+   "returned": 21,
+   "retry": "",
+   "ts": "20260929T113041Z"
+  },
+  {
+   "tag": "S12",
+   "route": "search",
+   "query": "\"VV10\" AND \"grid\" AND \"decomposition\"",
+   "status": 200,
+   "meta_count": 228,
+   "returned": 25,
+   "retry": "",
+   "ts": "20260929T113054Z"
+  },
+  {
+   "tag": "S13",
+   "route": "search",
+   "query": "\"nonlocal functional\" AND \"domain decomposition\"",
+   "status": 200,
+   "meta_count": 24,
+   "returned": 24,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113129Z"
+  },
+  {
+   "tag": "S14",
+   "route": "search",
+   "query": "\"van der Waals density functional\" AND \"real-space integration\"",
+   "status": 200,
+   "meta_count": 16,
+   "returned": 16,
+   "retry": "",
+   "ts": "20260929T113141Z"
+  },
+  {
+   "tag": "S15",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"Becke partition\"",
+   "status": 200,
+   "meta_count": 8,
+   "returned": 8,
+   "retry": "",
+   "ts": "20260929T113153Z"
+  },
+  {
+   "tag": "S16",
+   "route": "search",
+   "query": "\"VV10\" AND \"many-body expansion\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113225Z"
+  },
+  {
+   "tag": "S17",
+   "route": "search",
+   "query": "\"nonlocal correlation\" AND \"subsystem\" AND \"energy decomposition\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113257Z"
+  },
+  {
+   "tag": "S18",
+   "route": "search",
+   "query": "\"VV10\" OR \"rVV10\" AND \"attributed to fragments\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113328Z"
+  },
+  {
+   "tag": "S1",
+   "route": "title_and_abstract",
+   "query": "\"VV10\" AND \"fragment decomposition\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113400Z"
+  },
+  {
+   "tag": "S2",
+   "route": "title_and_abstract",
+   "query": "\"VV10\" AND \"energy decomposition\"",
+   "status": 200,
+   "meta_count": 1,
+   "returned": 1,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113433Z"
+  },
+  {
+   "tag": "S3",
+   "route": "title_and_abstract",
+   "query": "\"rVV10\" AND \"energy decomposition\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113505Z"
+  },
+  {
+   "tag": "S4",
+   "route": "title_and_abstract",
+   "query": "\"nonlocal correlation\" AND \"fragment decomposition\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113537Z"
+  },
+  {
+   "tag": "S5",
+   "route": "title_and_abstract",
+   "query": "\"nonlocal correlation\" AND \"energy decomposition\"",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113609Z"
+  },
+  {
+   "tag": "S6",
+   "route": "title_and_abstract",
+   "query": "\"nonlocal correlation\" AND \"pairwise decomposition\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113641Z"
+  },
+  {
+   "tag": "S7",
+   "route": "title_and_abstract",
+   "query": "\"vdW-DF\" AND \"energy decomposition\"",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "retry": "",
+   "ts": "20260929T113651Z"
+  },
+  {
+   "tag": "S8",
+   "route": "title_and_abstract",
+   "query": "\"nonlocal correlation\" AND \"atomic contributions\"",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113723Z"
+  },
+  {
+   "tag": "S9",
+   "route": "title_and_abstract",
+   "query": "\"VV10\" AND \"per-fragment\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113755Z"
+  },
+  {
+   "tag": "S10",
+   "route": "title_and_abstract",
+   "query": "\"nonlocal correlation\" AND \"resolved into fragments\"",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "retry": "RETRIED-ONCE",
+   "ts": "20260929T113827Z"
+  }
+ ],
+ "results": {
+  "S1_search": {
+   "query": "\"VV10\" AND \"fragment decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 3,
+   "returned": 3,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1039/c6cp03784d",
+     "year": 2016,
+     "title": "Probing non-covalent interactions with a second generation energy decomposition analysis using absolutely localized molecular orbitals"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.3c00143",
+     "year": 2023,
+     "title": "Merging the Energy Decomposition Analysis with the Interacting Quantum Atoms Approach"
+    },
+    {
+     "doi": "https://doi.org/10.5075/epfl-thesis-7808",
+     "year": 2020,
+     "title": "Deterministic and Statistical Approaches to Quantum Chemistry"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "union": {
+   "W2500231039": {
+    "doi": "https://doi.org/10.1039/c6cp03784d",
+    "year": 2016,
+    "title": "Probing non-covalent interactions with a second generation energy decomposition analysis using absolutely localized molecular orbitals"
+   },
+   "W4378640114": {
+    "doi": "https://doi.org/10.1021/acs.jctc.3c00143",
+    "year": 2023,
+    "title": "Merging the Energy Decomposition Analysis with the Interacting Quantum Atoms Approach"
+   },
+   "W3195494773": {
+    "doi": "https://doi.org/10.5075/epfl-thesis-7808",
+    "year": 2020,
+    "title": "Deterministic and Statistical Approaches to Quantum Chemistry"
+   },
+   "W2418973097": {
+    "doi": "https://doi.org/10.1063/1.4952647",
+    "year": 2016,
+    "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation"
+   },
+   "W2099190231": {
+    "doi": "https://doi.org/10.1039/c3cp54374a",
+    "year": 2013,
+    "title": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy"
+   },
+   "W3193988690": {
+    "doi": "https://doi.org/10.1063/5.0055522",
+    "year": 2021,
+    "title": "Software for the frontiers of quantum chemistry: An overview of developments in the Q-Chem 5 package"
+   },
+   "W2903364247": {
+    "doi": "https://doi.org/10.1021/acs.jctc.8b00643",
+    "year": 2018,
+    "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects"
+   },
+   "W1982062653": {
+    "doi": "https://doi.org/10.1063/1.4907719",
+    "year": 2015,
+    "title": "Mapping the genome of meta-generalized gradient approximation density functionals: The search for B97M-V"
+   },
+   "W3131468386": {
+    "doi": "https://doi.org/10.1146/annurev-physchem-090419-115149",
+    "year": 2021,
+    "title": "From Intermolecular Interaction Energies and Observable Shifts to Component Contributions and Back Again: A Tale of Variational Energy Decomposition Analysis"
+   },
+   "W2955507264": {
+    "doi": "https://doi.org/10.1021/acs.jpclett.9b01203",
+    "year": 2019,
+    "title": "Probing Blue-Shifting Hydrogen Bonds with Adiabatic Energy Decomposition Analysis"
+   },
+   "W3107249630": {
+    "doi": "https://doi.org/10.1039/d0sc05327a",
+    "year": 2020,
+    "title": "Consistent inclusion of continuum solvation in energy decomposition analysis: theory and application to molecular CO 2 reduction catalysts"
+   },
+   "W2606666728": {
+    "doi": "https://doi.org/10.1021/acs.jctc.7b00089",
+    "year": 2017,
+    "title": "Performance of the AMOEBA Water Model in the Vicinity of QM Solutes: A Diagnosis Using Energy Decomposition Analysis"
+   },
+   "W2300982921": {
+    "doi": "https://doi.org/10.1063/1.4942921",
+    "year": 2016,
+    "title": "Defining the contributions of permanent electrostatics, Pauli repulsion, and dispersion in density functional theory calculations of intermolecular interaction energies"
+   },
+   "W4394716207": {
+    "doi": "https://doi.org/10.1021/acs.accounts.4c00085",
+    "year": 2024,
+    "title": "Local Energy Decomposition Analysis of London Dispersion Effects: From Simple Model Dimers to Complex Biomolecular Assemblies"
+   },
+   "W3034148684": {
+    "doi": "https://doi.org/10.1039/d0cp01933j",
+    "year": 2020,
+    "title": "Probing radical–molecule interactions with a second generation energy decomposition analysis of DFT calculations using absolutely localized molecular orbitals"
+   },
+   "W2938558362": {
+    "doi": "https://doi.org/10.1038/s41467-020-14659-5",
+    "year": 2020,
+    "title": "Charge transfer as a ubiquitous mechanism in determining the negative charge at hydrophobic interfaces"
+   },
+   "W4382244109": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2023-n79rz",
+    "year": 2023,
+    "title": "A simple, efficient and universal energy decomposition analysis method based on dispersion-corrected density functional theory"
+   },
+   "W2207455496": {
+    "doi": null,
+    "year": 2015,
+    "title": "Improvements in Energy Decomposition Analysis for Single Determinant Methods"
+   },
+   "W2313563924": {
+    "doi": "https://doi.org/10.1021/ja5101323",
+    "year": 2014,
+    "title": "Hydrogen Physisorption on Metal–Organic Framework Linkers and Metalated Linkers: A Computational Study of the Factors That Control Binding Strength"
+   },
+   "W3211994894": {
+    "doi": "https://doi.org/10.1039/d1cp04587c",
+    "year": 2021,
+    "title": "Dissociation of HCl in water nanoclusters: an energy decomposition analysis perspective"
+   },
+   "W2900515414": {
+    "doi": "https://doi.org/10.1021/acs.jctc.8b00978",
+    "year": 2018,
+    "title": "Improvements to the AMOEBA Force Field by Introducing Anisotropic Atomic Polarizability of the Water Molecule"
+   },
+   "W4388211342": {
+    "doi": "https://doi.org/10.1021/jacs.3c09198",
+    "year": 2023,
+    "title": "The Energetic Origins of Pi–Pi Contacts in Proteins"
+   },
+   "W4402614402": {
+    "doi": "https://doi.org/10.1039/d4cp03214d",
+    "year": 2024,
+    "title": "Exploring non-covalent interactions in excited states: beyond aromatic excimer models"
+   },
+   "W4233929980": {
+    "doi": "https://doi.org/10.26434/chemrxiv.13065290",
+    "year": 2020,
+    "title": "Consistent Inclusion of Continuum Solvation in Energy Decomposition Analysis: Theory and Application to Molecular CO2 Reduction Catalysts"
+   },
+   "W4392015489": {
+    "doi": "https://doi.org/10.1021/jacs.3c13822",
+    "year": 2024,
+    "title": "Mechanistic Insights into the Origins of Selectivity in a Cu-Catalyzed C–H Amidation Reaction"
+   },
+   "W2913101076": {
+    "doi": "https://doi.org/10.1039/c8fd00229k",
+    "year": 2019,
+    "title": "Probing solvation and reactivity in ionized polycyclic aromatic hydrocarbon–water clusters with photoionization mass spectrometry and electronic structure calculations"
+   },
+   "W4390264022": {
+    "doi": "https://doi.org/10.1021/acs.jctc.3c00903",
+    "year": 2023,
+    "title": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals"
+   },
+   "W4205267073": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2022-rt0m8",
+    "year": 2022,
+    "title": "Assessing the Interplay Between Functional-Driven and Density-Driven Errors in DFT Models of Water"
+   },
+   "W4385950145": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2023-nc64t",
+    "year": 2023,
+    "title": "Balance between physical interpretability and energetic predictability in widely used dispersion-corrected density functionals"
+   },
+   "W2889401928": {
+    "doi": "https://doi.org/10.1038/s41929-018-0109-2",
+    "year": 2018,
+    "title": "Computational optimization of electric fields for better catalysis design"
+   },
+   "W4416198949": {
+    "doi": "https://doi.org/10.3390/nano15221720",
+    "year": 2025,
+    "title": "On the Energy Contributions Driving Pyridine Adsorption on Silver and Gold Nanoparticles"
+   },
+   "W2597184241": {
+    "doi": "https://doi.org/10.1063/1.4977180",
+    "year": 2017,
+    "title": "How strongly do hydrogen and water molecules stick to carbon nanomaterials?"
+   },
+   "W2791998548": {
+    "doi": "https://doi.org/10.1016/j.cattod.2018.02.007",
+    "year": 2018,
+    "title": "Impact of long-range electrostatic and dispersive interactions on theoretical predictions of adsorption and catalysis in zeolites"
+   },
+   "W3021204671": {
+    "doi": "https://doi.org/10.1063/5.0004445",
+    "year": 2020,
+    "title": "The ONETEP linear-scaling density functional theory program"
+   },
+   "W4312222050": {
+    "doi": "https://doi.org/10.1016/j.cartre.2022.100242",
+    "year": 2022,
+    "title": "Screening and antiscreening in fullerene-like cages: Dipole-field amplification with ionic nanocages"
+   },
+   "W4304013912": {
+    "doi": "https://doi.org/10.1103/physrevx.12.041003",
+    "year": 2022,
+    "title": "Accurate Nonempirical Range-Separated Hybrid van der Waals Density Functional for Complex Molecular Problems, Solids, and Surfaces"
+   },
+   "W7171637701": {
+    "doi": "https://doi.org/10.48550/arxiv.2607.25652",
+    "year": 2026,
+    "title": "Transformer Atomic Cluster Expansion: TRACE"
+   },
+   "W4388672019": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2023-xgr3q-v2",
+    "year": 2023,
+    "title": "Density functional theory for van der Waals complexes: Size matters"
+   },
+   "W4391611628": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2023-xgr3q-v3",
+    "year": 2024,
+    "title": "Density functional theory for van der Waals complexes: Size matters"
+   },
+   "W4404706991": {
+    "doi": "https://doi.org/10.1039/d4nr03696d",
+    "year": 2024,
+    "title": "Comprehensive determination of highly symmetric transition metal dichalcogenide multilayers"
+   },
+   "W4390601472": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2024-lxk6x",
+    "year": 2024,
+    "title": "Performance of density functionals for excited-state properties of isolated chromophores and exciplexes: Emission spectra, solvatochromic shifts, and charge-transfer character"
+   },
+   "W4412952352": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2025-83grg",
+    "year": 2025,
+    "title": "A density based machine learning force field for molecule-molecule nonbonded interactions"
+   },
+   "W4221141148": {
+    "doi": "https://doi.org/10.48550/arxiv.2203.06682",
+    "year": 2022,
+    "title": "Accurate non-empirical range-separated hybrid van der Waals density functional for complex molecular problems, solids, and surfaces"
+   },
+   "W7131432983": {
+    "doi": "https://doi.org/10.48550/arxiv.2602.19411",
+    "year": 2026,
+    "title": "MACE-POLAR-1: A Polarisable Electrostatic Foundation Model for Molecular Chemistry"
+   },
+   "W4280513013": {
+    "doi": "https://doi.org/10.1002/jcc.26623",
+    "year": 2022,
+    "title": "Issue Information"
+   },
+   "W4312556218": {
+    "doi": "https://doi.org/10.2139/ssrn.4245500",
+    "year": 2022,
+    "title": "Screening and Antiscreening in Fullerene-Like Cages: Dipole-Field Amplification with Ionic Nanocages"
+   },
+   "W4305028859": {
+    "doi": "https://doi.org/10.48550/arxiv.2210.05324",
+    "year": 2022,
+    "title": "Screening and antiscreening in fullerene-like cages:dipole-field amplification with ionic nanocages"
+   },
+   "W4399198282": {
+    "doi": "https://doi.org/10.48550/arxiv.2405.18864",
+    "year": 2024,
+    "title": "Screening and antiscreening effects in endohedral nanotubes"
+   },
+   "W7161298901": {
+    "doi": "https://doi.org/10.48550/arxiv.2605.14745",
+    "year": 2026,
+    "title": "Functional and Density-Driven Errors in Density Functional Theory: Quantum Monte Carlo Benchmarks for Solids"
+   },
+   "W4388457982": {
+    "doi": "https://doi.org/10.26434/chemrxiv-2023-xgr3q",
+    "year": 2023,
+    "title": "Density functional theory for van der Waals complexes: Size matters"
+   },
+   "W2964450166": {
+    "doi": null,
+    "year": 2019,
+    "title": "Computational studies of metallic nanoparticles applicable to heterogeneous catalysis"
+   },
+   "W2788569316": {
+    "doi": "https://doi.org/10.1073/pnas.1715434115",
+    "year": 2018,
+    "title": "Fast and accurate quantum Monte Carlo for molecular crystals"
+   },
+   "W7162553802": {
+    "doi": "https://doi.org/10.1038/s41524-026-02255-y",
+    "year": 2026,
+    "title": "Multireference investigations of ethylene hydrogenation over bimetallic catalysts"
+   },
+   "W2991251787": {
+    "doi": "https://doi.org/10.1039/c9cp04643g",
+    "year": 2019,
+    "title": "Electronic structure calculations permit identification of the driving forces behind frequency shifts in transition metal monocarbonyls"
+   },
+   "W4220981111": {
+    "doi": "https://doi.org/10.1021/acscatal.1c05980",
+    "year": 2022,
+    "title": "Optimizing the Solvent Reorganization Free Energy by Metal Substitution for Nanocage Catalysis"
+   },
+   "W2946641294": {
+    "doi": "https://doi.org/10.48550/arxiv.1905.07816",
+    "year": 2019,
+    "title": "Development of an Advanced Force Field for Water using Variational Energy Decomposition Analysis"
+   },
+   "W3045844679": {
+    "doi": "https://doi.org/10.1021/acs.jpca.0c05386",
+    "year": 2020,
+    "title": "Catalysis on Pristine 2D Materials via Dispersion and Electrostatic Interactions"
+   },
+   "W4308059838": {
+    "doi": "https://doi.org/10.1021/acs.jpclett.2c02844",
+    "year": 2022,
+    "title": "Prediction of Multiple Hydrogen Ligation at a Vanadium(II) Site in a Metal–Organic Framework"
+   },
+   "W2137074739": {
+    "doi": "https://doi.org/10.1021/om960921b",
+    "year": 1997,
+    "title": "Coordinative Behavior of the CNCN Ligand. Experimental and Density Functional Study of Spectroscopic Properties and Bonding in the Cr(CO)5CNCN Complex"
+   },
+   "W2741130215": {
+    "doi": "https://doi.org/10.1021/jacs.7b05756",
+    "year": 2017,
+    "title": "Nucleophilic Aromatic Addition in Ionizing Environments: Observation and Analysis of New C–N Valence Bonds in Complexes between Naphthalene Radical Cation and Pyridine"
+   },
+   "W4319459565": {
+    "doi": "https://doi.org/10.1021/acs.jpca.2c08061",
+    "year": 2023,
+    "title": "Force Decomposition Analysis: A Method to Decompose Intermolecular Forces into Physically Relevant Component Contributions"
+   },
+   "W2511380352": {
+    "doi": "https://doi.org/10.1021/acs.jctc.6b00637",
+    "year": 2016,
+    "title": "How Accurate Are the Minnesota Density Functionals for Noncovalent Interactions, Isomerization Energies, Thermochemistry, and Barrier Heights Involving Molecules Composed of Main-Group Elements?"
+   },
+   "W7131314323": {
+    "doi": "https://doi.org/10.3390/nano16050286",
+    "year": 2026,
+    "title": "Metal-Decorated C8 Quantum Dots as Lightweight Hydrogen Storage Materials: A Comprehensive DFT Study"
+   },
+   "W3155568189": {
+    "doi": "https://doi.org/10.1021/jacs.1c01883",
+    "year": 2021,
+    "title": "Ambient-Temperature Hydrogen Storage via Vanadium(II)-Dihydrogen Complexation in a Metal–Organic Framework"
+   },
+   "W2088440641": {
+    "doi": "https://doi.org/10.1063/1.3545971",
+    "year": 2011,
+    "title": "Density-functional approaches to noncovalent interactions: A comparison of dispersion corrections (DFT-D), exchange-hole dipole moment (XDM) theory, and specialized functionals"
+   },
+   "W4400644955": {
+    "doi": "https://doi.org/10.1038/s41467-024-50030-8",
+    "year": 2024,
+    "title": "pH drives electron density fluctuations that enhance electric field-induced liquid flow"
+   },
+   "W4399880623": {
+    "doi": "https://doi.org/10.1021/acs.jpcb.4c01466",
+    "year": 2024,
+    "title": "Software Infrastructure for Next-Generation QM/MM−ΔMLP Force Fields"
+   },
+   "W2038336371": {
+    "doi": "https://doi.org/10.1103/physrevb.81.045401",
+    "year": 2010,
+    "title": "Density functional theory with nonlocal correlation: A key to the solution of the CO adsorption puzzle"
+   },
+   "W1535065476": {
+    "doi": "https://doi.org/10.1103/physrevlett.107.020401",
+    "year": 2011,
+    "title": "Quantifying the Nonlocality of Greenberger-Horne-Zeilinger Quantum Correlations by a Bounded Communication Simulation Protocol"
+   },
+   "W3034678343": {
+    "doi": "https://doi.org/10.1016/j.physrep.2020.07.006",
+    "year": 2020,
+    "title": "The anomalous magnetic moment of the muon in the Standard Model"
+   },
+   "W2803815386": {
+    "doi": "https://doi.org/10.1038/s41586-018-0085-3",
+    "year": 2018,
+    "title": "Challenging local realism with human choices"
+   },
+   "W2162381006": {
+    "doi": "https://doi.org/10.1103/physreva.72.052103",
+    "year": 2005,
+    "title": "Causality and Tsirelson's bounds"
+   },
+   "W1974620723": {
+    "doi": "https://doi.org/10.1103/physrevlett.104.099304",
+    "year": 2010,
+    "title": "Vydrov and Van Voorhis Reply:"
+   },
+   "W2886224007": {
+    "doi": "https://doi.org/10.3390/e21010092",
+    "year": 2019,
+    "title": "Remote Sampling with Applications to General Entanglement Simulation"
+   },
+   "W2222263249": {
+    "doi": "https://doi.org/10.1088/1367-2630/18/4/045010",
+    "year": 2016,
+    "title": "A coordinate Bethe ansatz approach to the calculation of equilibrium and nonequilibrium correlations of the one-dimensional Bose gas"
+   },
+   "W3034274832": {
+    "doi": "https://doi.org/10.1007/jhep06(2020)061",
+    "year": 2020,
+    "title": "Effect of back reaction on entanglement and subregion volume complexity in strongly coupled plasma"
+   },
+   "W3098722770": {
+    "doi": null,
+    "year": 2016,
+    "title": "Nonequilibrium variational-cluster approach to real-time dynamics in the Fermi-Hubbard model"
+   },
+   "W1807088372": {
+    "doi": "https://doi.org/10.1088/1742-6596/696/1/012002",
+    "year": 2016,
+    "title": "Nonequilibrium variational-cluster approach to real-time dynamics in the Fermi-Hubbard model"
+   },
+   "W2951858695": {
+    "doi": "https://doi.org/10.48550/arxiv.cond-mat/9909124",
+    "year": 1999,
+    "title": "Interplay of Fulde-Ferrell-Larkin-Ovchinnikov and Vortex states in two-dimensional Superconductors"
+   },
+   "W2552031805": {
+    "doi": "https://doi.org/10.48550/arxiv.1611.06741",
+    "year": 2016,
+    "title": "Advanced field-theoretical methods in stochastic dynamics and theory of developed turbulence"
+   },
+   "W4232576642": {
+    "doi": "https://doi.org/10.5772/intechopen.94639",
+    "year": 2021,
+    "title": "Topics on Quantum Information Science"
+   },
+   "W4403812555": {
+    "doi": "https://doi.org/10.48550/arxiv.2409.19504",
+    "year": 2024,
+    "title": "Magnons from time-dependent density-functional perturbation theory and nonempirical Hubbard functionals"
+   },
+   "W3131732172": {
+    "doi": null,
+    "year": 2020,
+    "title": "Development of Next-Generation, Fast, Accurate, Transferable, and Polarizable Force-fields for Heterogenous Material Simulations"
+   },
+   "W7155063739": {
+    "doi": "https://doi.org/10.1088/1751-8121/aea8aa",
+    "year": 2026,
+    "title": "Non-associativity induced modifications of open-system quantum dynamics: general master equation and a two-qubit Ising case study"
+   },
+   "W7166036944": {
+    "doi": "https://doi.org/10.1103/ycrc-vtbk",
+    "year": 2026,
+    "title": "Optimization of path-integral tensor-multiplication schemes for open quantum systems"
+   },
+   "W7204545851": {
+    "doi": "https://doi.org/10.48550/arxiv.2608.26440",
+    "year": 2026,
+    "title": "Automatic generation of exchange-correlation response kernels"
+   },
+   "W2809962652": {
+    "doi": null,
+    "year": 2018,
+    "title": "Thermal transport in van der Waals Solids and Inorganic Clathrates from first-principles calculations"
+   },
+   "W7154512535": {
+    "doi": "https://doi.org/10.48550/arxiv.2604.12707",
+    "year": 2026,
+    "title": "Quantum analogues of exponential sensitivity: from Loschmidt echo to Krylov complexity"
+   },
+   "W2437103227": {
+    "doi": "https://doi.org/10.1021/acs.jpclett.5b01591",
+    "year": 2015,
+    "title": "Treating London-Dispersion Effects with the Latest Minnesota Density Functionals: Problems and Possible Solutions"
+   },
+   "W2766033847": {
+    "doi": "https://doi.org/10.1039/c7cp04913g",
+    "year": 2017,
+    "title": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions"
+   },
+   "W2757803490": {
+    "doi": "https://doi.org/10.1088/1361-648x/aa8f79",
+    "year": 2017,
+    "title": "Advanced capabilities for materials modelling with Q uantum ESPRESSO"
+   },
+   "W2551377153": {
+    "doi": "https://doi.org/10.1038/s41565-017-0035-5",
+    "year": 2018,
+    "title": "Two-dimensional materials from high-throughput computational exfoliation of experimentally known compounds"
+   },
+   "W3024385728": {
+    "doi": "https://doi.org/10.1063/5.0006002",
+    "year": 2020,
+    "title": "P SI4 1.4: Open-source software for high-throughput quantum chemistry"
+   },
+   "W4378470199": {
+    "doi": "https://doi.org/10.1021/jacs.3c02222",
+    "year": 2023,
+    "title": "Chemical Reaction Networks Explain Gas Evolution Mechanisms in Mg-Ion Batteries"
+   },
+   "W3165393717": {
+    "doi": "https://doi.org/10.1038/s41597-021-00986-9",
+    "year": 2021,
+    "title": "Quantum chemical calculations of lithium-ion battery electrolyte and interphase species"
+   },
+   "W3007178273": {
+    "doi": "https://doi.org/10.1063/5.0006074",
+    "year": 2020,
+    "title": "Recent developments in the P y SCF program package"
+   },
+   "W2264591087": {
+    "doi": "https://doi.org/10.1103/physrevd.93.094507",
+    "year": 2016,
+    "title": "Domain decomposition, multilevel integration, and exponential noise reduction in lattice QCD"
+   },
+   "W2519130249": {
+    "doi": "https://doi.org/10.1103/physrevd.95.034503",
+    "year": 2017,
+    "title": "Local factorization of the fermion determinant in lattice QCD"
+   },
+   "W3005347120": {
+    "doi": "https://doi.org/10.1017/s096249292000001x",
+    "year": 2020,
+    "title": "Numerical methods for nonlocal and fractional models"
+   },
+   "W2884247205": {
+    "doi": "https://doi.org/10.48550/arxiv.1807.08859",
+    "year": 2018,
+    "title": "Projection based embedding theory for solving Kohn-Sham density functional theory"
+   },
+   "W4213317776": {
+    "doi": "https://doi.org/10.1007/s00466-022-02147-0",
+    "year": 2022,
+    "title": "A comparative review of peridynamics and phase-field models for engineering fracture mechanics"
+   },
+   "W2200209824": {
+    "doi": "https://doi.org/10.1007/s10851-016-0676-2",
+    "year": 2016,
+    "title": "Automated Parameter Selection for Total Variation Minimization in Image Restoration"
+   },
+   "W2600245660": {
+    "doi": "https://doi.org/10.1088/1361-651x/aa7320",
+    "year": 2017,
+    "title": "libvdwxc: a library for exchange–correlation functionals in the vdW-DF family"
+   },
+   "W2810018092": {
+    "doi": "https://doi.org/10.1155/2018/8593934",
+    "year": 2018,
+    "title": "An Improved Image Denoising Model Based on Nonlocal Means Filter"
+   },
+   "W2888676446": {
+    "doi": "https://doi.org/10.1016/j.cma.2019.03.024",
+    "year": 2019,
+    "title": "Numerical convergence of finite difference approximations for state based peridynamic fracture models"
+   },
+   "W2114834453": {
+    "doi": "https://doi.org/10.1093/nsr/nwu060",
+    "year": 2014,
+    "title": "Divide-and-conquer quantum mechanical material simulations with exascale supercomputers"
+   },
+   "W4321617051": {
+    "doi": "https://doi.org/10.1038/s41598-023-30127-8",
+    "year": 2023,
+    "title": "Numerical solution of neutral delay differential equations using orthogonal neural network"
+   },
+   "W4317434130": {
+    "doi": "https://doi.org/10.3390/math11030516",
+    "year": 2023,
+    "title": "Reductions and Exact Solutions of Nonlinear Wave-Type PDEs with Proportional and More Complex Delays"
+   },
+   "W2065495120": {
+    "doi": "https://doi.org/10.1016/j.euromechsol.2014.11.003",
+    "year": 2014,
+    "title": "On statistical strain and stress energy bounds from homogenization and virtual testing"
+   },
+   "W4252439099": {
+    "doi": "https://doi.org/10.31224/osf.io/gty2b",
+    "year": 2021,
+    "title": "A comparative review of peridynamics and phase-field models for engineering fracture mechanics"
+   },
+   "W2895026825": {
+    "doi": "https://doi.org/10.48550/arxiv.1710.07661",
+    "year": 2017,
+    "title": "Finite element approximation of nonlocal fracture models"
+   },
+   "W4225365047": {
+    "doi": "https://doi.org/10.48550/arxiv.2201.08793",
+    "year": 2022,
+    "title": "Nonlocal gradients in bounded domains motivated by Continuum Mechanics: Fundamental Theorem of Calculus and embeddings"
+   },
+   "W2908155614": {
+    "doi": null,
+    "year": 2018,
+    "title": "Mathematical Modeling of Lithium-ion Batteries and Improving Mathematics Learning Experience for Engineering Students"
+   },
+   "W2759996757": {
+    "doi": null,
+    "year": 2017,
+    "title": "Nonlocal operators on domains"
+   },
+   "W7213541138": {
+    "doi": "https://doi.org/10.58496/bjm/2026/002",
+    "year": 2026,
+    "title": "Gradient-Regularized Deep Ritz Networks for Solving Elliptic PDEs: Application to the Poisson Equation"
+   },
+   "W4402705383": {
+    "doi": "https://doi.org/10.48550/arxiv.2408.15448",
+    "year": 2024,
+    "title": "Nonlocal Differential Operators with Integrable, Nonsymmetric Kernels: Part I--Operator Theoretic Properties"
+   },
+   "W7212554444": {
+    "doi": "https://doi.org/10.48550/arxiv.2609.12900",
+    "year": 2026,
+    "title": "Physics-enriched neural solvers for transient ice-flow simulation"
+   },
+   "W7212087427": {
+    "doi": "https://doi.org/10.48550/arxiv.2609.08477",
+    "year": 2026,
+    "title": "Nonequilibrium stochastic thermodynamics of boundary functionals: From Zubarev's ensemble to stochastic particle separation"
+   },
+   "W7117339473": {
+    "doi": null,
+    "year": 2025,
+    "title": "Solving Functional PDEs with Gaussian Processes and Applications to Functional Renormalization Group Equations"
+   },
+   "W4288375615": {
+    "doi": "https://doi.org/10.48550/arxiv.1904.02588",
+    "year": 2019,
+    "title": "Hamiltonian quantization of solitons in the $ϕ^4_{1+1}$ quantum field theory"
+   },
+   "W7133308267": {
+    "doi": "https://doi.org/10.1007/s00894-026-06663-1",
+    "year": 2026,
+    "title": "Adsorption of water on pristine graphene: a van der Waals density functional study with the vdW-C09 approach"
+   },
+   "W1419169112": {
+    "doi": "https://doi.org/10.1038/srep11796",
+    "year": 2015,
+    "title": "Controlling single-molecule junction conductance by molecular interactions"
+   },
+   "W4310172127": {
+    "doi": "https://doi.org/10.1021/acsnano.2c09310",
+    "year": 2022,
+    "title": "Controlling the Spin States of FeTBrPP on Au(111)"
+   },
+   "W3127050190": {
+    "doi": "https://doi.org/10.1021/acsaelm.0c00897",
+    "year": 2021,
+    "title": "Electronic and Transport Properties of Bilayer Phosphorene Nanojunction: Effect of Paired Substitution Doping"
+   },
+   "W2963576338": {
+    "doi": "https://doi.org/10.48550/arxiv.1705.07045",
+    "year": 2017,
+    "title": "Doping of Graphene Nanoribbons via Functional Group Edge Modification"
+   },
+   "W4308142146": {
+    "doi": "https://doi.org/10.1103/physrevmaterials.6.116001",
+    "year": 2022,
+    "title": "Stability of and conduction in single-walled Si2BN nanotubes"
+   },
+   "W3017963381": {
+    "doi": "https://doi.org/10.48550/arxiv.2004.11130",
+    "year": 2020,
+    "title": "Electronic Transport through DNA Nucleotides in a BC$_3$ Nanogap for Rapid DNA Sequencing"
+   },
+   "W4322825127": {
+    "doi": "https://doi.org/10.48550/arxiv.2303.00682",
+    "year": 2023,
+    "title": "Nonlocal Machine-Learned Exchange Functional for Molecules and Solids"
+   },
+   "W4206526039": {
+    "doi": "https://doi.org/10.26434/chemrxiv.10187756.v1",
+    "year": 2019,
+    "title": "The Devil in the Details: What Everybody Should Know When Running DFT Calculations"
+   },
+   "W7125429137": {
+    "doi": "https://doi.org/10.1021/acsomega.5c07529",
+    "year": 2026,
+    "title": "Chirality-Driven Electronic, Mechanical, and Hydrogen Adsorption Properties of Dodecanophene Nanotubes"
+   },
+   "W8002243": {
+    "doi": null,
+    "year": 2013,
+    "title": "Ab Initio Studies of Graphene Nanoflakes and Phenylacetylene Self-Assembly on Au (111) Surface."
+   },
+   "W7166859095": {
+    "doi": "https://doi.org/10.1021/acsomega.6c02506",
+    "year": 2026,
+    "title": "Spin-Dependent Electronic Properties of Bilayer α-Graphyne Zigzag Nanoribbons: A Density Functional Theory Study"
+   },
+   "W7172488550": {
+    "doi": "https://doi.org/10.48550/arxiv.2608.03680",
+    "year": 2026,
+    "title": "Machine Learning Bandgap Prediction of Nanoporous Graphenes with Water"
+   },
+   "W7168090583": {
+    "doi": "https://doi.org/10.1039/d6nr01764a",
+    "year": 2026,
+    "title": "A new family of hollow Au 60 cages: topological diversity and connectivity-driven stability"
+   },
+   "W7161006883": {
+    "doi": "https://doi.org/10.26434/chemrxiv.15003270/v1",
+    "year": 2026,
+    "title": "Phase-Engineered 1T/2H-WS2 Heterostructures in Hybrid Carbon Networks for High-Rate and Durable Sodium-Ion Storage"
+   },
+   "W3191838344": {
+    "doi": "https://doi.org/10.5167/uzh-106741",
+    "year": 2014,
+    "title": "Efficient Non-Local Dynamical Electron Correlation for Condensed Matter Simulations"
+   },
+   "W2795978639": {
+    "doi": "https://doi.org/10.1021/acs.jctc.7b01256",
+    "year": 2018,
+    "title": "On the Computational Characterization of Charge-Transfer Effects in Noncovalently Bound Molecular Complexes"
+   },
+   "W4389775856": {
+    "doi": "https://doi.org/10.1021/acs.jpca.3c06244",
+    "year": 2023,
+    "title": "Revisiting Gauge-Independent Kinetic Energy Densities in Meta-GGAs and Local Hybrid Calculations of Magnetizabilities"
+   },
+   "W3081149738": {
+    "doi": "https://doi.org/10.1021/acs.jctc.0c00442",
+    "year": 2020,
+    "title": "Accurate Hybrid Density Functionals with UW12 Correlation"
+   },
+   "W4382173499": {
+    "doi": "https://doi.org/10.48550/arxiv.2306.13407",
+    "year": 2023,
+    "title": "Revisiting Gauge-Independent Kinetic Energy Densities in Meta-GGAs and Local Hybrid Calculations of Magnetizabilities"
+   },
+   "W7203923073": {
+    "doi": "https://doi.org/10.48550/arxiv.2608.19033",
+    "year": 2026,
+    "title": "Molecular Implementation of the Machine-Learned Skala Exchange-Correlation Functional in CP2K through GauXC"
+   },
+   "W7160922234": {
+    "doi": "https://doi.org/10.48550/arxiv.2605.10363",
+    "year": 2026,
+    "title": "Accelerating Locality-Driven Integration in Quantum Chemistry with Block-Structured Matrix Multiplication"
+   },
+   "W4399990875": {
+    "doi": "https://doi.org/10.48550/arxiv.2406.14920",
+    "year": 2024,
+    "title": "Extending GPU-Accelerated Gaussian Integrals in the TeraChem Software Package to f Type Orbitals: Implementation and Applications"
+   }
+  },
+  "S2_search": {
+   "query": "\"VV10\" AND \"energy decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 139,
+   "returned": 25,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1063/1.4952647",
+     "year": 2016,
+     "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c3cp54374a",
+     "year": 2013,
+     "title": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c6cp03784d",
+     "year": 2016,
+     "title": "Probing non-covalent interactions with a second generation energy decomposition analysis using absolutely localized molecular orbitals"
+    },
+    {
+     "doi": "https://doi.org/10.1063/5.0055522",
+     "year": 2021,
+     "title": "Software for the frontiers of quantum chemistry: An overview of developments in the Q-Chem 5 package"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.8b00643",
+     "year": 2018,
+     "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4907719",
+     "year": 2015,
+     "title": "Mapping the genome of meta-generalized gradient approximation density functionals: The search for B97M-V"
+    },
+    {
+     "doi": "https://doi.org/10.1146/annurev-physchem-090419-115149",
+     "year": 2021,
+     "title": "From Intermolecular Interaction Energies and Observable Shifts to Component Contributions and Back Again: A Tale of Variational Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpclett.9b01203",
+     "year": 2019,
+     "title": "Probing Blue-Shifting Hydrogen Bonds with Adiabatic Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d0sc05327a",
+     "year": 2020,
+     "title": "Consistent inclusion of continuum solvation in energy decomposition analysis: theory and application to molecular CO 2 reduction catalysts"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.7b00089",
+     "year": 2017,
+     "title": "Performance of the AMOEBA Water Model in the Vicinity of QM Solutes: A Diagnosis Using Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4942921",
+     "year": 2016,
+     "title": "Defining the contributions of permanent electrostatics, Pauli repulsion, and dispersion in density functional theory calculations of intermolecular interaction energies"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.accounts.4c00085",
+     "year": 2024,
+     "title": "Local Energy Decomposition Analysis of London Dispersion Effects: From Simple Model Dimers to Complex Biomolecular Assemblies"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.3c00143",
+     "year": 2023,
+     "title": "Merging the Energy Decomposition Analysis with the Interacting Quantum Atoms Approach"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d0cp01933j",
+     "year": 2020,
+     "title": "Probing radical–molecule interactions with a second generation energy decomposition analysis of DFT calculations using absolutely localized molecular orbitals"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41467-020-14659-5",
+     "year": 2020,
+     "title": "Charge transfer as a ubiquitous mechanism in determining the negative charge at hydrophobic interfaces"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2023-n79rz",
+     "year": 2023,
+     "title": "A simple, efficient and universal energy decomposition analysis method based on dispersion-corrected density functional theory"
+    },
+    {
+     "doi": null,
+     "year": 2015,
+     "title": "Improvements in Energy Decomposition Analysis for Single Determinant Methods"
+    },
+    {
+     "doi": "https://doi.org/10.1021/ja5101323",
+     "year": 2014,
+     "title": "Hydrogen Physisorption on Metal–Organic Framework Linkers and Metalated Linkers: A Computational Study of the Factors That Control Binding Strength"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d1cp04587c",
+     "year": 2021,
+     "title": "Dissociation of HCl in water nanoclusters: an energy decomposition analysis perspective"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.8b00978",
+     "year": 2018,
+     "title": "Improvements to the AMOEBA Force Field by Introducing Anisotropic Atomic Polarizability of the Water Molecule"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.3c09198",
+     "year": 2023,
+     "title": "The Energetic Origins of Pi–Pi Contacts in Proteins"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d4cp03214d",
+     "year": 2024,
+     "title": "Exploring non-covalent interactions in excited states: beyond aromatic excimer models"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv.13065290",
+     "year": 2020,
+     "title": "Consistent Inclusion of Continuum Solvation in Energy Decomposition Analysis: Theory and Application to Molecular CO2 Reduction Catalysts"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.3c13822",
+     "year": 2024,
+     "title": "Mechanistic Insights into the Origins of Selectivity in a Cu-Catalyzed C–H Amidation Reaction"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c8fd00229k",
+     "year": 2019,
+     "title": "Probing solvation and reactivity in ionized polycyclic aromatic hydrocarbon–water clusters with photoionization mass spectrometry and electronic structure calculations"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "S3_search": {
+   "query": "\"rVV10\" AND \"energy decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 26,
+   "returned": 25,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.3c00903",
+     "year": 2023,
+     "title": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2022-rt0m8",
+     "year": 2022,
+     "title": "Assessing the Interplay Between Functional-Driven and Density-Driven Errors in DFT Models of Water"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2023-nc64t",
+     "year": 2023,
+     "title": "Balance between physical interpretability and energetic predictability in widely used dispersion-corrected density functionals"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41929-018-0109-2",
+     "year": 2018,
+     "title": "Computational optimization of electric fields for better catalysis design"
+    },
+    {
+     "doi": "https://doi.org/10.3390/nano15221720",
+     "year": 2025,
+     "title": "On the Energy Contributions Driving Pyridine Adsorption on Silver and Gold Nanoparticles"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4977180",
+     "year": 2017,
+     "title": "How strongly do hydrogen and water molecules stick to carbon nanomaterials?"
+    },
+    {
+     "doi": "https://doi.org/10.1016/j.cattod.2018.02.007",
+     "year": 2018,
+     "title": "Impact of long-range electrostatic and dispersive interactions on theoretical predictions of adsorption and catalysis in zeolites"
+    },
+    {
+     "doi": "https://doi.org/10.1063/5.0004445",
+     "year": 2020,
+     "title": "The ONETEP linear-scaling density functional theory program"
+    },
+    {
+     "doi": "https://doi.org/10.1016/j.cartre.2022.100242",
+     "year": 2022,
+     "title": "Screening and antiscreening in fullerene-like cages: Dipole-field amplification with ionic nanocages"
+    },
+    {
+     "doi": "https://doi.org/10.1103/physrevx.12.041003",
+     "year": 2022,
+     "title": "Accurate Nonempirical Range-Separated Hybrid van der Waals Density Functional for Complex Molecular Problems, Solids, and Surfaces"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2607.25652",
+     "year": 2026,
+     "title": "Transformer Atomic Cluster Expansion: TRACE"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2023-xgr3q-v2",
+     "year": 2023,
+     "title": "Density functional theory for van der Waals complexes: Size matters"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2023-xgr3q-v3",
+     "year": 2024,
+     "title": "Density functional theory for van der Waals complexes: Size matters"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d4nr03696d",
+     "year": 2024,
+     "title": "Comprehensive determination of highly symmetric transition metal dichalcogenide multilayers"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2024-lxk6x",
+     "year": 2024,
+     "title": "Performance of density functionals for excited-state properties of isolated chromophores and exciplexes: Emission spectra, solvatochromic shifts, and charge-transfer character"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2025-83grg",
+     "year": 2025,
+     "title": "A density based machine learning force field for molecule-molecule nonbonded interactions"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2203.06682",
+     "year": 2022,
+     "title": "Accurate non-empirical range-separated hybrid van der Waals density functional for complex molecular problems, solids, and surfaces"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2602.19411",
+     "year": 2026,
+     "title": "MACE-POLAR-1: A Polarisable Electrostatic Foundation Model for Molecular Chemistry"
+    },
+    {
+     "doi": "https://doi.org/10.1002/jcc.26623",
+     "year": 2022,
+     "title": "Issue Information"
+    },
+    {
+     "doi": "https://doi.org/10.2139/ssrn.4245500",
+     "year": 2022,
+     "title": "Screening and Antiscreening in Fullerene-Like Cages: Dipole-Field Amplification with Ionic Nanocages"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2210.05324",
+     "year": 2022,
+     "title": "Screening and antiscreening in fullerene-like cages:dipole-field amplification with ionic nanocages"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2405.18864",
+     "year": 2024,
+     "title": "Screening and antiscreening effects in endohedral nanotubes"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2605.14745",
+     "year": 2026,
+     "title": "Functional and Density-Driven Errors in Density Functional Theory: Quantum Monte Carlo Benchmarks for Solids"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2023-xgr3q",
+     "year": 2023,
+     "title": "Density functional theory for van der Waals complexes: Size matters"
+    },
+    {
+     "doi": null,
+     "year": 2019,
+     "title": "Computational studies of metallic nanoparticles applicable to heterogeneous catalysis"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "S4_search": {
+   "query": "\"nonlocal correlation\" AND \"fragment decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 3,
+   "returned": 3,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1073/pnas.1715434115",
+     "year": 2018,
+     "title": "Fast and accurate quantum Monte Carlo for molecular crystals"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41524-026-02255-y",
+     "year": 2026,
+     "title": "Multireference investigations of ethylene hydrogenation over bimetallic catalysts"
+    },
+    {
+     "doi": "https://doi.org/10.5075/epfl-thesis-7808",
+     "year": 2020,
+     "title": "Deterministic and Statistical Approaches to Quantum Chemistry"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "S5_search": {
+   "query": "\"nonlocal correlation\" AND \"energy decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 174,
+   "returned": 25,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1063/1.4952647",
+     "year": 2016,
+     "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c3cp54374a",
+     "year": 2013,
+     "title": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy"
+    },
+    {
+     "doi": "https://doi.org/10.1063/5.0055522",
+     "year": 2021,
+     "title": "Software for the frontiers of quantum chemistry: An overview of developments in the Q-Chem 5 package"
+    },
+    {
+     "doi": "https://doi.org/10.1146/annurev-physchem-090419-115149",
+     "year": 2021,
+     "title": "From Intermolecular Interaction Energies and Observable Shifts to Component Contributions and Back Again: A Tale of Variational Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpclett.9b01203",
+     "year": 2019,
+     "title": "Probing Blue-Shifting Hydrogen Bonds with Adiabatic Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4907719",
+     "year": 2015,
+     "title": "Mapping the genome of meta-generalized gradient approximation density functionals: The search for B97M-V"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d0sc05327a",
+     "year": 2020,
+     "title": "Consistent inclusion of continuum solvation in energy decomposition analysis: theory and application to molecular CO 2 reduction catalysts"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4942921",
+     "year": 2016,
+     "title": "Defining the contributions of permanent electrostatics, Pauli repulsion, and dispersion in density functional theory calculations of intermolecular interaction energies"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d0cp01933j",
+     "year": 2020,
+     "title": "Probing radical–molecule interactions with a second generation energy decomposition analysis of DFT calculations using absolutely localized molecular orbitals"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d1cp04587c",
+     "year": 2021,
+     "title": "Dissociation of HCl in water nanoclusters: an energy decomposition analysis perspective"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.8b00978",
+     "year": 2018,
+     "title": "Improvements to the AMOEBA Force Field by Introducing Anisotropic Atomic Polarizability of the Water Molecule"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.3c09198",
+     "year": 2023,
+     "title": "The Energetic Origins of Pi–Pi Contacts in Proteins"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c9cp04643g",
+     "year": 2019,
+     "title": "Electronic structure calculations permit identification of the driving forces behind frequency shifts in transition metal monocarbonyls"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.3c13822",
+     "year": 2024,
+     "title": "Mechanistic Insights into the Origins of Selectivity in a Cu-Catalyzed C–H Amidation Reaction"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acscatal.1c05980",
+     "year": 2022,
+     "title": "Optimizing the Solvent Reorganization Free Energy by Metal Substitution for Nanocage Catalysis"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.1905.07816",
+     "year": 2019,
+     "title": "Development of an Advanced Force Field for Water using Variational Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpca.0c05386",
+     "year": 2020,
+     "title": "Catalysis on Pristine 2D Materials via Dispersion and Electrostatic Interactions"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpclett.2c02844",
+     "year": 2022,
+     "title": "Prediction of Multiple Hydrogen Ligation at a Vanadium(II) Site in a Metal–Organic Framework"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv-2022-rt0m8",
+     "year": 2022,
+     "title": "Assessing the Interplay Between Functional-Driven and Density-Driven Errors in DFT Models of Water"
+    },
+    {
+     "doi": "https://doi.org/10.1021/om960921b",
+     "year": 1997,
+     "title": "Coordinative Behavior of the CNCN Ligand. Experimental and Density Functional Study of Spectroscopic Properties and Bonding in the Cr(CO)5CNCN Complex"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.7b05756",
+     "year": 2017,
+     "title": "Nucleophilic Aromatic Addition in Ionizing Environments: Observation and Analysis of New C–N Valence Bonds in Complexes between Naphthalene Radical Cation and Pyridine"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpca.2c08061",
+     "year": 2023,
+     "title": "Force Decomposition Analysis: A Method to Decompose Intermolecular Forces into Physically Relevant Component Contributions"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.6b00637",
+     "year": 2016,
+     "title": "How Accurate Are the Minnesota Density Functionals for Noncovalent Interactions, Isomerization Energies, Thermochemistry, and Barrier Heights Involving Molecules Composed of Main-Group Elements?"
+    },
+    {
+     "doi": "https://doi.org/10.3390/nano16050286",
+     "year": 2026,
+     "title": "Metal-Decorated C8 Quantum Dots as Lightweight Hydrogen Storage Materials: A Comprehensive DFT Study"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.1c01883",
+     "year": 2021,
+     "title": "Ambient-Temperature Hydrogen Storage via Vanadium(II)-Dihydrogen Complexation in a Metal–Organic Framework"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "S6_search": {
+   "query": "\"nonlocal correlation\" AND \"pairwise decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 3,
+   "returned": 3,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1063/1.3545971",
+     "year": 2011,
+     "title": "Density-functional approaches to noncovalent interactions: A comparison of dispersion corrections (DFT-D), exchange-hole dipole moment (XDM) theory, and specialized functionals"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41467-024-50030-8",
+     "year": 2024,
+     "title": "pH drives electron density fluctuations that enhance electric field-induced liquid flow"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpcb.4c01466",
+     "year": 2024,
+     "title": "Software Infrastructure for Next-Generation QM/MM−ΔMLP Force Fields"
+    }
+   ],
+   "note": ""
+  },
+  "S7_search": {
+   "query": "\"vdW-DF\" AND \"energy decomposition\"",
+   "route": "search",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S8_search": {
+   "query": "\"nonlocal correlation\" AND \"atomic contributions\"",
+   "route": "search",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S9_search": {
+   "query": "\"VV10\" AND \"per-fragment\"",
+   "route": "search",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S10_search": {
+   "query": "\"nonlocal correlation\" AND \"resolved into fragments\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "first_page": [],
+   "note": ""
+  },
+  "S11_search": {
+   "query": "\"nonlocal correlation\" AND \"double sum\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 21,
+   "returned": 21,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1103/physrevb.81.045401",
+     "year": 2010,
+     "title": "Density functional theory with nonlocal correlation: A key to the solution of the CO adsorption puzzle"
+    },
+    {
+     "doi": "https://doi.org/10.1103/physrevlett.107.020401",
+     "year": 2011,
+     "title": "Quantifying the Nonlocality of Greenberger-Horne-Zeilinger Quantum Correlations by a Bounded Communication Simulation Protocol"
+    },
+    {
+     "doi": "https://doi.org/10.1016/j.physrep.2020.07.006",
+     "year": 2020,
+     "title": "The anomalous magnetic moment of the muon in the Standard Model"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41586-018-0085-3",
+     "year": 2018,
+     "title": "Challenging local realism with human choices"
+    },
+    {
+     "doi": "https://doi.org/10.1103/physreva.72.052103",
+     "year": 2005,
+     "title": "Causality and Tsirelson's bounds"
+    },
+    {
+     "doi": "https://doi.org/10.1103/physrevlett.104.099304",
+     "year": 2010,
+     "title": "Vydrov and Van Voorhis Reply:"
+    },
+    {
+     "doi": "https://doi.org/10.3390/e21010092",
+     "year": 2019,
+     "title": "Remote Sampling with Applications to General Entanglement Simulation"
+    },
+    {
+     "doi": "https://doi.org/10.1088/1367-2630/18/4/045010",
+     "year": 2016,
+     "title": "A coordinate Bethe ansatz approach to the calculation of equilibrium and nonequilibrium correlations of the one-dimensional Bose gas"
+    },
+    {
+     "doi": "https://doi.org/10.1007/jhep06(2020)061",
+     "year": 2020,
+     "title": "Effect of back reaction on entanglement and subregion volume complexity in strongly coupled plasma"
+    },
+    {
+     "doi": null,
+     "year": 2016,
+     "title": "Nonequilibrium variational-cluster approach to real-time dynamics in the Fermi-Hubbard model"
+    },
+    {
+     "doi": "https://doi.org/10.1088/1742-6596/696/1/012002",
+     "year": 2016,
+     "title": "Nonequilibrium variational-cluster approach to real-time dynamics in the Fermi-Hubbard model"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.cond-mat/9909124",
+     "year": 1999,
+     "title": "Interplay of Fulde-Ferrell-Larkin-Ovchinnikov and Vortex states in two-dimensional Superconductors"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.1611.06741",
+     "year": 2016,
+     "title": "Advanced field-theoretical methods in stochastic dynamics and theory of developed turbulence"
+    },
+    {
+     "doi": "https://doi.org/10.5772/intechopen.94639",
+     "year": 2021,
+     "title": "Topics on Quantum Information Science"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2409.19504",
+     "year": 2024,
+     "title": "Magnons from time-dependent density-functional perturbation theory and nonempirical Hubbard functionals"
+    },
+    {
+     "doi": null,
+     "year": 2020,
+     "title": "Development of Next-Generation, Fast, Accurate, Transferable, and Polarizable Force-fields for Heterogenous Material Simulations"
+    },
+    {
+     "doi": "https://doi.org/10.1088/1751-8121/aea8aa",
+     "year": 2026,
+     "title": "Non-associativity induced modifications of open-system quantum dynamics: general master equation and a two-qubit Ising case study"
+    },
+    {
+     "doi": "https://doi.org/10.1103/ycrc-vtbk",
+     "year": 2026,
+     "title": "Optimization of path-integral tensor-multiplication schemes for open quantum systems"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2608.26440",
+     "year": 2026,
+     "title": "Automatic generation of exchange-correlation response kernels"
+    },
+    {
+     "doi": null,
+     "year": 2018,
+     "title": "Thermal transport in van der Waals Solids and Inorganic Clathrates from first-principles calculations"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2604.12707",
+     "year": 2026,
+     "title": "Quantum analogues of exponential sensitivity: from Loschmidt echo to Krylov complexity"
+    }
+   ],
+   "note": ""
+  },
+  "S12_search": {
+   "query": "\"VV10\" AND \"grid\" AND \"decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 228,
+   "returned": 25,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1063/1.4952647",
+     "year": 2016,
+     "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c3cp54374a",
+     "year": 2013,
+     "title": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4907719",
+     "year": 2015,
+     "title": "Mapping the genome of meta-generalized gradient approximation density functionals: The search for B97M-V"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c6cp03784d",
+     "year": 2016,
+     "title": "Probing non-covalent interactions with a second generation energy decomposition analysis using absolutely localized molecular orbitals"
+    },
+    {
+     "doi": "https://doi.org/10.1063/5.0055522",
+     "year": 2021,
+     "title": "Software for the frontiers of quantum chemistry: An overview of developments in the Q-Chem 5 package"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpclett.5b01591",
+     "year": 2015,
+     "title": "Treating London-Dispersion Effects with the Latest Minnesota Density Functionals: Problems and Possible Solutions"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpclett.9b01203",
+     "year": 2019,
+     "title": "Probing Blue-Shifting Hydrogen Bonds with Adiabatic Energy Decomposition Analysis"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.6b00637",
+     "year": 2016,
+     "title": "How Accurate Are the Minnesota Density Functionals for Noncovalent Interactions, Isomerization Energies, Thermochemistry, and Barrier Heights Involving Molecules Composed of Main-Group Elements?"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d0sc05327a",
+     "year": 2020,
+     "title": "Consistent inclusion of continuum solvation in energy decomposition analysis: theory and application to molecular CO 2 reduction catalysts"
+    },
+    {
+     "doi": "https://doi.org/10.1039/c7cp04913g",
+     "year": 2017,
+     "title": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions"
+    },
+    {
+     "doi": "https://doi.org/10.1063/1.4942921",
+     "year": 2016,
+     "title": "Defining the contributions of permanent electrostatics, Pauli repulsion, and dispersion in density functional theory calculations of intermolecular interaction energies"
+    },
+    {
+     "doi": "https://doi.org/10.1088/1361-648x/aa8f79",
+     "year": 2017,
+     "title": "Advanced capabilities for materials modelling with Q uantum ESPRESSO"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41467-020-14659-5",
+     "year": 2020,
+     "title": "Charge transfer as a ubiquitous mechanism in determining the negative charge at hydrophobic interfaces"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d0cp01933j",
+     "year": 2020,
+     "title": "Probing radical–molecule interactions with a second generation energy decomposition analysis of DFT calculations using absolutely localized molecular orbitals"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.3c00143",
+     "year": 2023,
+     "title": "Merging the Energy Decomposition Analysis with the Interacting Quantum Atoms Approach"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41565-017-0035-5",
+     "year": 2018,
+     "title": "Two-dimensional materials from high-throughput computational exfoliation of experimentally known compounds"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d4cp03214d",
+     "year": 2024,
+     "title": "Exploring non-covalent interactions in excited states: beyond aromatic excimer models"
+    },
+    {
+     "doi": "https://doi.org/10.1063/5.0006002",
+     "year": 2020,
+     "title": "P SI4 1.4: Open-source software for high-throughput quantum chemistry"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.3c02222",
+     "year": 2023,
+     "title": "Chemical Reaction Networks Explain Gas Evolution Mechanisms in Mg-Ion Batteries"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41597-021-00986-9",
+     "year": 2021,
+     "title": "Quantum chemical calculations of lithium-ion battery electrolyte and interphase species"
+    },
+    {
+     "doi": null,
+     "year": 2015,
+     "title": "Improvements in Energy Decomposition Analysis for Single Determinant Methods"
+    },
+    {
+     "doi": "https://doi.org/10.1021/jacs.3c09198",
+     "year": 2023,
+     "title": "The Energetic Origins of Pi–Pi Contacts in Proteins"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.8b00978",
+     "year": 2018,
+     "title": "Improvements to the AMOEBA Force Field by Introducing Anisotropic Atomic Polarizability of the Water Molecule"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d1cp04587c",
+     "year": 2021,
+     "title": "Dissociation of HCl in water nanoclusters: an energy decomposition analysis perspective"
+    },
+    {
+     "doi": "https://doi.org/10.1063/5.0006074",
+     "year": 2020,
+     "title": "Recent developments in the P y SCF program package"
+    }
+   ],
+   "note": ""
+  },
+  "S13_search": {
+   "query": "\"nonlocal functional\" AND \"domain decomposition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 24,
+   "returned": 24,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1103/physrevd.93.094507",
+     "year": 2016,
+     "title": "Domain decomposition, multilevel integration, and exponential noise reduction in lattice QCD"
+    },
+    {
+     "doi": "https://doi.org/10.1103/physrevd.95.034503",
+     "year": 2017,
+     "title": "Local factorization of the fermion determinant in lattice QCD"
+    },
+    {
+     "doi": "https://doi.org/10.1017/s096249292000001x",
+     "year": 2020,
+     "title": "Numerical methods for nonlocal and fractional models"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.1807.08859",
+     "year": 2018,
+     "title": "Projection based embedding theory for solving Kohn-Sham density functional theory"
+    },
+    {
+     "doi": "https://doi.org/10.1007/s00466-022-02147-0",
+     "year": 2022,
+     "title": "A comparative review of peridynamics and phase-field models for engineering fracture mechanics"
+    },
+    {
+     "doi": "https://doi.org/10.1007/s10851-016-0676-2",
+     "year": 2016,
+     "title": "Automated Parameter Selection for Total Variation Minimization in Image Restoration"
+    },
+    {
+     "doi": "https://doi.org/10.1088/1361-651x/aa7320",
+     "year": 2017,
+     "title": "libvdwxc: a library for exchange–correlation functionals in the vdW-DF family"
+    },
+    {
+     "doi": "https://doi.org/10.1155/2018/8593934",
+     "year": 2018,
+     "title": "An Improved Image Denoising Model Based on Nonlocal Means Filter"
+    },
+    {
+     "doi": "https://doi.org/10.1016/j.cma.2019.03.024",
+     "year": 2019,
+     "title": "Numerical convergence of finite difference approximations for state based peridynamic fracture models"
+    },
+    {
+     "doi": "https://doi.org/10.1093/nsr/nwu060",
+     "year": 2014,
+     "title": "Divide-and-conquer quantum mechanical material simulations with exascale supercomputers"
+    },
+    {
+     "doi": "https://doi.org/10.1038/s41598-023-30127-8",
+     "year": 2023,
+     "title": "Numerical solution of neutral delay differential equations using orthogonal neural network"
+    },
+    {
+     "doi": "https://doi.org/10.3390/math11030516",
+     "year": 2023,
+     "title": "Reductions and Exact Solutions of Nonlinear Wave-Type PDEs with Proportional and More Complex Delays"
+    },
+    {
+     "doi": "https://doi.org/10.1016/j.euromechsol.2014.11.003",
+     "year": 2014,
+     "title": "On statistical strain and stress energy bounds from homogenization and virtual testing"
+    },
+    {
+     "doi": "https://doi.org/10.31224/osf.io/gty2b",
+     "year": 2021,
+     "title": "A comparative review of peridynamics and phase-field models for engineering fracture mechanics"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.1710.07661",
+     "year": 2017,
+     "title": "Finite element approximation of nonlocal fracture models"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2201.08793",
+     "year": 2022,
+     "title": "Nonlocal gradients in bounded domains motivated by Continuum Mechanics: Fundamental Theorem of Calculus and embeddings"
+    },
+    {
+     "doi": null,
+     "year": 2018,
+     "title": "Mathematical Modeling of Lithium-ion Batteries and Improving Mathematics Learning Experience for Engineering Students"
+    },
+    {
+     "doi": null,
+     "year": 2017,
+     "title": "Nonlocal operators on domains"
+    },
+    {
+     "doi": "https://doi.org/10.58496/bjm/2026/002",
+     "year": 2026,
+     "title": "Gradient-Regularized Deep Ritz Networks for Solving Elliptic PDEs: Application to the Poisson Equation"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2408.15448",
+     "year": 2024,
+     "title": "Nonlocal Differential Operators with Integrable, Nonsymmetric Kernels: Part I--Operator Theoretic Properties"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2609.12900",
+     "year": 2026,
+     "title": "Physics-enriched neural solvers for transient ice-flow simulation"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2609.08477",
+     "year": 2026,
+     "title": "Nonequilibrium stochastic thermodynamics of boundary functionals: From Zubarev's ensemble to stochastic particle separation"
+    },
+    {
+     "doi": null,
+     "year": 2025,
+     "title": "Solving Functional PDEs with Gaussian Processes and Applications to Functional Renormalization Group Equations"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.1904.02588",
+     "year": 2019,
+     "title": "Hamiltonian quantization of solitons in the $ϕ^4_{1+1}$ quantum field theory"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "S14_search": {
+   "query": "\"van der Waals density functional\" AND \"real-space integration\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 16,
+   "returned": 16,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1007/s00894-026-06663-1",
+     "year": 2026,
+     "title": "Adsorption of water on pristine graphene: a van der Waals density functional study with the vdW-C09 approach"
+    },
+    {
+     "doi": "https://doi.org/10.1038/srep11796",
+     "year": 2015,
+     "title": "Controlling single-molecule junction conductance by molecular interactions"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acsnano.2c09310",
+     "year": 2022,
+     "title": "Controlling the Spin States of FeTBrPP on Au(111)"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acsaelm.0c00897",
+     "year": 2021,
+     "title": "Electronic and Transport Properties of Bilayer Phosphorene Nanojunction: Effect of Paired Substitution Doping"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.1705.07045",
+     "year": 2017,
+     "title": "Doping of Graphene Nanoribbons via Functional Group Edge Modification"
+    },
+    {
+     "doi": "https://doi.org/10.1103/physrevmaterials.6.116001",
+     "year": 2022,
+     "title": "Stability of and conduction in single-walled Si2BN nanotubes"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2004.11130",
+     "year": 2020,
+     "title": "Electronic Transport through DNA Nucleotides in a BC$_3$ Nanogap for Rapid DNA Sequencing"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2303.00682",
+     "year": 2023,
+     "title": "Nonlocal Machine-Learned Exchange Functional for Molecules and Solids"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv.10187756.v1",
+     "year": 2019,
+     "title": "The Devil in the Details: What Everybody Should Know When Running DFT Calculations"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acsomega.5c07529",
+     "year": 2026,
+     "title": "Chirality-Driven Electronic, Mechanical, and Hydrogen Adsorption Properties of Dodecanophene Nanotubes"
+    },
+    {
+     "doi": null,
+     "year": 2013,
+     "title": "Ab Initio Studies of Graphene Nanoflakes and Phenylacetylene Self-Assembly on Au (111) Surface."
+    },
+    {
+     "doi": "https://doi.org/10.1021/acsomega.6c02506",
+     "year": 2026,
+     "title": "Spin-Dependent Electronic Properties of Bilayer α-Graphyne Zigzag Nanoribbons: A Density Functional Theory Study"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2608.03680",
+     "year": 2026,
+     "title": "Machine Learning Bandgap Prediction of Nanoporous Graphenes with Water"
+    },
+    {
+     "doi": "https://doi.org/10.1039/d6nr01764a",
+     "year": 2026,
+     "title": "A new family of hollow Au 60 cages: topological diversity and connectivity-driven stability"
+    },
+    {
+     "doi": "https://doi.org/10.26434/chemrxiv.15003270/v1",
+     "year": 2026,
+     "title": "Phase-Engineered 1T/2H-WS2 Heterostructures in Hybrid Carbon Networks for High-Rate and Durable Sodium-Ion Storage"
+    },
+    {
+     "doi": "https://doi.org/10.5167/uzh-106741",
+     "year": 2014,
+     "title": "Efficient Non-Local Dynamical Electron Correlation for Condensed Matter Simulations"
+    }
+   ],
+   "note": ""
+  },
+  "S15_search": {
+   "query": "\"nonlocal correlation\" AND \"Becke partition\"",
+   "route": "search",
+   "status": 200,
+   "meta_count": 8,
+   "returned": 8,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.7b01256",
+     "year": 2018,
+     "title": "On the Computational Characterization of Charge-Transfer Effects in Noncovalently Bound Molecular Complexes"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jpca.3c06244",
+     "year": 2023,
+     "title": "Revisiting Gauge-Independent Kinetic Energy Densities in Meta-GGAs and Local Hybrid Calculations of Magnetizabilities"
+    },
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.0c00442",
+     "year": 2020,
+     "title": "Accurate Hybrid Density Functionals with UW12 Correlation"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2306.13407",
+     "year": 2023,
+     "title": "Revisiting Gauge-Independent Kinetic Energy Densities in Meta-GGAs and Local Hybrid Calculations of Magnetizabilities"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2608.19033",
+     "year": 2026,
+     "title": "Molecular Implementation of the Machine-Learned Skala Exchange-Correlation Functional in CP2K through GauXC"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2605.10363",
+     "year": 2026,
+     "title": "Accelerating Locality-Driven Integration in Quantum Chemistry with Block-Structured Matrix Multiplication"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2303.00682",
+     "year": 2023,
+     "title": "Nonlocal Machine-Learned Exchange Functional for Molecules and Solids"
+    },
+    {
+     "doi": "https://doi.org/10.48550/arxiv.2406.14920",
+     "year": 2024,
+     "title": "Extending GPU-Accelerated Gaussian Integrals in the TeraChem Software Package to f Type Orbitals: Implementation and Applications"
+    }
+   ],
+   "note": ""
+  },
+  "S16_search": {
+   "query": "\"VV10\" AND \"many-body expansion\"",
+   "route": "search",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S17_search": {
+   "query": "\"nonlocal correlation\" AND \"subsystem\" AND \"energy decomposition\"",
+   "route": "search",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S18_search": {
+   "query": "\"VV10\" OR \"rVV10\" AND \"attributed to fragments\"",
+   "route": "search",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S1_title_and_abstract": {
+   "query": "\"VV10\" AND \"fragment decomposition\"",
+   "route": "title_and_abstract",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S2_title_and_abstract": {
+   "query": "\"VV10\" AND \"energy decomposition\"",
+   "route": "title_and_abstract",
+   "status": 200,
+   "meta_count": 1,
+   "returned": 1,
+   "first_page": [
+    {
+     "doi": "https://doi.org/10.1021/acs.jctc.8b00643",
+     "year": 2018,
+     "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects"
+    }
+   ],
+   "note": "RETRIED-ONCE"
+  },
+  "S3_title_and_abstract": {
+   "query": "\"rVV10\" AND \"energy decomposition\"",
+   "route": "title_and_abstract",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S4_title_and_abstract": {
+   "query": "\"nonlocal correlation\" AND \"fragment decomposition\"",
+   "route": "title_and_abstract",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S5_title_and_abstract": {
+   "query": "\"nonlocal correlation\" AND \"energy decomposition\"",
+   "route": "title_and_abstract",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S6_title_and_abstract": {
+   "query": "\"nonlocal correlation\" AND \"pairwise decomposition\"",
+   "route": "title_and_abstract",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S7_title_and_abstract": {
+   "query": "\"vdW-DF\" AND \"energy decomposition\"",
+   "route": "title_and_abstract",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "first_page": [],
+   "note": ""
+  },
+  "S8_title_and_abstract": {
+   "query": "\"nonlocal correlation\" AND \"atomic contributions\"",
+   "route": "title_and_abstract",
+   "status": 200,
+   "meta_count": 0,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S9_title_and_abstract": {
+   "query": "\"VV10\" AND \"per-fragment\"",
+   "route": "title_and_abstract",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  },
+  "S10_title_and_abstract": {
+   "query": "\"nonlocal correlation\" AND \"resolved into fragments\"",
+   "route": "title_and_abstract",
+   "status": 429,
+   "meta_count": null,
+   "returned": 0,
+   "first_page": [],
+   "note": "RETRIED-ONCE"
+  }
+ }
+}

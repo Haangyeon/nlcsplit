@@ -1,0 +1,210 @@
+[
+ {
+  "tag": "X1",
+  "db": "arXiv API",
+  "query": "abs:\"VV10\" AND abs:\"energy decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111916Z"
+ },
+ {
+  "tag": "X2",
+  "db": "arXiv API",
+  "query": "abs:\"VV10\" AND abs:\"fragment decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111920Z"
+ },
+ {
+  "tag": "X3",
+  "db": "arXiv API",
+  "query": "abs:\"VV10\" AND abs:\"fragment\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111924Z"
+ },
+ {
+  "tag": "X4",
+  "db": "arXiv API",
+  "query": "abs:\"rVV10\" AND abs:\"decomposition\"",
+  "status": 200,
+  "totalResults": 1,
+  "returned": 1,
+  "items": [
+   {
+    "title": "Testing the r$^2$SCAN density functional for the thermodynamic stability of solids with and without a van der Waals correction",
+    "id": "http://arxiv.org/abs/2208.02841v1",
+    "year": "2022",
+    "authors": [
+     "Manish Kothakonda",
+     "Aaron D. Kaplan",
+     "Eric B. Isaacs",
+     "Christopher J. Bartel"
+    ],
+    "abstract": "A central aim of materials discovery is an accurate and numerically reliable description of thermodynamic properties, such as the enthalpies of formation and decomposition. The r$^2$SCAN revision of the strongly constrained and appropriately normed (SCAN) meta-generalized gradient approximation (meta-GGA) balances numerical stability with high general accuracy. To assess the r$^2$SCAN description of solid-state thermodynamics, we evaluate the formation and decomposition enthalpies, equilibrium volumes, and fundamental bandgaps of more than 1,000 solids using r$^2$SCAN, SCAN, and PBE, as well as two dispersion-corrected variants, SCAN+rVV10 and r$^2$SCAN+rVV10. We show that r$^2$SCAN achieves accuracy comparable to SCAN and often improves upon SCAN's already excellent accuracy. Whereas SCAN+rVV10 is often observed to worsen the formation enthalpies of SCAN, and makes no substantial correction to SCAN's cell volume predictions, r$^2$SCAN+rVV10 predicts marginally less-accurate formation enthalpies than r$^2$SCAN, and slightly more-accurate cell volumes than r$^2$SCAN. The average absolute errors in predicted formation enthalpies are found to decrease by a factor of 1.5 to 2.5 from the GGA level to the meta-GGA level. Smaller decreases in error are observed for decomposition enthalpies. For formation enthalpies r$^2$SCAN improves over SCAN for intermetallic systems. For a few classes of systems -- transition metals, intermetallics, weakly-bound solids, and enthalpies of decomposition into compounds -- GGAs are comparable to meta-GGAs. In total, r$^2$SCAN and r$^2$SCAN+rVV10 can be recommended as stable, general-purpose meta-GGAs for materials discovery."
+   }
+  ],
+  "ts": "20260929T111928Z"
+ },
+ {
+  "tag": "X5",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal correlation\" AND abs:\"energy decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111932Z"
+ },
+ {
+  "tag": "X6",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal correlation\" AND abs:\"pairwise decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111936Z"
+ },
+ {
+  "tag": "X7",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal correlation\" AND abs:\"atomic contributions\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111940Z"
+ },
+ {
+  "tag": "X8",
+  "db": "arXiv API",
+  "query": "abs:\"vdW-DF\" AND abs:\"energy decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111943Z"
+ },
+ {
+  "tag": "X9",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal correlation\" AND abs:\"resolved into fragments\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111947Z"
+ },
+ {
+  "tag": "X10",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal correlation\" AND abs:\"double sum\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111951Z"
+ },
+ {
+  "tag": "X11",
+  "db": "arXiv API",
+  "query": "abs:\"VV10\" AND abs:\"grid\" AND abs:\"decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111955Z"
+ },
+ {
+  "tag": "X12",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal functional\" AND abs:\"domain decomposition\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T111959Z"
+ },
+ {
+  "tag": "X13",
+  "db": "arXiv API",
+  "query": "abs:\"vdW-DF\" AND abs:\"real-space\" AND abs:\"parallel\"",
+  "status": 200,
+  "totalResults": 1,
+  "returned": 1,
+  "items": [
+   {
+    "title": "van der Waals density functional calculations of binding in molecular crystals",
+    "id": "http://arxiv.org/abs/1007.3305v1",
+    "year": "2010",
+    "authors": [
+     "Kristian Berland",
+     "Oyvind Borck",
+     "Per Hyldgaard"
+    ],
+    "abstract": "A recent paper [J. Chem. Phys. 132, 134705 (2010)] illustrated the potential of the van der Waals density functional (vdW-DF) method [Phys. Rev. Lett. 92, 246401 (2004)] for efficient first-principle accounts of structure and cohesion in molecular crystals. Since then, modifications of the original vdW-DF version (identified as vdW-DF1) has been proposed, and there is also a new version called vdW-DF2 [ArXiv 1003.5255], within the vdW-DF framework. Here we investigate the performance and nature of the modifications and the new version for the binding of a set of simple molecular crystals: hexamine, dodecahedrane, C60, and graphite. These extended systems provide benchmarks for computational methods dealing with sparse matter. We show that a previously documented enhancement of non-local correlations of vdW-DF1 over an asymptotic atom-based account close to and a few A, beyond binding separation persists in vdW-DF2. The calculation and analysis of the binding in molecular crystals requires appropriate computational tools. In this paper, we also present details on our real-space parallel implementation of the vdW-DF correlation and on the method used to generate asymptotic atom-based pair potentials based on vdW-DF."
+   }
+  ],
+  "ts": "20260929T112003Z"
+ },
+ {
+  "tag": "X14",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal correlation\" AND (abs:\"Becke partition\" OR abs:\"Hirshfeld partition\")",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T112007Z"
+ },
+ {
+  "tag": "X15",
+  "db": "arXiv API",
+  "query": "abs:\"nonlocal\" AND abs:\"per-fragment\"",
+  "status": 200,
+  "totalResults": 1,
+  "returned": 1,
+  "items": [
+   {
+    "title": "Distribution Complexity of Electronic Structure Simulations on Quantum Supercomputers",
+    "id": "http://arxiv.org/abs/2606.20805v2",
+    "year": "2026",
+    "authors": [
+     "Jason Necaise",
+     "Namit Anand",
+     "Gaurav Gyawali",
+     "K. Grace Johnson"
+    ],
+    "abstract": "Efficient simulation of strongly-interacting fermionic systems on quantum processing units (QPUs) is a challenging task due to nonlocal mode entanglement generation. However, it is not yet well understood how the structure of entanglement governs the hardness of large-scale quantum chemistry simulations or the scaling of distributing such workloads. Here, we introduce an algorithm for estimating the distribution complexity of hybrid quantum-classical simulation for electronic structure Hamiltonians over heterogeneous high-performance architectures. Our algorithm relies on efficient analytical evaluation of the low entanglement boundaries for the orbital rotations and dephasing-induced localization within tensor fragments, in a double-factorized representation. Our entanglement estimation scales as $O(N^3)$ for each fragment, where $N$ is the number of orbitals. When QPUs are communicating via a quantum network, the cost of distribution per fragment is reduced quadratically from $O(N^2)$ to $O(N)$. Similarly, for hybrid quantum-classical approaches, with access to only conventional HPC interconnects, the worst-case cost is reduced from $O(\\exp(N^2))$ to $O(\\exp(N))$. We show that emergent entanglement patterns are induced by the interplay between coherent Gaussian orbital rotations and disordered Coulomb interactions. We discuss the underlying physical mechanisms that govern distribution complexity and introduce model systems that are tunable based on the localizability of fragments and the overlap of interfragment rotations. We characterize three different regimes of hardness for distribution complexity and classical simulability. The framework introduced here enables novel and more efficient quantum-classical application workflows towards utility-scale quantum computing."
+   }
+  ],
+  "ts": "20260929T112011Z"
+ },
+ {
+  "tag": "X16",
+  "db": "arXiv API",
+  "query": "abs:\"VV10\" AND abs:\"pair attribution\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T112015Z"
+ },
+ {
+  "tag": "X17",
+  "db": "arXiv API",
+  "query": "Hesselmann AND abs:\"double Hirshfeld partitioning\"",
+  "status": 200,
+  "totalResults": 0,
+  "returned": 0,
+  "items": [],
+  "ts": "20260929T112018Z"
+ }
+]

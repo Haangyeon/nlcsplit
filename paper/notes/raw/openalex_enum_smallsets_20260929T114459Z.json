@@ -1,0 +1,216 @@
+{
+ "S1": {
+  "query": "\"VV10\" AND \"fragment decomposition\"",
+  "status": 200,
+  "meta_count": 3,
+  "n": 3,
+  "items": [
+   {
+    "doi": "https://doi.org/10.1039/c6cp03784d",
+    "year": 2016,
+    "title": "Probing non-covalent interactions with a second generation energy decomposition analysis using absolutely localized molecular orbitals",
+    "journal": "Physical Chemistry Chemical Physics",
+    "abstract": "An energy decomposition analysis (EDA) separates a calculated interaction energy into as many interpretable contributions as possible; for instance, permanent and induced electrostatics, Pauli repulsions, dispersion and charge transfer. The challenge is to construct satisfactory definitions of all terms in the chemically relevant regime where fragment densities overlap, rendering unique definitions impossible. Towards this goal, we present an improved EDA for Kohn-Sham density functional theory (DFT) with properties that have previously not been simultaneously attained. Building on the absolutely localized molecular orbital (ALMO)-EDA, this second generation ALMO-EDA is variational and employs valid antisymmetric electronic wavefunctions to produce all five contributions listed above. These contributions moreover all have non-trivial complete basis set limits. We apply the EDA to the water dimer, the T-shaped and parallel-displaced benzene dimer, the p-biphthalate dimer \"anti-electrostatic\" hydrogen bonding complex, the biologically relevant binding of adenine and thymine in stacked and hydrogen-bonded configurations, the triply hydrogen-bonded guanine-cytosine complex, the interaction of Cl(-) with s-triazine and with the 1,3-dimethyl imidazolium cation, which is relevant to the study of ionic liquids, and the water-formaldehyde-vinyl alcohol ter-molecular radical cationic complex formed in the dissociative photoionization of glycerol."
+   },
+   {
+    "doi": "https://doi.org/10.1021/acs.jctc.3c00143",
+    "year": 2023,
+    "title": "Merging the Energy Decomposition Analysis with the Interacting Quantum Atoms Approach",
+    "journal": "Journal of Chemical Theory and Computation",
+    "abstract": "High Resolution Image Download MS PowerPoint Slide Energy decomposition analysis (EDA) is a well-established approach to dissect the interaction energy into chemically sound components. Despite the inherent requirement of reference states has been a long-standing object of debate, the direct relation with the molecular orbital analysis helps in building up predictive models. The alternative molecular energy decomposition schemes that decompose the total energy into atomic and diatomic contributions, such as the interacting quantum atoms (IQA), has no external reference requirements and also the intra- and intermolecular interactions are treated on equal footing. However, a connection with heuristic chemical models are limited, bringing about a somewhat narrower predictive power. While efforts to reconcile the bonding picture obtained by both methodologies have been discussed in the past, a synergic combination of them has not been tackled yet . Herein, we present the use of IQA decomposition of the individual terms arising from the EDA in the context of intermolecular interactions, henceforth EDA–IQA. The method is applied to a molecular set covering a wide range of interaction types, including hydrogen bonding, charge–dipole, π–π and halogen interactions. We find that the electrostatic energy from EDA, entirely seen as intermolecular, leads to meaningful and non-negligible intra-fragment contributions upon IQA decomposition, originated from charge penetration. EDA–IQA also affords the decomposition of the Pauli repulsion term into intra- and inter-fragment contributions. The intra-fragment term is destabilizing, particularly for the moieties that are net acceptors of charge, while the inter-fragment Pauli term is actually stabilizing. In the case of the orbital interaction term, the sign and magnitude of the intra-fragment contribution at equilibrium geometries is largely driven by the amount of charge transfer, while the inter-fragment contribution is clearly stabilizing. EDA–IQA terms show a smooth behavior along the intermolecular dissociation path of selected systems. The new EDA–IQA methodology provides a richer energy decomposition scheme that aims at bridging the gap between the two main distinct real-space and Hilbert-space methodologies. Via this approach, the partitioning can be used directionally on all the EDA terms aiding in identifying the causal effects on geometries and/or reactivity."
+   },
+   {
+    "doi": "https://doi.org/10.5075/epfl-thesis-7808",
+    "year": 2020,
+    "title": "Deterministic and Statistical Approaches to Quantum Chemistry",
+    "journal": "Infoscience (Ecole Polytechnique Fédérale de Lausanne)",
+    "abstract": "The field of quantum chemistry has recently undergone a series of paradigm shifts, including a boom in machine learning applications that target the electronic structure problem. Along with these technological innovations, the community continues to identify shortcomings in traditional KS-DFT approaches and develop improved approximations. The original work presented in this thesis addresses a selection of open questions along these two lines. Specifically, the thesis is structured to reflect the ongoing advancement of traditional (deterministic) approaches toward more recent examples exploiting (statistical) non-linear regression techniques. The first section of this thesis analyzes the performance of approximate density functionals and dispersion correction schemes on chemical situations that are not well-represented in standard benchmark datasets of van der Waals complexes. First, we discuss how the synergy between delocalization error and London dispersion interactions in asymmetrically charged radical cation dimers remains problematic even for recent density functionals. Solutions are provided to improve the description of these systems that are typical charge-carrier in organic electronic materials. While this first chapter focuses on non-covalent interactions between molecules in the ground-state, very little is known about the consequences of an incomplete treatment of London dispersion interactions upon photo-excitation. Using the prototypical stilbene photoswitch as a working example, the second chapter demonstrates that neglecting these interactions in the excited states leads to qualitative failures in the description of the photodeactivation process. The conclusions presented here apply broadly to any photoswitch functionalized with large and polarizable side chains. In contrast to traditional (deterministic) quantum chemistry, machine learning-based variants are still in their infancy when facing the challenge of targeting fundamental, albeit complex, quantum chemical objects by encoding their symmetries and properties. The subsequent chapters describe the development and application of machine-learning techniques to predict the molecular electron density [p(r)] using an atom-centered decomposition compatible with symmetry-adapted Gaussian process regression (SA-GPR). Concrete applications of the framework are shown for a chemically rich set of dimers, whose predicted electron densities serve to compute covalent and non-covalent interaction fingerprints, electrostatic potentials, as well as quantitative interaction energies. The transferability of the model is demonstrated by the accurate prediction of p(r) for a set of pentapeptides. Combining transferability and accuracy, our regression framework grants access to the density information of complex chemical systems at a fraction of the traditional ab-initio computational cost. The final chapter exploits the complementarity of both strategies and proposes a machine learning framework capable of quantifying the deviation of approximate density functionals from the piecewise linearity condition of exact DFT. The predicted curvature information is applied both for restoring the correspondence between the Kohn-Sham HOMO eigenvalue and the first ionization potential in optimally tuned DFT functionals as well as to provide a large-scale analysis of the relationship between the deviation from the piecewise-linearity condition and the chemical and structural pattern."
+   }
+  ]
+ },
+ "S4": {
+  "query": "\"nonlocal correlation\" AND \"fragment decomposition\"",
+  "status": 429,
+  "err": "{\"error\":\"Rate limit exceeded\",\"message\":\"Anonymous search is temporarily rate-limited while the search cluster is under elevated load. Please retry in 37s, or use a free API key f"
+ },
+ "S6": {
+  "query": "\"nonlocal correlation\" AND \"pairwise decomposition\"",
+  "status": 429,
+  "err": "{\"error\":\"Rate limit exceeded\",\"message\":\"Anonymous search is temporarily rate-limited while the search cluster is under elevated load. Please retry in 30s, or use a free API key f"
+ },
+ "S15": {
+  "query": "\"nonlocal correlation\" AND \"Becke partition\"",
+  "status": 429,
+  "err": "{\"error\":\"Rate limit exceeded\",\"message\":\"Anonymous search is temporarily rate-limited while the search cluster is under elevated load. Please retry in 32s, or use a free API key f"
+ },
+ "S14": {
+  "query": "\"van der Waals density functional\" AND \"real-space integration\"",
+  "status": 429,
+  "err": "{\"error\":\"Rate limit exceeded\",\"message\":\"Anonymous search is temporarily rate-limited while the search cluster is under elevated load. Please retry in 40s, or use a free API key f"
+ },
+ "S11": {
+  "query": "\"nonlocal correlation\" AND \"double sum\"",
+  "status": 200,
+  "meta_count": 21,
+  "n": 21,
+  "items": [
+   {
+    "doi": "https://doi.org/10.1103/physrevb.81.045401",
+    "year": 2010,
+    "title": "Density functional theory with nonlocal correlation: A key to the solution of the CO adsorption puzzle",
+    "journal": "Physical Review B",
+    "abstract": "We study the chemisorption of CO molecule into sites of different coordination on (111) surfaces of late $4d$ and $5d$ transition metals. In an attempt to solve the well-known CO adsorption puzzle, i.e., discrepancies of adsorption site preferences with experiment which appear in the standard density functional theory calculations, we have applied the relatively new van der Waals-density functional of nonlocal correlation. In all considered cases this reduces or completely solves the site preference discrepancies and improves the value of the adsorption energy. By introducing a cutoff distance for nonlocal interaction we can pinpoint the length scale at which the correlation plays a major role in the systems considered."
+   },
+   {
+    "doi": "https://doi.org/10.1103/physrevlett.107.020401",
+    "year": 2011,
+    "title": "Quantifying the Nonlocality of Greenberger-Horne-Zeilinger Quantum Correlations by a Bounded Communication Simulation Protocol",
+    "journal": "Physical Review Letters",
+    "abstract": "The simulation of quantum correlations with finite nonlocal resources, such as classical communication, gives a natural way to quantify their nonlocality. While multipartite nonlocal correlations appear to be useful resources, very little is known on how to simulate multipartite quantum correlations. We present a protocol that reproduces tripartite Greenberger-Horne-Zeilinger correlations with bounded communication: 3 bits in total turn out to be sufficient to simulate all equatorial Von Neumann measurements on the tripartite Greenberger-Horne-Zeilinger state."
+   },
+   {
+    "doi": "https://doi.org/10.1016/j.physrep.2020.07.006",
+    "year": 2020,
+    "title": "The anomalous magnetic moment of the muon in the Standard Model",
+    "journal": "Physics Reports",
+    "abstract": "We review the present status of the Standard Model calculation of the anomalous magnetic moment of the muon. This is performed in a perturbative expansion in the fine-structure constant α and is broken down into pure QED, electroweak, and hadronic contributions. The pure QED contribution is by far the largest and has been evaluated up to and including O(α5) with negligible numerical uncertainty. The electroweak contribution is suppressed by (mμ∕MW)2 and only shows up at the level of the seventh significant digit. It has been evaluated up to two loops and is known to better than one percent. Hadronic contributions are the most difficult to calculate and are responsible for almost all of the theoretical uncertainty. The leading hadronic contribution appears at O(α2) and is due to hadronic vacuum polarization, whereas at O(α3) the hadronic light-by-light scattering contribution appears. Given the low characteristic scale of this observable, these contributions have to be calculated with nonperturbative methods, in particular, dispersion relations and the lattice approach to QCD. The largest part of this review is dedicated to a detailed account of recent efforts to improve the calculation of these two contributions with either a data-driven, dispersive approach, or a first-principle, lattice-QCD approach. The final result reads aμSM=116591810(43)×10−11 and is smaller than the Brookhaven measurement by 3.7σ. The experimental uncertainty will soon be reduced by up to a factor four by the new experiment currently running at Fermilab, and also by the future J-PARC experiment. This and the prospects to further reduce the theoretical uncertainty in the near future – which are also discussed here – make this quantity one of the most promising places to look for evidence of new physics."
+   },
+   {
+    "doi": "https://doi.org/10.1038/s41586-018-0085-3",
+    "year": 2018,
+    "title": "Challenging local realism with human choices",
+    "journal": "Nature",
+    "abstract": ""
+   },
+   {
+    "doi": "https://doi.org/10.1103/physreva.72.052103",
+    "year": 2005,
+    "title": "Causality and Tsirelson's bounds",
+    "journal": "Physical Review A",
+    "abstract": "We study the properties of no-signaling correlations that cannot be reproduced by local measurements on entangled quantum states. We say that such correlations violate Tsirelson bounds. We show that if these correlations are obtained by some reversible unitary quantum evolution $U$, then $U$ cannot be written in the product form ${U}_{A}\\ensuremath{\\bigotimes}{U}_{B}$. This implies that $U$ can be used for signaling and for entanglement generation. This result is completely general and in fact can be viewed as a characterization of Tsirelson bounds. We then show how this result can be used as a tool to study Tsirelson bounds and we illustrate this by rederiving the Tsirelson bound of $2\\sqrt{2}$ for the Clauser-Horn-Shimony-Holt inequality, and by deriving a new Tsirelson bound for qutrits."
+   },
+   {
+    "doi": "https://doi.org/10.1103/physrevlett.104.099304",
+    "year": 2010,
+    "title": "Vydrov and Van Voorhis Reply:",
+    "journal": "Physical Review Letters",
+    "abstract": "A Reply to the Comment by David C. Langreth and Bengt I. Lundqvist."
+   },
+   {
+    "doi": "https://doi.org/10.3390/e21010092",
+    "year": 2019,
+    "title": "Remote Sampling with Applications to General Entanglement Simulation",
+    "journal": "Entropy",
+    "abstract": "We show how to sample exactly discrete probability distributions whose defining parameters are distributed among remote parties. For this purpose, von Neumann’s rejection algorithm is turned into a distributed sampling communication protocol. We study the expected number of bits communicated among the parties and also exhibit a trade-off between the number of rounds of the rejection algorithm and the number of bits transmitted in the initial phase. Finally, we apply remote sampling to the simulation of quantum entanglement in its essentially most general form possible, when an arbitrary finite number m of parties share systems of arbitrary finite dimensions on which they apply arbitrary measurements (not restricted to being projective measurements, but restricted to finitely many possible outcomes). In case the dimension of the systems and the number of possible outcomes per party are bounded by a constant, it suffices to communicate an expected O ( m 2 ) bits in order to simulate exactly the outcomes that these measurements would have produced on those systems."
+   },
+   {
+    "doi": "https://doi.org/10.1088/1367-2630/18/4/045010",
+    "year": 2016,
+    "title": "A coordinate Bethe ansatz approach to the calculation of equilibrium and nonequilibrium correlations of the one-dimensional Bose gas",
+    "journal": "New Journal of Physics",
+    "abstract": "We use the coordinate Bethe ansatz to exactly calculate matrix elements between eigenstates of the Lieb–Liniger model of one-dimensional bosons interacting via a two-body delta-potential. We investigate the static correlation functions of the zero-temperature ground state and their dependence on interaction strength, and analyze the effects of system size in the crossover from few-body to mesoscopic regimes for up to seven particles. We also obtain time-dependent nonequilibrium correlation functions for five particles following quenches of the interaction strength from two distinct initial states. One quench is from the noninteracting ground state and the other from a correlated ground state near the strongly interacting Tonks–Girardeau regime. The final interaction strength and conserved energy are chosen to be the same for both quenches. The integrability of the model highly constrains its dynamics, and we demonstrate that the time-averaged correlation functions following quenches from these two distinct initial conditions are both nonthermal and moreover distinct from one another."
+   },
+   {
+    "doi": "https://doi.org/10.1007/jhep06(2020)061",
+    "year": 2020,
+    "title": "Effect of back reaction on entanglement and subregion volume complexity in strongly coupled plasma",
+    "journal": "Journal of High Energy Physics",
+    "abstract": "A bstract The back reaction imparted by a uniform distribution of heavy static fundamental quarks on large N c strongly coupled gauge theory can be holographically realized as a deformation in AdS blackhole background. The presence of back reaction brings significant changes in to the entanglement structure of the strongly coupled boundary theory at finite temperature. Since the deformed blackhole geometry still remains asymptotically AdS, the gauge/ gravity duality allows us to explore the entanglement structure of back reacted plasma in a quantitative way by computing various measures, e.g holographic en­ tanglement entropy (HEE) and entanglement wedge cross section (EWCS). We explicitly study the variation of those entanglement measures with respect to the uniform density of heavy static fundamental quarks present in the boundary theory. In particular, we notice enhancement of both HEE and EWCS with respect to quark density. We also study the effect of back reaction on the holographic subregion volume complexity. In this analysis we observe an occurrence of logarithmic divergence proportional to the quark density parameter."
+   },
+   {
+    "doi": null,
+    "year": 2016,
+    "title": "Nonequilibrium variational-cluster approach to real-time dynamics in the Fermi-Hubbard model",
+    "journal": "MPG.PuRe (Max Planck Society)",
+    "abstract": "The nonequilibrium variational-cluster approach is applied to study the real-time dynamics of the double occupancy in the one-dimensional Fermi-Hubbard model after different fast changes of hopping parameters. A simple reference system, consisting of isolated Hubbard dimers, is used to discuss different aspects of the numerical implementation of the approach in the general framework of nonequilibrium self-energy functional theory. Opposed to a direct solution of the Euler equation, its time derivative is found to serve as numerically tractable and stable conditional equation to fix the time-dependent variational parameters."
+   },
+   {
+    "doi": "https://doi.org/10.1088/1742-6596/696/1/012002",
+    "year": 2016,
+    "title": "Nonequilibrium variational-cluster approach to real-time dynamics in the Fermi-Hubbard model",
+    "journal": "Journal of Physics Conference Series",
+    "abstract": "The nonequilibrium variational-cluster approach is applied to study the real-time dynamics of the double occupancy in the one-dimensional Fermi-Hubbard model after different fast changes of hopping parameters. A simple reference system, consisting of isolated Hubbard dimers, is used to discuss different aspects of the numerical implementation of the approach in the general framework of nonequilibrium self-energy functional theory. Opposed to a direct solution of the Euler equation, its time derivative is found to serve as numerically tractable and stable conditional equation to fix the time-dependent variational parameters."
+   },
+   {
+    "doi": "https://doi.org/10.48550/arxiv.cond-mat/9909124",
+    "year": 1999,
+    "title": "Interplay of Fulde-Ferrell-Larkin-Ovchinnikov and Vortex states in two-dimensional Superconductors",
+    "journal": "arXiv (Cornell University)",
+    "abstract": "Clean superconductors with weakly coupled conducting planes have been suggested as promising candidates for observing the Fulde-Ferrell-Larkin-Ovchinnikov (FFLO) state. We consider here a layered superconductor in a magnetic field of arbitrary orientation with respect to the conducting plane. In this case there is competition of spin-pair-breaking and orbital-pair-breaking effects. In previous work, phase boundaries characterized by Landau quantum numbers n > 0 have been predicted. Here, we calculate the actual structure of the stable states below Hc2 by minimizing the free energy. We find several new order parameter structures differing from both the traditional Abrikosov and FFLO solutions. Some interesting unsolved questions appear in the limit of large n."
+   },
+   {
+    "doi": "https://doi.org/10.48550/arxiv.1611.06741",
+    "year": 2016,
+    "title": "Advanced field-theoretical methods in stochastic dynamics and theory of developed turbulence",
+    "journal": "arXiv (Cornell University)",
+    "abstract": "Selected recent contributions involving fluctuating velocity fields to the rapidly developing domain of stochastic field theory are reviewed. Functional representations for solutions of stochastic differential equations and master equations are worked out in detail with an em- phasis on multiplicative noise and the inherent ambiguity of the functional method. Application to stochastic models of isotropic turbulence of multi-parameter expansions in regulators of dimensional and analytic renormalization is surveyed. Effects of the choice of the renormalization scheme are investigated. Special attention is paid to the role and properties of the minimal subtraction scheme. Analysis of the consequences of symmetry breaking of isotropic turbulence with the use of the renormalization-group method is demonstrated by the effects due to helicity, strong and weak anisotropy. A careful description is given of the influence of turbulent advection on paradigmatic reaction-diffusion problems."
+   },
+   {
+    "doi": "https://doi.org/10.5772/intechopen.94639",
+    "year": 2021,
+    "title": "Topics on Quantum Information Science",
+    "journal": "IntechOpen eBooks",
+    "abstract": "This book is devoted to current research topics in quantum information science. Chapters address issues related to the implementation of new quantum information technologies and discuss developments involving the application of information-theoretical ideas to the analysis of fundamental problems at the frontiers of contemporary physics."
+   },
+   {
+    "doi": "https://doi.org/10.48550/arxiv.2409.19504",
+    "year": 2024,
+    "title": "Magnons from time-dependent density-functional perturbation theory and nonempirical Hubbard functionals",
+    "journal": "arXiv (Cornell University)",
+    "abstract": "Spin excitations play a fundamental role in understanding magnetic properties of materials, and have significant technological implications for magnonic devices. However, accurately modeling these in transition-metal and rare-earth compounds remains a formidable challenge. Here, we present a fully first-principles approach for calculating spin-wave spectra based on time-dependent (TD) density-functional perturbation theory (DFPT), using nonempirical Hubbard functionals. This approach is implemented in a general noncollinear formulation, enabling the study of magnons in both collinear and noncollinear magnetic systems. Unlike methods that rely on empirical Hubbard $U$ parameters to describe the ground state, and Heisenberg Hamiltonians for describing magnetic excitations, the methodology developed here probes directly the dynamical spin susceptibility (efficiently evaluated with TDDFPT throught the Liouville-Lanczos approach), and treats the linear variation of the Hubbard augmentation (in itself calculated non-empirically) in full at a self-consistent level. Furthermore, the method satisfies the Goldstone condition without requiring empirical rescaling of the exchange-correlation kernel or explicit enforcement of sum rules, in contrast to existing state-of-the-art techniques. We benchmark the novel computational scheme on prototypical transition-metal monoxides NiO and MnO, showing remarkable agreement with experiments and highlighting the fundamental role of these newly implemented Hubbard corrections. The method holds great promise for describing collective spin excitations in complex materials containing localized electronic states."
+   },
+   {
+    "doi": null,
+    "year": 2020,
+    "title": "Development of Next-Generation, Fast, Accurate, Transferable, and Polarizable Force-fields for Heterogenous Material Simulations",
+    "journal": "Digital Commons - University of South Florida (University of South Florida)",
+    "abstract": "Theoretical modeling is extremely useful in guiding to experiment; however quantitatively accurate modeling of energy-relevant small molecule sorption at the heterogeneous interfaces present in metal-organic materials (MOMs) is currently challenging. MOMs are an emerging class of materials consisting of inorganic clusters and organic linkers that offer great potential in the areas of gas storage, gas separation, and catalysis due to the possibility of large surface areas, complex heterogeneous surfaces, and rational designability. Efficient chemical separations involving these materials could reduce the US’s total energy consumption by approximately 10 to 15%. In this dissertation, the parameterization of small molecules and metal clusters with existing potentials as well as the development of a novel next-generation potential with associated small molecule and material parameters are discussed. The resulting force-fields, denoted PHAHST, represent a significant advance in the field and can quantitatively predict/retrodict binding sites and energetics at complex heterogeneous interfaces. This is accomplished via a physically grounded approach to all potential forms, mixing rules, and parameters as well as including explicit polarization in all environments. The resulting force-fields are extensible and a procedure for developing compatible models is established. All parameters and code associated with this work are freely available online at https://github.com/mpmccode/mpmc."
+   },
+   {
+    "doi": "https://doi.org/10.1088/1751-8121/aea8aa",
+    "year": 2026,
+    "title": "Non-associativity induced modifications of open-system quantum dynamics: general master equation and a two-qubit Ising case study",
+    "journal": "Journal of Physics A Mathematical and Theoretical",
+    "abstract": "Abstract We construct a generalization of the Gorini–Kossakowski–Lindblad–Sudarshan (GKLS) master equation to the case of a weakly nonassociative operator algebra, and analyze the structural properties of the resulting generator. Starting from a second-order Born–Markov expansion, we show that deviations from associativity enter through a finite set of three-argument associator structures in the second-order kernel, while pairwise operator products and dissipators retain their standard form. The resulting correction to the generator is dispersively generated: its coefficients are fixed by the imaginary parts of the bath response kernels rather than by the dissipative rates. It preserves trace and Hermiticity, vanishes in the associative limit, and introduces no additional jump operator. Under the secular approximation, the conventional dissipative sector retains the standard GKLS complete-positivity structure, while the associator contribution remains trace and Hermiticity preserving. To illustrate the theory, we embed this structure into a two-qubit transverse-field Ising model via a Stratonovich–Weyl representation and an Ising-aligned twisted Poisson structure. In this setting the associator corrections admit closed-form evaluation, yielding an explicit master equation in which the instantaneous population imbalance of each qubit feeds back into the evolution as a state-dependent longitudinal field. Numerical integration in the weak-coupling regime, where the Born–Markov derivation is quantitatively controlled, shows that this correction suppresses steady-state entanglement and drives the system toward more mixed asymptotic states, while introducing no additional jump operator and leaving the relaxation timescale nearly unchanged. This two-qubit example serves as a minimal case study that transparently exhibits the structural consequences of nonassociativity at the level of reduced open-system dynamics."
+   },
+   {
+    "doi": "https://doi.org/10.1103/ycrc-vtbk",
+    "year": 2026,
+    "title": "Optimization of path-integral tensor-multiplication schemes for open quantum systems",
+    "journal": "Physical review. B./Physical review. B",
+    "abstract": "Path-integral techniques are a powerful tool for obtaining exact solutions for the non-Markovian dynamics of open quantum systems. However, the exponential scaling of the tensor size with the quantum memory length limits their applicability to systems with long memory times. Here we provide a general optimization of tensor multiplication schemes for systems with pair correlations and finite memory times. This optimization effectively reduces the tensor sizes by using a matrix representation of tensors combined with singular value decomposition to filter out negligible contributions. This approach dramatically reduces both computational time and memory usage of the traditional tensor-multiplication schemes. While more memory-efficient representations exist, this approach enables a consistent extrapolation scheme for the rapid estimation of the exact value. As a demonstration, we apply it to the Trotter decomposition with linked cluster expansion technique and use it to investigate a quantum dot-microcavity system at large coupling strengths. We also apply the optimization in a case where the memory time is very long—specifically in a system containing two spatially separated quantum dots in a common phonon bath."
+   },
+   {
+    "doi": "https://doi.org/10.48550/arxiv.2608.26440",
+    "year": 2026,
+    "title": "Automatic generation of exchange-correlation response kernels",
+    "journal": "arXiv (Cornell University)",
+    "abstract": "Computing density-functional response properties requires contracting derivatives of the exchange--correlation (xc) energy with perturbed densities on a grid. While the xc functional's derivatives have long been available to high orders from libraries such as Libxc, the surrounding contraction layer - the chain rule that combines them with the grid-based basis-function and density data into the total xc contribution - has instead been hand-derived and hand-coded in every program, for every functional family, spin case, and property. We present libxckernel, a library that automatically generates this layer by symbolic differentiation. The xc functional's ingredients are expressed as sesquilinear forms in the density matrix, so the xc energy can be differentiated to any order while the functional derivatives remain opaque. The basis functions and the orbital coefficients may both be complex. The chain rule then produces any xc matrix element: Fock matrices, orbital Hessians, and response terms of any order. Terms sharing a pattern are collapsed for efficiency. Extensible plugins emit the expressions as NumPy Einstein sums, compiled C kernels with C++/Fortran interfaces, or host-program specific source code. libxckernel is free and open-source software under the BSD-3-Clause license, enabling rapid implementation of functionality missing from many electronic structure programs. We demonstrate it by extending Psi4 with meta-generalized gradient approximation (mGGA) response kernels for orbital stability analysis and time-dependent density-functional theory (TD-DFT), GGA and mGGA analytic nuclear Hessians, and exact quadrature grid response, and by extending GPAW with mGGA and triplet TD-DFT kernels and gradient-corrected kernels for periodic dielectric response."
+   },
+   {
+    "doi": null,
+    "year": 2018,
+    "title": "Thermal transport in van der Waals Solids and Inorganic Clathrates from first-principles calculations",
+    "journal": "Chalmers Research (Chalmers University of Technology)",
+    "abstract": "Energy management is arguably one of the defining challenges for our modern societies. An ever-increasing demand for energy has to be balanced with the requirement for a sustainable energy economy that minimizes the human impact on the environment. Materials and their ability to transport both electrical and thermal currents play a key role in this area as they are essential components in energy extraction, transport, storage, and consumption technologies. On the macroscopic level, electrical and thermal transport in materials can be described by a set of coupled phenomenological relations that contain material specific transport coefficients. On the microscopic level, these transport coefficients are governed by chemical composition and the specific arrangement of the constituent atoms, the so-called microstructure. Since relatively small differences in this regard can have a dramatic impact on the macroscopic behavior of a material, a detailed understanding of the underlying processes and couplings is essential for materials development and optimization.In this thesis, the thermal conductivity in two classes of materials of current and future technological importance has been investigated using electronic structure calculations (density functional theory) in combination with methods from statistical physics (Boltzmann transport theory). The first two papers included in this thesis deal with van-der-Waals solids, layered materials that are currently attracting tremendous attention in the scientific community due to their exciting combination of electrical, optical, and thermal properties. In this context, the present thesis provides predictions and a detailed analysis of the lattice thermal conductivity in Mo and W-based transition metal dichalcogenides. Furthermore, a model is developed to explain the extreme structure sensitivity of the conductivity and calculations are presented that elucidate chemical trends and establish bounds.The third and fourth paper deal with clathrates, inclusion compounds that have been found to exhibit a combination of transport properties that are very well suited for thermoelectric applications. These materials exhibit extremely small thermal conductivities. The present thesis provides an in-depth analysis of the lattice dynamics of these materials, with a special focus on the thermal conductivity and the so-called phonon-glass behavior.The present thesis provides a stepping stone for future investigations of transport processes in van-der-Waals solids and clathrates, which eventually should lead to the development of devices with higher energy efficiency and better materials for energy extraction technologies."
+   },
+   {
+    "doi": "https://doi.org/10.48550/arxiv.2604.12707",
+    "year": 2026,
+    "title": "Quantum analogues of exponential sensitivity: from Loschmidt echo to Krylov complexity",
+    "journal": "arXiv (Cornell University)",
+    "abstract": "One of the fundamental manifestations of classical chaos is exponential sensitivity to initial conditions that is, two trajectories starting from nearly identical initial states diverge exponentially over time. This behavior is quantified by the Lyapunov exponents. Due to the unitary nature of quantum mechanics, such exponential divergence is elusive in quantum systems. As a result, several alternative quantities have been proposed and studied in recent years to capture analogous behavior. In this article, we present a pedagogical overview of three such quantities that have been the focus of intense research in recent years: the Loschmidt echo, out-of-time-order correlators (OTOCs), and Krylov complexity."
+   }
+  ]
+ },
+ "S13": {
+  "query": "\"nonlocal functional\" AND \"domain decomposition\"",
+  "status": 429,
+  "err": "{\"error\":\"Rate limit exceeded\",\"message\":\"Anonymous search is temporarily rate-limited while the search cluster is under elevated load. Please retry in 32s, or use a free API key f"
+ },
+ "S3": {
+  "query": "\"rVV10\" AND \"energy decomposition\"",
+  "status": 429,
+  "err": "{\"error\":\"Rate limit exceeded\",\"message\":\"Anonymous search is temporarily rate-limited while the search cluster is under elevated load. Please retry in 38s, or use a free API key f"
+ }
+}
