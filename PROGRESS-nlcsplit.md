@@ -2320,3 +2320,32 @@ S20 从"指向工作日志散文"升级成"指向脚本 + 两份哈希登记的 
 "评估点对 0 / 占 far 0.00%"——不是全量路径不算点对，是**库里的 MAC 计数器只服务于被屏蔽的那条路**，
 全量路径不经 MAC 所以没填。定义上它评估全部 far 点对，我按定义补上并**整轮重跑**（旧日志留在
 `scratch/STEPJ_v1_exact_accounting_missing.out`，没删）。
+
+## [2026-09-29 22:5x] [agent=cn-qoder] [v2 待办 1+2] 核/尾支路删掉（697→394 行）；`test_regression.py:46` 的容差收到锚点支持的量级
+
+按已批准的计划书 v2 走。
+
+**1. 删 coretail 支路。** 动手前先把理由坐实——它不是"死代码"那么轻：
+`_mac_ct` 自己的 docstring 写着**这个界非单调**（`coretail_bound(child) > coretail_bound(parent)`
+可发生），而自顶向下的接受/拒绝**只有在界对细化单调时才 sound**；它还引用了一个
+**不存在的测试文件** `tests/test_fastpair_coretail.py`（`ls nlcsplit/tests | grep -c coretail` = 0）。
+⇒ 留着就是"仓里有一份自称能屏蔽、实际不可证的判据"。仓外没有依赖者
+（`grep -rln coretail` 只命中 `examples/coretail_bound.py` 与日志，它们各自独立）。
+
+删除用一个带锚点的切片脚本（`scratch/strip_coretail.js`），**每个锚点必须命中、
+删完做符号残留自检、不过就不写回**——第一次它就在写回前停住（漏了返回值里三个
+`core_rule/core_variant/core_nested` 键）。删掉 10,717 字符：`CTNode`、`core_mask`、
+`build_ct_tree`、`ct_leaves`、`coretail_bound`、`node_bound_ct`、`_mac_ct`、两个 `CORE_*`
+开关、`screened_decomposition` 里的三条口径与分支。
+**验证**：`py_compile` 通过、`__all__` 回到 10 个符号、默认 `bound="tree"`；
+`pytest -q nlcsplit/tests/test_fastpair.py` **10 passed / 181.85 s**，
+`pytest -q -m "not slow"` **43 passed**。判死结论仍完整留在
+`examples/coretail_bound.py` + `evidence/coretail/`。
+
+**2. 收紧那条松容差（A8 悬了半天的决定，我批了）。**
+`test_regression.py:46` 由 `< 0.10` → **`< 1e-4 kcal/mol`**。依据是我自己重跑的一遍：
+level 0 残差 `9.672e-06 kcal/mol`（与 A8 那条 §1595 逐位相同），1e-4 留 10 倍余量。
+**反向也验了**：同一残差在 1e-9 界上会响 ⇒ 这条断言不是"跟零比大小"的空转，
+也不是把通过阈值调到刚好过得去。注释里写明这是**同库两套实现**的对照，
+第二个程序是 ORCA（§4 / `logs/orca_anchor.json`），不许混。
+`pytest -q nlcsplit/tests/test_regression.py` **3 passed / 89.28 s**。

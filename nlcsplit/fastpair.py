@@ -78,17 +78,13 @@ import numpy as np
 
 from . import nlc, partition
 
-__all__ = ["AtomBlock", "Node", "CTNode", "build_blocks", "build_tree", "leaves",
-           "box_sep", "ball_sep", "node_bound", "ball_bound", "core_mask",
-           "build_ct_tree", "ct_leaves", "coretail_bound",
+__all__ = ["AtomBlock", "Node", "build_blocks", "build_tree", "leaves",
+           "box_sep", "ball_sep", "node_bound", "ball_bound",
            "screened_decomposition"]
 
 INF = float("inf")
 
-# `bound="coretail"` 的两个开关的默认值。口径与 `examples/coretail_bound.py`
-# 的测量一致：core = 按 |wr| 半径质量分位切出的"核"，变体 V4 = 核/尾各用自己的盒。
-CORE_RULES = ("mass", "sigma")
-CORE_VARIANTS = ("V3", "V4")
+
 
 
 @dataclass(frozen=True)
@@ -123,39 +119,6 @@ class AtomBlock:
     lo: np.ndarray         # 逐轴包围盒（Bohr）——盒判据用它
     hi: np.ndarray
     tree: object = None    # 该原子的二分树根；没要求建树时是 None
-
-
-@dataclass(frozen=True)
-class CTNode:
-    """`bound="coretail"` 用的节点：`Node` 的全部聚合量 + 核/尾各一份。
-
-    核/尾只是**质量切分**，几何一格未动：核盒、尾盒、整盒都仍然包含各自的点，
-    所以 `box_sep` 给的距离下界前提照旧成立。界函数 `coretail_bound` 只读这个类，
-    不读 `Node`（`Node` 一个字段也没动，`bound="tree"` 的路径因此逐位不变）。
-
-    空类的处理是这条判据唯一一处需要小心的地方：核空 ⇒ `mtilde = 0` 且
-    `w0t = kt = 0`（下界非正 ⇒ `_ker` 给 +inf），尾空 ⇒ `T = 0`。两种情况下
-    该项的质量积恰好为 0，`_mtimes` 把 0×inf 记成 0；同时**空类的盒一律退回整盒**
-    （而不是退成一个点或质心），这样"空盒给出更大的间距 ⇒ 更小的界"这条
-    反保守的路被从构造上堵死。
-    """
-    idx: object            # 叶子是索引数组；内部节点是 None
-    npts: int
-    mass: float            # Σ|wr|（整块，= tree 路径的 Node.mass 口径）
-    lo: np.ndarray
-    hi: np.ndarray
-    w0min: float
-    kmin: float
-    mtilde: float          # Σ_{核}|wr|
-    T: float               # Σ_{尾}|wr|
-    w0t: float             # 核内 w0 最小值；核空 ⇒ 0.0
-    kt: float              # 核内 κ 最小值；核空 ⇒ 0.0
-    clo: np.ndarray        # 核的包围盒；核空 ⇒ 整盒
-    chi: np.ndarray
-    tlo: np.ndarray        # 尾的包围盒；尾空 ⇒ 整盒
-    thi: np.ndarray
-    left: object = None
-    right: object = None
 
 
 def _node(coords, wr, w0, kap, idx):
@@ -258,199 +221,6 @@ def ball_bound(A, B, mult=1.0):
                                          B.w0min * D * D + B.kmin)
 
 
-# ================================================================ coretail 判据
-# 出处：`examples/coretail_bound.py` 的 V3 / V4 两个变体（测量已做完，这里是移植）。
-# 病根：`kmin_P` 由块内**最低密度**点钉住（rho_floor=1e-12 ⇒ κ≈0.169），界随 κ⁻³
-# 增长 ⇒ 与节点自己的真实密度完全脱钩，一原子一块时最小根界 134–261 Ha，τ=1e-8 判
-# 不动任何东西。修法：把质量切成核 m̃ 与尾 T，核-核项用**核内**下界 ã，任何含尾的
-# 乘积退回**整块**下界 a（V3）或各自的盒（V4），于是界由节点自己的尾质量决定。
-def _sep(loA, hiA, loB, hiB):
-    """两个裸盒（(3,) 数组对）之间的轴对齐间距；`box_sep` 的无封装版本。"""
-    gap = np.maximum(np.maximum(loA - hiB, loB - hiA), 0.0)
-    return float(np.linalg.norm(gap))
-
-
-def _ker(x, y):
-    """0.75/(x·y·(x+y))，即半块口径的 sup|Φ|；任一**下界**非正 ⇒ +inf（不敢跳）。"""
-    if x <= 0.0 or y <= 0.0:
-        return INF
-    v = 0.75 / (x * y * (x + y))
-    return v if np.isfinite(v) else INF
-
-
-def _mtimes(mprod, k):
-    """质量积 × 核。空子块的质量积恰为 0，此时 0·inf 记作 0（见 CTNode 文档）。"""
-    if mprod <= 0.0:
-        return 0.0
-    return mprod * k
-
-
-def core_mask(coords, wr, idx, rule="mass", tail_eps=0.01, k_sigma=1.0,
-              centroid=None):
-    """把一个点集切成"核 / 尾"两片，返回布尔掩膜（True = 核）。
-
-    两条规则都只用节点自身的量，不引入需要手调的新常数：
-      "mass"   使尾质量 T ≤ tail_eps·m 的**最小**半径（tail_eps 借 `build_tree`
-               的 mass_frac，默认同一个 1%）。实测 max(T/m)=9.997e-3、mean κ̃/κ=4.1。
-      "sigma"  质量加权半径 r̄ + k_sigma·σ（倍数固定为 1）。实测 κ̃/κ=6.4 更紧，
-               但 T/m 高达 0.147 ⇒ 尾项吃掉收益，界反而更松（见 examples 报告）。
-    半径的球心是 |wr| 加权质心，与 `_node` 给 `centroid` 用的是同一个量。
-    """
-    P = coords[idx]
-    w = np.abs(wr[idx])
-    m = float(w.sum())
-    if m <= 0.0:
-        raise ValueError("空质量点集没有核/尾可谈")
-    if centroid is None:
-        centroid = (P * w[:, None]).sum(axis=0) / m
-    r = np.linalg.norm(P - centroid, axis=1)
-    if rule == "mass":
-        order = np.argsort(r, kind="stable")
-        cw = np.cumsum(w[order])
-        k = int(np.searchsorted(cw, (1.0 - tail_eps) * m, side="left"))
-        rc = float(r[order][min(k, r.size - 1)])
-    elif rule == "sigma":
-        rbar = float((w * r).sum() / m)
-        var = float((w * (r - rbar) ** 2).sum() / m)
-        rc = rbar + k_sigma * float(np.sqrt(max(var, 0.0)))
-    else:
-        raise KeyError(f"未知 core rule {rule!r}，可选 {CORE_RULES}")
-    return r <= rc
-
-
-def _ct_agg(coords, wr, w0, kap, idx, core, me):
-    """由点集与其核掩膜装配一个 CTNode 的聚合量（不含左右孩子）。"""
-    P = coords[idx]
-    w = np.abs(wr[idx])
-    tail = ~core
-    return CTNode(idx=idx, npts=int(idx.size), mass=me.mass,
-                  lo=me.lo, hi=me.hi, w0min=me.w0min, kmin=me.kmin,
-                  mtilde=float(w[core].sum()), T=float(w[tail].sum()),
-                  w0t=float(w0[idx][core].min()) if core.any() else 0.0,
-                  kt=float(kap[idx][core].min()) if core.any() else 0.0,
-                  clo=(P[core].min(axis=0) if core.any() else me.lo),
-                  chi=(P[core].max(axis=0) if core.any() else me.hi),
-                  tlo=(P[tail].min(axis=0) if tail.any() else me.lo),
-                  thi=(P[tail].max(axis=0) if tail.any() else me.hi))
-
-
-def build_ct_tree(coords, wr, w0, kap, idx, rule="mass", tail_eps=0.01,
-                  k_sigma=1.0, mass_frac=0.01, radius_frac=1 / 3, min_pts=32,
-                  nested=False, parent_core=None, total=None, r_ref=None,
-                  depth=0):
-    """按 `build_tree` **同一个**切分规则建树，并在每个节点上装配核/尾聚合量。
-
-    切分条件、终止条件、选轴与超平面全部照抄 `build_tree`，所以叶子的集合划分
-    与 `bound="tree"` 逐叶相同（`test_coretail_tree_has_the_same_leaves` 验它），
-    "旧界 vs 新界"比的才是同一棵树。
-
-    `nested=False`（默认，与 `examples/coretail_bound.py` 一致）：每个节点**各自**
-    按 `rule` 现算核，父子的类别不一致——这是紧度的来源，也是细化单调性会被破坏
-    的原因（见 `_mac_ct` 的文档与测试）。
-    `nested=True`：核/尾标签由父节点**继承**（孩子的核 = 父核 ∩ 孩子点），只有根
-    点用一次本地规则。此时核集与尾集在细化下精确可加、核盒/尾盒/κ̃/w̃0 全部单调，
-    于是细化单调性与次可加性由构造成立（`test_..._nested_holds` 随机验它），代价
-    是深层节点拿不到本地再切分的额外紧度。
-    """
-    me = _node(coords, wr, w0, kap, idx)
-    if total is None:
-        total = me.mass
-    if r_ref is None:
-        r_ref = me.radius
-    # 核掩膜：根上永远现算；往下走时 nested=True 继承父标签，False 各自再算一次。
-    core = (np.asarray(parent_core) if (nested and parent_core is not None)
-            else core_mask(coords, wr, idx, rule, tail_eps, k_sigma, me.centroid))
-    if idx.size <= min_pts or me.mass <= 0.0 or depth >= 24:
-        return _ct_agg(coords, wr, w0, kap, idx, core, me)
-    if me.mass <= mass_frac * total and me.radius <= radius_frac * r_ref:
-        return _ct_agg(coords, wr, w0, kap, idx, core, me)
-    P = coords[idx]
-    span = me.hi - me.lo
-    ax = int(np.argmax(span))
-    sel = P[:, ax] <= 0.5 * (me.lo[ax] + me.hi[ax])
-    left_idx, right_idx = idx[sel], idx[~sel]
-    if left_idx.size == 0 or right_idx.size == 0:
-        return _ct_agg(coords, wr, w0, kap, idx, core, me)
-    kids = [build_ct_tree(coords, wr, w0, kap, left_idx, rule, tail_eps, k_sigma,
-                          mass_frac, radius_frac, min_pts, nested,
-                          core[sel] if nested else None, total, r_ref, depth + 1),
-            build_ct_tree(coords, wr, w0, kap, right_idx, rule, tail_eps, k_sigma,
-                          mass_frac, radius_frac, min_pts, nested,
-                          core[~sel] if nested else None, total, r_ref, depth + 1)]
-    agg = _ct_agg(coords, wr, w0, kap, idx, core, me)
-    return CTNode(**{**agg.__dict__, "idx": None, "npts": int(idx.size),
-                     "left": kids[0], "right": kids[1]})
-
-
-def ct_leaves(N):
-    """coretail 树的全部叶子。"""
-    if N is None:
-        return ()
-    if N.idx is not None:
-        return (N,)
-    return ct_leaves(N.left) + ct_leaves(N.right)
-
-
-def coretail_bound(A, B, mult=1.0, variant="V4"):
-    """core/tail 版可证上界，口径与 `node_bound` 完全一致（半块 × mult）。
-
-        m = m̃(核) + T(尾)
-        core-core : m̃_A m̃_B · ker(ã_A, ã_B),  ã = w̃0min·D² + κ̃min  ← 核内下界
-        core-tail : m̃_A T_B · ker(ã_A, a_B) + T_A m̃_B · ker(a_A, ã_B)
-        tail-tail : T_A T_B · ker(a_A, a_B)                            ← 整块下界
-      其中 a = w0min·D² + κmin 是 `node_bound` 用的那个（旧口径）下界。
-
-    V3 四块共用整盒间距 D；V4 再让每对子块用**自己的盒**（核盒/尾盒）求 D。
-
-    可靠性（=cert_err 的意义）只需要**逐节点成立**：任一 i∈核_A、j∈核_B 有
-    R_ij ≥ D(核盒) 且 g_ij = w0_i R² + κ_i ≥ ã_A，含尾的乘积同理退回整块下界 a；
-    四个乘积恰好覆盖 A×B 且不重（核对尾不重不漏由 `core_mask` 的定义保证），
-    所以 bound ≥ |mult·pair_energy(A,B)|，与父子类别是否一致**无关**。
-    细化单调性则不同：本地再切分允许"父尾点落进子核"，孩子的 ã 可以掉回父亲的 a
-    （κ̃/κ ≈ 1/4.1 ⇒ ker 差 ~69 倍），于是 bound(child) > bound(parent) 可以发生。
-    移植的取舍写在 `_mac_ct` 的文档里，实测违反数由测试打印。
-    """
-    if A is None or B is None:
-        return 0.0
-    D = _sep(A.lo, A.hi, B.lo, B.hi)
-    D2 = D * D
-    aA, aB = A.w0min * D2 + A.kmin, B.w0min * D2 + B.kmin
-    if variant == "V3":
-        aaA = A.w0t * D2 + A.kt
-        aaB = B.w0t * D2 + B.kt
-    elif variant == "V4":
-        Dcc = _sep(A.clo, A.chi, B.clo, B.chi) ** 2
-        Dct = _sep(A.clo, A.chi, B.tlo, B.thi) ** 2
-        Dtc = _sep(A.tlo, A.thi, B.clo, B.chi) ** 2
-        Dtt = _sep(A.tlo, A.thi, B.tlo, B.thi) ** 2
-        aaA = A.w0t * Dcc + A.kt
-        aaB = B.w0t * Dcc + B.kt
-    else:
-        raise KeyError(f"未知 variant {variant!r}，可选 {CORE_VARIANTS}")
-    cc = _mtimes(A.mtilde * B.mtilde, _ker(aaA, aaB))
-    if variant == "V3":
-        tail = (_mtimes(A.mtilde * B.T, _ker(aaA, aB))
-                + _mtimes(A.T * B.mtilde, _ker(aA, aaB))
-                + _mtimes(A.T * B.T, _ker(aA, aB)))
-    else:                                        # V4：含尾乘积各用自己的 D
-        cA_t = A.w0t * Dct + A.kt                 # A 核 B 尾
-        aA_c = A.w0min * Dtc + A.kmin             # A 尾 B 核
-        tail = (_mtimes(A.mtilde * B.T, _ker(cA_t, B.w0min * Dct + B.kmin))
-                + _mtimes(A.T * B.mtilde, _ker(aA_c, B.w0t * Dtc + B.kt))
-                + _mtimes(A.T * B.T, _ker(A.w0min * Dtt + A.kmin,
-                                          B.w0min * Dtt + B.kmin)))
-    return mult * (cc + tail)
-
-
-def node_bound_ct(A, B, mult=1.0):
-    """`node_bound` 的 CTNode 版本（只用整块量）——用来做"新界 ≤ 旧界"的同树对照。"""
-    if A is None or B is None:
-        return 0.0
-    D = _sep(A.lo, A.hi, B.lo, B.hi)
-    return mult * A.mass * B.mass * _beta(A.w0min * D * D + A.kmin,
-                                          B.w0min * D * D + B.kmin)
-
-
 def _mac(X, wr, w0, kap, A, B, tau, mult, stats):
     """自顶向下的接受/拒绝，返回**精确算出来的那部分**之和（半块口径）。"""
     bnd = node_bound(A, B, mult)
@@ -474,46 +244,6 @@ def _mac(X, wr, w0, kap, A, B, tau, mult, stats):
     else:
         kids = [(A.left, B), (A.right, B)]
     return sum(_mac(X, wr, w0, kap, C, D, tau, mult, stats) for C, D in kids)
-
-
-def _mac_ct(X, wr, w0, kap, A, B, tau, mult, stats, variant="V4"):
-    """`_mac` 的 coretail 版：展开规则一字不改，只把判据换成 `coretail_bound`。
-
-    口径与 `_mac` 相同（半块 × mult，接受时把同一个 mult 后的界累进 cert）。
-
-    关于细化单调性（必读）：`bound="tree"` 的判据在细化下**只变小**，所以"父块够小
-    就整块跳"与"往下走只会更好"两件事同时成立。coretail 的紧度**恰恰**来自每个节点
-    各自重切核/尾，于是父子类别可以不一致，`coretail_bound(child) >
-    coretail_bound(parent)` 可能发生（实测见
-    `tests/test_fastpair_coretail.py::test_local_coretail_monotonicity_counted`）。
-    这**不影响** cert_err 的可靠性：接受一个节点所累加的界，界住的是这个节点自己的
-    实际值（逐节点成立性由 `test_coretail_bound_dominates_actual_*` 实测），与它孩子
-    的界谁大谁小无关；接受集与求和集仍是 P×Q 的划分，所以
-    |E_exact − E_screened| ≤ cert_err 只依赖逐节点成立 + 划分闭合两条，两条都验了。
-    非单调的代价是**效率**方向的：可能白下钻（父松子紧）或在父层就整块跳掉（父紧子松，
-    这条反而省东西且照样可证）。要"由构造单调"就传 `core_nested=True`。
-    """
-    bnd = coretail_bound(A, B, mult, variant)
-    if bnd <= tau:
-        stats["accepted"] += 1
-        stats["cert"] += bnd
-        stats["pointpairs_dropped"] += _npts(A) * _npts(B)
-        return 0.0
-    if A.idx is not None and B.idx is not None:
-        stats["evaluated"] += 1
-        stats["pointpairs_evaluated"] += A.idx.size * B.idx.size
-        return float(nlc.pair_energy(X, wr, w0, kap, A.idx, B.idx))
-    stats["visited"] += 1
-    if A.idx is not None:
-        kids = [(A, B.left), (A, B.right)]
-    elif B.idx is not None:
-        kids = [(A.left, B), (A.right, B)]
-    elif _diag(B) > _diag(A):
-        kids = [(A, B.left), (A, B.right)]
-    else:
-        kids = [(A.left, B), (A.right, B)]
-    return sum(_mac_ct(X, wr, w0, kap, C, D, tau, mult, stats, variant)
-               for C, D in kids)
 
 
 def _npts(N):
@@ -553,32 +283,19 @@ def build_blocks(coords, wr, w0, kap, owner_kept, natm, tree_kwargs=None):
 
 def screened_decomposition(mol, mf, level=1, scheme="becke", screen=None,
                            bound="tree", mass_frac=0.01, radius_frac=1 / 3,
-                           min_pts=32, core_rule="mass", core_variant="V4",
-                           core_nested=False):
+                           min_pts=32):
     """带可证截断误差的原子对分解；`pairs` 按原子对记账，片段和只是它的分组求和。
 
     screen: None ⇒ 不跳；否则是**单个节点对**的接受阈值 τ（Hartree，已含 ×2 口径）。
             真实保证读 `cert_err`，它才是累加的那个量。
     bound:  "tree" 自顶向下接受/拒绝（默认）；"ball" 只用整原子球判据，留作对照；
-            "coretail" 用 `coretail_bound`（核/尾双桶），**opt-in**，默认值不变。
             `screen is None` 时三者走的是同一条精确路径，逐位相同。
-    core_rule:   "mass" | "sigma"，见 `core_mask`。
-    core_variant: "V3"（四块质量积共用整盒 D）| "V4"（每块自己的盒）。
-    core_nested: True ⇒ 核/尾标签由父节点继承，细化单调性与次可加性由构造成立
-                 （代价：深层节点失去本地再切分的额外紧度）。False = 与
-                 `examples/coretail_bound.py` 一致的本地规则（更紧，非单调，见 `_mac_ct`）。
     返回 dict(E_nl, E_pair, E_loc, cert_err, pairs, blocks,
               n_atom_pairs, n_leaves, n_leafpairs_total, n_leafpairs_evaluated,
               n_accepted, n_visited, work_frac, ...)
     """
-    if bound not in ("tree", "ball", "coretail"):
-        raise ValueError(f"未知 bound {bound!r}，可选 'tree' / 'ball' / 'coretail'")
-    if bound == "coretail":
-        if core_rule not in CORE_RULES:
-            raise ValueError(f"未知 core_rule {core_rule!r}，可选 {CORE_RULES}")
-        if core_variant not in CORE_VARIANTS:
-            raise ValueError(f"未知 core_variant {core_variant!r}"
-                             f"，可选 {CORE_VARIANTS}")
+    if bound not in ("tree", "ball"):
+        raise ValueError(f"未知 bound {bound!r}，可选 'tree' / 'ball'")
     X, W, owner = partition.atom_partition(mol, level=level, scheme=scheme)
     ni = mf._numint
     dm = mf.make_rdm1()
@@ -598,27 +315,14 @@ def screened_decomposition(mol, mf, level=1, scheme="becke", screen=None,
     owner_kept = np.full(len(wr), -1, dtype=np.intp)
     owner_kept[idx_kept] = owner[idx_kept]
     tau = 0.0 if screen is None else float(screen)
-    use_tree = bound in ("tree", "coretail") and tau > 0.0
+    use_tree = bound == "tree" and tau > 0.0
     tree_kwargs = {"mass_frac": mass_frac, "radius_frac": radius_frac,
                    "min_pts": min_pts}
     blocks = build_blocks(
         X, wr, w0, kap, owner_kept, mol.natm,
         tree_kwargs=dict(tree_kwargs) if bound == "tree" else None)
-    # coretail 的树**单独**建（同一套切分参数 ⇒ 叶子划分与上面那棵逐叶相同），
-    # 这样 `blocks[a].tree` 与 `bound="tree"` 路径的语义一个字节都没变。
-    ct_roots = {}
-    if bound == "coretail":
-        for a in range(mol.natm):
-            if blocks[a] is None:
-                continue
-            ct_roots[a] = build_ct_tree(
-                X, wr, w0, kap, blocks[a].idx, rule=core_rule,
-                tail_eps=mass_frac, k_sigma=1.0, **tree_kwargs,
-                nested=core_nested)
-
     live = [blocks[a] for a in range(mol.natm) if blocks[a] is not None]
-    leafcounts = {b.atom: (len(ct_leaves(ct_roots[b.atom])) if b.atom in ct_roots
-                           else (len(leaves(b.tree)) if b.tree is not None else 1))
+    leafcounts = {b.atom: (len(leaves(b.tree)) if b.tree is not None else 1)
                   for b in live}
     n_leaves = sum(leafcounts.values())
     n_leafpairs_total = sum(leafcounts[Pa.atom] * leafcounts[Pb.atom]
@@ -661,11 +365,7 @@ def screened_decomposition(mol, mf, level=1, scheme="becke", screen=None,
     else:
         for i, Pa in enumerate(live):
             for Pb in live[i + 1:]:
-                if bound == "coretail":
-                    v = _mac_ct(X, wr, w0, kap, ct_roots[Pa.atom],
-                                ct_roots[Pb.atom], tau, 2.0, stats, core_variant)
-                else:
-                    v = _mac(X, wr, w0, kap, Pa.tree, Pb.tree, tau, 2.0, stats)
+                v = _mac(X, wr, w0, kap, Pa.tree, Pb.tree, tau, 2.0, stats)
                 pairs[(Pa.atom, Pb.atom)] = v
                 E += 2.0 * v
         cert = stats["cert"]
@@ -675,7 +375,7 @@ def screened_decomposition(mol, mf, level=1, scheme="becke", screen=None,
     n_atom_pairs = len(pairs)
     denom = pointpairs_far + pointpairs_self
     return dict(E_nl=E + E_loc, E_pair=E, E_loc=E_loc, cert_err=cert,
-                pairs=pairs, blocks=blocks, ct_roots=ct_roots,
+                pairs=pairs, blocks=blocks,
                 live=[b.atom for b in live],
                 n_atoms=len(live), n_atom_pairs=n_atom_pairs,
                 n_leaves=n_leaves, n_leafpairs_total=n_leafpairs_total,
@@ -691,7 +391,4 @@ def screened_decomposition(mol, mf, level=1, scheme="becke", screen=None,
                 total_frac=(stats["pointpairs_evaluated"] + pointpairs_self) / denom
                 if denom else 0.0,
                 screen=screen, tau=tau, bound=bound, level=level, scheme=scheme,
-                core_rule=core_rule if bound == "coretail" else None,
-                core_variant=core_variant if bound == "coretail" else None,
-                core_nested=core_nested if bound == "coretail" else None,
                 n_grid=int(len(wr)), n_kept_points=int(idx_kept.size))

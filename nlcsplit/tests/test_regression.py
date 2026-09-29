@@ -43,7 +43,11 @@ def test_matches_pyscf_native_kernel(dimer):
                                      b=b, C=C, owner=partition.nearest_partition(dimer, X))
     _, e_ref, _ = numint.nr_nlc_vxc(mf._numint, dimer, mf.grids, "wb97x_v",
                                     mf.make_rdm1())
-    assert abs((res["E_total"] - e_ref) * KCAL) < 0.10
+    # 0.10 kcal/mol 是从"当年写测试时没量过残差"来的，实测残差最大 9.672e-06 kcal/mol
+    # （`test_tolerance_probe.py`，level 0/1/2 三档），比它紧 1.03e4 倍的界才是有依据的界。
+    # 1e-4 留 10 倍余量给浮点与 PySCF 版本差异。**这是同一个库里两套实现的对照**，
+    # 不是第二个程序——独立程序的锚点在 ORCA 6.0.1，见 §4 与 logs/orca_anchor.json。
+    assert abs((res["E_total"] - e_ref) * KCAL) < 1e-4
 
 
 @pytest.mark.slow
