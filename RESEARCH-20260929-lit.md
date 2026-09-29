@@ -279,3 +279,44 @@ N^2** where N is the number of points in which charge density is defined"，
 > `scratch/jnolo.pdf` → pypdf 提取 `scratch/jnolo.txt`。**不把他人论文全文提交进本仓库**
 > （版权），所以 `scratch/` 又在 .gitignore 里；上面对第 161–165 行的引文即判定的全部依据，
 > 任何人可用同一 arXiv 链接复核。若将来需要长期留证，只留引文与页码，不留正文。
+
+## 11. OpenAlex 也降级：它是"标题查找器"，不是主题检索（2026-09-29 12:55）
+
+§1 那十条 `title_and_abstract.search` 一直是"未见先例"主张的**唯一**索引层证据。
+今天照 Crossref 的同一套办法给它做召回校准，结论是它同样不能承载否定主张。
+
+### 11.1 过程里先抓到自己一个测量错误
+第一轮：三条校准查询 1/3 召回；第二轮同一条脚本跑出 0/3。
+**同式不同果**——正要写下"OpenAlex 检索不确定"时先去数了失败类型：
+`openalex_stability.json` 里 `runs[].error` 显示每查询 4 次里有 **1–2 次 HTTP 429**，
+而我把它计成了"未召回"。⇒ **那不是索引不稳定，是我的限流。**
+加了退避重试（429 → 3 s×k 重试，最多 6 次；间隔 2.5 s；per-page=25）后重测。
+
+### 11.2 干净结果（重试版，只计成功响应）
+
+| 查询类型 | 结果 |
+|---|---|
+| 近似标题式："physical interpretability energetic predictability dispersion corrected functionals" | **4/4 召回，全部 rank=0，top1 唯一** |
+| 主题式："energy decomposition analysis dispersion nonlocal correlation density functional" | **0/4，稳定不召回** |
+| 主题式："ALMO energy decomposition dispersion corrected noncovalent interactions" | **0/4，稳定不召回** |
+
+对照目标是 JCTC 2023 (10.1021/acs.jctc.3c00903)——**确知在库、且与本项目正题**。
+两台引擎（§9 的 Crossref、本节的 OpenAlex）表现出**同一种病**：
+标题像 → 必回；主题词 → 不回了。
+
+### 11.3 因此主张改成这样写
+* 撤回 §1 末那句"方法学缺口在 OpenAlex 的标题+摘要空间里成立"——
+  它的召回被证明不合格，其 0 命中不构成证据。
+* "未见先例"现在**只由两处全文比对支撑**：
+  (a) JCTC 3c00903（把 −VV10 整块当色散能，未在该项内部归属）；
+  (b) JuNoLo / arXiv:0810.2273（显式 N² 求值，但只求总能量，
+      且原文把"片段可分"的情形推给定域/半经验办法，见 §10）。
+* 正文 §1 已改为 "we are not aware of" 而非"不存在"；
+  §6 结论同步；开放索引那部分**只作为已知条目核验**保留（DOI、题名、卷页）。
+* WoS/Scopus 那一轮仍是**未完成的硬缺口**，需要用户本人过一次机构登录（§8.1）。
+
+### 11.4 复现物
+`scratch/oa_calib.js`（含第一版 0 命中的 bug：NOVEL 是字符串数组却取 `nv.q`，
+导致送给 OpenAlex 的检索词是字面量 "undefined"，返回一堆讲 undefined 的论文——
+若我没去看返回标题而只读计数，这条会伪装成"四条查询都无先例"），
+`scratch/oa_stab.js` → `scratch/openalex_stability.json`（含 429 计数与重试版结果）。

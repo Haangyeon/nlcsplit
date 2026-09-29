@@ -3,8 +3,9 @@
 
 数值出处用 `[S#]` 标，对应 `MAIN-skeleton.md` 里的表与 `nlcsplit/logs/`。
 未到位的两件：level-2 反泊松还差 `苯-甲烷` 一个体系；正式库（WoS/Scopus）检索
-需用户本人过一次机构登录，因此 §1 的"未见先例"只写到 OpenAlex + 一篇全文比对
-为止（见 `RESEARCH-20260929-lit.md` §8.4）。
+需用户本人过一次机构登录。§1 的"未见先例"因此写成两处**全文级**比对
+（JCTC 3c00903 与 JuNoLo arXiv:0810.2273），而**不是**开放索引的检索计数——
+OpenAlex/Crossref 的主题召回率今天实测不合格，详见 `RESEARCH-20260929-lit.md` §9–§11。
 
 ---
 
@@ -122,11 +123,28 @@ energies of dispersion-corrected functionals, using second-generation
 ALMO-EDA, E_Int = E_Pol + E_Frz + E_CT + E_Disp, and they obtain E_Disp as the
 difference against a dispersion-free reference calculation — that is, they
 treat the VV10 correction as one undivided block and ask whether that block is
-accurate. We work inside that block. A systematic search of OpenAlex restricted
-to titles and abstracts returns zero records for "nonlocal correlation" with
-"energy decomposition", zero for "vdW-DF" with "energy decomposition", and one
-for VV10 with "atom pair" [S1]; none of the retrieved records attributes the
-nonlocal term to fragment pairs.
+accurate. We work inside that block.
+
+Our search for further precedent should be described honestly, because the
+instrument behaved differently from what we first assumed. OpenAlex and Crossref
+both retrieve a known paper reliably when the query resembles its title - in a
+four-repetition test the title-like phrasing returned the target at rank 0 in
+4/4 runs - but both fail to retrieve that same, exactly-on-topic paper for
+legitimate topical phrasings ("energy decomposition analysis dispersion nonlocal
+correlation density functional", "ALMO energy decomposition dispersion
+corrected noncovalent interactions"), at 0/4 each [S15]. They are therefore
+known-item lookup tools here, not topical search, and a low hit count from them
+cannot support a claim of absence. What we can say on evidence is narrower and
+stronger: we read the full text of the closest published decomposition [S1] and
+of the closest published explicit evaluation of the nonlocal term, JuNoLo
+(Lazić et al., Comput. Phys. Commun. 181, 371-379 (2010)) [S14], and neither
+attributes the nonlocal double sum to fragment pairs - JuNoLo computes an improved
+total energy and explicitly recommends itself for bonded systems "where one
+cannot tell apart fragments", directing separable cases elsewhere. A formal
+database search (Web of Science / Scopus) has not been completed: the national
+mirror accepts our institutional address only for browsing and refuses to run a
+query without an interactive institutional login [S16]. Until that is done, the
+novelty claim is stated as "we are not aware of", not as "no work exists".
 
 Two limits are stated here rather than in a closing section, because both
 bound what the numbers may be used for. First, this is not an energy
@@ -480,9 +498,12 @@ outstanding.
 Two further items are open and stated as such rather than smoothed over: the
 level-2 counterpoise run for one of the eight systems (benzene...methane) was
 cut off by its own wall-clock budget, and the search for prior fragment-level
-attribution of a nonlocal double sum currently rests on OpenAlex plus a
-full-text comparison with the closest published decomposition, not on a formal
-database run.
+attribution of a nonlocal double sum currently rests on two full-text
+comparisons - the closest published decomposition and the closest published
+explicit evaluation, JuNoLo - rather than on a database search, since we
+measured that the open indexes we tried (OpenAlex, Crossref) retrieve known
+titles reliably but miss that same known paper when asked topically, and a
+formal Web of Science run still requires an interactive institutional login.
 
 The package is released under Apache-2.0 with no GAMESS source in it, every
 number in this paper is produced by a named script whose archived stdout is part
@@ -503,7 +524,13 @@ DOI 10.1021/acs.jctc.3c00903（全文取 ChemRxiv 绿色 OA 10.26434/chemrxiv-20
 aug-cc-pVDZ 0.0067）·
 [S14] Lazić, Atodiresei, Alaei, Caciuc, Blügel, Brako, *Comput. Phys. Commun.*
 **181**, 371–379 (2010)，DOI 10.1016/j.cpc.2009.09.016（卷页经 Crossref DOI 回查），
-开放预印本 arXiv:0810.2273v1；引文与判定依据见 `RESEARCH-20260929-lit.md` §10
+开放预印本 arXiv:0810.2273v1；引文与判定依据见 `RESEARCH-20260929-lit.md` §10 ·
+[S15] 检索仪器召回率实测：`scratch/oa_stab.js` → `openalex_stability.json`
+（近似标题 4/4 rank=0；两条合法主题式各 0/4），Crossref 同构结论见
+`scratch/xref_calib2.js`（4/4 rank=0）与 `xref_r3.js`（主题式 1/3）。
+含一次自我纠正：429 限流曾被误计为"未召回"，重试退避后结论才成立 ·
+[S16] `RESEARCH-20260929-lit.md` §8.1（直连教育网 IP 可进检索界面，
+`Sign In` 仍在且九条式子提交后 URL 不动、`total=null`）
 
 [S1] `RESEARCH-20260929-lit.md` §1, §6 · [S2] `MAIN-skeleton.md` 表2/表4b、
 `nlcsplit/logs/step_h.json` · [S3] `step_f_dispersion.py` 输出 ·
