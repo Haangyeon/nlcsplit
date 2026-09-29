@@ -97,3 +97,36 @@ nlcsplit/step_*.py   证据生成脚本（论文每张表/图对应一个，输�
 ## 许可
 
 Apache-2.0，见 `LICENSE`。
+
+## API（四个入口，够用）
+
+| 入口 | 给什么 | 要注意 |
+|---|---|---|
+| `partition.scf_grid(mol, level, xc, basis)` | `(mf, coords, weights, rho, sigma)`：一次自洽场 + PySCF 常规网格上的密度与 σ | 网格与 SCF 用同一 `level`，别混档 |
+| `partition.atom_partition(mol, level, scheme)` | `(coords, weights, owner)`；`weights` **已含**分区因子 | `scheme` 四选一：`becke` / `becke-becke-rad` / `becke-treutler` / `stratmann` |
+| `partition.partition_factors(mol, level, scheme)` | `(coords, base_w, S[N,natm])`：逐点**多中心**因子，`Σ_a S[i,a] = 1` | 内置两条断言，不过直接抛错，不返回"看着对"的数组（详见下） |
+| `nlc.vv10_fields(rho, sigma, b, C, rho_floor)` | `(w0, kap, keep)`：VV10 场量与远区保留掩码 | `keep` 是掩码不是权重，传给下游时别当乘数用 |
+| `nlc.pair_energy(coords, wr, w0, kap, iA, iB, pairing=...)` | 一个 (A,B) **半份**块：½ Σ_{i∈A} Σ_{j∈B} | 默认 `same-centre`；`cross` 只作定义敏感性对照，偏高 0.14–0.91 kcal/mol |
+| `nlc.fragment_decomposition(...)` | `{'intra','inter','E_nl','E_loc','E_total','n_dropped'}` | `inter[(A,B)]` 是**整份**（= 2×半份），所以 `E_nl = Σintra + Σinter` |
+
+### `partition_factors` 的两条内置断言
+
+```python
+coords, base_w, S = partition.partition_factors(mol, level=1, scheme="becke")
+```
+
+1. `Σ_a S[i,a] == 1` 逐点成立（实测最大偏差 4.4e-16）；
+2. `base_w[i] · S[i, owner(i)]` 必须逐点等于 **PySCF 自己**的
+   `gen_grid.get_partition` 权重（实测 8e-13 绝对值，四方案 × level 0/1/2）。
+
+第 2 条是**外部锚**：比对对象是 `libdft.VXCgen_grid` 的输出，
+不是本仓库另写的一份公式，所以它不算自证。
+
+两条容易踩的口径，这里写死：
+
+* **软归属必须喂分区后的 `weights`（或 `atom_partition` 的 `w`），不要喂 `base_w`。**
+  `base_w` 是各原子子网格的**原始体积元**，其并集在重叠区重复计数——
+  实测拿它配一次因子积分电子数会得到 **94.75 个**（该体系真值 20）。
+* 喂 `w_ref` 之后，"软归属"与"owner 硬归属"对**局域项**的差别只有
+  **≤8.7e-7 个电子**（×β 后 ≤2.6e-6 kcal/mol）——两者数值上是同一件事，
+  不必当成竞争口径。
