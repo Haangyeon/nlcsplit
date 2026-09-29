@@ -207,7 +207,7 @@ pair-resolved; as noted above it cancels identically from superposition
 differences, which is what makes it legitimate to decompose only the double
 sum.
 
-### 2.4 Geometries and reference values
+### 2.4 Geometries and fragment boundaries
 
 All dimer geometries are taken verbatim from the official GMTKN55 repository
 (github.com/grimme-lab/GMTKN55, `S22/NN/struc.xyz`), fetched by `tools/get_s22.sh`;
