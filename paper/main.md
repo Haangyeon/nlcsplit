@@ -84,11 +84,11 @@ Becke–Treutler, and Stratmann's — on eight S22 complexes, and report it as a
 per-system uncertainty rather than asserting one scheme as correct. The spread
 is 0.004–0.310 kcal/mol in absolute terms and 0.8–18.2% relative to |E_AB|,
 and it shows no systematic ordering by interaction type: the benzene sandwich
-sits at 1.8% while benzene–water sits at 18.2% [S2]. It is also independent of
-the one-electron basis, where the grid converges and the basis converges
-toward the complete-basis-set limit: across five bases the scheme spread is
-0.038–0.040 kcal/mol for the water dimer, so no choice of basis removes
-it [S2]. A single blanket uncertainty figure would misrepresent the data; we
+sits at 1.8% while benzene–water sits at 18.2% [S2]. Nor does a better
+one-electron basis remove it: on the constructed water-dimer geometry the spread
+stays 0.038–0.040 kcal/mol across five basis sets while the quantity itself
+drifts by 0.17 kcal/mol along the same ladder (section 3.4, [S12]). A single
+blanket uncertainty figure would misrepresent the data; we
 report it system by system.
 
 The second, and chemically the more consequential, is **what the term actually
