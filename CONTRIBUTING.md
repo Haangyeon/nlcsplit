@@ -54,10 +54,14 @@ README、`LICENSE` 段与软件文都写着**不含任何 GAMESS 代码**（GAME
 这是法律性声明，不能靠印象维护。做法是把它变成一条可复跑的检查：
 
 ```bash
-node scratch/audit_no_gamess.js     # 独立目录 pip install 后逐文件扫 25 个产物
+node tools/audit_no_gamess.js            # 独立目录 pip install --target 后逐文件扫装出来的东西
+node tools/audit_no_gamess.js --selftest # 只验判据本身有没有分辨力，不安装
 ```
 
 它扫的是**装出来的东西**而不是源码树（否则 `build/lib` 里的陈旧副本会漏检，见上面第 1 条），
-命中项一律人眼看、不许只报计数。当前结果：唯一命中是 `nlcsplit/__init__.py` 里
-那句免责声明本身，GPL/AGPL 类冲突信号 0 条。
+命中项一律具名记账：唯一合法的 GAMESS 出现是包 docstring 与 `dist-info/METADATA`
+里那句免责声明，规则外的命中直接非零退出。最近一次实测：扫 17 个文件、
+具名豁免 2 条、GAMESS 相关 0 条、GPL/AGPL 类冲突信号 0 条（`--selftest` 5/5，
+其中一条专门验"同一个文件里的非免责句不放行"）。
+`tools/audit_no_gamess.js` 自己随包发布，所以这三条命令对读者也是可跑的。
 新增任何从别处移植的数值代码前，先确认其许可，再重跑这条。

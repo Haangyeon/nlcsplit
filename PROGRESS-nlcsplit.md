@@ -2619,3 +2619,51 @@ MANIFEST 重算并 `sha256sum -c` 全 OK）。文件名标 `levels0-8`，但**�
 `pytest -m "not slow"` 43 passed。当前 wheel（sha `b5c5a26a…`）的树外全量重跑在后台，
 落地后 `evidence/release_qa/` 补一条日志并换哈希——上一轮记的是 `4e9efb8e…`，
 那是加 step_l 之前的构建，两条都要在 README 里分清，不能让读者以为 42/1 是新品跑出来的。
+
+---
+
+## 2026-09-30 收尾：闸门代码进包之后炸出来的四件事
+
+用户催的是"代码到底开发完了没"。把 `tools/` 放进发布包之后，实测炸出四件事，全部已修并归档。
+
+1. **闸门抓的东西被闸门自己发布出去了。** 第一份含代码的构建里 `gateB_exempt_ledger`
+   打了 54 条，逐条读：全是判据自己的串——内网 IP、集群 SSH 端口、账号名、工作目录。
+   修法不是豁免，是**拆分**：点名本机的 10 条判据 + 反证毒样本 + 脱敏表 + SPAN_SHAPE 分支
+   一起搬进 `tools/intranet_patterns.private.js`（不随包发，在 `excluded_by_design` 里具名）。
+   公开副本的闸门 B 只剩 4 条形状类判据，且**每次运行都在 stderr 说这件事**；
+   母仓那次运行若加载不到专有判据（认 `PROGRESS-nlcsplit.md` 这个只在本树存在的标记）
+   直接不出货。自测里 8 条覆盖名全绿，毒样本命中 11 条、发布树 0 条。
+
+2. **发布物跑不动发布脚本。** 拿发布树整份复制到新目录跑它自己带的 `make_public_repo.js`：
+   先 ENOENT（`RELOCATED` 的两个改名源在发布树里已经叫 `docs/…`），再发现 get_s22.sh 的
+   代理脱敏**不幂等**——重跑把替换注释叠了两遍。两处都修，selftest 新增 `scrubFixedPoint`
+   跑两遍验不动点。现在连跑两次 exit 0，两次产出只差导出时间戳（`diff -rq` 空）。
+   这一份"少掉了哪些检查"逐条打进 stderr，见 `evidence/release_qa/published_tree_rerun_20260930.txt`。
+
+3. **`pip install .` ≠ 装发布物，而我们一直这么写。** 随包发的许可证扫描器第一次真装真扫，
+   走出 45 个文件（wheel 只有 36 个成员），里面赫然有 `nlcsplit/fastpair_ide.py`——
+   同行那份刻意不发布的冻结对照，连同它的测试与三个内部测量脚本。setuptools 收整个包目录，
+   根本不看导出的 PKG/TESTS/EXAMPLES 白名单；闸门 F 只看 wheel 成员，也看不见。
+   新增**闸门 V**：包目录内每个模块要么在白名单里，要么在 `INTERNAL_ONLY_MODULES` 里
+   具名并给理由，否则不出货；自测用幽灵模块验它会响、用已具名项验它不响、用真树验它不响。
+   实测：源码树装出 37 个 .py、wheel 31 个，差集正是具名的 6 个。
+   软件文 §5 原来那句"从源码目录干净安装 62 passed"因此不是笔误而是**另一个对象**，
+   已在正文里把两个对象分开写清。
+
+4. **随包扫描器自己也得有边界。** `audit_no_gamess.js` 改成：`--no-install` 直接拒绝
+   （读已存在的目录正是 `build/lib` 陈旧副本骗过一次的原因），判据提到安装之前，
+   `--selftest` 5→7 条，其中一条专门验"同一个文件里的非免责句不放行"。
+   真装一遍还炸出 pip 自记的 provenance 文件（内容就是调用者的磁盘路径）：
+   加了第二条具名规则，且带一个 `after` 谓词——先把 URL 值挖掉再看那一行还剩什么，
+   免得"url 里恰好有 GAMESS"连带放过同一行里的真内容。改完 rc 从 1 变 0。
+
+自我纠正一条：我先在证据文件里把 gate A 的豁免账**连同模式文本**一起抄了进去，
+外加把覆盖率里的端口号当规则名抄进去，导出闸门立刻报了 4 条命中。
+一份讲脱敏的证据自己带着未脱敏的串，是这个仓库反复犯的那类错——
+现在证据文件里只留 file:line 与模式编号，端口写成 `<port>`。
+
+复核：导出 exit 0、12 条闸门全 0 命中、files 118 / treeFiles 120；
+`NLCSPLIT_SELFTEST=1` 全绿；`md2tex` 21 标签 0 失败；`pdflatex` 17 页 0 错误；
+两条引用闸门（p2.md / software.md）PASS；`pytest -m "not slow"` 43 passed；
+当前 wheel 的树外全量重跑 42 passed / 1 skipped（406.75 s），日志与哈希在
+`evidence/release_qa/`。仍未推送：本仓没有 remote，"GitHub 不可用期间不推送"照旧。

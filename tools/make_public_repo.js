@@ -13,11 +13,15 @@
  *   C 证据哈希与发布副本一致     D 正文引用的每个出处都真的随包发布
  *   E 用到的依赖都得声明        F wheel/sdist 成员清单不夹带脚本式 test_*.py
  *   G LICENSE 无 Apache 模板占位符且版权行已填
+ *   R 发布树无构建/测试残留      T 发布树每个文件都在导出清单里
+ *   U 包内 import 的兄弟模块都得在树里
+ *   V pip install . 会装的包目录模块，要么随 wheel 发、要么在这里具名给不发布的理由
  *
  * 2026-09-29 审计后的三处加固（都是被实测打脸加的）：
- *   1. 闸门 B 原来只抓"密钥的形状"，不抓工作机绝对路径。`/root/gamess_work`、
- *      `/mnt/e/Project/GAMESS`、`E:/Project/GAMESS`、集群端口、`haangyeon`、`snnu`
- *      全都不在表里，于是闸门报"数组为空"而 dist 里 13 个文件照旧带串。现在补齐。
+ *   1. 闸门 B 原来只抓"密钥的形状"，不抓工作机绝对路径。远端工作目录、WSL 挂载路径、
+ *      Windows 盘符路径、集群端口、账号名、单位缩写全都不在表里，于是闸门报"数组为空"
+ *      而 dist 里 13 个文件照旧带串。现在补齐——具体那十条写进
+ *      tools/intranet_patterns.private.js（这些串本身是机构标识，不随包发布，理由见那个文件）。
  *   2. 闸门原来只扫 `copied` 这份**名单**，不扫**磁盘上的目录树**。名单外的东西
  *      （pytest 在发布树里跑出来的 13 个 .pyc、MANIFEST.sha256 自身）从来没被看过一眼。
  *      现在 A/B 走目录树遍历，并且多一条"发布树里不许有 __pycache__/.pyc"的残留检查。
@@ -74,11 +78,21 @@ const ROOT = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'pyproject.toml', 'conf
 // CI 配置也属于"发布物"：只在工作区里有、公开仓里没有，等于闸门 E 之外的那道门禁
 // 对读者不存在。
 const WORKFLOW = { '.github/workflows/ci.yml': '.github/workflows/ci.yml' };
+// 闸门代码本身也是发布物。`CONTRIBUTING.md` 与软件文都写着"跑 node tools/make_public_repo.js
+// 复核这十一条闸门"，可 tools/ 整个不在包里 —— 那对读者就是一句空指令（和"引用指向 gitignore
+// 里的 logs/"是同一类病：写的人能跑，别人不能）。所以把它和许可证扫描器一起放进去。
+const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js'];
+// 放进去就带来一个真问题：这两个文件**本身就是检测模式的定义**，逐行扫必然命中自己。
+// 处理是**具名豁免 + 把豁免量报出来**（见报告里的 note_detector_selfscan），
+// 而不是悄悄 continue —— 一个把豁免藏起来的扫描器，和没有扫描器等价。
+const SELF_DETECT = TOOLS.map(f => 'tools/' + f);
 // 明确**不**带：centos_run*.sh, centos_setup.sh（集群 IP/绝对路径）, PROGRESS-*（两代理的协调
 // 与撤回流水，不是证据）, HANDOFF-*, STEP0-*, paper/, scratch/, figs/。
 // RESEARCH-* 与 MAIN-skeleton.md 改为改名进 docs/，见下面 RELOCATED —— 附录要靠它们落地。
 const EXPLICITLY_EXCLUDED = ['nlcsplit/centos_run.sh', 'nlcsplit/centos_run2.sh', 'nlcsplit/centos_run3.sh',
-  'nlcsplit/centos_run4.sh', 'nlcsplit/centos_run5.sh', 'nlcsplit/centos_setup.sh'];
+  'nlcsplit/centos_run4.sh', 'nlcsplit/centos_run5.sh', 'nlcsplit/centos_setup.sh',
+  // 点名机构标识的那十条判据 + 它们的毒样本。随闸门代码发布就等于随闸门发布这些串。
+  'tools/intranet_patterns.private.js'];
 
 // 证据目录。recompute/ 与 orca_control/ 是 2026-09-29 补的：paper/main.md 的 [S8][S9][S12][S18]
 // 直接按文件名指它们，闸门 D 报"母仓里有、没随包发布"——引用落空。
@@ -92,40 +106,27 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
 //   PATH_TABLE     —— 工作机/仓库绝对路径串。
 //   ENDPOINT_TABLE —— 集群 SSH 端口。它命中的 span 里带数字，所以单独声明、单独列账。
-//   IDENT_TABLE    —— 机构名/集群账号名（审计要求闸门认得 snnu 与 haangyeon）。
+//   IDENT_TABLE    —— 机构名/集群账号名（审计要求闸门认得那家单位与那个账号）。
 //                     它们不是路径，但同样是把"谁、在哪台机器、哪个单位"写在公开产物里。
 //                     母仓原件照旧不动，只在导出副本上换成保留语义的中性标签：
-//                     "cpu3 (SNNU cluster, …)" -> "cpu3 (<CLUSTER> cluster, …)"，机器名 cpu3 留着。
+//                     "cpu3 (<某 cluster>, …)" -> "cpu3 (<CLUSTER> cluster, …)"，机器名 cpu3 留着。
 // 原件（evidence/**、nlcsplit/logs/**）一律不改：这里只改写到 dist/ 的副本。
-const PATH_TABLE = [
-  [/\/root\/gamess_work\/nlcsplit\/s22/gi, '<S22_GEOMETRY_DIR>'],
-  [/\/root\/gamess_work\/nlcsplit\/logs/gi, '<REMOTE_LOG_DIR>'],
-  [/\/root\/gamess_work\/logs/gi, '<REMOTE_LOG_DIR>'],
-  [/\/root\/gamess_work/gi, '<REMOTE_WORKDIR>'],
-  [/\/home\/haangyeon\/agent_l2_work\/nlcsplit\/logs/gi, '<REMOTE_LOG_DIR>'],
-  [/\/home\/haangyeon/gi, '<CLUSTER_HOME>'],
-  [/\/mnt\/[a-z]\/Project\/GAMESS/gi, '<REPO>'],
-  [/[a-z]:[\\/]+Project[\\/]+GAMESS/gi, '<REPO>'],
-  // 本机代理端点。get_s22.sh 早就单独在抹它，但归档 stdout 里也会原样出现
-  // （`$ https_proxy=http://127.0.0.1:7890 python3 -m pip install …`），
-  // 那是工作机的网络拓扑，不是实验结果。
-  [/\b(?:127\.0\.0\.1|localhost):7890\b/gi, '<your-proxy>'],
-];
-const ENDPOINT_TABLE = [
-  // 注意 `\b-P` 匹配不上：`-` 不是词字符，空格到 `-` 之间没有词边界（第一版就在这儿失配，
-  // 于是 `scp -P 24522` 一路活着进了发布树）。
-  [/-P[ \t]+24522\b/g, '-P <SSH_PORT>'],
-  [/-p[ \t]+20019\b/g, '-p <SSH_PORT>'],
-  [/:(24522|20019)\b/g, ':<SSH_PORT>'],
-];
-const IDENT_TABLE = [
-  [/\bSNNU\b/gi, '<CLUSTER>'],
-  [/\bHaangyeon\b/g, '<OPERATOR>'],
-];
+//
+// 2026-09-30 的拆分：上面这些串**本身就是机构标识**。闸门代码现在要随包发布，
+// 把串写在这份文件里 = 把它们发布，所以点名本机/本集群的那几行搬进
+// tools/intranet_patterns.private.js（不随包发）。这里只留"形状"类判据。
+// 加载失败不是错误，但必须打印 —— 见 note_private_rules_loaded。
+const PRIV_PATH = path.join(__dirname, 'intranet_patterns.private.js');
+const PRIV = fs.existsSync(PRIV_PATH) ? require(PRIV_PATH) : null;
+const PATH_TABLE = [].concat(PRIV ? PRIV.PATH : []);
+const ENDPOINT_TABLE = PRIV ? PRIV.ENDPOINT : [];
+const IDENT_TABLE = PRIV ? PRIV.IDENT : [];
 const SCRUB_TABLES = [['path', PATH_TABLE], ['endpoint', ENDPOINT_TABLE], ['ident', IDENT_TABLE]];
 // 一个被抹掉的 span 必须长成"内网串的样子"。这条是防我的正则贪吃：
 // 一旦某个 span 里夹了 `=` 或不像路径/端点/标识，就说明它咬到了数据行，立刻失败。
-const SPAN_SHAPE = /^(\/[^\s]*|[a-z]:[\\/]\S*|127\.0\.0\.1:7890|localhost:7890|-[Pp][ \t]+\S+|:\d+|SNNU|Haangyeon)$/i;
+// 形状分支里点名本机的那几条跟着判据一起住在 private 文件里（同上，为了公开副本不带串）。
+const SPAN_SHAPE = new RegExp('^(\\/[^\\s]*|[a-z]:[\\\\/]\\S*'
+  + (PRIV ? '|' + PRIV.SHAPES.join('|') : '') + ')$', 'i');
 // 占位符自己带进来的数字，逐个点名。`<S22_GEOMETRY_DIR>` 里的 "22" 是基准集的名字，
 // 不是某个测量值 —— 这一栏存在的原因就是闸门真的把它报过一次。
 const DECLARED_PLACEHOLDER_DIGITS = { '<S22_GEOMETRY_DIR>': ['22'] };
@@ -241,15 +242,30 @@ for (const f of STEPS) put('nlcsplit/' + f, read(path.join(SRC, 'nlcsplit', f)))
 for (const f of TESTS) put('nlcsplit/tests/' + f, read(path.join(SRC, 'nlcsplit/tests', f)));
 for (const f of EXAMPLES) put('nlcsplit/examples/' + f, read(path.join(SRC, 'nlcsplit/examples', f)));
 put('nlcsplit/run_all.sh', read(path.join(SRC, 'nlcsplit', 'run_all.sh')));
+// 闸门代码进包：见 TOOLS 上方注释。缺了它，"读者可自行复核这十一条闸门"是空指令。
+// **逐字节原样写，不走 scrubText**：这份文件里就带着判据的字面量定义，一被脱敏就等于
+// 把读者要跑的那把尺子的刻度磨掉，而且替换串落在正则字面量里会直接语法崩。
+// 代价是它必然命中自己的判据 —— 那部分以 hits.exempt / exempt_ledger 具名记账并打印，
+// 不是静默放过；点名机构的串则根本不在这份文件里（见 intranet_patterns.private.js）。
+for (const f of TOOLS) copied.push(write('tools/' + f, read(path.join(SRC, 'tools', f))));
 
-// 几何获取脚本：把写死的本机代理改成"仅在环境里已有则沿用"，否则公开后别人照抄会连不上
+// 几何获取脚本：把写死的本机代理改成"仅在环境里已有则沿用"，否则公开后别人照抄会连不上。
+// 提成函数是为了让 selftest 能把它**跑两遍**验证不动点——2026-09-29 的读者模拟
+// 发现重跑会把注释尾巴叠成两份，这类"对已发布副本再脱敏"的错只有跑两遍才看得见。
+const PROXY_NEUTRAL = /export HTTPS_PROXY="\$\{HTTPS_PROXY:-\}"/;
+function scrubGetScript(text) {
+  let out = text.replace(/\b(?:127\.0\.0\.1|localhost):\d{2,5}\b/g, '<your-proxy>');
+  if (!PROXY_NEUTRAL.test(out)) {
+    out = out.replace(/^\s*(# )?export HTTPS_PROXY=\S+/m,
+      'export HTTPS_PROXY="${HTTPS_PROXY:-}"   # 需要时自行 export，不需要则空值即直连');
+  }
+  return out;
+}
 let get = read(path.join(SRC, 'nlcsplit/tools/get_s22.sh'));
 const before = get;
-get = get.replace(/\b127\.0\.0\.1:7890\b/g, '<your-proxy>');
-get = get.replace(/^\s*(# )?export HTTPS_PROXY=\S+/m,
-  'export HTTPS_PROXY="${HTTPS_PROXY:-}"   # 需要时自行 export，不需要则空值即直连');
+get = scrubGetScript(get);
 if (/7890|127\.0\.0\.1/.test(get)) console.error('BUG: 抹敏之后仍残留本机代理串');
-if (get === before) console.error('WARN: get_s22.sh 的代理行没被改掉（格式变了？）');
+if (get === before && !PROXY_NEUTRAL.test(before)) console.error('WARN: get_s22.sh 的代理行没被改掉（格式变了？）');
 put('nlcsplit/tools/get_s22.sh', get);
 
 // ---------------------------------------------------------------- 侧车：抹外部标识 + 重指路径
@@ -274,7 +290,7 @@ put('nlcsplit/logs/orca_anchor.json', JSON.stringify(anchor, null, 1) + '\n');
 
 // 这里原来是 side.replace(/"geometry_source":s*"[^"]*"/, ...)：`:s*` 少了一个反斜杠，
 // 要匹配的是"冒号后跟若干 s"而不是"若干空白"，而实际字节是 `": "`，所以这条替换
-// **从来没有命中过**，/mnt/e/Project/GAMESS 就这样一路进了发布树。现在几何出处统一交给
+// **从来没有命中过**，那条工作机挂载路径就这样一路进了发布树。现在几何出处统一交给
 // PATH_TABLE，并且下面用断言保证"确实改掉了"，不再依赖正则悄悄失配。
 let side = read(path.join(SRC, 'nlcsplit/logs/step_h.json'));
 side = side.replace(/"geometry_source"\s*:\s*"[^"]*"/,
@@ -360,7 +376,19 @@ const RELOCATED = {
   'RESEARCH-20260929-lit.md': 'docs/literature_search_20260929.md',
   'MAIN-skeleton.md': 'docs/tables_and_provenance.md',
 };
-for (const [src, dst] of Object.entries(RELOCATED)) put(dst, read(path.join(SRC, src)));
+// 这两份在发布时是**改名**进 docs/ 的。于是"拿发布树再跑一遍本脚本"会在 read() 上直接崩：
+// 发布树的根目录没有 RESEARCH-*.*，它已经叫 docs/….md 了。2026-09-30 的读者模拟实测到这个。
+// 所以认两种形态：母仓形态读原名，发布树形态读已改名的目标（内容同一份，不动它）。
+const relocatedPassthrough = [];
+for (const [src, dst] of Object.entries(RELOCATED)) {
+  if (fs.existsSync(path.join(SRC, src))) { put(dst, read(path.join(SRC, src))); continue; }
+  if (fs.existsSync(path.join(SRC, dst))) {
+    put(dst, read(path.join(SRC, dst)));
+    relocatedPassthrough.push(`${src} -> ${dst}（本树已是发布形态，原样带走）`);
+    continue;
+  }
+  console.error(`MISSING ${src}（也没有改名后的 ${dst}）`); process.exit(2);
+}
 for (const [src, dst] of Object.entries(WORKFLOW)) put(dst, read(path.join(SRC, src)));
 
 // 母仓 nlcsplit/logs/ 里被论文正文按文件名引用过的 stdout 也必须随行。
@@ -445,62 +473,92 @@ const gr = checkResidue(tree);
 // 所以这里只抓真正的 GAMESS 源码工件；"gamess"这个词的出现另列为 info，人工过一眼即可。
 const gamessPats = [/\$gnum/i, /\bintgc\b/, /\bdiana\b/, /rhfuhf/, /\bgameSS\.src\b/i,
   /ps\/src\//, /GAMESS\.src/, /getscr|erscf[0-9]/];
+// 逐行判一条GAMESS 判据命中，并决定它是"检测器自己的判据定义"还是"真工件"。
+// 豁免条件写死成两件事同时成立：文件在 SELF_DETECT 名单里，**且这一行确实带着该判据的字面量**
+// （行文本里含 re.source）。只按文件名豁免 = 给这两个文件开空白支票。
+function classifyGamess(rel, line) {
+  for (const [j, re] of gamessPats.entries()) {
+    if (!re.test(line)) continue;
+    return { pat: j, re, exempt: SELF_DETECT.includes(rel) && line.includes(re.source) };
+  }
+  return null;
+}
 function checkGamessSource(root, treeList) {
-  const hits = [], words = [];
+  const hits = [], words = [], exempt = [];
   for (const rel of treeList) {
     if (!/\.(py|sh|json|md|toml|txt|out|c|f|f90|js|yml|yaml)$/.test(rel)) continue;
     let t; try { t = read(path.join(root, rel)); } catch (e) { continue; }
-    for (const [i, re] of gamessPats.entries()) {
-      if (re.test(t)) hits.push(`${rel}:${t.slice(0, t.search(re)).split('\n').length}  <- GAMESS 源码工件 模式#${i} ${re}`);
-    }
-    if (/gamess/i.test(t)) {
-      for (const [ln, line] of t.split(/\r?\n/).entries()) {
-        if (/gamess/i.test(line)) words.push(`${rel}:${ln + 1}  ${line.trim().slice(0, 120)}`);
+    // 逐行而非整文件：闸门 B 的教训——只报"这个文件命中过"就没法做具名豁免，
+    // 因为豁免必须落在**具体那一行**上。
+    t.split(/\r?\n/).forEach((line, i) => {
+      const v = classifyGamess(rel, line);
+      if (v) {
+        const tag = v.exempt ? '<- 具名豁免「检测器自身的判据定义」' : '<- GAMESS 源码工件';
+        (v.exempt ? exempt : hits)
+          .push(`${rel}:${i + 1}  ${tag} 模式#${v.pat} ${v.re} | ${line.trim().slice(0, 110)}`);
       }
-    }
+      if (/gamess/i.test(line)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);
+    });
   }
-  return { hits, words };
+  return { hits, words, exempt };
 }
 const gA = checkGamessSource(OUT, tree);
 const ga = gA.hits, wordOnly = gA.words;
 
 // ---------------------------------------------------------------- 闸门 B：无密钥/内网/工作机路径
-// 2026-09-29 加固：旧表只有 10.8.51.23 / :7890 / PRIVATE KEY / password= / ssh@ / /home/haangyeon。
+// 2026-09-29 加固：旧表只有"密钥的形状"，不抓工作机绝对路径 / 账号 / 校内标识 / 集群端口。
 // 审计实测 dist 里 13 个文件带串而闸门报"三个数组全空"，两个原因叠在一起：
-//   (a) `/root/gamess_work`、`/mnt/e/Project/GAMESS`、`E:/Project/GAMESS`（正/反斜杠、大小写）、
-//       集群端口、`haangyeon`、`snnu` 全都不在表里；
+//   (a) 判据表不全；
 //   (b) 旧闸门遍历的是 `copied` 这份名单，不是目录树，名单外文件从未被打开过。
 // 现在：默认失败、列出 file:line、扫的是 walkTree 出来的**全部**磁盘文件。
+// 这里只留**不含机构标识的形状类**判据；点名本机/本集群的那十条住在
+// tools/intranet_patterns.private.js（不随包发布），加载状态见 note_private_rules_loaded。
 const secretPats = [
-  ['集群内网 IP', /10\.8\.51\.23/],
-  ['本机代理端口/回环端点', /:7890\b/],
   ['私钥块', /BEGIN [A-Z ]*PRIVATE KEY/],
   ['口令赋值', /(?:password|passwd|token|api[_-]?key)\s*[:=]\s*["']?\S{4,}/i],
   ['ssh 目标', /\bssh\b[^#\n]*@/],
   ['user@裸IP', /\b\w+@\d{1,3}(\.\d{1,3}){3}/],
-  ['远端家目录', /\/home\/haangyeon/i],
-  ['账号串', /\bhaangyeon\b/i],
-  ['校内标识串', /\bsnnu\b/i],
-  ['工作机绝对路径(远端)', /\/root\/gamess_work/i],
-  ['工作机绝对路径(WSL挂载)', /\/mnt\/[a-z]\/Project\/GAMESS/i],
-  ['工作机绝对路径(Win盘符,正/反斜杠)', /[a-z]:[\\/]+Project[\\/]+GAMESS/i],
-  ['集群SSH端口 24522', /(?<![\d.])24522(?![\d.])/],
-  ['集群SSH端口 20019', /(?<![\d.])20019(?![\d.])/],
-];
+].concat(PRIV ? PRIV.SECRET_PATS : []);
 function scanIntranet(root, treeList) {
   const hits = [];
+  // hits.exempt：具名豁免的账。检测器自身的正则定义必然命中自己的模式串，
+  // 这不是泄漏，但**必须记账并打印**——一个把豁免藏起来的扫描器和没有扫描器等价。
+  hits.exempt = [];
   for (const rel of treeList) {
     if (!/\.(py|sh|json|md|toml|txt|out|c|f|f90|js|yml|yaml|cfg|ini)$/.test(rel)) continue;
     let t; try { t = read(path.join(root, rel)); } catch (e) { continue; }
     t.split(/\r?\n/).forEach((line, i) => {
       for (const [name, re] of secretPats) {
-        if (re.test(line)) hits.push(`${rel}:${i + 1}  <- ${name} ${re}  | ${line.trim().slice(0, 140)}`);
+        if (!re.test(line)) continue;
+        const s = `${rel}:${i + 1}  <- ${name} ${re}  | ${line.trim().slice(0, 140)}`;
+        if (SELF_DETECT.includes(rel)) hits.exempt.push(s); else hits.push(s);
       }
     });
   }
   return hits;
 }
 const gb = scanIntranet(OUT, tree);
+// 豁免账的自证（老规矩：闸门必须证明自己不是恒真的）。
+// 需要 gb.exempt>0 才能说明"这两个文件确实进了扫描、确实命中了、确实按名字放过的"。
+// 若哪天 walkTree 或扩展名过滤把它们漏在外面，hits 和 exempt 会同时为 0 —— 那是空转，不是干净。
+const selfScan = {
+  in_tree: SELF_DETECT.filter(f => tree.includes(f)),
+  intranet_exempt: gb.exempt.length,
+  gamess_exempt: gA.exempt.length,
+  files_with_exempt: [...new Set(gb.exempt.concat(gA.exempt).map(s => s.split(':')[0]))],
+};
+const selfScanOk = selfScan.in_tree.length === SELF_DETECT.length
+  && selfScan.gamess_exempt > 0;
+// 专有判据的加载状态：母仓这次运行必须加载到，否则"十一条闸门"名不副实（闸门 B 只剩形状类）。
+// 缺文件不是读者的错，所以不 block，但必须打印 —— 见下面 console.error 与报告字段。
+const privateLoaded = PRIV ? PRIV.SECRET_PATS.length : 0;
+// 在母仓里跑（认 PROGRESS-nlcsplit.md：它按设计不进发布树）却没加载到专有判据 = 闸门 B
+// 被悄悄削掉一半，这种运行不许出货。读者在发布树里跑则只打印警告 —— 两边都不静默。
+const IS_PRIVATE_REPO = fs.existsSync(path.join(SRC, 'PROGRESS-nlcsplit.md'));
+if (!PRIV) {
+  console.error('注意：tools/intranet_patterns.private.js 不在本副本里（它点名机构标识，不随包发布）。'
+    + `闸门 B 此刻只有 ${secretPats.length} 条形状类判据，工作机路径/账号/内网 IP/集群端口这几类**没有被检查**。`);
+}
 
 // ---------------------------------------------------------------- 闸门 C：证据哈希（对发布副本）
 const gc = [];
@@ -553,6 +611,13 @@ gc2.push(...origTouched);
 
 // ---------------------------------------------------------------- 闸门 D：正文引用的每个出处都真的随包发布
 const gateD = (() => {
+  // paper/** 按设计不进公开仓，所以"拿发布树重跑本脚本"时这里没有正文可读。
+  // 这不是读者的错，但也不能让闸门静默变成恒真：显式记一条 skipped 并打印。
+  if (!fs.existsSync(path.join(SRC, 'paper/main.md'))) {
+    console.error('注意：paper/main.md 不在本树（paper/** 按设计不发布）。'
+      + '闸门 D『正文引用的出处都随包发布』这次**没有正文可扫**，不构成对读者的担保。');
+    return { absent: [], pubInternal: [], skipped: 'no manuscript in this tree' };
+  }
   const app = read(path.join(SRC, 'paper/main.md'));
   const rows = [...app.slice(app.indexOf('## Appendix')).matchAll(/^\| (S\d+) \|(.*)$/gm)];
   const internal = /^(PROGRESS|HANDOFF|STEP0)/;
@@ -698,19 +763,11 @@ if (process.env.NLCSPLIT_SELFTEST) {
   fs.mkdirSync(path.join(NEG, 'tree'), { recursive: true });
   const R = {};
   const rels = [];
-  const poison = {
-    'p_rootwork.txt': '几何来源 /root/gamess_work/nlcsplit/s22',
-    'p_mntrepo.txt': 'repo at /mnt/e/Project/GAMESS/nlcsplit',
-    'p_winfs.txt': 'OUT = "E:/Project/GAMESS/scratch/x.json"',
-    'p_winbs.txt': 'cd E:\\Project\\GAMESS && exit 1',
-    'p_winlower.txt': 'path e:\\project\\gamess here',
-    'p_ip.txt': 'ssh 10.8.51.23',
-    'p_port2.txt': 'scp -P 24522 host:/x',
-    'p_port1.txt': 'ssh -p 20019 host',
-    'p_user.txt': '侧车 → /home/haangyeon/logs/step_h.json',
-    'p_inst.txt': 'affiliation: SNNU',
+  // 毒样本本身点名机构标识，所以它跟判据一起住在 private 文件里；缺文件时这一项**显式跳过**，
+  // 报告里写 "skipped_no_private_rules"，而不是给一个看起来通过的 green。
+  const poison = Object.assign({}, PRIV ? PRIV.POISON : {}, {
     'clean_ok.txt': 'nothing to see, level=2, E_NLC=+125.7984',
-  };
+  });
   for (const [n, c] of Object.entries(poison)) { fs.writeFileSync(path.join(NEG, 'tree', n), c + '\n'); rels.push(n); }
   fs.mkdirSync(path.join(NEG, 'tree', '__pycache__'), { recursive: true });
   fs.writeFileSync(path.join(NEG, 'tree', '__pycache__', 'x.cpython-310.pyc'), 'junk');
@@ -719,9 +776,22 @@ if (process.env.NLCSPLIT_SELFTEST) {
   const bHits = scanIntranet(path.join(NEG, 'tree'), rels);
   const names = new Set(bHits.map(h => h.split('  <- ')[1].split(' /')[0]));
   R.intranet = { fired: bHits.length, cleanTreeHits: scanIntranet(OUT, tree).length,
-    covered: Object.fromEntries(['工作机绝对路径(远端)', '工作机绝对路径(WSL挂载)', '工作机绝对路径(Win盘符,正/反斜杠)',
-      '集群内网 IP', '集群SSH端口 24522', '集群SSH端口 20019', '账号串', '校内标识串']
-      .map(n => [n, names.has(n)])) };
+    covered: PRIV
+      ? Object.fromEntries(PRIV.COVERED_NAMES.map(n => [n, names.has(n)]))
+      : 'skipped_no_private_rules' };
+
+  // 具名豁免通道自己也要有分辨力（它不依赖 private 文件，读者那份副本同样该测）：
+  // 同一段文本，落在检测器文件的**判据定义行**上=豁免，落在别的文件里=违规，干净行=什么都不做。
+  const probe = 'selftest_probe.txt';
+  fs.writeFileSync(path.join(NEG, 'tree', probe), 'nothing\n');
+  R.exempt_channel = (() => {
+    const line = String(gamessPats[0]);                    // 真实的一条判据定义
+    const inDetector = classifyGamess('tools/make_public_repo.js', line);
+    const elsewhere = classifyGamess('nlcsplit/nlc.py', line);
+    const innocent = classifyGamess('tools/make_public_repo.js', 'x = 1');
+    return { detector_definition_exempt: inDetector, elsewhere_is_violation: elsewhere,
+      innocent_clean: innocent, ok: !!inDetector && !!elsewhere && !innocent };
+  })();
 
   // 真 zip：把脚本式测试模块塞进一个真的 wheel 里，让 checkArtifacts 用真的读档路径去判。
   cp.execFileSync(PY, ['-c',
@@ -743,18 +813,32 @@ if (process.env.NLCSPLIT_SELFTEST) {
     .filter(x => !/期望正好/.test(x));
   R.artifacts = { fired: poisons, clean: cleans };
 
-  // 真 LICENSE 字节：母仓那份（模板没填）必须响，发布副本那份（填过）必须不响。
+  // 真 LICENSE 字节：发布副本那份（填过）必须不响；母仓那份**不再**能当反证——
+  // 2026-09-29 署名已经落进源文件，两边都干净。所以反证改成现造一份未填模板喂进去，
+  // 否则这条 selftest 悄悄退化成了"两个 0 相等"。
   R.license = {
-    firedFromSourceRepo: licenseViolations({ 'LICENSE(母仓模板)': read(path.join(SRC, 'LICENSE')) }, 'Angran Xia'),
     cleanPublished: licenseViolations({ 'LICENSE(发布副本)': read(path.join(OUT, 'LICENSE')) }, 'Angran Xia'),
+    firedOnUnfilledTemplate: licenseViolations({
+      'LICENSE(现造的未填模板)': read(path.join(OUT, 'LICENSE'))
+        .replace(/Copyright \d{4}/, 'Copyright [yyyy]')
+        .replace(/(Angran Xia)/, '[name of copyright owner]'),
+    }, 'Angran Xia'),
   };
   // 脱敏表本身：喂一条带数字的测量行，证明"只动路径行"这条断言拦得住越界改写。
-  const sample = 'L1 == 几何来源 /root/gamess_work/nlcsplit/s22 ==\nL2 E_NLC= +125.7984 N=132176\n';
+  const sample = PRIV ? PRIV.SAMPLE : 'L1 == plain == \nL2 E_NLC= +125.7984 N=132176\n';
   const sres = scrubText(sample, 'SELFTEST');
   R.scrub = {
     changedLine: sres.split('\n')[0], untouchedLineIdentical: sres.split('\n')[1] === 'L2 E_NLC= +125.7984 N=132176',
     logged: scrubLog.filter(e => e.rel === 'SELFTEST').map(e => e.FATAL || `${e.proof} lines=${e.lines.join(',')}`),
   };
+  // 不动点：对"已经脱敏过的输出"再脱敏一次，必须一个字节都不变。
+  // 读者拿发布树重跑本脚本是合法操作，而这类二次应用的错只有跑两遍才看得见
+  // （实测过一次：get_s22.sh 的替换注释被叠了两份）。
+  const getSrc = read(path.join(SRC, 'nlcsplit/tools/get_s22.sh'));
+  const g1 = scrubGetScript(getSrc), g2 = scrubGetScript(g1);
+  const sideIn = 'path /home/abc/logs/x.json plus nlcsplit/ref/orca/out/h2o.out';
+  R.scrubFixedPoint = { get_secondRunIdentical: g1 === g2,
+    sidecar_secondRunIdentical: scrub(scrub(sideIn)) === scrub(sideIn) };
   console.log(JSON.stringify({ selftest: R, ledgerNote: 'dist/.selftest/ 是一次性验证目录' }, null, 1));
   cp.execSync(`rm -rf "${NEG}"`);
   process.exit(0);
@@ -837,6 +921,52 @@ function importClosure(treeFiles, readFn) {
   return [...new Set(out)];
 }
 const gateU = importClosure(tree, rel => read(path.join(OUT, rel)));
+
+// ---------------------------------------------------------------- 闸门 V：源码树里"装了但不该发"的模块
+// 2026-09-30 由发布卫生扫描实测出来：`pip install .`（软件文 §5 与 QA 日志都这么写）走的是
+// setuptools 对整个包目录的收录，**不看**这里的 PKG/TESTS/EXAMPLES 白名单。于是在母仓里
+// `pip install --target` 装出 45 个文件，其中 `nlcsplit/fastpair_ide.py`（同行那份独立实现）、
+// 它的测试与四份内部分析脚本都进了 site-packages —— 而 wheel 里没有它们。
+// "装源码 = 装发布物"这个前提一直是假的。闸门 F 只看 wheel 成员，看不见这条。
+// 现在：包目录里白名单之外的每个 .py 都必须在这里**具名**并给理由，否则不出货。
+// 理由不是形式：这些文件的存在本身就是要向读者解释的事实。
+const INTERNAL_ONLY_MODULES = {
+  'nlcsplit/fastpair_ide.py': '同行(ide-qoder)的独立实现，冻结对照，故意不发布',
+  'nlcsplit/tests/test_fastpair_ide.py': '上面那份实现的测试，随它一起不发布',
+  'nlcsplit/examples/check_screen_bound_ide.py': '它的验算脚本（import fastpair_ide）',
+  'nlcsplit/examples/coretail_bound.py': '核/尾界判死测量，产出归档在 evidence/coretail/',
+  'nlcsplit/examples/hybrid_nearfield.py': '近场占比测量，产出归档在 evidence/bound_forms/',
+  'nlcsplit/examples/probe_bound_forms.py': '球界/盒界单调性探针，产出归档在 evidence/bound_forms/',
+};
+const WL_SET = new Set([].concat(PKG, STEPS).map(f => 'nlcsplit/' + f)
+  .concat(TESTS.map(f => 'nlcsplit/tests/' + f))
+  .concat(EXAMPLES.map(f => 'nlcsplit/examples/' + f)));
+// 判据拆成两个纯函数，是为了能拿合成输入自证非恒真（这个仓库的老规矩：闸门要响给自己看）。
+const strayModules = found => found.filter(rel => !WL_SET.has(rel) && !INTERNAL_ONLY_MODULES[rel]);
+const missingWhitelist = found => [...WL_SET].filter(rel => !found.includes(rel));
+function listPackagedPy(root) {
+  const out = [];
+  for (const dir of ['nlcsplit', 'nlcsplit/tests', 'nlcsplit/examples']) {
+    const d = path.join(root, dir);
+    if (!fs.existsSync(d)) continue;
+    for (const e of fs.readdirSync(d, { withFileTypes: true }))
+      if (e.isFile() && e.name.endsWith('.py')) out.push(dir + '/' + e.name);
+  }
+  return out;
+}
+const foundSrc = listPackagedPy(SRC);
+const gateV = missingWhitelist(foundSrc).map(rel => `白名单里的 ${rel} 在源码树里不存在`)
+  .concat(strayModules(foundSrc).map(rel =>
+    `${rel}：pip install . 会把它装进 site-packages，wheel 里没有它，`
+    + '而且它没在 INTERNAL_ONLY_MODULES 里具名给不发布的理由'));
+// 自证非恒真：幽灵模块必须响；已具名的那条不许响；干净输入必须一个都不报。
+const gateVSelftest = (() => {
+  const ghost = strayModules(['nlcsplit/nlc.py', 'nlcsplit/ghost_module.py']);
+  const named = strayModules(['nlcsplit/fastpair_ide.py']);
+  const clean = missingWhitelist(foundSrc).length + strayModules(foundSrc).length;
+  return { fired: ghost.length === 1 && /ghost_module/.test(ghost[0]),
+    silent_on_named: named.length === 0, clean_input_silent: clean === 0, reported: ghost };
+})();
 // 自证非恒真：喂一份假树与一条假引用，必须**只**报那一条；
 // 同时假树里合法的那条（nlc）不许被报——否则这闸门可能只是在乱响。
 const gateUSelftest = (() => {
@@ -853,6 +983,10 @@ const report = {
   ledger: LEDGER_OUTSIDE.replace(/\\/g, '/'),
   gateA_gamess_source_artifacts: ga,
   gateB_intranet: gb,
+  gateB_exempt_ledger: gb.exempt,
+  gateA_exempt_ledger: gA.exempt,
+  note_detector_selfscan: selfScan,
+  note_private_rules_loaded: privateLoaded,
   gateC_evidence_hashes_vs_published: gc,
   gateC2_scrub_digit_invariance: gc2,
   gateD_cited_but_unshipped: gateD.absent,
@@ -863,19 +997,29 @@ const report = {
   gateT_not_in_export_manifest: notInManifest,
   gateU_import_closure: gateU,
   gateU_selftest: gateUSelftest,
+  gateV_install_vs_release: gateV,
+  gateV_selftest: gateVSelftest,
+  note_internal_only_modules: INTERNAL_ONLY_MODULES,
   note_word_only_gamess: wordOnly,
   note_internal_only_citations: gateD.pubInternal,
+  note_gateD_skipped: gateD.skipped || null,
   note_evidence_dirs_without_source_manifest: missingSourceManifest,
   scrubbed_files: scrubLog.filter(e => !e.FATAL).map(e => e.rel),
   excluded_by_design: EXPLICITLY_EXCLUDED.concat(['PROGRESS-*.md', 'HANDOFF-*.md',
     'STEP0-*.md', 'paper/**', 'scratch/**', 'figs/**']),
   relocated_into_docs: RELOCATED,
+  note_relocated_passthrough: relocatedPassthrough,
 };
 
 const bad = ga.length + gb.length + gc.length + gc2.length + gateD.absent.length + gateE.length
-  + gateF.length + gateG.length + gr.length + notInManifest.length + gateU.length
+  + gateF.length + gateG.length + gr.length + notInManifest.length + gateU.length + gateV.length
   // 闸门 U 的自检没响 = 这条判据此刻是恒真的，等于没有 —— 不许出货。
-  + (gateUSelftest.fired && gateUSelftest.silent_on_valid ? 0 : 1);
+  + (gateUSelftest.fired && gateUSelftest.silent_on_valid ? 0 : 1)
+  + (gateVSelftest.fired && gateVSelftest.silent_on_named && gateVSelftest.clean_input_silent ? 0 : 1)
+  // 同理：具名豁免如果一笔都没记上，说明检测器根本没扫到自己 —— 那"豁免规则"是装饰。
+  + (selfScanOk ? 0 : 1)
+  // 在母仓跑却没加载到专有判据 = 闸门 B 被削掉一半还宣称跑了十一条。
+  + (IS_PRIVATE_REPO && !PRIV ? 1 : 0);
 if (bad) {
   // 闸门没过：把还没搬进 dist/ 的新产物直接丢掉，旧产物原地不动。"不出货"必须是可验证的，
   // 不是口号 —— 之前那次"重打 wheel 已验证"就是因为先覆盖后检查，检查失败也回不去。

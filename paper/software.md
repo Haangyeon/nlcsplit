@@ -220,17 +220,20 @@ runs must not be quoted as one: `pip install .` from the source directory in a c
 environment passes 62 with one skipped (the S22 geometry fetch, by design), because that
 install pulls in the whole tree including the control module, whereas `pytest --pyargs
 nlcsplit` against the built wheel, run from a directory that is not the source tree,
-exercises only the 43 published tests - 42 passed and one skipped in 581 s, or 24 passed and
-one skipped under `-m "not slow"`. Both are recorded with the wheel's SHA-256, together with
-the shell-quoting bug that left the hash field blank in one of the two logs, in
-`evidence/release_qa/` [S19]. Tables map to one `step_*.py` each;
+exercises only the 43 published tests - 42 passed and one skipped, or 24 passed and
+one skipped under `-m "not slow"`. The full out-of-tree run is on record twice, at 581 s and
+at 407 s, because the wheel is rebuilt by every export and its SHA-256 therefore changes even
+when no packaged byte does; both logs, both hashes and the shell-quoting bug that left the
+hash field blank in one of the two are in `evidence/release_qa/` [S19]. Tables map to one
+`step_*.py` each;
 the archived stdout a claim cites lives under `evidence/**` with a UTC-stamped filename and
 a hash manifest, while working logs under `nlcsplit/logs/` are gitignored scratch and are
 not cited as evidence. Including a naive triple-loop versus BLAS
 comparison of the kernel, per-scheme additivity checks, and geometry guards that
 assert bond lengths and angles at construction time.
 
-Eleven export gates run locally on every rebuild (`node tools/make_public_repo.js`). They are
+Twelve export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
+ships in the published tree). They are
 not all of equal standing, and the difference matters: some exist because they caught a real
 defect, others only because we could not otherwise show the earlier ones were not vacuous.
 The last column says which, and "planted" means the gate has never fired on real input - it
@@ -249,6 +252,7 @@ fires on a fault we put in deliberately to prove it would.
 | G | `LICENSE` in the **source** file carries the real copyright line, not the Apache placeholder | real defect: the legal statement existed only in the generated copy; fires today on a restored placeholder |
 | T | nothing in the export tree is missing from the export manifest | added as a belt-and-braces check; no firing on real input is recorded in this repository, only on the faults we planted |
 | U | every module a shipped file imports from `nlcsplit` (absolute, dotted or package-relative) is itself in the shipped tree; the gate also self-tests against a planted missing sibling, and a build where that self-test does not fire does not ship | real defect: it was written for `fastpair.py`, which gate E could not see because an intra-package import is not a declared dependency |
+| V | every Python module inside a packaged directory is either in the export whitelist or named, with a reason, as an unreleased internal module - this is the set `pip install .` actually puts in `site-packages`, which the whitelist does not constrain; self-tests fire on a planted stray and stay silent on the named ones | real defect: found by the shipped licence scanner, which walked 45 installed files from a source-directory install and found the peer implementation among them |
 
 Gate D exists because the first three could only fail in one direction. A, B, C
 catch material that should not be present; what actually went wrong repeatedly was
@@ -258,6 +262,46 @@ clean export and a reader holding a citation to nothing. Gate E has the same bli
 in the other direction and we hit it: it checks that an import is *declared*, so it
 says nothing when a shipped module imports a sibling that was never packaged - the
 `fastpair.py` defect above.
+
+The gate code itself now ships, and that exposed a self-reference. `tools/make_public_repo.js`
+and `tools/audit_no_gamess.js` are published under `tools/` because this section and
+`CONTRIBUTING.md` tell the reader to run them; until 2026-09-30 they were not, so that
+instruction was executable only on the authors' machine - the same class of defect as a
+citation pointing into a gitignored directory. Publishing a scanner, however, publishes
+what it scans for: the exemption ledger printed by the first build that contained the
+scanner listed 54 lines, and every one of them was a detection pattern naming a cluster
+internal address, an SSH port, an account name or a working directory. Those ten rules,
+together with the fault fixtures that exercise them, now live in
+`tools/intranet_patterns.private.js`, which is excluded by design and named in the export
+report. The published copy keeps the shape-based rules (credential assignment, private-key
+block, `ssh … @`, bare-IP user), loads the named rules when they are present, and prints
+`note_private_rules_loaded`; a run that cannot load them is not reported as clean - it says
+so, and gate B is then checking four rules rather than fourteen. Running the published copy
+against a copy of the published tree turned up two more holes of the same kind: rebuilding
+crashed on the two appendix sources that are renamed on the way out, and the proxy scrub was
+not idempotent, stacking its own replacement comment a second time. Both are fixed, and a
+second run over the same tree reproduces the first byte-for-byte except for the export
+timestamp (`evidence/release_qa/`) [S19]. `tools/audit_no_gamess.js` makes its single legal
+GAMESS hit a named rule in which the file *and* the line must match, so a non-disclaimer
+sentence inside the same file is still a violation, and it refuses to scan a directory that
+was not produced by a real install, since reading a stale copy of the build directory is how
+an earlier version of this check passed.
+
+Installing from the source tree is not the same act as installing the release, and we had
+been describing it as if it were. `pip install .` collects every module inside the package
+directories; the export whitelist does not constrain it. An install from the source directory
+collects 37 packaged modules where the wheel ships 31 (the scanner walked 45 installed files
+in total), and among them it reported
+`nlcsplit/fastpair_ide.py` - the peer implementation this repository keeps as a frozen
+comparison, deliberately not released - sitting in `site-packages`. Gate V now fails a build
+if any Python module inside a packaged directory is neither whitelisted nor named, with a stated
+reason, as an unreleased internal module; the six currently named are that implementation, its
+test and its validation script, plus three measurement scripts whose outputs are archived
+under `evidence/`. The same run also surfaced the provenance record pip writes into its own
+`dist-info` directory, which stores the *caller's* install path - here a working-machine directory
+whose name contains the very word being scanned for. It is a named exemption whose predicate
+strips the URL value before deciding, so anything other than a path inside that file is still
+a violation.
 
 Release hygiene is now executed rather than specified: a clean-environment install of the
 source tree, and an out-of-tree `pytest --pyargs nlcsplit` against the built wheel from a
