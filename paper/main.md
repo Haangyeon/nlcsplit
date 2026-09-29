@@ -259,10 +259,11 @@ fraction of dE_xc can be assigned to VV10 across a benchmark set, and the two
 geometries of the same 24-atom benzene dimer (100% vs 54%) show that the ratio
 is a property of the arrangement, not of the pair of molecules.
 
-For the four smallest systems plus benzene...water and benzene...ammonia we
-additionally re-ran at grid level 2 with a full counterpoise correction. dE_NLC
-and the interfragment pair term below are unchanged to the last reported digit
-between levels 1 and 2 (water dimer: -0.593 and -0.601 kcal/mol at both levels;
+For the four smallest systems and benzene...ammonia we
+additionally re-ran at grid level 2 with a full counterpoise correction - five of
+the eight, since the sixth (benzene...methane) exceeded its four-hour wall-clock
+budget and is incomplete. dE_NLC
+and the interfragment pair term below are unchanged to the last reported digit between levels 1 and 2 (water dimer: -0.593 and -0.601 kcal/mol at both levels;
 benzene...ammonia: -1.327 to -1.328, and -1.393 unchanged), while the
 counterpoise-corrected interaction energy comes out at -6.129 kcal/mol for the
 water dimer, i.e. a basis-set superposition error of 1.69, 1.49, 0.20, 1.07 and
