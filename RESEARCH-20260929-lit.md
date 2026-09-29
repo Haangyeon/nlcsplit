@@ -234,3 +234,48 @@ N1–N7 的 top 命中逐条看过（`scratch/xref_r3.json`），无一涉及
 * `10.1039/c3cp54374a`（ωB97X-V 原文，2014）与 `10.1063/1.4952647`（ωB97M-V，2016）
   经回查确认，可直接进参考文献表；Becke 划分 `10.1063/1.454033`、
   Stratmann `10.1016/0009-2614(96)00600-8` 同样已回查确认。
+
+## 10. JuNoLo 全文核完毕：新颖性存活，但 §1 必须加一条限定（2026-09-29 12:35）
+
+**取到开放全文**：arXiv:0810.2273v1（Lazić, Atodiresei, Alaei, Caciuc, Blügel, Brako，
+2008-10-13），即 CPC 181, 371–379 (2010) 的同文预印本；
+本地 `scratch/jnolo.pdf` → `scratch/jnolo.txt`（16 页、29.7 kB 文本，pypdf 提取）。
+（顺带一条网络坑：`http://export.arxiv.org` 直连与走代理都返回 **0 字节**，
+换 **https** 才通。）
+
+**它做了什么**（原文措辞）：把 vdW-DF 的非局域项**作为后处理**作用在"任何标准 DFT 码
+给出的电荷密度"上，"thus obtaining a new improved value for the **total energy** of the
+system"；并明说 "**Nonlocal calculation is computationally quite expensive and scales as
+N^2** where N is the number of points in which charge density is defined"，
+因此程序的重点是大规模并行。⇒ **显式 N² 双重和求值非局域项，本身不是我的首创。**
+
+**它没做什么**：全文搜 `partition|fragment|decompos|atomic contribut|region|per-atom|assign`
+只有 5 处命中，逐条读上下文（第 84、161–165 行）后确认：那里的 "fragment" 指
+**吸附质/基底这类物理片段**，用来讨论 seamless 理论在"远距纯 vdW"与"强化学键"两端
+的极限行为，**不是能量归属**。而且他们明确把可分片段的情形**推给别的做法**：
+> "In such cases one has more or less well separated parts of the system which enables
+> localization of charge using tools such as Wannier functions … one could consider
+> application of much simpler theories alltogether, such as semiempirical van der Waals
+> implementation. **The JuNoLo code is intended for the most general usage of vdW-DF
+> theory, especially in cases where chemical bonding is taking place so that one can not
+> tell apart fragments of the bonded system.**"
+
+**判定（可写进正文）**：
+1. 主篇的核心主张——"对 VV10 非局域双重和做**片段/原子对归属**"——**未见先例成立**，
+   JuNoLo 不构成重复。
+2. 但 §1 那句"生产程序把配对指标销毁、我们显式求和"**必须加限定**：
+   显式（非插值）N² 求值在文献里已有实现，其目的与本文不同（总能量、并行、表面吸附）。
+   不加这句，审稿人拿 JuNoLo 一问就变成"你不知道这篇"。
+3. 顺带得到的定位收益：JuNoLo 说"可分片段的体系可以改用定域/半经验办法"，
+   而本文恰恰是**在可分片段的分子复合物上做归属**——这反而说明
+   "归属"与"求值加速"是两个方向，可以借它把 §4 的代价讨论写得更准。
+
+**参考文献表新增（已 DOI 回查 + 全文在手）**：
+`10.1016/j.cpc.2009.09.016`（CPC 181, 371–379, 2010）/ arXiv:0810.2273。
+另 `10.1016/bs.arcc.2015.09.002`（Calbo 等 VV10 专题综述，ARCC 11, 37–102, 2015）
+仍是**待读**状态（今天只回查到元数据，没读全文），先引后补。
+
+> 取证方式（故意不入版本库）：`curl -sSL https://arxiv.org/pdf/0810.2273v1` →
+> `scratch/jnolo.pdf` → pypdf 提取 `scratch/jnolo.txt`。**不把他人论文全文提交进本仓库**
+> （版权），所以 `scratch/` 又在 .gitignore 里；上面对第 161–165 行的引文即判定的全部依据，
+> 任何人可用同一 arXiv 链接复核。若将来需要长期留证，只留引文与页码，不留正文。
