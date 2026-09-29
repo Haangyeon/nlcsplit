@@ -268,10 +268,12 @@ the second row is what a coarse grid looks like from the inside.
 Table 1 reports omegaB97X-V/6-31G* results for eight S22 systems at the official
 GMTKN55 geometries. The quantity of interest is dE_NLC, the change in the
 nonlocal correlation energy on bringing two fragments together from infinity at
-fixed density, and its ratio to dE_xc, the corresponding change in the rest of
-the exchange-correlation term.
+fixed density, and its ratio to the total dE_xc for the same process. The
+remainder, dE_xc^rest = dE_xc - dE_NLC, is the semi-local exchange-correlation plus
+the fraction of exact exchange; it is tabulated explicitly in
+`MAIN-skeleton.md` table 4b and is recoverable from these two columns by subtraction.
 
-| System | atoms | dE_int | dE_xc(rest) | dE_NLC | dE_NLC/dE_xc |
+| System | atoms | dE_int | dE_xc (total) | dE_NLC | dE_NLC/dE_xc |
 |---|---|---|---|---|---|
 | benzene dimer (A, parallel-displaced) | 24 | -3.580 | -4.486 | -4.367 | 97% |
 | benzene dimer (B, T-shaped) | 24 | -3.188 | -4.555 | -2.388 | 52% |
@@ -331,10 +333,13 @@ is smaller because Pauli repulsion cancels most of it.
 
 ### 3.4 Attribution-scheme sensitivity is system-dependent
 
-Repeating dE_NLC for the four partition schemes of section 2.3 gives an absolute
-span that grows with system size, from 0.004 kcal/mol (methane dimer and benzene
-dimer A) to 0.247 (benzene...water), and a relative span, expressed against the Becke-scheme
-interfragment term, of 0.8-18.2%:
+Repeating dE_NLC for the four partition schemes of section 2.3 gives absolute spans
+of 0.004-0.247 kcal/mol and relative spans - measured against the Becke-scheme
+interfragment term - of 0.8-18.2%. Neither ordering follows system size: the
+24-atom parallel-displaced benzene dimer has one of the smallest absolute spans
+(0.032, below the 6-atom water dimer at 0.043), while the 15-atom benzene...water
+gives the largest (0.247). What separates them is the arrangement, not the atom
+count or the interaction class:
 
 | System | P_frz (Becke) | span (4 schemes) | relative |
 |---|---|---|---|

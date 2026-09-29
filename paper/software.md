@@ -145,9 +145,9 @@ number for how much of the nonlocal correlation is inter-fragment, which on eigh
 S22 complexes accounts for 0.92-1.08 of the frozen-density superposition
 difference - association-time nonlocal correlation is almost entirely carried by
 point pairs straddling the fragments [S2, S10]. It supplies the per-system
-uncertainty that the attribution choice contributes (0.004-0.310 kcal/mol
+uncertainty that the attribution choice contributes (0.004-0.247 kcal/mol
 absolute, 0.8-18.2% relative, unchanged across five basis sets and across grid
-levels, with no ordering by interaction type), which is the error bar any future
+levels, with no ordering by interaction type or by system size), which is the error bar any future
 use of such numbers must carry [S12]. And it produces evidence about the quantity
 itself: ΔE_NLC ranges from 16% to 223% of ΔE_xc across one benchmark set, and
 100% versus 54% for two geometries of the same benzene dimer, so the VV10 term

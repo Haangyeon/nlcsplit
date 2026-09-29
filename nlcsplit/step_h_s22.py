@@ -12,10 +12,12 @@
   CP       超位置差；P_frz/CP 即"两体可分性"
 """
 import os
+import socket
 import sys
 import time
 
 import numpy as np
+import pyscf
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pyscf import dft, gto
@@ -122,7 +124,10 @@ def one(name):
                 dnlc=dnlc, pint=pint, span=span,
                 # 逐行记档位：侧车是按体系名跨批次合并的，只有文件头的 level 会说谎
                 # （苯在 level 0 跑过一次、level 1 又跑一次，合并后头是 1、行是 0 的数）
-                level=LEVEL, basis=BASIS, cpcorr=bool(CPCORR))
+                # 下面几项一律机器生成——provenance 只要需要人手工填，它就一定会过期。
+                level=LEVEL, basis=BASIS, cpcorr=bool(CPCORR),
+                run_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                pyscf_version=pyscf.__version__, host=socket.gethostname())
 
 
 def geomlib_sub(mol, atoms):
