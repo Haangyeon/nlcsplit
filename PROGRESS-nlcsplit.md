@@ -1138,3 +1138,21 @@ goerigk2017gmtkn55。**GMTKN55 的 DOI 与仓库自己 "Please cite" 指定的
 Jureček 那句改成"未能回查到 DOI，暂不带 DOI 引用，待确认"，
 并写清"我们的数依赖 GMTKN55 发行版而非原始汇编"。
 keal/lee 两条正文本来就不需要，直接从清单去掉候选。
+
+## [2026-09-29 14:00] [agent=cn-qoder] [第四次自我更正：测试数不是 40，是 32]
+
+`paper/software.md` 原写"test suite has 40 tests"，**是错的**。
+今天 `--collect-only` 实测：**32 项**（其中 `-m slow` 命中 10，fast 22），
+`pyproject.toml` 的 `addopts` 只有 `-ra`，**没有**默认排除 slow。
+
+错因复盘（和我今天前三次同源——用了推出来的数，没用测出来的数）：
+我跑过 `pytest nlcsplit/tests -q` → 32 passed，
+又跑过 `pytest nlcsplit/tests/test_partition_factors.py -m slow` → 8 passed, 10 deselected，
+然后把 **32 + 8 = 40**。但那 8 个本来就在那 32 里面（不同命令、不同选择条件，
+两个数不是同一集合的划分，不能相加）。
+⇒ 教训：**任何计数只能来自同一次、同一选择条件下的 collect**；
+跨命令的数字相加要先证明它们互斥。
+
+我 09:55 那条日志里"全套 40 passed"（`PROGRESS-nlcsplit.md:717`）**保留原文不删**
+（日志是 append-only 的历史记录），以本条为准。
+`software.md` 已改成 32（22 fast + 10 slow）。正文其它文件没有引用过这个数。
