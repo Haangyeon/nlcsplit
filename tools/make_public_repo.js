@@ -71,7 +71,10 @@ const EXPLICITLY_EXCLUDED = ['nlcsplit/centos_run.sh', 'nlcsplit/centos_run2.sh'
 // 证据目录。recompute/ 与 orca_control/ 是 2026-09-29 补的：paper/main.md 的 [S8][S9][S12][S18]
 // 直接按文件名指它们，闸门 D 报"母仓里有、没随包发布"——引用落空。
 const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'recompute', 'scaling',
-  'orca_control', 'population', 'agentb_sweep'];
+  'orca_control', 'population', 'agentb_sweep',
+  // P2 引的三份：核/尾界测量、A2b 双实现对账、几何判据与近场探针的原始 stdout。
+  // p2.md 一旦被引用闸门扫到，这些目录没进白名单就会"引用落空"。
+  'coretail', 'fastpair_ab', 'bound_forms'];
 
 // ================================================================ 脱敏（只发生在导出副本上）
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
