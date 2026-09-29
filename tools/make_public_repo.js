@@ -31,6 +31,9 @@ const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py
   'test_partition_factors.py', 'test_regression.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
 const ROOT = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'pyproject.toml', 'conftest.py'];
+// CI 配置也属于"发布物"：只在工作区里有、公开仓里没有，等于闸门 E 之外的那道门禁
+// 对读者不存在。
+const WORKFLOW = { '.github/workflows/ci.yml': '.github/workflows/ci.yml' };
 // 明确**不**带：centos_run*.sh, centos_setup.sh（集群 IP/绝对路径）, PROGRESS-*（两代理的协调
 // 与撤回流水，不是证据）, HANDOFF-*, STEP0-*, paper/, scratch/, figs/。
 // RESEARCH-* 与 MAIN-skeleton.md 改为改名进 docs/，见下面 RELOCATED —— 附录要靠它们落地。
@@ -140,6 +143,9 @@ const RELOCATED = {
 for (const [src, dst] of Object.entries(RELOCATED)) {
   copied.push(write(dst, read(path.join(SRC, src))));
 }
+for (const [src, dst] of Object.entries(WORKFLOW)) {
+  copied.push(write(dst, read(path.join(SRC, src))));
+}
 
 
 // ---------------------------------------------------------------- 闸门 D：正文引用的每个出处都真的随包发布
@@ -214,6 +220,31 @@ for (const dir of fs.readdirSync(path.join(OUT, 'evidence'))) {
   }
 }
 
+// ---------------------------------------------------------------- 闸门 E：用到的依赖都得声明
+// 撞上的现场：figures.py 顶层 import matplotlib，而 pyproject 的 dependencies 只有 numpy 和
+// pyscf；scipy 藏在 step_c_relaxation 的函数里。`import nlcsplit` 没事，
+// `import nlcsplit.figures` 在干净环境里就是 ImportError —— 平时看不见，所以做成检查。
+// （matplotlib 已按"核心不需要它"的原则收进 [project.optional-dependencies].plot。）
+const STDLIB = new Set(['os', 'sys', 'json', 'time', 'math', 'ctypes', 'socket', 'traceback',
+  'importlib', 'pathlib', 'argparse', 'functools', 'itertools', 'collections', 'warnings',
+  'dataclasses', 'typing', 'subprocess', 'shutil', 'tempfile', 're', 'io', 'abc', 'datetime']);
+const DECLARED = new Set([...read(path.join(SRC, 'pyproject.toml'))
+  .matchAll(/"([A-Za-z][A-Za-z0-9_.\-]*)[<>=!~\[]?/g)].map(m => m[1].toLowerCase()));
+const DIST_OF = { matplotlib: 'matplotlib', scipy: 'scipy', pyscf: 'pyscf', numpy: 'numpy', pytest: 'pytest' };
+const gateE = (() => {
+  const out = [];
+  for (const rel of copied.filter(f => f.endsWith('.py'))) {
+    let src; try { src = read(path.join(OUT, rel)); } catch (e) { continue; }
+    for (const m of src.matchAll(/^\s*(?:from|import)\s+([A-Za-z_][\w.]*)/gm)) {
+      const top = m[1].split('.')[0];
+      if (STDLIB.has(top) || top === 'nlcsplit') continue;
+      const dist = DIST_OF[top] || top.toLowerCase();
+      if (!DECLARED.has(dist)) out.push(`${rel}: import ${m[1]}，但 pyproject 未声明 "${dist}"`);
+    }
+  }
+  return [...new Set(out)];
+})();
+
 fs.writeFileSync(path.join(OUT, 'EXPORT-MANIFEST.txt'),
   copied.length + ' files\n' + copied.sort().join('\n') + '\n');
 
@@ -222,9 +253,10 @@ console.log(JSON.stringify({
   gateA_gamess: ga, note_word_only: wordOnly, gateB_secrets: gb, gateC_hashes: gc,
   gateD_cited_but_unshipped: gateD.absent,
   note_internal_only_citations: gateD.pubInternal,
+  gateE_undeclared_imports: gateE,
   excluded_by_design: EXPLICITLY_EXCLUDED.concat(['PROGRESS-*.md', 'HANDOFF-*.md',
     'STEP0-*.md', 'paper/**', 'scratch/**', 'figs/**']),
   relocated_into_docs: RELOCATED,
 }, null, 1));
-const bad = ga.length + gb.length + gc.length + gateD.absent.length;
+const bad = ga.length + gb.length + gc.length + gateD.absent.length + gateE.length;
 process.exit(bad ? 1 : 0);

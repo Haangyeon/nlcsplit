@@ -18,6 +18,12 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest>=7"]
+# figures.py 顶层就 import matplotlib，而核心三模块（nlc/partition/geomlib）不需要它。
+# 所以画图能力单列成 extra，而不是塞进 dependencies 让所有人都多装一个 GUI 库。
+plot = ["matplotlib>=3.5"]
+# step_c_relaxation.py 在函数内部 import scipy.optimize 做几何优化；核心与主表都不走这条路，
+# 所以也放 extra。闸门 E（tools/make_public_repo.js）会盯住这类"用了但没声明"。
+relax = ["scipy>=1.8"]
 
 [tool.setuptools]
 packages = ["nlcsplit", "nlcsplit.tests", "nlcsplit.examples"]

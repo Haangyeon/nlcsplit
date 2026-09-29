@@ -41,29 +41,35 @@ def on_grid(mol, mf, coords, weights):
     return float(exc_native), mine, rho[0], wr
 
 
-for level in (0, 1, 2):
-    mol = gto.M(atom=geomlib.h2o_dimer(), basis="6-31g*", verbose=0, unit="Angstrom")
-    mf = dft.RKS(mol)
-    mf.xc = "wb97x_v"
-    mf.grids.level = level
-    t0 = time.time()
-    mf.kernel()
-    v_native, mine_ref, rho_ref, wr_ref = on_grid(mol, mf, mf.grids.coords, mf.grids.weights)
-    coords_p, w_p, owner = partition.atom_partition(mol, level=level, scheme="becke")
-    _, mine_part, rho_p, wr_p = on_grid(mol, mf, coords_p, w_p)
+def main():
+    """只有直接运行才做 SCF 与双重和；import 这个模块不再有副作用。"""
+    for level in (0, 1, 2):
+        mol = gto.M(atom=geomlib.h2o_dimer(), basis="6-31g*", verbose=0, unit="Angstrom")
+        mf = dft.RKS(mol)
+        mf.xc = "wb97x_v"
+        mf.grids.level = level
+        t0 = time.time()
+        mf.kernel()
+        v_native, mine_ref, rho_ref, wr_ref = on_grid(mol, mf, mf.grids.coords, mf.grids.weights)
+        coords_p, w_p, owner = partition.atom_partition(mol, level=level, scheme="becke")
+        _, mine_part, rho_p, wr_p = on_grid(mol, mf, coords_p, w_p)
 
-    pop_ref = wr_ref.sum()
-    pop_part = wr_p.sum()
-    print(f"level {level}  N_ref={len(mf.grids.coords):7d}  N_part={len(coords_p):7d}"
-          f"  ({time.time()-t0:.0f}s)")
-    print(f"  原生核 E_NLC                = {v_native:.10f} Ha")
-    print(f"  显式和 @参照网格            = {mine_ref:.10f} Ha   "
-          f"差(同网格) = {(mine_ref-v_native)*KCAL:+.3e} kcal/mol = {(mine_ref-v_native):+.3e} Ha")
-    print(f"  显式和 @分区网格            = {mine_part:.10f} Ha   "
-          f"差(换网格) = {(mine_part-mine_ref)*KCAL:+.4f} kcal/mol")
-    print(f"  ∫ρ 参照/分区 = {pop_ref:.8f} / {pop_part:.8f}  "
-          f"(真值 {mol.nelectron})  ⇒ 网格的电子数表示差 {pop_part-pop_ref:+.2e} e"
-          f" = β·Δ {(pop_part-pop_ref)*BETA*KCAL:+.2e} kcal/mol")
+        pop_ref = wr_ref.sum()
+        pop_part = wr_p.sum()
+        print(f"level {level}  N_ref={len(mf.grids.coords):7d}  N_part={len(coords_p):7d}"
+              f"  ({time.time()-t0:.0f}s)")
+        print(f"  原生核 E_NLC                = {v_native:.10f} Ha")
+        print(f"  显式和 @参照网格            = {mine_ref:.10f} Ha   "
+              f"差(同网格) = {(mine_ref-v_native)*KCAL:+.3e} kcal/mol = {(mine_ref-v_native):+.3e} Ha")
+        print(f"  显式和 @分区网格            = {mine_part:.10f} Ha   "
+              f"差(换网格) = {(mine_part-mine_ref)*KCAL:+.4f} kcal/mol")
+        print(f"  ∫ρ 参照/分区 = {pop_ref:.8f} / {pop_part:.8f}  "
+              f"(真值 {mol.nelectron})  ⇒ 网格的电子数表示差 {pop_part-pop_ref:+.2e} e"
+              f" = β·Δ {(pop_part-pop_ref)*BETA*KCAL:+.2e} kcal/mol")
 
-print(f"\nβ = {BETA:.6f} Ha/电子 = {BETA*KCAL:.4f} kcal/mol/电子"
-      f"  ⇒ 任何 Becke 布居跨度 ΔN_A 直接放大 {BETA*KCAL:.2f} 倍进局域项")
+    print(f"\nβ = {BETA:.6f} Ha/电子 = {BETA*KCAL:.4f} kcal/mol/电子"
+          f"  ⇒ 任何 Becke 布居跨度 ΔN_A 直接放大 {BETA*KCAL:.2f} 倍进局域项")
+
+
+if __name__ == "__main__":
+    main()

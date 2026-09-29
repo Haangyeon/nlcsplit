@@ -26,9 +26,11 @@ keywords:
 and their archived stdout under `nlcsplit/logs/` is the source. **The front matter
 above contains fields only the author can supply (ORCID, corresponding status, exact
 affiliation string, co-author list); they are marked rather than filled.**
-`references.bib` does not exist yet — building it is a submission blocker, and every
-DOI quoted below has been reverse-checked against Crossref by DOI, not by title
-search (see `RESEARCH-20260929-lit.md` §9 for why that distinction mattered here).*
+`references.bib` now exists (16 entries, up from 13 today: VV10's own two papers and
+the Hyldgaard-Berland-Schroeder xc-hole interpretation were missing), and every DOI in
+it has been reverse-checked against Crossref by DOI and against Web of Science, not by
+title search (see `RESEARCH-20260929-lit.md` §9 for why that distinction mattered
+here).*
 
 ## Abstract
 
@@ -155,41 +157,74 @@ cannot be reported as "the dispersion energy" without qualification [S2].
 
 ## 5. Availability and quality assurance
 
-Apache-2.0; no GAMESS source is included, linked or required - a claim checked by scanning every file of an independent install (25 files at the time of writing), where the only occurrence of the word is the disclaimer in the package docstring itself. Every table in the
-companion text maps to one `step_*.py`, and archived stdout is kept under a
-UTC-stamped filename. The test suite collects 32 tests (22 fast, 10 marked slow),
-including a naive triple-loop
-versus BLAS comparison of the kernel, per-scheme additivity checks, and geometry
-guards that assert bond lengths and angles at construction time.
+Apache-2.0; no GAMESS source is included, linked or required - a claim checked by
+scanning every file of the published tree (61 files at the time of writing) for
+GAMESS source artefacts specifically, not for the word, which appears only in the
+disclaimer. Every table in the companion text maps to one `step_*.py`, and archived
+stdout is kept under a UTC-stamped filename. The test suite collects 18 tests in the
+published tree (15 fast, 3 marked slow), including a naive triple-loop versus BLAS
+comparison of the kernel, per-scheme additivity checks, and geometry guards that
+assert bond lengths and angles at construction time.
 
-Release hygiene is checked end to end rather than assumed: the package is pip
-installed into a separate directory and its tests are then run from outside the
-source tree with `pytest --pyargs nlcsplit`. That procedure found two real defects
-- script-style modules named `test_*.py` inside the package, which pytest collects
-and executes at import, and a `slow` marker registered only in repository
-configuration - plus one non-obvious build hazard: pip builds local directories in
-place, and the setuptools `build_py` step does not prune deleted modules from
-`build/lib`, so a module moved out of the package can still be shipped from the
-stale build tree unless that tree is removed first (`CONTRIBUTING.md`).
+Five export gates run locally on every rebuild (`node tools/make_public_repo.js`),
+and each has fired at least once on a real defect rather than sitting idle:
 
-Continuous integration runs the suite on a PySCF version matrix in two stages: a
-fast pass with `-m "not slow"`, then the full pass. The split is documented as a
-hazard rather than a convenience - the fast pass excludes the two tests that
-compare against the native kernel, so CI must not be read as satisfied by the
-first stage alone.
+| gate | what it checks | what it caught first |
+|---|---|---|
+| A | no GAMESS source artefacts (matched on source patterns, not on the word "gamess", which the disclaimer itself contains) | a permanent false positive on our own disclaimer |
+| B | no credentials or internal network strings | a scrub that re-injected a proxy address into a comment |
+| C | every `evidence/*/MANIFEST.sha256` reproduces byte-for-byte | a Windows path making `sha256sum` report six mismatches that were not there |
+| D | every path cited by the companion text's provenance appendix is actually shipped | three citations that resolved to nothing in the published tree |
+| E | every import in a shipped module is declared in `pyproject.toml` | `figures.py` importing matplotlib, which no dependency listed |
 
-Independent verification is currently limited to a second implementation of the
-same kernel inside the same library. An earlier version of this documentation
-claimed agreement with ORCA 6.0.1 to 6e-4 kcal/mol; re-reading the archived ORCA
-output showed it prints no separately reported nonlocal term, and the cited figure
-could not be reconstructed from any file in the project, so the claim is withdrawn
-here as well as in the companion text. A second-program check (an ORCA run that
-prints the VV10 term, Psi4, or libxc `xc_nlc_vxc` through its own bindings) is the
-first item outstanding.
+Gate D exists because the first three could only fail in one direction. A, B and C
+catch material that should not be present; what actually went wrong repeatedly was
+material that should have been present and was not - a cited stdout living only on a
+remote machine, calibration scripts inside a gitignored directory. Those produce a
+clean export and a reader holding a citation to nothing.
+
+Release hygiene is specified end to end but **not yet fully executed**: the intended
+procedure is a pip install into a separate environment followed by running the tests
+from outside the source tree with `pytest --pyargs nlcsplit`. That procedure has
+already earned its place - as a *specification* it led us to remove script-style
+`test_*.py` modules from the package (which pytest collects and executes at import)
+and to register the `slow` marker in package configuration rather than only in
+repository configuration - but the clean-install run itself is still open, and so is
+the check that `pip install .` leaves no undeclared import. What has been verified
+locally is an out-of-tree import of the exported tree by path, which is weaker: it
+found that `step_i_gridrepr.py` ran a full self-consistent-field sweep at import time
+because it had no `__main__` guard, since fixed.
+
+The continuous-integration workflow is written but has **never executed**, because
+there is no remote repository yet. Reviewers should read it as intent. Writing it down
+did produce one real fix: its PySCF version matrix interpolated as
+`pip install "pyscf==>=2.13"`, which is not a valid requirement, so the second job
+would have died at the install step.
+
+Independent verification of the arithmetic now has a second program behind it. An
+earlier version of this documentation withdrew an ORCA agreement because re-reading
+the archived output found no separately reported nonlocal term - and that withdrawal
+was itself wrong: the quantity is printed, under the label
+`NL Energy, E(C,NL)`; searching for the words "nonlocal", "nloc" or "VV10" finds
+nothing in an ωB97X-V output, and the `E(VV10-nl)` column that does match belongs to
+the PT2 correlation of double-hybrid functionals, which is a different physical
+quantity. With the label known, six ORCA 6.0.1 single points agree with the reported
+ΔE_NLC to 0.0004 kcal/mol on the water dimer and 0.0416 kcal/mol on the benzene dimer
+A, with the outputs and their SHA-256 manifest in the repository. A third, fully
+independent implementation (Psi4, or libxc's `xc_nlc_vxc` through its own bindings)
+is still outstanding, as is extending the anchor beyond 2 of the 8 systems.
+
 
 ## 6. Limitations
 
-Quadratic cost in retained grid points, with no sub-quadratic approximation.
+Quadratic cost in retained grid points, with no sub-quadratic approximation. One
+attempt at a certified screening was built and measured this round, and rejected: at
+the tolerance the companion text needs (1e-8 Ha absolute), the triangle-inequality
+atomic-block bound prunes nothing on a 24-atom system - 0 of 300 atom-block pairs -
+because the radius the bound subtracts is set by the far tail of each atom's density,
+so the certified separation comes out zero for every pair, including the ones facing
+each other across the inter-fragment gap. That is a statement about this particular bound, not about screening in
+general, and it is recorded in `PROGRESS-nlcsplit.md` rather than quietly dropped.
 Interpretation limited to the two-body and fragment-pair level. Results depend on
 the choice of real-space partition to the extent quantified in section 4. VV10
 only - the τ-dependent rVV10 form is not implemented. And it is not an energy

@@ -1555,3 +1555,84 @@ gitignore 的 `scratch/`、三条 CentOS 日志在远端另一个目录。旧闸
 
 本轮结果：60 个文件，gateA/B/C/D 四个数组全空，exit 0。发布前还剩 task #13
 （干净 venv `pip install` + 树外 `pytest --pyargs nlcsplit`）。
+
+## [2026-09-29 17:2x] [agent=cn-qoder] [negative→fixable] A2a L1 的真因：`_gap` 对所有块对都退化成 0，可证界从来没有距离依赖
+
+`nlcsplit/examples/probe_bound_forms.py` 在苯夹心 level 0（24 原子 ⇒ 300 个块对）上把逐块对
+的精确值与界并排打出来：
+
+    sum(exact per-pair magnitudes) = 5.6788661e+01 kcal/mol
+    sum(bound)                     = 3.71085978e+08 kcal/mol
+    ratio                          = 6.535e+06
+    pairs whose bound is already <= 1e-8 Ha (6.275e-06 kcal/mol): 0/300
+    每个块的质量也对得上（C 6.103 / 6.118，H 2.180 / 2.240，Σ ≈ 84 电子）
+
+**决定性的一列是 gap：300 行全部是 `0.00 Å`，从 0-0 自己到自己，到 0-10、12-23 这种跨片的
+远对也一样。** 按定义 `_gap = |c_P − c_Q| − rad_P − rad_Q` 再取正部，所以 gap≡0 就等于说
+"每个原子块的球都互相重叠"。块半径取的是**块内点到加权质心的最大距离**，而一个原子的
+网格尾巴能拖出去好几 Å——于是三角不等式给出的块间距永远是 0，
+`a_P = w0min·0² + kmin = kmin ≈ 0.11–0.24`，界退化成与距离无关的常数
+`0.75 m_P m_Q / (kmin_P kmin_Q (kmin_P+kmin_Q))` ≈ 1e5–1e6 kcal/mol。
+
+所以：
+1. 上一条 `[negative]` 里"界松 2.5e6 倍"是对的，但**原因猜错了**。我当时怪 `m_P = Σ|wr|`
+   丢掉了符号抵消。实测不支持那个说法：ρ≥0、求积权重>0 ⇒ 全部 wr≥0，且 Φ<0，
+   块内根本没有符号抵消可用。真正的漏洞是**几何量退化**。
+2. 计划书里"真正做剪枝的是密度质量不是距离"这句，方向对、落点错：质量因子没坏，
+   坏在距离因子被最大半径杀成 0。
+3. 因此 **P2 没有被否证**，需要的是换一处：块不能只用"最大半径"表示。
+   要按 (核心半径 r_P, 核外尾质量 T_P) 两段表示——选 r_P 使
+   `T_P = Σ_{i∈P, |x_i−c_P|>r_P}|wr_i|` 足够小，则
+   `|Σ_{P,Q}| ≤ β_PQ·m̃_P m̃_Q + β'·(T_P m̃_Q + m̃_P T_Q + T_P T_Q)`，
+   其中 m̃=m−T 是核内质量，β_PQ 用**核心球之间**的 gap（不再恒为 0）。
+   尾项用 sup|Φ| 而不是衰减值，但乘的是尾质量——这正是"质量做剪枝"的的正确形式。
+   这一步**没实现、没测**，是下一步的活；在此之前不发 `[freeze]`。
+
+顺带：`0/300` 那个数说明"ε=1e-8 Ha 的绝对阈值"在有限体系上本来就是苛刻的。最小质量那一对
+的界要到 D≈42 bohr（22 Å）才降到 4e-9 Ha。计划书关于"绝对 ε ⇒ R_cut ∝ N^{1/3} ⇒ 回到
+O(N²)"的警告因此不是抽象风险，是当场可见的。
+
+## [2026-09-29 17:3x] [agent=cn-qoder] [measurement] A8：`test_regression.py:46` 的 0.10 kcal/mol 比实测残差宽 1.03e4 倍
+
+`nlcsplit/tests/test_tolerance_probe.py`（只测不改，按分工我不能直接动现有断言）在水平二聚体
+6-31G\* 上把"我们的显式双重和"与"PySCF 原生核 `numint.nr_nlc_vxc`"之差按网格档打出来：
+
+    lvl  ours(kcal)   native(kcal)   diff(kcal)    rel
+      0   53.062348    53.062338   +9.672e-06   1.82e-07
+      1   53.015676    53.015670   +6.353e-06   1.20e-07
+      2   53.015738    53.015732   +5.327e-06   1.00e-07
+
+最坏 9.672e-06，现有断言 1.0e-01 ⇒ **宽出 10340 倍**。
+而且这三行与正文 §3.1 引用的 +1.5e-8 / +1.0e-8 / +8.5e-9 Ha 换算成 kcal/mol 正好是
+9.4e-6 / 6.3e-6 / 5.3e-6 —— 同一组数从两条独立代码路径复现，这条断言于是有了依据而不只是"能过"。
+
+**建议（等我批，不自动改）**：把 `< 0.10` 收到 `< 1e-4` kcal/mol，留 10 倍余量给浮点与
+版本差异，比现状紧 1000 倍，且比 ORCA 锚点（4e-4）与两实现差（3e-5）都更严格、
+不会挡 CI。改的时候注释要写清这是**同库两套实现**的对照，不是第二个程序。
+
+## [2026-09-29 17:4x] [agent=cn-qoder] [fix+purity] A5/A6：软件文里三条"已经做了"的断言其实没做，全部改成可核的现在时/将来时
+
+`paper/software.md` 第 5 节原话是"发布卫生是端到端**查过的**：包装进独立目录、
+树外 `pytest --pyargs nlcsplit`"。实际状态：**那条没跑过**（task #13 至今未做）。
+CI 那段原话是"持续集成**跑** PySCF 版本矩阵"。实际状态：workflow 文件写了，
+**一次都没执行过**（没有远端）。第 29 行原话是"`references.bib` 还不存在，建它是投稿阻塞项"。
+实际状态：bib 已有 16 条且每条 DOI 双源核过。三处全部改成写明"已规定/未执行"。
+
+顺手做的三件真事：
+1. **闸门 E**（用到的 import 必须声明）。它当场抓出两个：`figures.py` 顶层 import matplotlib
+   而 pyproject 只声明 numpy+pyscf；`step_c_relaxation.py` 函数里 import scipy。
+   两者按"核心不该拖 GUI 库"的原则收进 `[project.optional-dependencies]` 的
+   `plot` / `relax`，而不是塞进 dependencies。数组现在是空的，但**它已经证明会响**。
+2. `step_i_gridrepr.py` **没有 `if __name__` 守卫** ⇒ import 它就跑三档 SCF + O(N²) 双重和。
+   我是在做"发布树能否被独立 import"时撞上的（进程十分钟不动）。已缩进进 `main()` + 守卫，
+   打印文本一字未改，所以 `[S9]` 引的归档 stdout 仍然对得上。
+   讽刺点要记下：software.md 正在夸"发布流程抓出过包里 `test_*.py` import 即执行"这类缺陷，
+   而同一类缺陷就留在一个 step 模块里没清，并且随包发布了。
+3. `ci.yml` 的矩阵 `["2.12.1", ">=2.13"]` 与下面的 `pyscf==${{ matrix.pyscf }}` 拼成
+   `pip install "pyscf==>=2.13"` —— 无效 requirement，第二个 job 会死在装包这一步。
+   改成两个确定的版本号，并补上 `pip install .` + 树外 `--pyargs` + 跑导出器五道闸门。
+
+本轮计数（写下来是为了下次能核对，不是抄旧的）：发布树 61 个文件；
+四个测试文件收集 **18 条**（15 fast / 3 slow，`grep -c` 实测），software.md 原来写的
+"32 tests (22 fast, 10 slow)" 与"25 files"都无从复核，已按实测改。
+闸门 A/B/C/D/E 五个数组全空，exit 0。`paper/main.pdf` 仍是 14 页 0 条 LaTeX 错误。
