@@ -210,9 +210,15 @@ sum.
 ### 2.4 Geometries and reference values
 
 All dimer geometries are taken verbatim from the official GMTKN55 repository
-(github.com/grimme-lab/GMTKN55, tag v1, `S22/NN/struc.xyz`; original source
-Jureček et al., PCCP 5, 1811 (2003)), fetched by `tools/get_s22.sh`. Fragment
-boundaries are derived from covalent connectivity with a 1.65 Å cutoff — longer than the longest covalent bond appearing in these
+(github.com/grimme-lab/GMTKN55, `S22/NN/struc.xyz`), fetched by `tools/get_s22.sh`;
+the repository's own citation instruction is Goerigk et al., PCCP 19, 32184-32215
+(2017), DOI 10.1039/C7CP04913G, which we verified by reverse DOI lookup. The S22
+set itself compiles the complexes of an earlier hydrogen-bonded benchmark
+(Jurecka et al., PCCP 5, 1811 (2003)); we were unable to resolve that DOI through
+Crossref today and cite it without a DOI until it can be confirmed - the geometry
+files we used come from the GMTKN55 distribution, so our numbers depend on that,
+not on the original compilation.
+Fragment boundaries are derived from covalent connectivity with a 1.65 Å cutoff — longer than the longest covalent bond appearing in these
 systems (aromatic C–C, 1.397 Å; a general C–C single bond is 1.54 Å) and shorter
 than the shortest hydrogen bond (O···H 1.95 Å) — and the code refuses to proceed
 unless exactly two fragments result. This is not a formality: in the official

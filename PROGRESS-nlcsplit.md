@@ -1112,3 +1112,29 @@ run5 第二段回来了：`苯二聚体(A)` 在 **level 1**（`NCPC=0`，2101 s�
 **另修一处会误导人的显示**：`NCPC=0` 时反泊松列被 `float("nan")` 印成
 `+nan`（日志里读起来像算错了）。改成 `None` + 打印 `—`，
 sidecar 里也统一成 `null`。已 `py_compile` 过，无其它消费者。
+
+## [2026-09-29 13:45] [agent=cn-qoder] [references.bib 建起来了：9 条全部 DOI 反向核验]
+
+`paper/references.bib` + 生成器 `scratch/build_bib.js`（产物清单
+`scratch/bib_candidates.json`）。规则是**两步都要过**：检索只用来找候选 DOI，
+进文件前必须再用 DOI 精确回查，且**回查所得年份要等于期望年、题名实词重合度 ≥0.75**，
+任一不符就不写。第一版判据用"题名前缀必须开头相等"，
+结果**误杀了三条真对的**（Crossref 的题名带 `ωB97X-V: `、`JuNoLo – ` 这类前缀，
+我写的期望串省掉了它）⇒ 换成实词重合度。换成重合度后仍要能抓住真错配，
+这一点用 `10.1103/PhysRevB.70.235111`（实际是 Chernyshev 的强关联论文）当反例校过：
+重合度接近 0，照样拒。
+
+**通过 9 条**：becke1988、stratmann1996、dion2004、mardirossian2014wb97xv、
+mardirossian2016wb97mv、lazic2010junolo、dasgupta2023、calbo2015vv10review、
+goerigk2017gmtkn55。**GMTKN55 的 DOI 与仓库自己 "Please cite" 指定的
+`10.1039/C7CP04913G` 一致**（DOI 不区分大小写），这条是从
+`raw.githubusercontent.com/grimme-lab/GMTKN55` 的 README 一手读到的，不是我记忆。
+
+**三条没过就不写**：jurecek2003s22、keal2006vv10refine、lee2010rvv10
+（期刊+年份限定检索下最高重合度只有 0.40，且 `10.1039/b210146j` 这类我记忆的 DOI
+回查为 Crossref 无记录）。⇒ 后果已落到正文：**§2.4 改口**。
+原先写"官方 GMTKN55 仓库；原始出处 Jureček PCCP 5, 1811 (2003)"，
+现在明确：我们用的几何文件来自 **GMTKN55 发行版**（DOI 已核验），
+Jureček 那句改成"未能回查到 DOI，暂不带 DOI 引用，待确认"，
+并写清"我们的数依赖 GMTKN55 发行版而非原始汇编"。
+keal/lee 两条正文本来就不需要，直接从清单去掉候选。
