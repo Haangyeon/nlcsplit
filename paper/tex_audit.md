@@ -2,7 +2,7 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 46751 chars, 678 lines
+- source `paper/main.md`: 47265 chars, 684 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - tags cited in the body: 17
@@ -16,9 +16,9 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S2 | `MAIN-skeleton.md`<br>`nlcsplit/logs/step_h.json` | exists |
 | S3 | `nlcsplit/step_f_dispersion.py` | exists |
 | S4 | `MAIN-skeleton.md` | exists |
-| S5 | `nlcsplit/step_e_kernel.py`<br>`PROGRESS-ide-S3.md` | exists |
+| S5 | `nlcsplit/step_e_kernel.py` | exists |
 | S6 | `evidence/centos/20260928T165857Z_centos-step_c.out` | exists |
-| S7 | `nlcsplit/step_d_floor.py`<br>`PROGRESS-nlcsplit.md` | exists |
+| S7 | `nlcsplit/step_d_floor.py`<br>`nlcsplit/tests/test_kernel.py` | exists |
 | S8 | `nlcsplit/logs/step_h.json`<br>`nlcsplit/logs/step_h_l2cp.json`<br>`evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`<br>`evidence/centos/20260928T165857Z_centos-step_f_h2o2.out`<br>`nlcsplit/logs/20260929T010500Z_step1_geomfix.out` | exists |
 | S9 | `nlcsplit/step_i_gridrepr.py`<br>`nlcsplit/logs/20260929T_step_i_gridrepr.out` | exists |
 | S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`<br>`evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`<br>`nlcsplit/logs/step_h_l2cp.json` | exists |
