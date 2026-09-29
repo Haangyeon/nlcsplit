@@ -1156,3 +1156,39 @@ keal/lee 两条正文本来就不需要，直接从清单去掉候选。
 我 09:55 那条日志里"全套 40 passed"（`PROGRESS-nlcsplit.md:717`）**保留原文不删**
 （日志是 append-only 的历史记录），以本条为准。
 `software.md` 已改成 32（22 fast + 10 slow）。正文其它文件没有引用过这个数。
+
+## [2026-09-29 13:10] [agent=cn-qoder] [WoS 正式检索完成：新颖性主张现在站得住；另记一个我自己写出的数据丢失 bug]
+
+用户本人完成了机构登录（历史页显示 Shaanxi Normal University），我跑完一整轮。
+
+**校准三条全过**（这是关键，开放索引就是死在这一步）：
+宽式 `TS=("energy decomposition analysis")` = **3,317**；
+已知条目 `TI=("Balance between physical interpretability…")` = **1**（精确）；
+主题 AND `TS=("van der Waals density functional" AND "nonlocal correlation")` = **33**。
+⇒ WoS 的主题召回合格，它的零命中可以当证据。
+
+**先例式与逐条判定**（计数一律从 WoS 自己的 Search History 面板读）：
+| 式 | 命中 | 判定 |
+|---|---|---|
+| `TS=("vdW-DF" AND ("energy decomposition" OR "fragment decomposition" OR "pair decomposition" OR "partition of the correlation"))` | **0** | 直接主张无先例 |
+| `TS=("VV10" AND "energy decomposition")` | 1 | Kruse–Sponer JCTC 2019：VV10 只是被基准的 29 个泛函之一，分解是 SAPT 对**总**相互作用能 ⇒ 不冲突 |
+| `TS=("VV10" AND (EDA OR fragment OR pair-wise))` | 2 | 另一条 Hujo–Grimme PCCP 2011（测性能）⇒ 不冲突 |
+| `TS=((ALMO-EDA OR FDE OR EDA) AND (VV10 OR nonlocal correlation))` | 1 | **Sinha–Pavanello JCP 2015 FDE-vdW**：用子系统**构造新的**非局域泛函，方向相反 ⇒ 不冲突，但列为最近邻相关工作 |
+| `TS=("nonlocal correlation" AND (attribut* OR fragment-wise OR per-fragment OR atomic contribution))` | 4 | 首位 Hamada–Tsukada PRB 2011 是"把吸附能归因给该项"，反向 ⇒ 不冲突 |
+
+⇒ **正文 §1 已从"we are not aware of（检索未完成）"升级为"经正式库检索 + 逐条读摘要"**，
+§4 新增一段说明零命中为什么可用（附校准数）以及它仅剩的限制；
+`references.bib` 由 9 条增至 **13 条**，新增四条全部 DOI 回查通过。
+
+**两个我自己的错误，都值得你防**：
+1. **生成器把已核验产物写空了。** `scratch/build_bib.js` 在一次 Crossref 全部 fetch 失败时，
+   仍然执行了 `fs.writeFileSync(references.bib)`，把 9 条已核验条目覆盖成 0 条。
+   靠 git 恢复。已加护栏：0 条时 `exit 2`、新条目数 < 现有条目数时 `exit 3` 拒绝覆写。
+   ⇒ 任何"重新生成一份人工整理过的文件"的脚本，都必须先证明自己有资格覆盖它。
+2. **差点把 1 命中记成 0。** 最要紧那条式子提交后轮询超时，我按"超时≈零命中"准备下笔；
+   去读 Search History 才发现是 **1** 条，而且正是 FDE-vdW 那条最接近的先例。
+   ⇒ 与今天 §9 那次"期望标题凭记忆填"同源：**"我没读到" 不等于 "不存在"**。
+
+**仍未闭合的一条限制（写进正文了，别当已完成）**：WoS Nextgen 结果页虚拟滚动，
+实测 4 条命中只物化 1 条标题，滚动与改排序都拿不到其余，
+所以 #6/#8 那两条四命中的式子我只确证了相关度首位。全量枚举要走 Export → Plain text。

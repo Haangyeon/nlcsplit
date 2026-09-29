@@ -2,10 +2,11 @@
 ## Draft — §1–§5 prose（§1/§2 先写，§3–§5 于 2026-09-29 补齐）
 
 数值出处用 `[S#]` 标，对应 `MAIN-skeleton.md` 里的表与 `nlcsplit/logs/`。
-未到位的两件：level-2 反泊松还差 `苯-甲烷` 一个体系；正式库（WoS/Scopus）检索
-需用户本人过一次机构登录。§1 的"未见先例"因此写成两处**全文级**比对
-（JCTC 3c00903 与 JuNoLo arXiv:0810.2273），而**不是**开放索引的检索计数——
-OpenAlex/Crossref 的主题召回率今天实测不合格，详见 `RESEARCH-20260929-lit.md` §9–§11。
+**WoS 正式检索已于 2026-09-29 完成**（用户本人过一次机构登录）：零命中式与三条
+最近邻命中均已逐条读全文摘要，结论与限制见 `RESEARCH-20260929-lit.md` §12。
+仍欠两件：level-2 反泊松差 `苯-甲烷` 一个体系；WoS 那四个命中的列表只物化相关度首位，
+全量枚举要走 Export。开放索引（OpenAlex/Crossref）经实测主题召回不合格，
+**只用于已知条目核验**，不再作为"无先例"的依据（§9–§11）。
 
 ---
 
@@ -140,11 +141,22 @@ of the closest published explicit evaluation of the nonlocal term, JuNoLo
 (Lazić et al., Comput. Phys. Commun. 181, 371-379 (2010)) [S14], and neither
 attributes the nonlocal double sum to fragment pairs - JuNoLo computes an improved
 total energy and explicitly recommends itself for bonded systems "where one
-cannot tell apart fragments", directing separable cases elsewhere. A formal
-database search (Web of Science / Scopus) has not been completed: the national
-mirror accepts our institutional address only for browsing and refuses to run a
-query without an interactive institutional login [S16]. Until that is done, the
-novelty claim is stated as "we are not aware of", not as "no work exists".
+cannot tell apart fragments", directing separable cases elsewhere. A formal Web of Science
+search has since been completed [S16]. Within the Core Collection, the query
+TS=("vdW-DF" AND ("energy decomposition" OR "fragment decomposition" OR "pair
+decomposition" OR "partition of the correlation")) returns zero records, and the
+three non-zero queries that come closest returned one to four records each, all of
+which we read: Kruse and Sponer (JCTC 15, 95 (2019)) use VV10 as one of 29
+benchmarked functionals and decompose the *total* interaction energy by SAPT; Hujo
+and Grimme (PCCP 13, 13942 (2011)) benchmark VV10 for hydrogen bonds; Sinha and
+Pavanello (JCP 143, 084112 (2015)) construct a *new* subsystem-based nonlocal
+functional rather than resolving an existing one; and Hamada and Tsukada (PRB 83,
+245407 (2011)) attribute an *adsorption energy* to the term, the opposite
+direction. The calibration that makes those zeros usable - a known title retrieved
+exactly, and a topical AND query returning 33 records - is given in section 4, and
+so is the one real limitation of this search: WoS materialises only the top
+relevance record per list, so for the four-record queries we verified one record
+each rather than all four.
 
 Two limits are stated here rather than in a closing section, because both
 bound what the numbers may be used for. First, this is not an energy
@@ -431,6 +443,18 @@ own build. Until one of these exists, section 3.1 should be read as "two
 implementations inside one library boundary", and the agreement at 1e-8 Ha is a
 statement about our arithmetic, not about VV10.
 
+**How we know the literature search means anything.** The zeros in section 1 are
+only as good as the instrument, so we calibrated it in the same session: a known
+paper title was retrieved exactly (1 record), a broad concept query returned 3,317
+records, and a topical AND query in the same vocabulary returned 33. By contrast
+the two open indexes we tried first failed the same test - OpenAlex and Crossref
+each retrieved a known title 4/4 times when queried by title but missed that same
+known, on-topic paper for 2 of 3 and 3 of 3 legitimate topical phrasings
+respectively. We therefore report hit counts only from the instrument that passed,
+and we state its residual limitation: WoS materialises one record per list, so the
+four-record queries were reviewed one record deep. Full enumeration needs the
+Export path and is outstanding.
+
 **The attribution uncertainty is intrinsic and per-system.** The 0.004-0.247
 kcal/mol spread of section 3.4 does not shrink with a finer grid or a larger
 basis; it is a property of how grid points are assigned to atoms. Any number
@@ -508,13 +532,12 @@ outstanding.
 
 Two further items are open and stated as such rather than smoothed over: the
 level-2 counterpoise run for one of the eight systems (benzene...methane) was
-cut off by its own wall-clock budget, and the search for prior fragment-level
-attribution of a nonlocal double sum currently rests on two full-text
-comparisons - the closest published decomposition and the closest published
-explicit evaluation, JuNoLo - rather than on a database search, since we
-measured that the open indexes we tried (OpenAlex, Crossref) retrieve known
-titles reliably but miss that same known paper when asked topically, and a
-formal Web of Science run still requires an interactive institutional login.
+cut off by its own wall-clock budget, and the Web of Science search, while it
+supports the novelty claim, enumerates only the top relevance record per result
+list, so the four-record queries were verified one record deep rather than four
+(section 1). The open indexes we first tried (OpenAlex, Crossref) were measured
+and then discarded as instruments for this purpose - they retrieve known titles
+reliably but miss a known on-topic paper when asked topically (section 4).
 
 The package is released under Apache-2.0 with no GAMESS source in it, every
 number in this paper is produced by a named script whose archived stdout is part

@@ -324,3 +324,47 @@ N^2** where N is the number of points in which charge density is defined"，
 导致送给 OpenAlex 的检索词是字面量 "undefined"，返回一堆讲 undefined 的论文——
 若我没去看返回标题而只读计数，这条会伪装成"四条查询都无先例"），
 `scratch/oa_stab.js` → `scratch/openalex_stability.json`（含 429 计数与重试版结果）。
+
+## 12. Web of Science 正式检索一轮：已完成（2026-09-29 12:43，用户本人完成机构登录）
+
+会话确认：历史页显示 `Shaanxi Normal University`。检索在 `www.webofscience.com`
+的 WoS Core Collection（全部子库），走 UI 真实提交，**计数一律从 WoS 自己的
+Search History 面板读**，不从页面正则猜（见 12.3 那次差点猜错）。
+
+### 12.1 先做校准（这一步决定了下面的零命中能不能用）
+| 式 | 命中 | 作用 |
+|---|---|---|
+| `TS=("energy decomposition analysis")` | **3,317** | 概念组宽度正常 |
+| `TI=("Balance between physical interpretability and energetic predictability")` | **1** | 已知条目**精确**召回（就是 §6 那篇先例） |
+| `TS=("van der Waals density functional" AND "nonlocal correlation")` | **33** | **主题 AND 式有召回** |
+⇒ 与 §9/§11 那两台开放索引形成对照：那两台在合法主题式上 0/4、1/3 召回，
+**WoS 三条校准全过**。所以下面的零命中是有效负证据。
+
+### 12.2 先例式与判定
+| # | 式 | 命中 | 判定 |
+|---|---|---|---|
+| 9 | `TS=("vdW-DF" AND ("energy decomposition" OR "fragment decomposition" OR "pair decomposition" OR "partition of the correlation"))` | **0** | 直接主张无人做过 |
+| 7 | `TS=("VV10" AND "energy decomposition")` | **1** | Kruse, Běhounek?, Sponer JCTC 15, 95 (2019)，WOS:000455558200012。**读全文摘要**：VV10 只是其基准的 29 个泛函之一，其"分解"是 SAPT2+3δ(MP2) 对**总相互作用能**的分解 ⇒ 不冲突 |
+| 4 | `TS=("VV10" AND ("energy decomposition" OR "fragment" OR "pair-wise"))` | **2** | 另一条是 Hujo & Grimme, PCCP 13, 13942 (2011)：测 vdW-DF2/VV10 对氢键的性能 ⇒ 不冲突 |
+| 10 | `TS=((ALMO-EDA OR "frozen density embedding" OR "energy decomposition analysis") AND (VV10 OR "nonlocal correlation" OR "non-local correlation"))` | **1** | **Sinha & Pavanello, JCP 143, 084112 (2015)，FDE-vdW**，WOS:000360653900023。它**用子系统响应函数构造一个新的非局域关联泛函**，方向与本文相反（本文是把既有的 VV10 拆开，它是从子系统拼出新的）⇒ **不冲突，但必须作为最近邻相关工作引用** |
+| 6 | `TS=("nonlocal correlation" AND ("fragment" OR "atom pair" OR "pair decomposition" OR "subsystem"))` | 4 | 首条即 FDE-vdW |
+| 8 | `TS=("nonlocal correlation" AND (attribut* OR "fragment-wise" OR per-fragment OR "atomic contribution" OR "localization of"))` | 4 | 首条 Hamada & Tsukada PRB 83, 245407 (2011)："吸附**归因于**非局域关联项"——归因方向相反 ⇒ 不冲突 |
+
+**结论（可写进正文）**：在 WoS Core Collection 内，
+**没有检索到把 VV10/非局域关联双重和按片段或原子对做归属的在先工作**。
+新颖性主张由"仅两处全文比对"升级为"经正式数据库检索 + 三处全文核验"。
+
+### 12.3 两条必须一起交代的限制（不然这句结论是虚的）
+1. **只逐条看了每个结果列表的相关度首位。** WoS Nextgen 结果页虚拟滚动，
+   实测 DOM 里 4 条命中只物化 1 条标题（`app-record` 元素有 9 个但只有 1 个带题名链接），
+   滚动与换排序都拿不到其余。所以 #6 与 #8 各 4 条里我只确证了 1 条。
+   ⇒ 若审稿人追问，需走 **Export → Plain text, Full Record** 做全量枚举（已记为待办）。
+2. **一次差点把 1 命中读成 0。** #10 提交后轮询超时，我按"超时≈零命中"准备记录；
+   打开 Search History 才发现它是 **1**。零命中与"我没读到"必须分开——
+   这与今天 §9 那次"期望标题凭记忆填"是同一类错误。
+
+### 12.4 复现
+检索式即上表原文；会话历史可在 WoS `/wos/history` 用本人账号查看（面板按时间倒序列出
+9 条式子与各自计数）。UI 提交方式：`#advancedSearchInputArea` 原生 setter + `input` 事件，
+再对面板内最后一个 `Search` 按钮派发 pointer/mouse 序列（导航栏也有一个同名按钮，
+点错会跳到 smart-search——踩过）。
