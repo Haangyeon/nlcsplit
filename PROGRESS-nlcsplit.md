@@ -2667,3 +2667,8 @@ MANIFEST 重算并 `sha256sum -c` 全 OK）。文件名标 `levels0-8`，但**�
 两条引用闸门（p2.md / software.md）PASS；`pytest -m "not slow"` 43 passed；
 当前 wheel 的树外全量重跑 42 passed / 1 skipped（406.75 s），日志与哈希在
 `evidence/release_qa/`。仍未推送：本仓没有 remote，"GitHub 不可用期间不推送"照旧。
+
+补：CI 那一步跟着改了口径（`十一条`→`十二条`，并加 `node tools/audit_no_gamess.js --selftest`），
+同时在 ci.yml 里写明**这个 job 跑的是发布副本**：private 判据不在里面，
+闸门 B 只剩形状类、闸门 D 没有正文可扫，完整十二条由母仓那次运行负责。
+让 CI 的绿灯说它没说的话，和闸门恒真是同一个病。
