@@ -156,7 +156,6 @@ if __name__ == "__main__":
             prev = json.load(open(out, encoding="utf-8")).get("rows", [])
         except Exception:
             prev = []
-    seen = {r["name"]: r for r in prev + rows}
 
     def finite(o):
         """NaN/Inf 一律转 None：json.dump 默认 allow_nan=True 会写出 `NaN` 字面量，
@@ -170,8 +169,26 @@ if __name__ == "__main__":
             return [finite(v) for v in o]
         return o
 
+    # 合并键必须含档位与反泊松开关。原先只按体系名，于是任何一次 level-1 重跑会把
+    # 同名的 level-2 行整行冲掉 —— 今天实际发生过，侧车里 level-2 行因此清零，
+    # 只剩 .out 里的数（而 .out 不入库）。见 PROGRESS-nlcsplit.md 15:4x。
+    def key(r):
+        return (r["name"], r.get("level"), bool(r.get("cpcorr")))
+    merged = {key(r): r for r in prev}
+    merged.update({key(r): r for r in rows})
+    # 保持首次出现的顺序，别让 JSON 行序随重跑抖动（图的自变量靠它）
+    order, seen_keys = [], set()
+    for r in prev + rows:
+        k = key(r)
+        if k not in seen_keys:
+            seen_keys.add(k)
+            order.append(k)
     payload = {"basis": BASIS, "level": LEVEL, "cpcorr": CPCORR, "geometry_source": DATA,
-               "rows": [finite(seen[k]) for k in seen]}
+               "rows": [finite(merged[k]) for k in order]}
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, indent=1, allow_nan=False)
-    print(f"\n  侧车 → {out}（累计 {len(seen)} 个体系）")
+    n_lvl = {}
+    for r in payload["rows"]:
+        n_lvl[r.get("level")] = n_lvl.get(r.get("level"), 0) + 1
+    print(f"\n  侧车 → {out}（累计 {len(payload['rows'])} 行，按档位分布 "
+          + ", ".join(f"level {k}: {v}" for k, v in sorted(n_lvl.items())) + "）")

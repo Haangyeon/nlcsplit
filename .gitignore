@@ -6,6 +6,7 @@ ref/
 nlcsplit/logs/*
 !nlcsplit/logs/step_h.json
 !nlcsplit/logs/orca_anchor.json
+!nlcsplit/logs/step_h_l2cp.json
 nlcsplit/step*.out
 __pycache__/
 *.pyc

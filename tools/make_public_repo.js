@@ -107,6 +107,15 @@ let side = read(path.join(SRC, 'nlcsplit/logs/step_h.json'));
 side = side.replace(/"geometry_source":s*"[^"]*"/, '"geometry_source": "fetched by nlcsplit/tools/get_s22.sh from github.com/grimme-lab/GMTKN55 tag v1"');
 copied.push(write('nlcsplit/logs/step_h.json', side));   // 不动：host 字段是"哪台机器出的数"的出处，故意保留
 
+// level-2 + 反泊松 那一档单独成车（母仓 step_h.json 按体系名合并会冲掉同名高档行），
+// 它的原始 stdout 也已入库，见 evidence/l2cp/ + MANIFEST.sha256。
+copied.push(write('nlcsplit/logs/step_h_l2cp.json', read(path.join(SRC, 'nlcsplit/logs/step_h_l2cp.json'))));
+fs.mkdirSync(path.join(OUT, 'evidence'), { recursive: true });   // 必须在 cp -r 之前，否则目标父目录不存在
+cp.execSync(`cp -r "${path.join(SRC, 'evidence', 'l2cp')}" "${path.join(OUT, 'evidence', 'l2cp')}"`);
+for (const f of fs.readdirSync(path.join(OUT, 'evidence', 'l2cp'))) {
+  if (f !== 'MANIFEST.sha256') copied.push('evidence/l2cp/' + f);
+}
+
 // ---------------------------------------------------------------- 证据原件：字节不动 + 哈希校验
 fs.mkdirSync(path.join(OUT, 'evidence'), { recursive: true });
 cp.execSync(`cp -r "${path.join(SRC, 'evidence', 'orca_run')}" "${path.join(OUT, 'evidence', 'orca_run')}"`);
