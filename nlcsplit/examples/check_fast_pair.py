@@ -1,7 +1,7 @@
 """快版 pair_energy 与朴素位移张量版的逐位对照 + 对 PySCF 原生核的绝对校验。"""
 import sys, os
 import numpy as np
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from pyscf import gto, dft
 from nlcsplit import partition, nlc, geomlib
 
