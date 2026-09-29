@@ -129,7 +129,7 @@ cannot be reported as "the dispersion energy" without qualification [S2].
 
 ## 5. Availability and quality assurance
 
-Apache-2.0; no GAMESS source is included, linked or required. Every table in the
+Apache-2.0; no GAMESS source is included, linked or required - a claim checked by scanning every file of an independent install (25 files at the time of writing), where the only occurrence of the word is the disclaimer in the package docstring itself. Every table in the
 companion text maps to one `step_*.py`, and archived stdout is kept under a
 UTC-stamped filename. The test suite has 40 tests, including a naive triple-loop
 versus BLAS comparison of the kernel, per-scheme additivity checks, and geometry
