@@ -938,3 +938,40 @@ E_AB 是 −0.6826 / −0.7188，而今天 `logs/step_h.json` 用**修正后的�
 附本轮可复现命令：
 `PYTHONPATH=. python3 scratch/pin_orca.py`（打印上面第 3 条的三个数）；
 `grep -nE "EX |EC |FINAL" ref/h2o_wb97xv.out`；`grep -rn "26\.7[0-9]" ref/`。
+
+## [2026-09-29 11:55] [agent=cn-qoder] [batch5 定局：苯-甲烷被预算截；打包查出"已删模块仍进 wheel"]
+
+**(1) batch5 结果**：`MANIFEST.txt` 记 `20260928T213839Z step_h_l2cp rc=124 29 lines`
+——`timeout 14400` 到点，**`苯-甲烷` 的 level 2 + 反泊松没跑完**，六体系里成了五个
+（水 −6.129 / 氨 −3.675 / 甲烷 −0.466 / 苯-水 −3.266 / 苯-氨 −2.169，BSSE 依次
+1.69/1.49/0.20/1.07/**0.76**）。苯-氨这条也再次确认核心量 lvl1→lvl2 不动
+（ΔE_NLC −1.327→−1.328，P_frz −1.393 一字不变）。
+run5 脚本已自动进到第二段：`苯二聚体(A) 苯二聚体(B)` level 1、`NCPC=0`，约 20 分钟前起。
+⇒ 正文 §3.2 我先前写成"四个最小体系 + 苯-水 + 苯-氨"（=6），**实际是 5**
+（苯-水本就属于最小的那批），已改并明写第六个未完成。
+
+**(2) 打包查出个会咬人的东西**：端到端安装测试（`pip install --target` 到 /tmp、
+从 /tmp 跑 `--pyargs`）装出来的包里**仍有 `test_fast_pair.py` 和
+`test_soft_partition.py`**，而这两个文件我几分钟前才 `git mv` 走。
+根因不是 pip 缓存、也不是 WSL drvfs 目录缓存（清缓存重装照旧、
+且 WSL 眼里的源目录确认已经没有它们），而是
+**`pip install <目录>` 走就地构建，在仓库根留下 `build/`；
+setuptools 的 `build_py` 只往 `build/lib/` 加文件、不清理已删除模块**
+⇒ 被删的模块从 `build/lib/nlcsplit/` 又被打进了 wheel。
+`rm -rf build *.egg-info` 之后复装即干净。已写进 `CONTRIBUTING.md` 的"发布前三道检查"。
+
+顺带清掉的两处真问题：
+* 脚本式模块顶着 `test_*.py` 装在包顶层 → 移入 `examples/` 改名 `check_*`（`624f320`）；
+* `slow` 标记只登记在仓库 pyproject，从包外跑会报三条 `PytestUnknownMarkWarning`
+  → 由 `nlcsplit/tests/conftest.py` 随包注册。
+
+**(3) 一条要提醒你的口径**：CI 第一道 `pytest -m "not slow"`
+**不含** `test_matches_pyscf_native_kernel` 与 `test_pair_terms_regression`——
+也就是不含与原生核的对照。第二道 `pytest -q`（含 slow）不能省。
+别在别处写"CI 已验与原生核一致"。
+
+**(4) 悬着、需要用户拍板的两件事**（我不动集群也不代填口令）：
+① WoS 检索界面能进、检索不给跑，需要他本人过一次机构登录；
+② 跨程序锚点已撤回（见 11:25 那条），要补就得跑一次**会打印 VV10 项**的 ORCA 单点
+——ORCA 只在 snnu 上有，CentOS/WSL 都没有；或自己构建 libxc 直调 `xc_nlc_vxc`
+（PySCF 里 libxc 静态链在 libdft.so，取不到符号）。
