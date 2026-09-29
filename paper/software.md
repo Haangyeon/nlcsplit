@@ -90,7 +90,9 @@ convention for splitting a local energy density: it is a property of the double
 sum alone [S3]. The flip side is reported as a limitation rather than hidden - the
 absolute local term of one fragment is exactly β·N_A, so its scheme spread is β
 times the spread of the Becke population, 3.0415 kcal/mol per electron, i.e.
-0.300 kcal/mol for the water dimer [S12].
+0.329 kcal/mol for the water dimer on the official S22 geometry and 0.300 on the
+constructed one (`nlcsplit/step_k_population.py`, whose two runs both assert that the
+fragment populations sum to the electron number).
 
 **Attribution.** Four real-space partitions reachable through the PySCF grid
 machinery - Becke, Becke with the atomic-radius adjustment, Becke-Treutler and

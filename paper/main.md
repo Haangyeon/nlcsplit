@@ -490,9 +490,10 @@ local term attributed to a fragment is exactly beta*N_A where N_A is its Becke
 population, and beta = 3.0415 kcal/mol per electron. Any scheme-induced spread in
 the population is therefore amplified into the fragment-resolved local term by
 that factor as an identity, not an estimate: for the water dimer at grid level 3
-the four schemes give fragment-A populations of 9.8699 (Becke), 9.8721 (Stratmann),
-9.9245 (Becke--Treutler) and 9.9685 (Becke--Rad) electrons, a spread of
-9.865e-2 electrons which is 0.300 kcal/mol [S20].
+the four schemes give fragment-A populations of 10.1559 (Becke), 10.1537 (Stratmann),
+10.0979 (Becke--Treutler) and 10.0478 (Becke--Rad) electrons on the official S22
+geometry, a spread of 0.108 electrons which is 0.329 kcal/mol; on the constructed
+geometry the same spread is 0.0987 electrons, i.e. 0.300 kcal/mol [S20].
 Two consequences deserve stating explicitly. In a superposition difference the
 term cancels identically — electron number is conserved — so every dE_NLC value
 in this paper is free of it. But any table reporting *absolute* fragment energies
@@ -600,8 +601,8 @@ whole method would be wrong by more than twenty-fold for individual systems.
 
 **Absolute fragment energies inherit a population uncertainty.** As shown in
 section 3.5, the local term of a fragment is exactly beta*N_A, so the
-9.865e-2-electron spread of the attributed population over the four schemes is a
-0.300 kcal/mol spread in the
+0.108-electron spread of the attributed population over the four schemes is a
+0.329 kcal/mol spread in the
 reported fragment energy - larger than the scheme spread of the pair term itself
 for the water dimer. Differences are safe; absolutes are not, unless the
 population convention is stated alongside them.
@@ -741,7 +742,7 @@ hash-listed under `evidence/*/MANIFEST.sha256`, and were not re-typed by hand.
 | S17 | `RESEARCH-20260929-lit.md` §13 | second round: full enumeration through WoS's own record endpoint (RecordsSearched = 58,664,816, search date 2026-09-29), the three calibration strings reproduced record-for-record, the two zero-hit strings, complete readings of the two 4-record and four broad strings, and the three added citations whose DOIs were checked against both Crossref and WoS |
 | S18 | `nlcsplit/logs/orca_anchor.json`, `evidence/orca_run/h2o_dimer.out`, `evidence/orca_run/h2o_mono0.out`, `evidence/orca_run/h2o_mono1.out`, `evidence/orca_run/benz_dimer.out`, `evidence/orca_run/benz_mono0.out`, `evidence/orca_run/benz_mono1.out`, `evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/h2o_wb97x.out`, `evidence/orca_control/h2o_wb97xv.out`, `evidence/orca_control/MANIFEST.sha256` | the cross-program anchor: six serial ORCA 6.0.1 runs (S22 official geometries, 6-31G\*, each with a converged SCF and exactly one `NL Energy, E(C,NL)` line), the per-file sha256 manifest, and the omegaB97X (no `-V`) control that prints no such line |
 | S19 | `evidence/centos/20260928T165857Z_centos-step_c.out` lines 6, 15 and 24 | the level-0 ratios of the inter-fragment pair term to the superposition difference: 1.017 for the water dimer at the official S22 geometry, 1.025 at its omegaB97X-V-optimised geometry, and 0.915 for the benzene sandwich - the third of these is a different system, which is why it is not folded into the 0.92-1.08 band |
-| S20 | `PROGRESS-nlcsplit.md:700-707` | the level-3 four-scheme population table for the water dimer at the official geometry (N = 66532), from which beta*N_A is read. This one tag points at the repository work log rather than at a shipped stdout: the table is append-only and line-stable, but no `evidence/**` file prints those four populations yet, so a reviewer checking S20 must read prose, not a machine artefact |
+| S20 | `nlcsplit/step_k_population.py`, `evidence/population/20260929T131530Z_stepk_pop-official.out`, `evidence/population/20260929T131055Z_stepk_pop-constructed.out` | the level-3 four-scheme population table for the water dimer, from which beta*N_A is read; both runs assert that the fragment populations sum to the electron number. Re-running them is also what showed that the earlier tabulation of this number in the work log was labelled "official geometry" but reproduces only on the constructed one |
 
 Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
 water-dimer geometry fix (its inter-fragment minimum is 2.0258 A against 1.95 A in

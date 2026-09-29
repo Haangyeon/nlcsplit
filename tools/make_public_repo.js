@@ -53,7 +53,7 @@ const LEDGER_OUTSIDE = path.join(DIST, 'PATH-SCRUB-LEDGER.txt');
 const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'];
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
-  'step_h_s22.py', 'step_i_gridrepr.py'];
+  'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py'];
 const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py',
   'test_partition_factors.py', 'test_regression.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
@@ -69,7 +69,8 @@ const EXPLICITLY_EXCLUDED = ['nlcsplit/centos_run.sh', 'nlcsplit/centos_run2.sh'
 
 // 证据目录。recompute/ 与 orca_control/ 是 2026-09-29 补的：paper/main.md 的 [S8][S9][S12][S18]
 // 直接按文件名指它们，闸门 D 报"母仓里有、没随包发布"——引用落空。
-const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'recompute', 'orca_control'];
+const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'recompute',
+  'orca_control', 'population'];
 
 // ================================================================ 脱敏（只发生在导出副本上）
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
