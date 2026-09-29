@@ -52,6 +52,17 @@
    所以 **β∫ρ 在任何 superposition 差中精确抵消**（实测 ΔE_loc = +3.736e−05 kcal/mol，
    level 1）⇒ 只对双重和做片间分解是严格的，不是近似
    [step_f_dispersion.py 输出；step_c 独立复现同一结论]
+   ⚠ 但**别把这条推广到"片段绝对量"**：单片段的局域项 `E_loc,A = β·N_A`
+   就是一句 Becke 布居，`β = 0.004847 Ha = 3.0415 kcal/mol/电子`，
+   所以 **span_scheme(E_loc,A) ≡ β · span_scheme(N_A)**——恒等式而非估算。
+   水二聚体 level 3 实测四方案 ΔN_A = 9.865e−2 e ⇒ **0.3000 kcal/mol**，
+   比配对项的方案跨度（八体系 0.003–0.248 kcal/mol）大一个量级。
+   读法：这是**一切用 Becke 布居的分解法共有的**性质，不是本方法的贡献或优势；
+   报片段绝对能时必须连同此条一起报。[scratch/probe_iB.py；PROGRESS 08:40 条]
+   同一实测还判掉一个口径疑虑：软归属与 owner 硬归属对局域项只差 ≤8.7e−7 个电子
+   （β·Δ ≤ 2.6e−6 kcal/mol），所以 `fragment_decomposition(soft=)` 里"Becke 因子
+   乘了两次"在数值上无关紧要；但 `base_w` 配一次因子是**错的**口径（∫ρ 会积成
+   94.75/20 个电子，子网格重叠区重复计数），已由 `tests/test_partition_factors.py` 钉住。
 4. **归属方案**：Becke / Becke 半径修正 / Becke–Treutler / Stratmann + 最近原子硬分区，
    全部走 PySCF `gen_grid.get_partition` + `radi.BRAGG_RADII`。
 5. **远区裁剪**：`rho_floor` 默认 1e−12；1e−8…1e−16 五档之间片间项跨度 **4e−11 kcal/mol**，
@@ -60,13 +71,16 @@
 ## 3. Results
 
 ### 表 1 验证链
-| 对照 | 差 (kcal/mol) | 出处 |
+| 对照 | 差 | 出处 |
 |---|---|---|
-| 本包 vs PySCF 原生核（7 体系 × level 1） | ≤ **+0.0015**（苯 −0.0038） | CentOS step_b.out |
-| 本包 vs ORCA 6.0.1（水单体） | **6e−4** | ref/h2o_wb97xv.out |
+| **同网格·算法离散差**：显式和 vs PySCF 原生核，同一张参照网格、同一份密度 | level 0/1/2 = **+1.54e−8 / +1.01e−8 / +8.49e−9 Ha**（即 9.7e−6 / 6.4e−6 / 5.3e−6 kcal/mol），**不随 level 变** ⇒ 这是核本身的离散，不是网格没收敛 | `step_i_gridrepr.py`，logs/20260929T_step_i_gridrepr.out |
+| **换网格·表示差**：显式和被搬到 `gen_grid.get_partition` 的分区网格上，与上一行同一份密度 | level 0/1/2 = **−0.0282 / +0.0015 / +0.0001 kcal/mol**；同档 ∫ρ 的表示误差 = −1.61e−2 / +2.95e−4 / −6.56e−6 个电子，**两者同步塌缩** ⇒ 这一行量的是网格完备性，与我们的求和算法无关 | 同上 |
+| 本包 vs ORCA 6.0.1（水单体） | **6e−4 kcal/mol** | ref/h2o_wb97xv.out |
 | 跨版本 2.12.1 vs 2.14.0 | 网格点数差 10%，能量分项**逐位一致** | step_f 两边输出 |
+⇒ 两行**不能并排成一个数**：曾被引用的"−0.028 kcal/mol 与原生核不符"是 level 0 的
+   **换网格表示差**，不是算法误差；同一张网格上重测是 **1.0e−8 Ha**（level 1）。
 ⇒ 诚实表述：独立程序只有 ORCA 一个；PySCF 原生核与我们同属一库。
-要凑第三个独立实现需直接调 libxc `xc_nlc_vxc` 或 Psi4 —— **待补**。
+   要凑第三个独立实现需直接调 libxc `xc_nlc_vxc` 或 Psi4 —— **待补**。
 
 ### 表 2 不确定度三分解（这才是"归属可辩护"的对象）
 | 来源 | 幅度 | 判读 | 出处 |
