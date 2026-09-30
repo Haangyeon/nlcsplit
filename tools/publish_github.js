@@ -10,7 +10,8 @@
  *
  * 用法：
  *   node tools/publish_github.js                       # dry-run：只看它会做什么
- *   NLCSPLIT_GH_TOKEN=... node tools/publish_github.js --push --owner <login> --repo nlcsplit --visibility private
+ *   NLCSPLIT_GH_TOKEN=...            node tools/publish_github.js --push --owner <login>
+ *   NLCSPLIT_GH_TOKEN_FILE=.publish/gh_token.tmp  同上（值不进 shell 历史 / 不进对话记录）
  */
 const fs = require('fs');
 const path = require('path');
@@ -27,7 +28,11 @@ const STAMP = '.exported-by-make_public_repo';
 const OWNER = opt('owner', '');
 const REPO = opt('repo', 'nlcsplit');
 const VIS = opt('visibility', 'private');
-const TOKEN = process.env.NLCSPLIT_GH_TOKEN || '';
+// token 从环境变量读；也接受 NLCSPLIT_GH_TOKEN_FILE（值放文件里，避免抄进长期保存的会话记录）。
+// 两条路都不写进 git remote URL：那会在 .git/config 与 reflog 里留下长期可用的凭据。
+const TOKEN_FILE = process.env.NLCSPLIT_GH_TOKEN_FILE || '';
+const TOKEN = process.env.NLCSPLIT_GH_TOKEN || (TOKEN_FILE && fs.existsSync(TOKEN_FILE)
+  ? fs.readFileSync(TOKEN_FILE, 'utf8').trim() : '');
 const DO_PUSH = flag('push');
 
 const die = m => { console.error('中止：' + m); process.exit(1); };
