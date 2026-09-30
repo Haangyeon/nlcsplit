@@ -235,6 +235,18 @@ const FIGS = [];
 let TITLE = null;
 let i = 0;
 const lines = md.split(/\r?\n/);
+// YAML front matter is metadata, not prose. Without this the block between the two `---`
+// markers is parsed as an ordinary paragraph, and the PDF's first page prints
+// `orcid: TBD`, the raw author YAML and the authors' Chinese names as body text.
+// Only skipped when line 1 is exactly `---` AND a closing `---` exists: an unterminated
+// block is left to the parser instead of silently swallowing the whole document.
+// This is a provable no-op for main.md and p2.md — neither starts with `---` — so their
+// .tex bytes cannot move; the byte-identity check at the bottom of this file covers it.
+let fmLines = 0;
+if (/^---\s*$/.test(lines[0])) {
+  const close = lines.findIndex((l, n) => n > 0 && /^---\s*$/.test(l));
+  if (close > 0) { fmLines = close + 1; i = close + 1; }
+}
 while (i < lines.length) {
   const l = lines[i];
   // \title has to precede \begin{document}, so hold it and splice it into the preamble.
@@ -438,6 +450,7 @@ if (TITLE) {
 const { spawnSync } = require('node:child_process');
 const TRACKED = new Set((spawnSync('git', ['ls-files'], { encoding: 'utf8' }).stdout || '')
   .split('\n').filter(Boolean));
+const TRACKED_LIST = [...TRACKED];
 const looksLikePath = x => /[/.]|\.(out|json|py|md|js|txt|bib)$/.test(x) && !/^(DOI|arXiv|§)/.test(x);
 // Two shapes look like paths but are not: a file *plus a line range* (`x.md:700-707`), and
 // a glob (`evidence/**`). Checking the whole token as a path produced false FAILs, and a
@@ -476,17 +489,53 @@ function verdict(paths) {
     plain.push(p);
   }
   const bad = plain.filter(p => !TRACKED.has(p));
+  // A token ending in `/` names a directory, and `git ls-files` lists files, so a directory
+  // can never be "tracked" literally. The honest rule: it exists and holds at least one
+  // tracked file. Without this the gate rejected eight correct citations in one run
+  // (`evidence/orca_run/`, `evidence/release_qa/`, ...), and a genuinely broken one
+  // (`MANIFEST.sha256`, which exists only inside those directories) hid among them.
+  const underTracked = d => fs.existsSync(d) && TRACKED_LIST.some(t => t.startsWith(d));
+  const dirGone = bad.filter(p => p.endsWith('/') && !fs.existsSync(p));
+  const dirEmpty = bad.filter(p => p.endsWith('/') && fs.existsSync(p) && !underTracked(p));
+  const fileBad = bad.filter(p => !p.endsWith('/') && fs.existsSync(p));
+  const missing = bad.filter(p => !p.endsWith('/') && !fs.existsSync(p));
   const bits = [];
-  if (!bad.length && !nodeBad.length) return 'tracked';
-  const onDisk = bad.filter(p => fs.existsSync(p));
-  const gone = bad.filter(p => !fs.existsSync(p));
-  if (onDisk.length) bits.push('**FAIL, exists but NOT tracked: ' + onDisk.join(', ') + '**');
-  if (gone.length) bits.push('**FAIL, missing: ' + gone.join(', ') + '**');
+  if (dirGone.length) bits.push('**FAIL, no such directory: ' + dirGone.join(', ') + '**');
+  if (dirEmpty.length) bits.push('**FAIL, 目录存在但里面没有任何被跟踪的文件: ' + dirEmpty.join(', ') + '**');
+  if (fileBad.length) bits.push('**FAIL, exists but NOT tracked: ' + fileBad.join(', ') + '**');
+  if (missing.length) bits.push('**FAIL, missing: ' + missing.join(', ') + '**');
   if (nodeBad.length) bits.push('**FAIL, 节点 ID 对不上: ' + nodeBad.join(', ') + '**');
-  return bits.join('; ');
+  // The verdict is the bit list, not `bad.length`: a directory that is cited correctly and
+  // holds tracked files lands in none of the four buckets, and testing `bad` here reported
+  // that case as one anonymous FAIL with an empty message after it.
+  return bits.length ? bits.join('; ') : 'tracked';
+}
+// 路径判定的双向自证。目录类引用是后加的（`evidence/orca_run/` 这一类），加的时候出过
+// 一个只有半个方向的错：一个"目录存在、里面有被跟踪文件"的正确引用落进四个分类之外，
+// bits 为空却仍按 bad.length 计一次 FAIL，于是报出来的消息是空的。所以这里两个方向都验 ——
+// 假的必须响、必须点名，真的必须不出声。放在 verdict 之后，因为 TRACKED 是 const，
+// 在它之前调用会撞 TDZ（函数声明提升掩盖了这一点）。
+{
+  const okDir = 'evidence/orca_run/';
+  const fakeDir = 'evidence/__md2tex_selftest_no_such_dir__/';
+  const vOk = verdict([okDir, cfg.bib]);
+  const vBad = verdict([fakeDir]);
+  if (vOk !== 'tracked') {
+    throw new Error('md2tex 的路径闸门误拦了正确的目录/文件引用（' + vOk + '）—— 不放行');
+  }
+  if (vBad === 'tracked' || !vBad.includes(fakeDir)) {
+    throw new Error('md2tex 的路径闸门对不存在的目录不响，或响了却没说出名字（'
+      + vBad + '）—— 不放行');
+  }
 }
 
-const cut = md.indexOf('## Appendix');
+// Anchored to a line start on purpose. software.md names its appendix in a sentence of
+// prose near the top; an unanchored indexOf found that mention and cut the document at
+// character 1406, so the auditor reported "tags cited in the body: 0" for a file with 12
+// of them - and every row then read as an orphan. The failure was loud only because the
+// orphan check runs against the same truncated slice.
+const cut = md.search(/^## Appendix/m);
+
 const appendix = cut < 0 ? '' : md.slice(cut);
 const bodyText = md.slice(0, cut < 0 ? md.length : cut);
 // `[S1, S5]` cites two tags. Matching only the single-tag form made every multi-tag
@@ -569,6 +618,9 @@ auditText = '# LaTeX build and `[S#]` provenance audit'
   + '- source `' + SRC + '`: ' + md.length + ' chars, ' + lines.length + ' lines\n'
   + '- output `' + OUT + '`: title from the level-1 heading, ' + seenH.length + ' sections\n'
   + '- characters with no mapping: ' + stray.size + ' (a nonzero count stops the script)\n'
+  + '- YAML front matter excluded from the typeset text: '
+  + (fmLines ? fmLines + ' lines (metadata; it is not body prose, so it is not in the PDF)'
+    : 'none (this document has no front matter)') + '\n'
   + '- tags cited in the body: ' + usedInBody.length + '\n'
   + '- figures pulled in: ' + FIGS.length + ' -> ' + verdict(FIGS) + '\n'
   + '- inline backticked paths in the body text: ' + inlinePaths.length + ' scanned -> '

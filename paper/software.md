@@ -31,16 +31,18 @@ keywords:
   - PySCF
 ---
 
-*SoftwareX / JOSS shape. Numerical claims carry a `[S#]` tag into
-`paper/main.md` and `MAIN-skeleton.md`; scripts named here are in the repository
-and their archived stdout under `nlcsplit/logs/` is the source. **The front matter
-above contains fields only the author can supply (ORCID, corresponding status, exact
-affiliation string, co-author list); they are marked rather than filled.**
-`references.bib` now exists (16 entries, up from 13 today: VV10's own two papers and
-the Hyldgaard-Berland-Schroeder xc-hole interpretation were missing), and every DOI in
-it has been reverse-checked against Crossref by DOI and against Web of Science, not by
-title search (see `RESEARCH-20260929-lit.md` §9 for why that distinction mattered
-here).*
+# nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation energy
+
+*SoftwareX / JOSS shape. Every numerical claim carries a `[S#]` tag into this paper's own
+`## Appendix: sources`, which resolves each tag to a tracked artefact in this repository —
+not to `paper/main.md`, whose tags number a different set. Archived stdout lives under
+`evidence/**` with SHA-256 manifests; `nlcsplit/logs/` is gitignored scratch and is not a
+source. **The front matter contains fields only the author can supply (ORCID,
+corresponding status, co-author confirmation); they are marked rather than filled.**
+`references.bib` is the shared list; the entries this paper cites were reverse-checked
+against Crossref by DOI, not by title search (see `RESEARCH-20260929-lit.md` §9 for why
+that distinction mattered, and `evidence/claims_audit/G_s22_provenance_20260930.md` for
+the queries behind the two software entries).*
 
 ## Abstract
 
@@ -50,14 +52,16 @@ which discards the pair index. `nlcsplit` evaluates that double sum explicitly
 and attributes each grid point to atoms and fragments through a real-space
 partition, so the nonlocal contribution separates into intra-fragment and
 inter-fragment pair blocks that sum back to the total to machine precision. The
-package is pure Python and NumPy on top of PySCF, released under Apache-2.0,
+package is pure Python and NumPy [[harris2020numpy]] on top of PySCF
+[[sun2018pyscf]]; [[sun2020pyscf]], released under Apache-2.0,
 contains no GAMESS source, and reproduces every number it documents from a
 single named script.
 
 ## 1. Motivation and statement of need
 
 Functionals that pair a range-separated hybrid with the VV10 nonlocal correlation
-term - ωB97X-V and ωB97M-V in particular [S11] - are a routine choice for
+term - ωB97X-V [[mardirossian2014wb97xv]] and ωB97M-V
+[[mardirossian2016wb97mv]] in particular - are a routine choice for
 non-covalent interactions. Their nonlocal contribution,
 
     E_NL = ½ ∫∫ ρ(r) ρ(r') Φ(r, r') d³r d³r',
@@ -68,12 +72,13 @@ available options stop at the semi-local part: electrostatics, exchange,
 polarisation and charge transfer can be resolved by EDA schemes, whereas the
 nonlocal term is carried as an undivided block. The closest published treatment
 computes exactly that block as a whole and asks whether it is accurate
-(Dasgupta, Palos, Pan, J. Chem. Theory Comput. 2023, 10.1021/acs.jctc.3c00903);
-the closest published explicit evaluation, JuNoLo (Lazić et al, Comput. Phys.
-Commun. 181, 371 (2010), 10.1016/j.cpc.2009.09.016), sums the double sum directly
-but targets an improved total energy and explicitly recommends itself for bonded
-systems "where one cannot tell apart fragments". Neither resolves the term into
-fragment pairs. That gap is what this package fills, and it is a capability gap
+[[dasgupta2023]]; the closest published explicit evaluation, JuNoLo
+[[lazic2010junolo]], sums the double sum directly but targets an improved total
+energy and explicitly recommends itself for bonded systems "where one cannot tell
+apart fragments". Neither resolves the term into fragment pairs, which is what the
+literature screen of [S1] was run to find - and that screen's own record says the
+open-index *subject* search behind it is unreliable, so this is a screen, not an
+enumeration. That gap is what this package fills, and it is a capability gap
 rather than an accuracy gap: on the same grid and density our sum agrees with the
 native PySCF kernel to ~1e-8 Ha [S9].
 
@@ -365,38 +370,40 @@ comes out zero for every pair, including the ones facing each other across the
 inter-fragment gap. That is a statement about this particular bound, not about screening in
 general, and the measurements are in `paper/p2.md` with their artefacts under
 `evidence/bound_forms/`, `evidence/fastpair_ab/` and `evidence/scaling/` rather than
-quietly dropped.
+quietly dropped [S20].
 Interpretation limited to the two-body and fragment-pair level. Results depend on
 the choice of real-space partition to the extent quantified in section 4. VV10
 only - the τ-dependent rVV10 form is not implemented. And it is not an energy
 decomposition analysis: it does not separate electrostatics, exchange-repulsion,
 polarisation or charge transfer.
 
----
-### Sources
-Paths are given relative to the repository root, because that is what the export gate
-resolves them against. Three rows used to name `logs/<something>.out`, which is not a path
-in this repository: `nlcsplit/logs/` is gitignored scratch, and the three files concerned are
-tracked only as the hash-manifested copies under `evidence/**` (the build does place a
-scrubbed copy of two of them inside the package, but the manifest and the citation should
-point at one tracked original, not at a generated duplicate).
+## Appendix: sources
 
-[S1] `RESEARCH-20260929-lit.md` · [S2] `nlcsplit/logs/step_h.json`,
-`nlcsplit/logs/step_h_l2cp.json`, `MAIN-skeleton.md` 表 2 (uncertainty decomposition),
-表 3 (P_frz against the superposition difference) and 表 4b (the S22 subset) ·
-[S3] `nlcsplit/step_f_dispersion.py` · [S5] `nlcsplit/step_e_kernel.py` ·
-[S7] `nlcsplit/step_d_floor.py` · [S9] `nlcsplit/step_i_gridrepr.py`,
-`evidence/recompute/20260929T_step_i_gridrepr.out` ·
-[S10] `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`,
-`evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out` ·
-[S11] Mardirossian and Head-Gordon, PCCP 16, 9904 (2014), 10.1039/c3cp54374a
-(DOI reverse-checked) ·
-[S12] `evidence/recompute/20260929T003144Z_stepg-recompute.out` ·
-[S17] `nlcsplit/tests/test_partition_factors.py` ·
-[S18] `evidence/orca_run/`, `evidence/orca_control/` (six ORCA 6.0.1 outputs and their
-`MANIFEST.sha256`) ·
-[S19] `evidence/release_qa/` (clean-environment installs and out-of-tree runs, each with
-the wheel's SHA-256) ·
-[S20] `evidence/bound_forms/`, `evidence/fastpair_ab/`, `evidence/scaling/`,
-`evidence/coretail/` (the certified-screening measurements summarised in section 6, in
-full in `paper/p2.md`)
+Paths are relative to the repository root, because that is what the export gate resolves
+them against. Every path below is tracked by git, and the build refuses to produce
+`software.tex` if one is not. Three rows used to name `logs/<something>.out`, which is not
+a path in this repository: `nlcsplit/logs/*.out` is gitignored scratch, and those files are
+tracked only as the hash-manifested copies under `evidence/**` (the build does place a
+scrubbed copy of two of them inside the package, but a citation should point at one tracked
+original, not at a generated duplicate). The two `.json` logs in the S2 row are tracked in
+place, and are cited as they are kept.
+
+Literature is not in this table. Where a sentence needs a published work it uses a
+`[[key]]` citation resolved against `paper/references.bib`, whose entries were
+reverse-checked through Crossref by DOI; the queries for the software and benchmark
+entries are archived in `evidence/claims_audit/G_s22_provenance_20260930.md`.
+
+| Tag | Artefact | What it fixes |
+|---|---|---|
+| S1 | `RESEARCH-20260929-lit.md` §1, §6, §9 | the literature screen behind the statement-of-need comparison, together with that file's own measurement that open-index *subject* search recall is poor — which is why §1 calls the gap a screen and not an enumeration |
+| S2 | `nlcsplit/logs/step_h.json`, `nlcsplit/logs/step_h_l2cp.json`, `MAIN-skeleton.md` Table 2 (uncertainty decomposition), Table 3 (P_frz against the superposition difference) and Table 4b (the S22 subset) | the block-additivity identity and its measured residual (0.0 to 3.5e-18 Ha), and the per-system tables the decomposition claims to reproduce |
+| S3 | `nlcsplit/step_f_dispersion.py` | that `β∫ρ = βN` cancels identically from a superposition difference, so the inter-fragment term needs no local-density convention — and the denominator rule that refuses to quote a share when the sum cancels |
+| S5 | `nlcsplit/step_e_kernel.py` | the definition-sensitivity control: cross-pairing instead of same-centre pairing raises monomer energies by 0.138 (water), 0.418 (argon) and 0.914 (benzene) kcal/mol |
+| S7 | `nlcsplit/step_d_floor.py` | the `rho_floor = 1e-12` far-field cut, and the reported cost of it (10.7–22.6% of points dropped, carrying ≤ 2.3e-6 electrons) |
+| S9 | `nlcsplit/step_i_gridrepr.py`, `evidence/recompute/20260929T_step_i_gridrepr.out` | agreement of the explicit pair sum with PySCF's native VV10 kernel on a fixed grid, and the grid-representation residual quoted in §1 and §2 |
+| S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out` | the level-2 counterpoise numbers, computed on the cluster and archived with their stdout |
+| S12 | `evidence/recompute/20260929T003144Z_stepg-recompute.out` | the basis-set and grid sensitivity of the attribution, including the ±5% agreement among the four basis sets beyond STO-3G |
+| S17 | `nlcsplit/tests/test_partition_factors.py` | the two assertions `partition_factors()` enforces before returning (pointwise normalisation at 1e-12, agreement with PySCF's own `get_partition` weights at 1e-11) — assertion thresholds, not measured residuals |
+| S18 | `evidence/orca_run/`, `evidence/orca_control/` | the six ORCA 6.0.1 outputs and their manifests (`evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/MANIFEST.sha256`): the external referee on the water and benzene anchors and its control group |
+| S19 | `evidence/release_qa/` | clean-environment installs and out-of-tree runs, each recorded with the SHA-256 of the wheel that was installed |
+| S20 | `evidence/bound_forms/`, `evidence/fastpair_ab/`, `evidence/scaling/`, `evidence/coretail/` | the certified-screening measurements summarised in §6, reported in full in `paper/p2.md` |
