@@ -860,7 +860,7 @@ convention sits 1.7e-08 to 1.26e-04 Ha (0.00001-0.0788 kcal/mol) from it - a dif
 resolved in 5 of its 12 configurations against the conservative deterministic error bar
 and in all 12 against an independent Monte-Carlo bar 5.8x tighter. The case that draft
 excluded, unequal exponents and unequal electron numbers on the two centres, is now run too
-[[S22]]: the exact reference needs no nuclei and the density-factor partition needs no radii,
+[S22]: the exact reference needs no nuclei and the density-factor partition needs no radii,
 so the only convention-dependent input is the element label, and swapping the label at a fixed
 density moves the offset by at most 0.24% of itself. What the heteronuclear case actually
 changes is the size of the effect - the owner/Becke cross term sits 6.2-35.9% of the exact
