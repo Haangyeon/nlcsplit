@@ -1,0 +1,199 @@
+{
+ "program": "ORCA 6.0.1 (local Linux build via ~/orca6)",
+ "basis": "6-31G*",
+ "keyword_card": "! WB97X-V 6-31G* TightSCF",
+ "pal": "nprocs 4",
+ "quantity": "NL Energy, E(C,NL) (Ha)",
+ "sign": "ΔE_NLC = NL(复合物) − ΣNL(单体@复合物几何, 单体基组)",
+ "unit_of_delta": "kcal/mol",
+ "reproduction_gate": {
+  "system": "水二聚体",
+  "local_4rank_NL_Ha": "0.084358235133",
+  "archived_NL_Ha": "0.084358235133",
+  "identical": true
+ },
+ "runs": [
+  {
+   "name": "甲烷二聚体",
+   "natoms": 10,
+   "frags": [
+    [
+     0,
+     2,
+     3,
+     4,
+     5
+    ],
+    [
+     1,
+     6,
+     7,
+     8,
+     9
+    ]
+   ],
+   "dimer": {
+    "tag": "甲烷二聚体 / 复合物",
+    "nlc_Ha": 0.081966037471,
+    "scnl_Ha": -80.995122143,
+    "converged": false,
+    "wall_s": 51.1
+   },
+   "monomers": [
+    {
+     "tag": "甲烷二聚体 / 单体0",
+     "nlc_Ha": 0.041394194449,
+     "scnl_Ha": -40.497026147,
+     "converged": false,
+     "wall_s": 30.8
+    },
+    {
+     "tag": "甲烷二聚体 / 单体1",
+     "nlc_Ha": 0.041394194446,
+     "scnl_Ha": -40.497026143,
+     "converged": false,
+     "wall_s": 28.1
+    }
+   ]
+  },
+  {
+   "name": "氨二聚体",
+   "natoms": 8,
+   "frags": [
+    [
+     0,
+     2,
+     3,
+     4
+    ],
+    [
+     1,
+     5,
+     6,
+     7
+    ]
+   ],
+   "dimer": {
+    "tag": "氨二聚体 / 复合物",
+    "nlc_Ha": 0.082755378982,
+    "scnl_Ha": -113.053827558,
+    "converged": false,
+    "wall_s": 37.5
+   },
+   "monomers": [
+    {
+     "tag": "氨二聚体 / 单体0",
+     "nlc_Ha": 0.04191514306,
+     "scnl_Ha": -56.522810153,
+     "converged": false,
+     "wall_s": 23.5
+    },
+    {
+     "tag": "氨二聚体 / 单体1",
+     "nlc_Ha": 0.041915143048,
+     "scnl_Ha": -56.522810142,
+     "converged": false,
+     "wall_s": 24.0
+    }
+   ]
+  },
+  {
+   "name": "苯-水",
+   "natoms": 15,
+   "frags": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11
+    ],
+    [
+     12,
+     13,
+     14
+    ]
+   ],
+   "dimer": {
+    "tag": "苯-水 / 复合物",
+    "nlc_Ha": 0.201997739293,
+    "scnl_Ha": -308.558460383,
+    "converged": false,
+    "wall_s": 87.6
+   },
+   "monomers": [
+    {
+     "tag": "苯-水 / 单体0",
+     "nlc_Ha": 0.161340946851,
+     "scnl_Ha": -232.174554562,
+     "converged": false,
+     "wall_s": 62.9
+    },
+    {
+     "tag": "苯-水 / 单体1",
+     "nlc_Ha": 0.042652225295,
+     "scnl_Ha": -76.376989952,
+     "converged": false,
+     "wall_s": 24.8
+    }
+   ]
+  },
+  {
+   "name": "苯-甲烷",
+   "natoms": 17,
+   "frags": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    [
+     6,
+     13,
+     14,
+     15,
+     16
+    ]
+   ],
+   "dimer": {
+    "tag": "苯-甲烷 / 复合物",
+    "nlc_Ha": 0.200532709484,
+    "scnl_Ha": -272.674279294,
+    "converged": false,
+    "wall_s": 94.3
+   },
+   "monomers": [
+    {
+     "tag": "苯-甲烷 / 单体0",
+     "nlc_Ha": 0.161349816295,
+     "scnl_Ha": -232.174569503,
+     "converged": false,
+     "wall_s": 68.1
+    },
+    {
+     "tag": "苯-甲烷 / 单体1",
+     "nlc_Ha": 0.041399967716,
+     "scnl_Ha": -40.496910323,
+     "converged": false,
+     "wall_s": 27.1
+    }
+   ]
+  }
+ ]
+}

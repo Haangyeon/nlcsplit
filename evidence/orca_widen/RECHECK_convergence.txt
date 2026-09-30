@@ -1,0 +1,12 @@
+氨二聚体	dimer	conv(10)	normal	0.082755378982
+氨二聚体	mono0	conv(10)	normal	0.041915143060
+氨二聚体	mono1	conv(10)	normal	0.041915143048
+甲烷二聚体	dimer	conv(10)	normal	0.081966037471
+甲烷二聚体	mono0	conv(10)	normal	0.041394194449
+甲烷二聚体	mono1	conv(10)	normal	0.041394194446
+苯-水	dimer	conv(10)	normal	0.201997739293
+苯-水	mono0	conv(9)	normal	0.161340946851
+苯-水	mono1	conv(10)	normal	0.042652225295
+苯-甲烷	dimer	conv(10)	normal	0.200532709484
+苯-甲烷	mono0	conv(9)	normal	0.161349816295
+苯-甲烷	mono1	conv(9)	normal	0.041399967716
