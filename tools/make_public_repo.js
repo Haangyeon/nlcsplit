@@ -977,6 +977,38 @@ if (process.env.NLCSPLIT_SELFTEST) {
   fs.writeFileSync(LEDGER_OUTSIDE, L.join('\n') + '\n');
 }
 
+
+// ---------------------------------------------------------------- 闸门 W：文稿里的占比必须服从包内那条分母抵消规则
+// 规则本体在 `nlcsplit/step_f_dispersion.py`：|dnlc/dxc| > 2 ⇒ 只报两个绝对项，不报占比。
+// 2026-10-01 发现这条规则只在代码里执行，文字材料照旧写"甲烷 223%"——主篇结论段、
+// software.md §4 与 README 各一处，而主篇 §3.2 自己已经论证过那个数不该报。
+// 所以把它做成出货闸门。判据不靠本脚本重新推导，直接调 tools/audit_share_rule.js，
+// 避免两处逻辑各自漂移；自检按本文件既有惯例双向做一遍（脏样例必须响、干净样例必须静默）。
+const gateW = (() => {
+  const { spawnSync: ss } = require('node:child_process');
+  const os = require('node:os');
+  const run = (file) => ss(process.execPath,
+    [path.join(SRC, 'tools', 'audit_share_rule.js'), ...(file ? ['--files=' + file] : [])],
+    { encoding: 'utf8', cwd: SRC });
+  const probe = (name, body) => {
+    const f = path.join(os.tmpdir(), `nlcsplit-gateW-${name}.md`);
+    fs.writeFileSync(f, body);
+    const r = run(f);
+    try { fs.rmSync(f, { force: true }); } catch (e) { /* 临时目录归系统回收，留着无害 */ }
+    return r;
+  };
+  const dirty = probe('dirty', '# t\n\n甲烷二聚体的非局域项占 ΔE_xc 的 240%。\n');
+  const clean = probe('clean', '# t\n\n水二聚体的非局域项占 ΔE_xc 的 16%。\n');
+  const selftest = { fired: dirty.status !== 0, silent_on_valid: clean.status === 0 };
+  if (!selftest.fired || !selftest.silent_on_valid) {
+    return { findings: ['闸门 W 的自检没响或误响 ⇒ 这条判据此刻不可信，不许出货'], selftest };
+  }
+  const real = run(null);
+  return { findings: real.status === 0 ? [] : [(real.stdout || '') + (real.stderr || '')]
+    .join('\n').split('\n').filter(l => /FAIL\(/.test(l)).map(l => 'audit_share_rule: ' + l.trim()),
+    selftest, tail: (real.stdout || '').split('\n').slice(-4).join(' | ') };
+})();
+
 // ---------------------------------------------------------------- 闸门 U：包内引用也得真的发出去
 // 闸门 E 问的是"这个 import 在 pyproject 里声明了吗"，于是它对**包内**兄弟模块完全沉默：
 // `from nlcsplit import fastpair` 没有"声明"这一步可言。实测就是这样漏的——
@@ -1085,6 +1117,7 @@ const report = {
   gateU_import_closure: gateU,
   gateU_selftest: gateUSelftest,
   gateV_install_vs_release: gateV,
+ gateW_share_rule_in_docs: gateW.findings, note_gateW_selftest: gateW.selftest,
   gateV_selftest: gateVSelftest,
   note_internal_only_modules: INTERNAL_ONLY_MODULES,
   note_word_only_gamess: wordOnly,
@@ -1102,6 +1135,7 @@ const bad = ga.length + gb.length + gc.length + gc2.length + gateD.absent.length
   + gateF.length + gateG.length + gr.length + notInManifest.length + gateU.length + gateV.length
   // 闸门 U 的自检没响 = 这条判据此刻是恒真的，等于没有 —— 不许出货。
   + (gateUSelftest.fired && gateUSelftest.silent_on_valid ? 0 : 1)
+  + gateW.findings.length + (gateW.selftest.fired && gateW.selftest.silent_on_valid ? 0 : 1)
   + (gateVSelftest.fired && gateVSelftest.silent_on_named && gateVSelftest.clean_input_silent ? 0 : 1)
   // 同理：具名豁免如果一笔都没记上，说明检测器根本没扫到自己 —— 那"豁免规则"是装饰。
   + (selfScanOk ? 0 : 1)

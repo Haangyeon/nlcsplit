@@ -411,7 +411,8 @@ All entries in kcal/mol, all at grid level 1. The two benzene rows were tabulate
 **Why the methane row has no share.** Its ratio is |dE_NLC|/|dE_xc| = 2.2, which trips the
 cancellation test that ships with the code (`nlcsplit/step_f_dispersion.py`: above 2, the
 denominator is reported as two signed terms, never as a percentage - here -0.517 plus a
-semi-local remainder of +0.285). Quoting "223%" would have advertised a ratio whose
+semi-local remainder of +0.285). Quoting that ratio as a share - it is 2.2, so more than
+twice the whole change - would have advertised a figure whose
 divisor is an accident of two larger numbers. What that row does support, without any
 forbidden ratio, is a comparison against a physical quantity: at level 2 with a
 counterpoise correction the whole interaction energy is -0.466 while the nonlocal term
@@ -717,8 +718,10 @@ point-value evaluation discards.
 
 Three things follow from applying it to eight S22 complexes at official
 geometries. The VV10 term is not a fixed share of the exchange-correlation
-contribution - 16% for the water dimer, 223% for the methane dimer, 97% and 52%
-for two geometries of the same benzene dimer - so reporting it as "the dispersion
+contribution - 16% for the water dimer, 97% and 52% for two geometries of the same
+benzene dimer, and no quotable share at all for the methane dimer, where the two parts
+carry opposite signs and the denominator is their small residue (the package refuses to
+report one there by rule, §3.2) - so reporting it as "the dispersion
 energy" is unsafe even within one benchmark set. The association-time change is
 almost entirely inter-fragment: the frozen-density pair term accounts for
 0.92-1.08 of the superposition difference in the six systems checked against a

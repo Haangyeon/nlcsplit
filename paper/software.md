@@ -178,10 +178,12 @@ better than it is printed: level-2 values are stored to three decimals, so a
 level-1 to level-2 change below 5e-4 kcal/mol is not resolvable in the archived
 table, and the one four-decimal ladder we ran gives 0.0002 kcal/mol between levels
 1 and 2 - small, but not zero. And it produces evidence about the quantity
-itself: ΔE_NLC ranges from 16% to 223% of ΔE_xc across the eight systems in our
-table (seven distinct S22 members plus a second benzene-dimer geometry), and
-97% versus 52% for those two geometries of the benzene dimer, so the VV10 term
-cannot be reported as "the dispersion energy" without qualification [S2].
+itself: where the share is defined at all it ranges from 16% of ΔE_xc (water) to 97%
+and 52% for the two geometries of the benzene dimer, and on the methane dimer the two
+parts carry opposite signs so the package's own rule (|ΔE_NLC/ΔE_xc| > 2 ⇒ report the two
+absolute terms, not a ratio) refuses to state a share at all. The VV10 term therefore
+cannot be reported as "the dispersion energy" without qualification, and on one row of our
+own table not even as a percentage [S2].
 
 ## 5. Availability and quality assurance
 
@@ -247,7 +249,7 @@ not cited as evidence. Including a naive triple-loop versus BLAS
 comparison of the kernel, per-scheme additivity checks, and geometry guards that
 assert bond lengths and angles at construction time.
 
-Twelve export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
+Thirteen export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
 ships in the published tree). They are
 not all of equal standing, and the difference matters: some exist because they caught a real
 defect, others only because we could not otherwise show the earlier ones were not vacuous.
@@ -268,6 +270,7 @@ fires on a fault we put in deliberately to prove it would.
 | T | nothing in the export tree is missing from the export manifest | added as a belt-and-braces check; no firing on real input is recorded in this repository, only on the faults we planted |
 | U | every module a shipped file imports from `nlcsplit` (absolute, dotted or package-relative) is itself in the shipped tree; the gate also self-tests against a planted missing sibling, and a build where that self-test does not fire does not ship | real defect: it was written for `fastpair.py`, which gate E could not see because an intra-package import is not a declared dependency |
 | V | every Python module inside a packaged directory is either in the export whitelist or named, with a reason, as an unreleased internal module - this is the set `pip install .` actually puts in `site-packages`, which the whitelist does not constrain; self-tests fire on a planted stray and stay silent on the named ones | real defect: found by the shipped licence scanner, which walked 45 installed files from a source-directory install and found the peer implementation among them |
+| W | no manuscript or README quotes a *share* for a system whose denominator cancels, i.e. where `|dE_NLC/dE_xc| > 2` - the same rule `step_f_dispersion.py` applies to its own output, extended to the prose | real defect: three of them on the day it was written (the companion text's conclusion, this paper's section 4, and a line the author had just added to this README), all quoting a share equivalent to a ratio above 2 that section 3.2 of the same paper argues against - and the gate caught its own author reintroducing the number while documenting the gate |
 
 Gate D exists because the first three could only fail in one direction. A, B, C
 catch material that should not be present; what actually went wrong repeatedly was
