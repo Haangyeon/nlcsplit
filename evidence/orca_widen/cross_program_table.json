@@ -128,6 +128,24 @@
    "pyscf_host": "ubuntu",
    "orca_source": "nlcsplit/logs/orca_anchor.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
+  },
+  {
+   "system_en": "benzene dimer (B)",
+   "system_zh": "苯二聚体(B)",
+   "s22_no": 20,
+   "natoms": 24,
+   "dE_NLC_ORCA_kcal_mol": -2.3685,
+   "dE_NLC_PySCF_kcal_mol": -2.388,
+   "difference_kcal_mol": 0.0195,
+   "relative_diff_percent": 0.817,
+   "attribution_span_kcal_mol": 0.2189,
+   "residual_over_span": 0.089,
+   "pyscf_level": 1,
+   "pyscf_basis": "6-31g*",
+   "pyscf_version": "2.14.0",
+   "pyscf_host": "ubuntu",
+   "orca_source": "evidence/orca_widen/orca_widen.json",
+   "pyscf_source": "nlcsplit/logs/step_h.json"
   }
  ]
 }

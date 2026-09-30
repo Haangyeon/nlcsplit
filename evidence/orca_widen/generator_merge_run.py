@@ -40,6 +40,11 @@ def main():
         if missing:
             sys.exit(f"ABORT {r['name']} 有取不到 NL 行的 run：{missing}")
         master["runs"].append(r)
+        note = os.environ.get("MERGE_CARD_NOTE")
+        if note:
+            # 关键词卡片与总记录不同时（例如只有 %maxcore 变了），必须把差异写进被并入的
+            # 那条 run：`keyword_card` 只存第一行，光比对它是查不出 %maxcore 差四倍的。
+            r["card_note"] = note
         added.append(f"{r['name']} ({r['natoms']} 原子)")
 
     if not added:

@@ -104,7 +104,7 @@ def run(tag, inp):
 def main():
     os.makedirs(WORK, exist_ok=True)
     out = {"program": "ORCA 6.0.1 (local Linux build via ~/orca6)", "basis": "6-31G*",
-           "keyword_card": CARD.splitlines()[0], "pal": "nprocs 4",
+           "keyword_card": CARD.splitlines()[0], "full_card": CARD.split("\n\n")[0].replace("\n", " | "), "pal": "nprocs 4",
            "quantity": "NL Energy, E(C,NL) (Ha)", "sign": "ΔE_NLC = NL(复合物) − ΣNL(单体@复合物几何, 单体基组)",
            "unit_of_delta": "kcal/mol", "reproduction_gate": {
                "system": "水二聚体", "local_4rank_NL_Ha": "0.084358235133",

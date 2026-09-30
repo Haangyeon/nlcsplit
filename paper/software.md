@@ -343,11 +343,17 @@ find it, but not for the reason we first gave: the words are there, in the run b
 feature list (`NL-DFT gradient (VV10)`, line 116 of `evidence/orca_run/h2o_dimer.out`),
 which prints on every run and reports no number. The `E(VV10-nl)` column that does match
 belongs to the PT2 correlation of double-hybrid functionals, which is a different physical
-quantity. With the label known, six ORCA 6.0.1 single points agree with the reported
-ΔE_NLC to 0.0004 kcal/mol on the water dimer and 0.0416 kcal/mol on the benzene dimer
-A, with the outputs and their SHA-256 manifest in the repository [S18]. A third, fully
+quantity. With the label known, twenty-four ORCA 6.0.1 single points covering all eight of
+the reported systems agree with ΔE_NLC to within 1% of the term everywhere
+(0.0004 kcal/mol on the water dimer up to 0.0416 kcal/mol on the benzene dimer A), with the
+outputs and their SHA-256 manifests in the repository [S18]; the comparison is regenerated
+from those artefacts by `evidence/orca_widen/generator_cross_program_table.py`, which
+refuses to emit the table if the system list or any row's basis, grid level or counterpoise
+setting disagrees. Two limitations there are unchanged. A third, fully
 independent implementation (Psi4, or libxc's `xc_nlc_vxc` through its own bindings)
-is still outstanding, as is extending the anchor beyond 2 of the 8 systems.
+is still outstanding - the point is that ORCA is the *only* second program, not that there
+are three. And the anchor checks differences of the quantity, so the absolute per-fragment
+values remain unrefereed.
 
 
 ## 6. Limitations
@@ -404,6 +410,6 @@ entries are archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`.
 | S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out` | the level-2 counterpoise numbers, computed on the cluster and archived with their stdout |
 | S12 | `evidence/recompute/20260929T003144Z_stepg-recompute.out` | the basis-set and grid sensitivity of the attribution, including the ±5% agreement among the four basis sets beyond STO-3G |
 | S17 | `nlcsplit/tests/test_partition_factors.py` | the two assertions `partition_factors()` enforces before returning (pointwise normalisation at 1e-12, agreement with PySCF's own `get_partition` weights at 1e-11) — assertion thresholds, not measured residuals |
-| S18 | `evidence/orca_run/`, `evidence/orca_control/` | the six ORCA 6.0.1 outputs and their manifests (`evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/MANIFEST.sha256`): the external referee on the water and benzene anchors and its control group |
+| S18 | `evidence/orca_run/`, `evidence/orca_control/`, `evidence/orca_widen/`, `evidence/orca_widen/cross_program_table.txt` | the ORCA 6.0.1 outputs and their manifests (`evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/MANIFEST.sha256`, `evidence/orca_widen/MANIFEST.sha256`): six runs for the water and benzene-A anchors, the ωB97X control group, and eighteen more covering the remaining six systems, with the archived stdout for every one of the 24; plus the two generators that re-derive the comparison from those outputs and refuse if the system list or any row's definition disagrees |
 | S19 | `evidence/release_qa/` | clean-environment installs and out-of-tree runs, each recorded with the SHA-256 of the wheel that was installed |
 | S20 | `evidence/bound_forms/`, `evidence/fastpair_ab/`, `evidence/scaling/`, `evidence/coretail/` | the certified-screening measurements summarised in §6, reported in full in `paper/p2.md` |

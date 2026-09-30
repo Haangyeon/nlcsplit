@@ -17,13 +17,13 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 KCAL_PER_HA = 627.509474          # 与 nlcsplit/step_*.py 里的 KCAL 同一个常数
 
 EN = {"水二聚体": "water dimer", "氨二聚体": "ammonia dimer", "甲烷二聚体": "methane dimer",
-      "苯二聚体(A)": "benzene dimer (A)", "苯-水": "benzene...water", "苯-甲烷": "benzene...methane",
+      "苯二聚体(A)": "benzene dimer (A)", "苯二聚体(B)": "benzene dimer (B)", "苯-水": "benzene...water", "苯-甲烷": "benzene...methane",
       "苯-氨": "benzene...ammonia"}
 S22NO = {"水二聚体": 2, "氨二聚体": 1, "甲烷二聚体": 8, "苯-水": 17, "苯-甲烷": 10,
-         "苯二聚体(A)": 11, "苯-氨": 18}
+         "苯二聚体(A)": 11, "苯-氨": 18, "苯二聚体(B)": 20}
 # 这张表该有哪些体系，写在一处并由下面的断言双向核对：少一个（跑过了却没进表，
 # 苯-氨 就是这么漏过一次）和多一个（清单改了却没跑）都必须响。
-EXPECTED = {"水二聚体", "氨二聚体", "甲烷二聚体", "苯-水", "苯-甲烷", "苯-氨", "苯二聚体(A)"}
+EXPECTED = {"水二聚体", "氨二聚体", "甲烷二聚体", "苯-水", "苯-甲烷", "苯-氨", "苯二聚体(A)", "苯二聚体(B)"}
 
 
 def load(rel):
@@ -67,7 +67,8 @@ def main():
         sys.exit(f"ABORT 体系清单与预期不符。\n  缺（ORCA 或 PySCF 任一侧没有）：{missing}"
                  f"\n  多（跑出来了却没写进 EXPECTED）：{extra}\n"
                  "  少一个体系 = 裁判数被少报；多一个 = 有人加了 run 却没核对口径。两种都不许出表。")
-    for name in ["水二聚体", "氨二聚体", "甲烷二聚体", "苯-水", "苯-氨", "苯-甲烷", "苯二聚体(A)"]:
+    for name in ["水二聚体", "氨二聚体", "甲烷二聚体", "苯-水", "苯-氨", "苯-甲烷",
+                 "苯二聚体(A)", "苯二聚体(B)"]:
         o = orca.get(name)
         p = pyscf.get(name)
         if not o or not p:
