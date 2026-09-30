@@ -2749,3 +2749,48 @@ PASS；`NLCSPLIT_SELFTEST=1` 全绿（毒样本 11 命中、8 条覆盖名全响
 读者副本连跑两次 rc=0 且到不动点，三条"本副本少掉哪些检查"逐条打印；
 `publish_github.js` dry-run rc=0（泄漏 0，豁免 2）；`md2tex` 21/0；两条措辞闸门 PASS；
 `pytest -m "not slow"` 43 passed。
+
+## 2026-10-01（夜）归属裁判跑完、进正文；fig3 三处错；一处测度坑
+提交：`e0df4be`（fig3）、`647a280`（裁判+测度）、`d6c73fb`（边界与数字改正）。
+
+### 做了什么
+- `evidence/attribution_referee/` 从"空转"（rows 为空）跑到 12 行齐全，并**我自己整跑第二遍**
+  做确定性核对：两份 `table.md` `cmp` 逐字节相同；两份 `results.json` 逐字段比，14 处差异
+  全是 `runtime_s` 与 `meta.nproc`。两份产物（`results_run1_20261001.json` /
+  `table_run1_20261001.md` + 第二次 stdout `rerun_verify_20261001.log`）都留在目录里，
+  可复比。裁判目录加了 `MANIFEST.sha256`（18 条，原地 `sha256sum -c` 0 失败）。
+- 结论进 main.md §4（四段）+ 结论段 + 出处行 S22；software.md 同段 + S21；README 改成"三层
+  裁判"并新增"测度"约定行；MAIN-skeleton 同步。全部现测：md2tex 0 failed checks，
+  main.pdf 20 页 / software.pdf 10 页 / p2.pdf 10 页 0 error 0 undefined；导出 exit 0、
+  171 文件、13 道致命闸门全空。
+
+### 我对子代理产物的三处纠正（逐条自己复现过，不是照收）
+1. README §9.3 写 `base_w` 多算"**恰好** natm 倍"。实测不是常数：H2O2（natm=6）对单位高斯
+   （解析值 π^{3/2}=5.568328），`Σ base_w·h` = 35.874/33.827/33.308 = 1.0738/1.0125/0.9969 倍
+   于 `natm·π^{3/2}`（level 1/2/3）⇒ **不能靠除以原子数补救**。可锚的写法是按 owner 掩膜：
+   对 a 求和复现解析值到 1.5e-5/1.8e-6/1.0e-7，逐片段值 level 2→3 六位不变；`base_w/natm`
+   逐片段偏 7~13%。已写进 `partition_factors` docstring + 新测试
+   `test_soft_attribution_owner_masked_matches_analytic_gaussian`（双向验过：把不掩膜写法换
+   进去，它报 35.874 ≠ 5.568 而失败）。生产路径无一处受影响。
+2. README 里留着 `SEE_RESULTS_MARKER` 与 `Literature anchor: TODO` 两处占位。前者已换成生成
+   结果（新增 `summarize.py` 的输出 `outputs/summary.md`，它给 U 与"12 个里 5 个超过 U"）；
+   TODO 保留（那次没联网、不许造引用）。
+3. 它说正对照与归属偏差"同量级"——这条我核过并照抄进正文，是它写得最诚实的一句。
+
+### 闸门侧
+- `EVIDENCE_DIRS += attribution_referee`，母循环原来只收顶层文件，会整层漏掉 `outputs/`，
+  补了 `NESTED_EVIDENCE`。
+- 闸门 E 第一次扫证据脚本的 import，把兄弟模块 `referee_lib` 和标准库 `multiprocessing`
+  报成未声明依赖——**误伤的闸门下一轮就被整条关掉**，所以教它认同目录兄弟 + 补 stdlib，
+  并加双向自检（真第三方必须响、兄弟与 stdlib 必须静默），自检结果进 `bad` 计数。
+
+### 还没做 / 别误读
+- **异核不做，且理由已写进正文**：参照侧不需要核，但包侧走 PySCF 网格，Becke 半径来自原子
+  种类（`run.py:100` 用两个 He）。异核逼你先选元素＝先选被审的约定本身。这不是改参数。
+- 树外 wheel 跑（43 passed / 1 skipped，655.52 s）我第一遍测的是 c 次导出打的 wheel
+  （sha `d175c7b8…`），而 dist/ 现在是 d 次导出的 `d123d1c8…`——每次导出都重打 wheel，哈希
+  必变。software.md 里我只会写"测的是哪个哈希的 wheel"，不写成"当前 wheel"。新一轮正在跑，
+  跑完把 log 连哈希一起进 `evidence/release_qa/`。
+- 我上一轮判"wheel 树外会挂住"是**错的**：WSL `/tmp` 中途被清 + timeout 给太短。归档记录本来
+  就是 581 s / 407 s，树外每测比树内慢一个量级属正常。教训同旧：认文件不认通知，且 timeout
+  要按被测量程的真实尺度给。
