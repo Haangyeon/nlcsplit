@@ -5,16 +5,21 @@ authors:
     name_localized: 夏盎然   # 中文名记在这里：这份文件不进 md2tex/pdflatex 管线，CJK 不会撞字体
     orcid: TBD  # 需本人提供，禁止代填
     affiliation: 1
-    corresponding: true  # 待本人确认
-  - name: TBD  # 若有第二作者（含 IDE 侧贡献者），由本人指定署名与贡献
-    orcid:
+    email: haangyeon@snnu.edu.cn   # 本人 2026-09-30 给的通讯邮箱（长安校区）
+    corresponding: true
+  - name: Changwei Wang       # 第二作者：本学院 王长崴（"崴"读 wei，据本人说明转写；名在前是 JOSS 惯例）
+    name_localized: 王长崴
+    orcid: TBD                 # 需本人/王老师提供，禁止代填
     affiliation: 1
 affiliations:
   # 院系英文全称取该学院自己的英文站措辞（chem.snnu.edu.cn/english/，2026-09-30 抓取核对：
   # "School of Chemistry & Chemical Engineering" + "Shaanxi Normal University"）。
   # 没有另造"College of Chemistry and Materials Science"那种在官网上查不到的写法。
-  # 门牌地址与邮编刻意不写：未从一手来源核实，投稿时由本人补。
-  - name: 'School of Chemistry & Chemical Engineering, Shaanxi Normal University, Xi''an, China'
+  # 校区与邮编取自校方"联系我们"页 kexie.snnu.edu.cn/kxgk/lxwm.htm（2026-09-30 核对：
+  # 西安市长安区西长安街620号 长安校区，邮编 710119）。门牌号不写进署名行：校内不同页面
+  # 给的街道号并不完全一致，而期刊只需要城市+邮编，等本人指定挂哪个门牌再补。
+  - name: 'School of Chemistry & Chemical Engineering, Shaanxi Normal University (Chang''an
+      Campus), Xi''an 710119, Shaanxi, China'
     index: 1
 date: 29 September 2026
 bibliography: references.bib  # 尚未生成；DOI 已在 §Sources 逐条回查

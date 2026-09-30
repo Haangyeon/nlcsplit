@@ -533,24 +533,65 @@ const secretPats = [
   ['ssh 目标', /\bssh\b[^#\n]*@/],
   ['user@裸IP', /\b\w+@\d{1,3}(\.\d{1,3}){3}/],
 ].concat(PRIV ? PRIV.SECRET_PATS : []);
+// 第二道具名豁免：**作者本人的机构邮箱**。它按构造就同时含账号串与校内域名——
+// 而这两条正是闸门 B 的判据。但公开通讯方式是论文与 CITATION.cff 的义务，不是泄漏；
+// 该地址由本人 2026-09-30 亲自给出。豁免条件要三件事同时成立：
+//   (1) 文件是署名类元数据（ATTRIBUTION_FILES）；
+//   (2) 这一行里确实有 email 形态的地址；
+//   (3) 把地址整串挖掉以后，那一行不再有别的判据命中。
+// 第三条是边界：`/home/<账号>/… 备注 …@…cn` 这种混着机器路径的行不会被"顺带"放过。
+const ATTRIBUTION_FILES = ['CITATION.cff', 'pyproject.toml', 'README.md', 'CONTRIBUTING.md', 'LICENSE'];
+const EMAIL_PAT = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+function emailExemption(rel, line) {
+  if (!ATTRIBUTION_FILES.includes(rel)) return null;
+  const found = line.match(EMAIL_PAT);
+  if (!found) return null;
+  const rest = line.replace(EMAIL_PAT, ' ');
+  if (secretPats.some(([, re]) => re.test(rest))) return null;
+  return found.join(',');
+}
 function scanIntranet(root, treeList) {
   const hits = [];
   // hits.exempt：具名豁免的账。检测器自身的正则定义必然命中自己的模式串，
   // 这不是泄漏，但**必须记账并打印**——一个把豁免藏起来的扫描器和没有扫描器等价。
   hits.exempt = [];
+  hits.emailExempt = [];
   for (const rel of treeList) {
     if (!isText(rel)) continue;
     let t; try { t = read(path.join(root, rel)); } catch (e) { continue; }
     t.split(/\r?\n/).forEach((line, i) => {
-      for (const [name, re] of secretPats) {
-        if (!re.test(line)) continue;
-        const s = `${rel}:${i + 1}  <- ${name} ${re}  | ${line.trim().slice(0, 140)}`;
-        if (SELF_DETECT.includes(rel)) hits.exempt.push(s); else hits.push(s);
-      }
+      const matched = secretPats.filter(([, re]) => re.test(line));
+      if (!matched.length) return;
+      // 一行只记一条账：机构邮箱同时踩中"账号串"与"校内标识串"是常态，
+      // 刷两行会把一笔豁免读成两个问题。
+      const names = matched.map(([n]) => n).join('、');
+      const head = `${rel}:${i + 1}`;
+      const tail = ` | ${line.trim().slice(0, 130)}`;
+      const em = emailExemption(rel, line);
+      if (SELF_DETECT.includes(rel)) hits.exempt.push(`${head}  <- 具名豁免「检测器自身的判据定义」 ${names}${tail}`);
+      else if (em) hits.emailExempt.push(`${head}  <- 具名豁免「作者本人的机构邮箱」地址=${em}；放过的是 ${names}${tail}`);
+      else hits.push(`${head}  <- ${names}${tail}`);
     });
   }
   return hits;
 }
+// 邮箱通道自己的反证：四种输入四种预期，每次运行都跑。种错了它就是装饰。
+const emailSelftest = (() => {
+  const cases = [
+    ['CITATION.cff', '    email: haangyeon@snnu.edu.cn', true],
+    ['pyproject.toml', 'authors = [{ name = "X", email = "haangyeon@snnu.edu.cn" }]', true],
+    // 同一行里还混着**别**的判据串（这里是凭据赋值）：不许跟着邮箱一起放过。
+    // 特意不用 `/home/<账号>` 做这一条——那条判据住在 private 文件里，发布副本没加载它，
+    // 于是这个反证在读者那份里会静默变成"永远通过"，正是这里要防的事。
+    ['CITATION.cff', '联系 haangyeon@snnu.edu.cn；passwd = "s3cr3t-value"', false],
+    // 非署名文件：不豁免
+    ['nlcsplit/nlc.py', 'w = "haangyeon@snnu.edu.cn"', false],
+  ];
+  const out = cases.map(([rel, line, want]) => ({
+    rel, line: line.slice(0, 46), want, got: !!emailExemption(rel, line),
+  }));
+  return { all_correct: out.every(c => c.want === c.got), cases: out };
+})();
 const gb = scanIntranet(OUT, tree);
 // 豁免账的自证（老规矩：闸门必须证明自己不是恒真的）。
 // 需要 gb.exempt>0 才能说明"这两个文件确实进了扫描、确实命中了、确实按名字放过的"。
@@ -558,11 +599,12 @@ const gb = scanIntranet(OUT, tree);
 const selfScan = {
   in_tree: SELF_DETECT.filter(f => tree.includes(f)),
   intranet_exempt: gb.exempt.length,
+  email_exempt: gb.emailExempt.length,
   gamess_exempt: gA.exempt.length,
-  files_with_exempt: [...new Set(gb.exempt.concat(gA.exempt).map(s => s.split(':')[0]))],
+  files_with_exempt: [...new Set(gb.exempt.concat(gA.exempt, gb.emailExempt).map(s => s.split(':')[0]))],
 };
 const selfScanOk = selfScan.in_tree.length === SELF_DETECT.length
-  && selfScan.gamess_exempt > 0;
+  && selfScan.gamess_exempt > 0 && emailSelftest.all_correct;
 // 专有判据的加载状态：母仓这次运行必须加载到，否则"十一条闸门"名不副实（闸门 B 只剩形状类）。
 // 缺文件不是读者的错，所以不 block，但必须打印 —— 见下面 console.error 与报告字段。
 const privateLoaded = PRIV ? PRIV.SECRET_PATS.length : 0;
@@ -788,7 +830,8 @@ if (process.env.NLCSPLIT_SELFTEST) {
   const T = walkTree(path.join(NEG, 'tree'), '');
   R.residue = { fired: checkResidue(T).length > 0, clean: checkResidue(rels).length === 0 };
   const bHits = scanIntranet(path.join(NEG, 'tree'), rels);
-  const names = new Set(bHits.map(h => h.split('  <- ')[1].split(' /')[0]));
+  // 账本一行可能并着多条判据名（账号串、校内标识串…），按顿号展开再判覆盖。
+  const names = new Set(bHits.flatMap(h => String(h.split('  <- ')[1] || '').split(' |')[0].split('、')));
   R.intranet = { fired: bHits.length, cleanTreeHits: scanIntranet(OUT, tree).length,
     covered: PRIV
       ? Object.fromEntries(PRIV.COVERED_NAMES.map(n => [n, names.has(n)]))
@@ -998,6 +1041,8 @@ const report = {
   gateA_gamess_source_artifacts: ga,
   gateB_intranet: gb,
   gateB_exempt_ledger: gb.exempt,
+  gateB_email_exempt_ledger: gb.emailExempt,
+  gateB_email_selftest: emailSelftest,
   gateA_exempt_ledger: gA.exempt,
   note_detector_selfscan: selfScan,
   note_private_rules_loaded: privateLoaded,

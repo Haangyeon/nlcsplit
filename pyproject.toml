@@ -10,7 +10,12 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = "Apache-2.0"
 keywords = ["DFT", "VV10", "nonlocal correlation", "fragment decomposition", "pyscf"]
-authors = [{ name = "Angran Xia" }]
+# 第二作者与通讯邮箱由本人 2026-09-30 指定。PEP 621 的作者表只认 name/email 两个键，
+# 单位写在 README 与 CITATION.cff 里；邮箱只填他给的那一条，其余不代填。
+authors = [
+    { name = "Angran Xia", email = "haangyeon@snnu.edu.cn" },
+    { name = "Changwei Wang" },
+]
 dependencies = [
     "numpy>=1.22",
     "pyscf>=2.12",
