@@ -33,3 +33,7 @@ dist/
 paper/*.bbl
 paper/*.blg
 paper/build_log.txt
+
+# 发布暂存区：每次由 tools/publish_github.js 从 dist/nlcsplit 重新复制
+# 它自己是个独立 git 仓库（推上去的历史与母仓无关），所以母仓不能跟踪它。
+.publish/

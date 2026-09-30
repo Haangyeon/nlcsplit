@@ -568,7 +568,12 @@ function scanIntranet(root, treeList) {
       const head = `${rel}:${i + 1}`;
       const tail = ` | ${line.trim().slice(0, 130)}`;
       const em = emailExemption(rel, line);
-      if (SELF_DETECT.includes(rel)) hits.exempt.push(`${head}  <- 具名豁免「检测器自身的判据定义」 ${names}${tail}`);
+      // 「检测器自身的判据定义」这条豁免要求**每一条**命中的判据都真的以字面量出现在这一行里
+      // （与闸门 A 的 classifyGamess 同一标准）。只按文件名豁免 = 给这两个文件开空白支票，
+      // 而它刚刚被用在我的测试样例上：真账号串写在随包代码里，被文件名放过了。
+      const isOwnDefinition = SELF_DETECT.includes(rel)
+        && matched.every(([, re]) => line.includes(re.source));
+      if (isOwnDefinition) hits.exempt.push(`${head}  <- 具名豁免「检测器自身的判据定义」 ${names}${tail}`);
       else if (em) hits.emailExempt.push(`${head}  <- 具名豁免「作者本人的机构邮箱」地址=${em}；放过的是 ${names}${tail}`);
       else hits.push(`${head}  <- ${names}${tail}`);
     });
@@ -576,22 +581,30 @@ function scanIntranet(root, treeList) {
   return hits;
 }
 // 邮箱通道自己的反证：四种输入四种预期，每次运行都跑。种错了它就是装饰。
+// 反证样本分两份。**公开那份只能测"文件门"这一半**（两条不含任何判据字面量的用例：
+// 非署名文件不豁免、署名文件里没有地址也不豁免）。要测"同一行混着别的判据串时不许放过"，
+// 那行就得真写着一条判据的样子 —— 把那种字面量放进随包代码，本身就是这条闸门该抓的东西
+// （2026-09-30 实测：我先后用 ssh 行、私钥块样子写过用例，两次都被闸门自己抓住）。
+// 所以那半边的用例住在 tools/intranet_patterns.private.js，只有母仓这次运行加载；
+// 缺了哪一半由报告说：gateB_email_selftest.mixed_line_control=false 就是"这份副本没跑该控制"。
+const EMAIL_CASES_PUBLIC = [
+  ['nlcsplit/nlc.py', 'reviewer@demo.example', false],   // 非署名文件：不豁免
+  ['CITATION.cff', '这行既没有地址也没有判据串', false],  // 无地址：不豁免
+];
 const emailSelftest = (() => {
-  const cases = [
-    ['CITATION.cff', '    email: haangyeon@snnu.edu.cn', true],
-    ['pyproject.toml', 'authors = [{ name = "X", email = "haangyeon@snnu.edu.cn" }]', true],
-    // 同一行里还混着**别**的判据串（这里是凭据赋值）：不许跟着邮箱一起放过。
-    // 特意不用 `/home/<账号>` 做这一条——那条判据住在 private 文件里，发布副本没加载它，
-    // 于是这个反证在读者那份里会静默变成"永远通过"，正是这里要防的事。
-    ['CITATION.cff', '联系 haangyeon@snnu.edu.cn；passwd = "s3cr3t-value"', false],
-    // 非署名文件：不豁免
-    ['nlcsplit/nlc.py', 'w = "haangyeon@snnu.edu.cn"', false],
-  ];
-  const out = cases.map(([rel, line, want]) => ({
-    rel, line: line.slice(0, 46), want, got: !!emailExemption(rel, line),
+  const mixed = PRIV && PRIV.EMAIL_CASES ? PRIV.EMAIL_CASES : [];
+  const out = EMAIL_CASES_PUBLIC.concat(mixed).map(([rel, line, want]) => ({
+    rel, want, got: !!emailExemption(rel, line),
   }));
-  return { all_correct: out.every(c => c.want === c.got), cases: out };
+  return { all_correct: out.every(c => c.want === c.got), ran: out.length,
+    public_cases: EMAIL_CASES_PUBLIC.length,
+    mixed_line_control: mixed.length > 0 && mixed.every(([r, l, w]) => !!emailExemption(r, l) === w),
+    failures: out.filter(c => c.want !== c.got) };
 })();
+if (!emailSelftest.mixed_line_control) {
+  console.error('注意：邮箱豁免通道的"混合行"反证没跑（判据样例随 private 文件一起不在本副本里）。'
+    + '这条通道在本副本上只验过"文件门"两半。');
+}
 const gb = scanIntranet(OUT, tree);
 // 豁免账的自证（老规矩：闸门必须证明自己不是恒真的）。
 // 需要 gb.exempt>0 才能说明"这两个文件确实进了扫描、确实命中了、确实按名字放过的"。

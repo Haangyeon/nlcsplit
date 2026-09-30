@@ -2713,3 +2713,39 @@ front matter 填了单位，中文名记在 `name-variant`（我一开始写的 
 PASS；`NLCSPLIT_SELFTEST=1` 全绿（毒样本 11 命中、8 条覆盖名全响、豁免通道 ok、脱敏不动点）；
 读者副本连跑两次 rc=0 且到不动点，`CITATION.cff` 在发布树里与源件逐字节相同、署名行未被改写；
 `pytest -m "not slow"` 43 passed。无 remote、未推送。
+
+---
+
+## 2026-09-30：要发 GitHub 了，先把"发什么"钉死
+
+本人说已登录 GitHub、让我自己建仓。实测这台机器上能用的认证路径是**零**：
+没有 `gh`，环境里没有 `GH_TOKEN`，`cmdkey` 里没有 git/github 条目，
+而我驱动的那个 Chrome 打开 `github.com/settings/repositories` 落在**登录页**
+——他登录的是他自己那个窗口，不是这个会话。
+（他给的链接是 2FA 设置引导页。开启 2FA 会生成本人要亲自保管的恢复码，
+属于账号凭据，我不代做、也不代存。）
+
+于是先把"能自己做的部分"做完：`tools/publish_github.js`。
+
+- **发布对象只有一个**：`dist/nlcsplit`，靠导出戳 `.exported-by-make_public_repo` 认，
+  每次运行重新复制一份到 `.publish/`（已 gitignore），不复用上次——防"审的是 A、发的是 B"。
+- 硬挡母仓：树里出现 `PROGRESS-nlcsplit.md` / `nlcsplit/centos_run*` /
+  `tools/intranet_patterns.private.js` 任一即中止。
+- 推之前用**同一批判据**自己扫一遍，并复用同一批豁免；默认 dry-run，`--push` 才动网。
+- token 只从环境变量读，**不写进 remote URL**（那会在 `.git/config` 和 reflog 里留下长期凭据），
+  推送时一次性 header 传；默认建 **private** 仓，可见性要显式改。
+- 推完用 GitHub API 把远端树与本地 blob 逐个比 SHA——不一致就明说"别把这个链接发出去"。
+
+顺手被自己的脚本抓到一处真问题：闸门 B 的"检测器自身判据定义"豁免原先**只看文件名**，
+于是我写进随包代码里的四行邮箱反证样例（含真账号串与校内域名）被文件名放过了。
+改成两条同时成立（文件在名单里 **且** 该行含该判据的字面量）。
+接着两轮换素材（`ssh …@…` 行、私钥块样子的行）都被闸门自己抓住——
+最后承认这是结构性事实：**要测"地址旁边混着别的判据串时不许放过"，
+那行就得真写着一条判据的样子**，所以那半边用例只能住在不随包发布的 private 文件里，
+公开副本打印 `mixed_line_control=false` 说明自己少跑了哪个控制。
+
+复核：导出 exit 0 / 119 文件 / 12 条闸门 0 命中 / 邮箱具名豁免 2 条；
+`NLCSPLIT_SELFTEST=1` 全绿（毒样本 10 命中、覆盖 8/8、不动点、license 现造模板 3 响）；
+读者副本连跑两次 rc=0 且到不动点，三条"本副本少掉哪些检查"逐条打印；
+`publish_github.js` dry-run rc=0（泄漏 0，豁免 2）；`md2tex` 21/0；两条措辞闸门 PASS；
+`pytest -m "not slow"` 43 passed。

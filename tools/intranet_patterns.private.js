@@ -76,7 +76,19 @@ const POISON = {
 // 每条毒样本预期由哪个判据抓到（selftest 用它算覆盖率）。
 const COVERED_NAMES = ['工作机绝对路径(远端)', '工作机绝对路径(WSL挂载)', '工作机绝对路径(Win盘符,正/反斜杠)',
   '集群内网 IP', '集群SSH端口 24522', '集群SSH端口 20019', '账号串', '校内标识串'];
+// 邮箱豁免通道的反证样本。真实标识只出现在这里（不随包发布）：把带账号串与校内域名的
+// 样例写进**随包**的闸门代码里，等于为了测试而发布我们要抹的东西 —— 2026-09-30 就这么
+// 发生过一次，发布前扫描按"这一行不是判据定义"拒绝了它，是对的。
+const EMAIL_CASES = [
+  // 混合行：地址旁边还有别的判据串 → 不许放过
+  ['CITATION.cff', 'BEGIN RSA PRIVATE KEY 旁边写着 reviewer@demo.example', false],
+  ['nlcsplit/nlc.py', 'BEGIN OPENSSH PRIVATE KEY reviewer@demo.example', false],
+  ['CITATION.cff', '    email: haangyeon@snnu.edu.cn', true],
+  ['pyproject.toml', 'authors = [{ name = "X", email = "haangyeon@snnu.edu.cn" }]', true],
+  ['CITATION.cff', '联系 haangyeon@snnu.edu.cn；passwd = "s3cr3t-value"', false],
+  ['nlcsplit/nlc.py', 'w = "haangyeon@snnu.edu.cn"', false],
+];
 // 脱敏表自己的那条反证行：路径行必须被改、数值行必须逐字节不动。
 const SAMPLE = 'L1 == 几何来源 /root/gamess_work/nlcsplit/s22 ==\nL2 E_NLC= +125.7984 N=132176\n';
 
-module.exports = { PATH, ENDPOINT, IDENT, SECRET_PATS, SHAPES, POISON, COVERED_NAMES, SAMPLE };
+module.exports = { PATH, ENDPOINT, IDENT, SECRET_PATS, SHAPES, POISON, COVERED_NAMES, SAMPLE, EMAIL_CASES };
