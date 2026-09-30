@@ -2794,3 +2794,13 @@ PASS；`NLCSPLIT_SELFTEST=1` 全绿（毒样本 11 命中、8 条覆盖名全响
 - 我上一轮判"wheel 树外会挂住"是**错的**：WSL `/tmp` 中途被清 + timeout 给太短。归档记录本来
   就是 581 s / 407 s，树外每测比树内慢一个量级属正常。教训同旧：认文件不认通知，且 timeout
   要按被测量程的真实尺度给。
+
+### 2026-10-01（续）上面"还没做"那条 wheel 树外记录已闭合（`818ec15`）
+- 新日志两份进 `evidence/release_qa/`：44 项 wheel 两次树外跑，43 passed / 1 skipped，
+  655.52 s 与 519.36 s；每份记下自己测的 wheel sha256（导出每次重打 wheel，哈希必变，
+  所以正文只说"这份日志记的那个 wheel"）。清单 15 条，发布副本原地 `sha256sum -c` 0 失败。
+- 把 software.md 旧句按对象拆开核过：581 s / 407 s 是 **wheel** 两条，1739.26 s 那条是
+  `pip install .` 收全树（62 passed），旧文把它们挂在同一句里容易被读成一件事。
+- 导出 exit 0 / 173 文件 / 13 道致命闸门全空。工作树干净。本窗口可交付项到此为空；
+  剩下的只有他那一档（private→public、repository-code、两个 ORCID、二作邮箱/通讯、存档 DOI、
+  CI 首次真跑）与 P2 选刊。
