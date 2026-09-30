@@ -1,0 +1,47 @@
+# CFF 1.2.0。字段只写**已核实**的内容：
+#   · 署名与单位由本人 2026-09-30 提供；院系英文措辞取自该学院自己的英文站
+#     （站名与本行的原始出处记在 PROGRESS-nlcsplit.md，那份文件按设计不随包发布——
+#     把主机名写在这里会被导出脱敏改成 chem.<CLUSTER>.edu.cn 这种没人能访问的串，
+#     2026-09-30 实测到过一次，所以这里只留描述不留 URL）。
+#   · 通讯邮箱由本人 2026-09-30 给出，只填他那一条；第二作者的邮箱与两人的 ORCID 仍缺——
+#     这类字段只能由本人给，代填就是伪造身份。CFF 允许省略可选字段，所以宁缺不造。
+#   · 邮编 710119 是长安校区的编码，核对自校方"联系我们"页；原始 URL 只记在
+#     PROGRESS-nlcsplit.md（那份不随包发布）——机构域名本身就在发布卫生判据的射程里，
+#     写进随包注释等于让闸门去抓作者自己的单位。门牌号不写：元数据只需要城市+邮编。
+#   · 邮编 710119 是长安校区的编码，核对自校方"联系我们"页（原始 URL 只记在
+#     PROGRESS-nlcsplit.md：机构域名本身在发布卫生判据的射程里，写进随包注释就等于让
+#     闸门去抓作者自己的单位）。门牌号不写——元数据只需要城市+邮编，且校方各页给的
+#     街道号并不完全一致，等本人指定挂哪个再补。
+#   · repository-code 没有 remote 之前留空，推送时一并补。
+cff-version: 1.2.0
+message: "If you use nlcsplit, please cite the software record and the method paper."
+title: "nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation energy"
+authors:
+  - family-names: Xia
+    given-names: Angran
+    # 中文名走 CFF 的 name-variant（这是它为该字段准备的合法形态），不自造 key：
+    # 校验器不认 name-pinyin，多写一个不认识的字段等于交一份验证不过的元数据。
+    name-variant:
+      - family-names: 夏
+        given-names: 盎然
+    email: haangyeon@snnu.edu.cn   # 本人 2026-09-30 给的通讯地址（长安校区）
+    affiliation: School of Chemistry & Chemical Engineering, Shaanxi Normal University
+    affiliation-place: Xi'an 710119, Shaanxi, China
+  - family-names: Wang
+    given-names: Changwei
+    name-variant:
+      - family-names: 王
+        given-names: 长崴
+    # "崴"按本人说明读 wei，故 Changwei。第二作者的 ORCID / 邮箱 / 是否通讯仍缺，
+    # 缺的一律留空不代填（CFF 允许省略可选字段）。
+    affiliation: School of Chemistry & Chemical Engineering, Shaanxi Normal University
+    affiliation-place: Xi'an 710119, Shaanxi, China
+version: 0.1.0
+date-released: 2026-09-30
+license: Apache-2.0
+repository-type: code
+keywords:
+  - nonlocal correlation
+  - VV10
+  - energy decomposition
+  - PySCF

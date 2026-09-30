@@ -1,0 +1,37 @@
+gate self-export + selftest evidence 2026-09-30
+对象：tools/make_public_repo.js 与 tools/audit_no_gamess.js 本轮改动后的实测状态。
+数字全部由脚本从当次运行的 JSON 报告里取，不是手抄。
+本文件也走一遍发布闸门：里面出现过的端口号/绝对路径已按同一套形状抹成占位符，
+所以它不含检测串——一份讲脱敏的证据自己带着未脱敏的串，是这个仓库反复犯的那类错。
+
+== 1. 母仓导出（node tools/make_public_repo.js）==
+  files=117  treeFiles=119  private_rules_loaded=10
+  十二条闸门命中数：A=2 B=2 C=0 C2=0 D=0 E=0 F=0 G=0 R=0 T=0 U=0 V=0
+  具名豁免账：闸门 B 0 条，闸门 A 2 条
+  闸门 A 的豁免落在哪：
+    tools/make_public_repo.js:474  <- 具名豁免「检测器自身的判据定义」  模式#0
+    tools/make_public_repo.js:475  <- 具名豁免「检测器自身的判据定义」  模式#7
+  刻意不发布、但 pip install . 会装的具名模块 6 个：
+    nlcsplit/fastpair_ide.py  <- 同行(ide-qoder)的独立实现，冻结对照，故意不发布
+    nlcsplit/tests/test_fastpair_ide.py  <- 上面那份实现的测试，随它一起不发布
+    nlcsplit/examples/check_screen_bound_ide.py  <- 它的验算脚本（import fastpair_ide）
+    nlcsplit/examples/coretail_bound.py  <- 核/尾界判死测量，产出归档在 evidence/coretail/
+    nlcsplit/examples/hybrid_nearfield.py  <- 近场占比测量，产出归档在 evidence/bound_forms/
+    nlcsplit/examples/probe_bound_forms.py  <- 球界/盒界单调性探针，产出归档在 evidence/bound_forms/
+
+== 2. 闸门自测（NLCSPLIT_SELFTEST=1）==
+  residue: fired=true  干净输入=true
+  intranet: 毒样本命中=11  发布树命中=0
+    覆盖到的判据（8/8）：工作机绝对路径(远端)、工作机绝对路径(WSL挂载)、工作机绝对路径(Win盘符,正/反斜杠)、集群内网 IP、集群SSH端口 <port>、集群SSH端口 <port>、账号串、校内标识串；全绿=true
+  exempt_channel（具名豁免通道的分辨力）: ok=true 检测器定义行=>true  同样文本在别的文件里=>false  干净行=>null
+  scrub 不动点: {"get_secondRunIdentical":true,"sidecar_secondRunIdentical":true}
+  artifacts: 毒 wheel 命中 4 条；干净 wheel 0 条
+  license: 现造的未填模板命中 3 条；发布副本 0 条
+
+== 3. 发布卫生扫描（tools/audit_no_gamess.js）==
+  20260929T212552Z_gate_selftest.out：--selftest 5/5，真装一遍后**违规 1 条 → rc=1**；
+  那一条是 pip 写进 dist-info 的 direct_url.json，内容是调用者的安装路径（不是包内容）。
+  20260929T213552Z_no_gamess_scan_after_allow.out：加了第 2 条具名规则后重跑，
+  --selftest 7/7、具名豁免 3 条、违规 0 条、许可冲突 0 条、rc=0。
+  20260929T213318Z_srcdir_install_fileset.out：pip install . 装出 37 个 .py，wheel 31 个 ——
+  差集正是上面那 6 个具名模块。这条由闸门 V 看住。

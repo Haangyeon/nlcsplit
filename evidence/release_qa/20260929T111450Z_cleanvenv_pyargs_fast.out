@@ -1,0 +1,4 @@
+..........................s................                              [100%]
+42 passed, 1 skipped, 20 deselected in 10.78s
+=== 安装件清单 ===
+__init__.py fastpair.py fastpair_ide.py figures.py geomlib.py nlc.py partition.py step1_validate.py step2_convergence.py step_b_scan.py step_c_relaxation.py step_d_floor.py step_e_kernel.py step_f_dispersion.py step_g_basis.py step_h_s22.py step_i_gridrepr.py 

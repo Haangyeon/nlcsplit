@@ -1,0 +1,10 @@
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+扫 45 个装出来的文件（含 0 个 .pyc）
+  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。
+  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | **不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发），也不依赖 GAMESS。
+  EXEMPT nlcsplit-0.1.0.dist-info/direct_url.json:1  <- 具名豁免「pip 自记的本地安装来源（direct_url.json）」 | {"dir_info": {}, "url": "file://<REPO>"}
+
+结论：具名豁免 3 条，GAMESS 相关 0 条，许可冲突信号 0 条
+豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。

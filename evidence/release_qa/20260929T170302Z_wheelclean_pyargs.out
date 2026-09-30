@@ -1,0 +1,14 @@
+== out-of-tree run against the built wheel (source tree NOT on sys.path) ==
+wheel : <REPO>/dist/nlcsplit-0.1.0-py3-none-any.whl
+sha256: 4e9efb8e4bf14de6e964dac58dff8a1430f4c40e38e7d312d6a587ff0badf197
+target: /tmp/inst_170246 (pip3 install --no-deps --target); cwd=/tmp/outoftree
+  nlcsplit -> /tmp/inst_170246/nlcsplit/__init__.py
+  repo on sys.path: False
+shipped test modules:
+__init__.py conftest.py test_fastpair.py test_geometry.py test_kernel.py test_partition_factors.py test_regression.py test_tolerance_probe.py 
+== collected ==
+
+43 tests collected in 0.75s
+== run: -m "not slow" ==
+........s................                                                [100%]
+24 passed, 1 skipped, 18 deselected in 4.63s

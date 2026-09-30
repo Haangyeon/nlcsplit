@@ -1,0 +1,4 @@
+wheel sha256: 
+target: /tmp/inst_170246 ; cwd=/tmp/outoftree; source tree on sys.path: no
+...............s...........................                              [100%]
+42 passed, 1 skipped in 580.82s (0:09:40)

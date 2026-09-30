@@ -1,0 +1,17 @@
+published-tree re-export (reader simulation) 2026-09-30
+做法：把发布树**整份**复制到一个新目录（含 .github 等隐藏文件），在里面跑它自己带着的
+tools/make_public_repo.js，连跑两次，再比对两次产出。这不是"读一遍看能不能跑"，
+是真的拿发布物当源码走一遍发布。
+
+  第 1 次：exit 0，files=117  treeFiles=119
+  第 2 次：exit 0，files=117  treeFiles=119
+  两次产出的差异：只剩 .exported-by-make_public_repo 里的时间戳（diff -rq 没有别的行）。
+  第 2 次的闸门命中数：全部 0（A/B/C/C2/D/E/F/G/R/T/U/V）。
+  第 2 次加载的点名判据 =0（本副本里没有 tools/intranet_patterns.private.js）
+  第 2 次闸门 D 的状态 = "no manuscript in this tree"（paper/** 按设计不发布，没有正文可扫）
+  第 2 次的改名直通 = 2 条（这一树已经是发布形态）
+  第 2 次闸门 V 命中 =0，具名豁免账 A=2 B=0
+
+本副本明确少掉的检查（脚本每次运行都把这些打在 stderr，不是静默降级）：
+  - 注意：tools/intranet_patterns.private.js 不在本副本里（它点名机构标识，不随包发布）。闸门 B 此刻只有 4 条形状类判据，工作机路径/账号/内网 IP/集群端口这几类**没有被检查**。
+  - 注意：paper/main.md 不在本树（paper/** 按设计不发布）。闸门 D『正文引用的出处都随包发布』这次**没有正文可扫**，不构成对读者的担保。

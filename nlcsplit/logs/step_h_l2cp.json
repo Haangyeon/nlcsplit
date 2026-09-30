@@ -1,0 +1,325 @@
+{
+ "note": "level-2 + 完整反泊松 的那一档，单独成车。不并入 step_h.json 是因为后者按体系名 merge，会把同名的高档位行覆盖掉（今天已实际发生一次）。",
+ "source_manifest_sha256": "983d0dd15207109bc3cc729c8fbf137fbf9209bc19fa7dae99c5d4767a551466 *evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out\ne256884a2489a5fd1505e9580a16d2208c6916ee7d0b5687b5df60f8873a1f0f *evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out",
+ "systems": 6,
+ "rows": [
+  {
+   "name": "水二聚体",
+   "natm": 6,
+   "dmin": 1.95,
+   "dtot": -7.816,
+   "dcp": -6.129,
+   "dxc": -3.71,
+   "dnlc": -0.593,
+   "p_frz_becke": -0.601,
+   "span": 0.043,
+   "p_over_ds": 1.01,
+   "wall_s": 480,
+   "terms": [
+    {
+     "tag": "复合物",
+     "N_grid": 43904,
+     "E_NLC_kcal": 52.9345,
+     "beta_int_rho_kcal": 60.8295,
+     "two_impl_diff_kcal": 0.0000053,
+     "closure_kcal": 1.8e-11
+    },
+    {
+     "tag": "单体",
+     "N_grid": 21952,
+     "E_NLC_kcal": 26.7635,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.0000039,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "单体",
+     "N_grid": 21952,
+     "E_NLC_kcal": 26.7644,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.0000038,
+     "closure_kcal": 8.9e-12
+    },
+    {
+     "tag": "复合物(反泊松参照)",
+     "N_grid": 43904,
+     "E_NLC_kcal": 52.9345,
+     "beta_int_rho_kcal": 60.8295,
+     "two_impl_diff_kcal": 0.0000053,
+     "closure_kcal": 1.8e-11
+    }
+   ],
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "source_log": "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out"
+  },
+  {
+   "name": "氨二聚体",
+   "natm": 8,
+   "dmin": 2.15,
+   "dtot": -5.166,
+   "dcp": -3.675,
+   "dxc": -0.883,
+   "dnlc": -0.678,
+   "p_frz_becke": -0.649,
+   "span": 0.028,
+   "p_over_ds": 0.96,
+   "wall_s": 764,
+   "terms": [
+    {
+     "tag": "复合物",
+     "N_grid": 54216,
+     "E_NLC_kcal": 51.9238,
+     "beta_int_rho_kcal": 60.8296,
+     "two_impl_diff_kcal": 0.0000088,
+     "closure_kcal": 8.9e-12
+    },
+    {
+     "tag": "单体",
+     "N_grid": 27112,
+     "E_NLC_kcal": 26.3007,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.0000067,
+     "closure_kcal": 4.5e-12
+    },
+    {
+     "tag": "单体",
+     "N_grid": 27112,
+     "E_NLC_kcal": 26.3007,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.0000067,
+     "closure_kcal": 4.5e-12
+    },
+    {
+     "tag": "复合物(反泊松参照)",
+     "N_grid": 54216,
+     "E_NLC_kcal": 51.9238,
+     "beta_int_rho_kcal": 60.8296,
+     "two_impl_diff_kcal": 0.0000088,
+     "closure_kcal": 8.9e-12
+    }
+   ],
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "source_log": "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out"
+  },
+  {
+   "name": "甲烷二聚体",
+   "natm": 10,
+   "dmin": 3.16,
+   "dtot": -0.662,
+   "dcp": -0.466,
+   "dxc": -0.229,
+   "dnlc": -0.517,
+   "p_frz_becke": -0.475,
+   "span": 0.003,
+   "p_over_ds": 0.92,
+   "wall_s": 1093,
+   "terms": [
+    {
+     "tag": "复合物",
+     "N_grid": 65392,
+     "E_NLC_kcal": 51.4321,
+     "beta_int_rho_kcal": 60.8295,
+     "two_impl_diff_kcal": 0.000016,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "单体",
+     "N_grid": 32696,
+     "E_NLC_kcal": 25.9744,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.000012,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "单体",
+     "N_grid": 32696,
+     "E_NLC_kcal": 25.9744,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.000012,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "复合物(反泊松参照)",
+     "N_grid": 65392,
+     "E_NLC_kcal": 51.4321,
+     "beta_int_rho_kcal": 60.8295,
+     "two_impl_diff_kcal": 0.000016,
+     "closure_kcal": 1.8e-11
+    }
+   ],
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "source_log": "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out"
+  },
+  {
+   "name": "苯-水",
+   "natm": 15,
+   "dmin": 2.6,
+   "dtot": -4.341,
+   "dcp": -3.266,
+   "dxc": -4.01,
+   "dnlc": -1.259,
+   "p_frz_becke": -1.361,
+   "span": 0.248,
+   "p_over_ds": 1.08,
+   "wall_s": 4163,
+   "terms": [
+    {
+     "tag": "复合物",
+     "N_grid": 121432,
+     "E_NLC_kcal": 126.7328,
+     "beta_int_rho_kcal": 158.1566,
+     "two_impl_diff_kcal": 0.000017,
+     "closure_kcal": 1.1e-10
+    },
+    {
+     "tag": "单体",
+     "N_grid": 99480,
+     "E_NLC_kcal": 101.2283,
+     "beta_int_rho_kcal": 127.7418,
+     "two_impl_diff_kcal": 0.000016,
+     "closure_kcal": 7.1e-11
+    },
+    {
+     "tag": "单体",
+     "N_grid": 21952,
+     "E_NLC_kcal": 26.7635,
+     "beta_int_rho_kcal": 30.4148,
+     "two_impl_diff_kcal": 0.0000039,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "复合物(反泊松参照)",
+     "N_grid": 121432,
+     "E_NLC_kcal": 126.7328,
+     "beta_int_rho_kcal": 158.1566,
+     "two_impl_diff_kcal": 0.000017,
+     "closure_kcal": 7.1e-11
+    }
+   ],
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "source_log": "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out"
+  },
+  {
+   "name": "苯-氨",
+   "natm": 16,
+   "dmin": 2.76,
+   "dtot": -2.929,
+   "dcp": -2.169,
+   "dxc": -2.913,
+   "dnlc": -1.328,
+   "p_frz_becke": -1.393,
+   "span": 0.223,
+   "p_over_ds": 1.05,
+   "wall_s": 4610,
+   "terms": [
+    {
+     "tag": "复合物",
+     "N_grid": 126592,
+     "E_NLC_kcal": 126.2009,
+     "beta_int_rho_kcal": 158.1566,
+     "two_impl_diff_kcal": 0.000019,
+     "closure_kcal": 7.1e-11
+    },
+    {
+     "tag": "单体",
+     "N_grid": 99480,
+     "E_NLC_kcal": 101.2271,
+     "beta_int_rho_kcal": 127.7419,
+     "two_impl_diff_kcal": 0.000016,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "单体",
+     "N_grid": 27112,
+     "E_NLC_kcal": 26.3016,
+     "beta_int_rho_kcal": 30.4147,
+     "two_impl_diff_kcal": 0.0000068,
+     "closure_kcal": 8.9e-12
+    },
+    {
+     "tag": "复合物(反泊松参照)",
+     "N_grid": 126592,
+     "E_NLC_kcal": 126.2009,
+     "beta_int_rho_kcal": 158.1566,
+     "two_impl_diff_kcal": 0.000019,
+     "closure_kcal": 1.1e-10
+    }
+   ],
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "source_log": "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out"
+  },
+  {
+   "name": "苯-甲烷",
+   "natm": 17,
+   "dmin": 2.98,
+   "dtot": -1.78,
+   "dcp": -1.202,
+   "dxc": -2.325,
+   "dnlc": -1.405,
+   "p_frz_becke": -1.441,
+   "span": 0.213,
+   "p_over_ds": 1.03,
+   "wall_s": 4136,
+   "terms": [
+    {
+     "tag": "复合物",
+     "N_grid": 132176,
+     "E_NLC_kcal": 125.7984,
+     "beta_int_rho_kcal": 158.1569,
+     "two_impl_diff_kcal": 0.000022,
+     "closure_kcal": 3.6e-11
+    },
+    {
+     "tag": "单体",
+     "N_grid": 99480,
+     "E_NLC_kcal": 101.2255,
+     "beta_int_rho_kcal": 127.7421,
+     "two_impl_diff_kcal": 0.000017,
+     "closure_kcal": 0
+    },
+    {
+     "tag": "单体",
+     "N_grid": 32696,
+     "E_NLC_kcal": 25.9775,
+     "beta_int_rho_kcal": 30.4147,
+     "two_impl_diff_kcal": 0.000011,
+     "closure_kcal": 4.5e-12
+    },
+    {
+     "tag": "复合物(反泊松参照)",
+     "N_grid": 132176,
+     "E_NLC_kcal": 125.7984,
+     "beta_int_rho_kcal": 158.1569,
+     "two_impl_diff_kcal": 0.000022,
+     "closure_kcal": 7.1e-11
+    }
+   ],
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "source_log": "evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out"
+  }
+ ]
+}

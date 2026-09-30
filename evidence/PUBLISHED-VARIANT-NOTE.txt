@@ -1,0 +1,9 @@
+PUBLISHED-VARIANT NOTE (path scrubbing)
+
+本发布树里的 evidence/**（含 .out 归档 stdout 与 MANIFEST.txt）以及 nlcsplit/logs/**、
+nlcsplit/run_all.sh、evidence/retrieval_calibration/*.js 是**脱敏副本**：母仓原件一个字节都没改，
+导出时只把绝对路径/内网端点串换成了占位符（<REPO>、<S22_GEOMETRY_DIR>、<REMOTE_LOG_DIR>、
+<REMOTE_WORKDIR>、<CLUSTER_HOME>、<SSH_PORT>），数值行未动，且各目录 MANIFEST.sha256 里的哈希
+对应的就是**脱敏后的发布副本**（不是母仓原件）——所以 `sha256sum -c MANIFEST.sha256` 在本目录内自洽。
+每个文件的 原件哈希 -> 发布副本哈希 对照、改动的行号、以及"数字是否被动过"的机器证明，
+记在 dist/PATH-SCRUB-LEDGER.txt（该账本不进发布树，因为它必须引用被抹掉的原文）。

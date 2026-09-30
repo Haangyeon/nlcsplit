@@ -1,0 +1,170 @@
+{
+ "basis": "6-31g*",
+ "level": 1,
+ "cpcorr": false,
+ "geometry_source": "fetched by nlcsplit/tools/get_s22.sh from github.com/grimme-lab/GMTKN55 tag v",
+ "rows": [
+  {
+   "name": "苯二聚体(A)",
+   "natm": 24,
+   "dmin": 3.374830010202341,
+   "dtot": -3.580307126166958,
+   "dcp": null,
+   "dxc": -4.486210273025024,
+   "dnlc": -4.366812838084419,
+   "pint": {
+    "becke": -4.037656678045749,
+    "becke-becke-rad": -4.0099745955894575,
+    "becke-treutler": -4.005690994909574,
+    "stratmann": -4.036505948415219
+   },
+   "span": 0.03196568313617476,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T213839Z_centos-step_h_benz_l1"
+  },
+  {
+   "name": "苯二聚体(B)",
+   "natm": 24,
+   "dmin": 2.8037159429732275,
+   "dtot": -3.188096022469119,
+   "dcp": null,
+   "dxc": -4.555462536487544,
+   "dnlc": -2.3880343911483055,
+   "pint": {
+    "becke": -2.3705365623203236,
+    "becke-becke-rad": -2.151647673262345,
+    "becke-treutler": -2.218748487510507,
+    "stratmann": -2.3648452848503814
+   },
+   "span": 0.21888888905797854,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T213839Z_centos-step_h_benz_l1"
+  },
+  {
+   "name": "水二聚体",
+   "natm": 6,
+   "dmin": 1.9515856687929185,
+   "dtot": -7.815821824427889,
+   "dcp": null,
+   "dxc": -3.708131402473137,
+   "dnlc": -0.5934947874882619,
+   "pint": {
+    "becke": -0.6012148492993636,
+    "becke-becke-rad": -0.5577423551328227,
+    "becke-treutler": -0.5747679659737175,
+    "stratmann": -0.5991068144030592
+   },
+   "span": 0.043472494166540976,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "run_utc": "2026-09-29T04:18:21Z",
+   "pyscf_version": "2.12.1",
+   "host": "<OPERATOR>"
+  },
+  {
+   "name": "氨二聚体",
+   "natm": 8,
+   "dmin": 2.15,
+   "dtot": -5.167,
+   "dcp": null,
+   "dxc": -0.881,
+   "dnlc": -0.678,
+   "pint": {
+    "becke": -0.649
+   },
+   "span": 0.029,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T193520Z_centos-step_h_l1"
+  },
+  {
+   "name": "甲烷二聚体",
+   "natm": 10,
+   "dmin": 3.16,
+   "dtot": -0.664,
+   "dcp": null,
+   "dxc": -0.232,
+   "dnlc": -0.517,
+   "pint": {
+    "becke": -0.474
+   },
+   "span": 0.004,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T193520Z_centos-step_h_l1"
+  },
+  {
+   "name": "苯-水",
+   "natm": 15,
+   "dmin": 2.6,
+   "dtot": -4.342,
+   "dcp": null,
+   "dxc": -4.012,
+   "dnlc": -1.259,
+   "pint": {
+    "becke": -1.36
+   },
+   "span": 0.247,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T193520Z_centos-step_h_l1"
+  },
+  {
+   "name": "苯-氨",
+   "natm": 16,
+   "dmin": 2.76,
+   "dtot": -2.928,
+   "dcp": null,
+   "dxc": -2.915,
+   "dnlc": -1.327,
+   "pint": {
+    "becke": -1.393
+   },
+   "span": 0.224,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T193520Z_centos-step_h_l1"
+  },
+  {
+   "name": "苯-甲烷",
+   "natm": 17,
+   "dmin": 2.98,
+   "dtot": -1.785,
+   "dcp": null,
+   "dxc": -2.322,
+   "dnlc": -1.404,
+   "pint": {
+    "becke": -1.442
+   },
+   "span": 0.213,
+   "level": 1,
+   "basis": "6-31g*",
+   "cpcorr": false,
+   "pyscf_version": "2.14.0",
+   "host": "ubuntu",
+   "run_batch": "20260928T193520Z_centos-step_h_l1"
+  }
+ ],
+ "note": "按 name 合并：同一体系的不同 level 不能并存，后者覆盖前者。故每行自带 level/basis/cpcorr 与 provenance（本地跑=writer 写的 run_utc/pyscf_version/host；远端跑=实测版本 + 批次号 run_batch，批次号即 logs/ 里的文件名）。"
+}

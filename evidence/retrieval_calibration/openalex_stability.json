@@ -1,0 +1,95 @@
+{
+  "started": "2026-09-29T02:21:02.058Z",
+  "reps": 4,
+  "note": "只计成功响应；429 退避重试",
+  "rows": [
+    {
+      "q": "physical interpretability energetic predictability dispersion corrected functionals",
+      "recalls": 4,
+      "ranks": "0,0,0,0",
+      "distinctTop1": 1,
+      "runs": [
+        {
+          "n": 25,
+          "rank": 0,
+          "top1": "balance between physical interpretability and energetic predictability",
+          "tries": 1
+        },
+        {
+          "n": 25,
+          "rank": 0,
+          "top1": "balance between physical interpretability and energetic predictability",
+          "tries": 1
+        },
+        {
+          "n": 25,
+          "rank": 0,
+          "top1": "balance between physical interpretability and energetic predictability",
+          "tries": 1
+        },
+        {
+          "n": 25,
+          "rank": 0,
+          "top1": "balance between physical interpretability and energetic predictability",
+          "tries": 1
+        }
+      ]
+    },
+    {
+      "q": "energy decomposition analysis dispersion nonlocal correlation density functional",
+      "recalls": 0,
+      "ranks": "-1,-1,-1,err",
+      "distinctTop1": 2,
+      "runs": [
+        {
+          "n": 25,
+          "rank": -1,
+          "top1": "ω b97m-v: a combinatorially optimized, range-separated hybrid, meta-gg",
+          "tries": 1
+        },
+        {
+          "n": 25,
+          "rank": -1,
+          "top1": "ω b97m-v: a combinatorially optimized, range-separated hybrid, meta-gg",
+          "tries": 1
+        },
+        {
+          "n": 25,
+          "rank": -1,
+          "top1": "ω b97m-v: a combinatorially optimized, range-separated hybrid, meta-gg",
+          "tries": 3
+        },
+        {
+          "error": "429 exhausted"
+        }
+      ]
+    },
+    {
+      "q": "ALMO energy decomposition dispersion corrected noncovalent interactions",
+      "recalls": 0,
+      "ranks": "err,-1,err,-1",
+      "distinctTop1": 2,
+      "runs": [
+        {
+          "error": "429 exhausted"
+        },
+        {
+          "n": 25,
+          "rank": -1,
+          "top1": "probing non-covalent interactions with a second generation energy deco",
+          "tries": 2
+        },
+        {
+          "error": "429 exhausted"
+        },
+        {
+          "n": 25,
+          "rank": -1,
+          "top1": "probing non-covalent interactions with a second generation energy deco",
+          "tries": 5
+        }
+      ]
+    }
+  ],
+  "verdict": "稳定召回"
+}
