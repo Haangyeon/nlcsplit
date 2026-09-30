@@ -1,0 +1,9 @@
+p2 引证层落地 2026-09-30（UTC 2026-09-30T14:41:10Z）—— A3 完成记录，脚本 scratch/p2_cite_replace.py
+
+替换：§1 的 10 个引用括号 -> 18 个 [[key]]；不变式（摘掉引用后正文逐字符相同）通过
+护栏当场逮到两处自己的错：①多引用替换里新增的 '; ' 分隔符被算成正文改动；②GBK 终端连 ć/ü 的 repr 都编不出来，--apply 在写盘前崩溃（因此 p2.md 未被半改）
+
+编译：p2.pdf 9 页 / 0 error / bibtex 0 warning / aux 里 \bibcite 18 条（原先 8 页、0 条）
+ paper/p2.md  | 31 ++++++++++---------------------
+ paper/p2.tex |  4 ++--
+ 2 files changed, 12 insertions(+), 23 deletions(-)
