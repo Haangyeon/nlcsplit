@@ -181,7 +181,13 @@ function inline(s) {
       // first build died on \texttt{[S#]} with "macro parameter character #".
       return '\\texttt{' + p.slice(1, -1)
         .replace(/\\/g, '\\textbackslash{}')
-        .replace(/([_&#%$])/g, '\\$1') + '}';
+        .replace(/([_&#%$])/g, '\\$1')
+        // `^` 与 `~` 在文本模式是重音控制字：`^{1/6}` 留在 \texttt 里会炸成
+        // "Missing $ inserted"（p2 首次编译就是这么死的）。必须用 \textasciicircum，
+        // 不能用 \^ —— 后者会吞掉后面的 `{1/6}` 当参数。
+        // 只在代码跨度里加：main.md 的行内代码含 ^/~ 的处数为 0，所以这条不动 main 的字节。
+        .replace(/\^/g, '\\textasciicircum{}')
+        .replace(/~/g, '\\textasciitilde{}') + '}';
     }
     let t = p;
     t = cite(t);
@@ -439,14 +445,44 @@ const looksLikePath = x => /[/.]|\.(out|json|py|md|js|txt|bib)$/.test(x) && !/^(
 const stripLines = x => x.replace(/:\d+(?:[,-]{1,2}\d+)*$/, '');
 const globish = x => /[*?\s]/.test(x);
 const pathToken = x => !globish(x) && looksLikePath(stripLines(x)) && !stripLines(x).startsWith('/');
+// pytest 节点 ID `file.py::test_x` 和数学串 `(4π/3)ρ` 都会被 looksLikePath 误吞：
+// 前者不是"路径不存在"，而是要拆成「文件被跟踪」+「该符号确实在那个文件里定义」两半；
+// 后者含希腊字母/运算符，根本不是路径。稿件写 `x.py::test_y` 是对的，闸门错。
+// 数学串的判据用字符集，不用"有没有空格"——`(4π/3)ρ` 里没有空格。
+const MATHY = /[^\x00-\x7F]/;
+const nodeBad = [];
+function checkNodeRef(p) {
+  const i = p.indexOf('::');
+  const file = p.slice(0, i), sym = p.slice(i + 2);
+  const fileThere = TRACKED.has(file) || fs.existsSync(file);
+  let symThere = false;
+  try {
+    symThere = new RegExp('(^|\\s)(def|class)\\s*' + sym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      + '\\b', 'm').test(fs.readFileSync(file, 'utf8'));
+  } catch (e) { /* 文件读不到 -> 按缺失处理 */ }
+  if (fileThere && symThere) return true;
+  nodeBad.push(p + (fileThere ? '' : ' [文件不存在/未跟踪]') + (symThere ? '' : ' [符号未在此文件中定义]'));
+  return false;
+}
+
 function verdict(paths) {
-  const bad = paths.map(stripLines).filter(p => !TRACKED.has(p));
-  if (!bad.length) return 'tracked';
+  const plain = [];
+  for (const raw of paths) {
+    const p = stripLines(raw);
+    if (p.includes('::')) { checkNodeRef(p); continue; }
+    // 非 ASCII 的串（公式、单位）不当路径查。但这不是"放过"：它仍会走
+    // E-CHAR-UNMAPPED 那条闸门，排不出来的字符照样拦。
+    if (MATHY.test(p)) continue;
+    plain.push(p);
+  }
+  const bad = plain.filter(p => !TRACKED.has(p));
+  const bits = [];
+  if (!bad.length && !nodeBad.length) return 'tracked';
   const onDisk = bad.filter(p => fs.existsSync(p));
   const gone = bad.filter(p => !fs.existsSync(p));
-  const bits = [];
   if (onDisk.length) bits.push('**FAIL, exists but NOT tracked: ' + onDisk.join(', ') + '**');
   if (gone.length) bits.push('**FAIL, missing: ' + gone.join(', ') + '**');
+  if (nodeBad.length) bits.push('**FAIL, 节点 ID 对不上: ' + nodeBad.join(', ') + '**');
   return bits.join('; ');
 }
 
@@ -489,6 +525,24 @@ for (const t of usedInBody) {
 const uncited = [...defMap.keys()].filter(t => !usedInBody.includes(t)).sort();
 const fails = rows.filter(r => /FAIL/.test(r[2])).length + uncited.length
   + (inlineBad === 'tracked' ? 0 : 1) + (verdict(FIGS) === 'tracked' ? 0 : 1);
+
+// 出处对不上就**不出稿**。以前只数不算拦：本项目真的把过一条"与 ORCA 差 6e-4"
+// 写进 README，而那份 ORCA 输出里根本没有单列的非局域项——当时的闸门也是"报 FAIL 但照样写"。
+// 细节必须随错误一起印出来，因为阻断后 audit 文件不会落盘。
+if (fails) {
+  const items = [
+    ...rows.filter(r => /FAIL/.test(r[2])).map(r => '标签 [' + r[0] + '] ' + r[1] + ' -> ' + r[2]),
+    ...uncited.map(t => '附录行 ' + t + ' 正文从未引用'),
+    ...(inlineBad === 'tracked' ? [] : ['正文内联路径 ' + inlineBad]),
+    ...(verdict(FIGS) === 'tracked' ? [] : ['图 ' + verdict(FIGS)]),
+  ];
+  block('E-PROVENANCE', '出处审计 ' + fails + ' 条 FAIL ⇒ 拒绝出稿：\n        '
+    + items.slice(0, 8).join('\n        ')
+    + (items.length > 8 ? '\n        （其余 ' + (items.length - 8) + ' 条见 audit 文本，需先解除阻断才会落盘）' : ''),
+    '要么把引用的工件/标签补上或改对，要么删掉这句引用；'
+    + '不要用「关掉闸门」或「先出 PDF 再说」来处理——历史上 README 挂着一条 ORCA 输出里'
+    + '根本不存在的 6e-4，正是报了 FAIL 却照样出货造成的。');
+}
 
 // `main` renders the two header strings exactly as the pre-refactor script did, because
 // paper/main.tex and paper/tex_audit.md are tracked artefacts and their current bytes are
