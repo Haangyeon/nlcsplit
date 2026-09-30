@@ -166,11 +166,76 @@
 }
 
 @article{hesselmann2013nldft,
-  author  = {Andreas Heßelmann},
+  author  = {Andreas He{\ss}elmann},
   title   = {Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods},
   journal = {Journal of Chemical Theory and Computation},
   volume  = {9},
   pages   = {273-283},
   year    = {2013},
   doi     = {10.1021/ct300735g},
+}
+
+% ---------------------------------------------------------------------------
+% 软件与库（2026-09-30 手工追加，不在 scratch/build_bib.js 的 WANT 里）
+% 四条都是**已知条目核验**：先按 DOI 回查，再比对题名/刊名/卷页/年份。
+% 一次记忆错误就是这么抓出来的：NumPy 那篇我记成 10.1038/s41586-020-2308-7，
+% 回查发现那个 DOI 是 gnomAD（Karczewski 等 2020 Nature 581 434-443），
+% 正确 DOI 是下面这条 10.1038/s41586-020-2649-2（Nature 585 357-362）。
+% ---------------------------------------------------------------------------
+
+% 数值基底：NumPy（nlcsplit/ 下 18 个模块 `import numpy`；scipy 未使用，故不引）
+% Crossref: 26 authors, first published 2020-09-16, journal-issue year 2020.
+@article{harris2020numpy,
+  author  = {Charles R. Harris and K. Jarrod Millman and St{\'e}fan J. van der Walt and Ralf Gommers and Pauli Virtanen and David Cournapeau and Eric Wieser and Julian Taylor and Sebastian Berg and Nathaniel J. Smith and Robert Kern and Matti Picus and Stephan Hoyer and Marten H. van Kerkwijk and Matthew Brett and Allan Haldane and Jaime Fern{\'a}ndez del R{\'i}o and Mark Wiebe and Pearu Peterson and Pierre G{\'e}rard-Marchant and Kevin Sheppard and Tyler Reddy and Warren Weckesser and Hameer Abbasi and Christoph Gohlke and Travis E. Oliphant},
+  title   = {Array programming with {NumPy}},
+  journal = {Nature},
+  volume  = {585},
+  pages   = {357-362},
+  year    = {2020},
+  doi     = {10.1038/s41586-020-2649-2},
+}
+
+% 宿主程序：PySCF（主篇一切网格/密度/能量与两版本对照 2.12.1 vs 2.14.0 的出处）
+% NOTE：Crossref 里**没有**专属某个版本的论文，版本号只能由正文承载，bib 不编 DOI。
+@article{sun2018pyscf,
+  author  = {Qiming Sun and Timothy C. Berkelbach and Nick S. Blunt and George H. Booth and Sheng Guo and Zhendong Li and Junzi Liu and James D. McClain and Elvira R. Sayfutyarova and Sandeep Sharma and Sebastian Wouters and Garnet Kin-Lic Chan},
+  title   = {{PySCF}: the {Python}-based simulations of chemistry framework},
+  journal = {WIREs Computational Molecular Science},
+  volume  = {8},
+  pages   = {e1340},
+  year    = {2018},
+  doi     = {10.1002/wcms.1340},
+}
+
+@article{sun2020pyscf,
+  author  = {Qiming Sun and Xing Zhang and Samragni Banerjee and Peng Bao and Marc Barbry and Nick S. Blunt and Nikolay A. Bogdanov and George H. Booth and Jia Chen and Zhi-Hao Cui and Janus J. Eriksen and Yang Gao and Sheng Guo and Jan Hermann and Matthew R. Hermes and Kevin Koh and Peter Koval and Susi Lehtola and Zhendong Li and Junzi Liu and Narbe Mardirossian and James D. McClain and Mario Motta and Bastien Mussard and Hung Q. Pham and Artem Pulkin and Wirawan Purwanto and Paul J. Robinson and Enrico Ronca and Elvira R. Sayfutyarova and Maximilian Scheurer and Henry F. Schurkus and James E. T. Smith and Chong Sun and Shi-Ning Sun and Shiv Upadhyay and Lucas K. Wagner and Xiao Wang and Alec White and James Daniel Whitfield and Mark J. Williamson and Sebastian Wouters and Jun Yang and Jason M. Yu and Tianyu Zhu and Timothy C. Berkelbach and Sandeep Sharma and Alexander Yu. Sokolov and Garnet Kin-Lic Chan},
+  title   = {Recent developments in the {PySCF} program package},
+  journal = {The Journal of Chemical Physics},
+  volume  = {153},
+  pages   = {024109},
+  year    = {2020},
+  doi     = {10.1063/5.0006074},
+}
+
+% 库：libxc（主篇用它当 (b, C) 参数来源，并明确论证它当不了数值裁判）
+@article{lehtola2018libxc,
+  author  = {Susi Lehtola and Conrad Steigemann and Micael J. T. Oliveira and Miguel A. L. Marques},
+  title   = {Recent developments in {libxc} --- {A} comprehensive library of functionals for density functional theory},
+  journal = {SoftwareX},
+  volume  = {7},
+  pages   = {1-5},
+  year    = {2018},
+  doi     = {10.1016/j.softx.2017.11.002},
+}
+
+% 基准集：S22 的正式出处（§2.4 几何来源链上唯一能经 DOI 回查钉住的一环）
+% 2026-09-30 回查：HTTP 200，题名/刊名/卷 8/页 1985-1993/年 2006 全部一致，作者四人。
+@article{jurecka2006s22,
+  author  = {Petr Jure{\v{c}}ka and Ji{\v{r}}{\'i} {\v{S}}poner and Ji{\v{r}}{\'i} {\v{C}}ern{\'y} and Pavel Hobza},
+  title   = {Benchmark database of accurate ({MP2} and {CCSD(T)} complete basis set limit) interaction energies of small model complexes, {DNA} base pairs, and amino acid pairs},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {8},
+  pages   = {1985-1993},
+  year    = {2006},
+  doi     = {10.1039/b600027d},
 }

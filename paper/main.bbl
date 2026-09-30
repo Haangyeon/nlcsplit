@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -10,6 +10,52 @@ Oleg~A. Vydrov and Troy~Van Voorhis.
 \newblock Nonlocal van der waals density functional made simple.
 \newblock \emph{Physical Review Letters}, 103:\penalty0 063004, 2009.
 \newblock \doi{10.1103/PhysRevLett.103.063004}.
+
+\bibitem[Sun et~al.(2018)Sun, Berkelbach, Blunt, Booth, Guo, Li, Liu, McClain,
+  Sayfutyarova, Sharma, Wouters, and Chan]{sun2018pyscf}
+Qiming Sun, Timothy~C. Berkelbach, Nick~S. Blunt, George~H. Booth, Sheng Guo,
+  Zhendong Li, Junzi Liu, James~D. McClain, Elvira~R. Sayfutyarova, Sandeep
+  Sharma, Sebastian Wouters, and Garnet Kin-Lic Chan.
+\newblock {PySCF}: the {Python}-based simulations of chemistry framework.
+\newblock \emph{WIREs Computational Molecular Science}, 8:\penalty0 e1340,
+  2018.
+\newblock \doi{10.1002/wcms.1340}.
+
+\bibitem[Sun et~al.(2020)Sun, Zhang, Banerjee, Bao, Barbry, Blunt, Bogdanov,
+  Booth, Chen, Cui, Eriksen, Gao, Guo, Hermann, Hermes, Koh, Koval, Lehtola,
+  Li, Liu, Mardirossian, McClain, Motta, Mussard, Pham, Pulkin, Purwanto,
+  Robinson, Ronca, Sayfutyarova, Scheurer, Schurkus, Smith, Sun, Sun, Upadhyay,
+  Wagner, Wang, White, Whitfield, Williamson, Wouters, Yang, Yu, Zhu,
+  Berkelbach, Sharma, Sokolov, and Chan]{sun2020pyscf}
+Qiming Sun, Xing Zhang, Samragni Banerjee, Peng Bao, Marc Barbry, Nick~S.
+  Blunt, Nikolay~A. Bogdanov, George~H. Booth, Jia Chen, Zhi-Hao Cui, Janus~J.
+  Eriksen, Yang Gao, Sheng Guo, Jan Hermann, Matthew~R. Hermes, Kevin Koh,
+  Peter Koval, Susi Lehtola, Zhendong Li, Junzi Liu, Narbe Mardirossian,
+  James~D. McClain, Mario Motta, Bastien Mussard, Hung~Q. Pham, Artem Pulkin,
+  Wirawan Purwanto, Paul~J. Robinson, Enrico Ronca, Elvira~R. Sayfutyarova,
+  Maximilian Scheurer, Henry~F. Schurkus, James E.~T. Smith, Chong Sun,
+  Shi-Ning Sun, Shiv Upadhyay, Lucas~K. Wagner, Xiao Wang, Alec White,
+  James~Daniel Whitfield, Mark~J. Williamson, Sebastian Wouters, Jun Yang,
+  Jason~M. Yu, Tianyu Zhu, Timothy~C. Berkelbach, Sandeep Sharma, Alexander~Yu.
+  Sokolov, and Garnet Kin-Lic Chan.
+\newblock Recent developments in the {PySCF} program package.
+\newblock \emph{The Journal of Chemical Physics}, 153:\penalty0 024109, 2020.
+\newblock \doi{10.1063/5.0006074}.
+
+\bibitem[Harris et~al.(2020)Harris, Millman, van~der Walt, Gommers, Virtanen,
+  Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, van Kerkwijk,
+  Brett, Haldane, del R{\'i}o, Wiebe, Peterson, G{\'e}rard-Marchant, Sheppard,
+  Reddy, Weckesser, Abbasi, Gohlke, and Oliphant]{harris2020numpy}
+Charles~R. Harris, K.~Jarrod Millman, St{\'e}fan~J. van~der Walt, Ralf Gommers,
+  Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg,
+  Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van
+  Kerkwijk, Matthew Brett, Allan Haldane, Jaime~Fern{\'a}ndez del R{\'i}o, Mark
+  Wiebe, Pearu Peterson, Pierre G{\'e}rard-Marchant, Kevin Sheppard, Tyler
+  Reddy, Warren Weckesser, Hameer Abbasi, Christoph Gohlke, and Travis~E.
+  Oliphant.
+\newblock Array programming with {NumPy}.
+\newblock \emph{Nature}, 585:\penalty0 357--362, 2020.
+\newblock \doi{10.1038/s41586-020-2649-2}.
 
 \bibitem[Mardirossian and Head-Gordon(2014)]{mardirossian2014wb97xv}
 Narbe Mardirossian and Martin Head-Gordon.
@@ -33,6 +79,15 @@ Joaquín Calbo, Enrique Ortí, Juan~C. Sancho-García, and Juan Aragó.
 \newblock \emph{Annual Reports in Computational Chemistry}, 11:\penalty0
   37--102, 2015.
 \newblock \doi{10.1016/bs.arcc.2015.09.002}.
+
+\bibitem[Lehtola et~al.(2018)Lehtola, Steigemann, Oliveira, and
+  Marques]{lehtola2018libxc}
+Susi Lehtola, Conrad Steigemann, Micael J.~T. Oliveira, and Miguel A.~L.
+  Marques.
+\newblock Recent developments in {libxc} --- {A} comprehensive library of
+  functionals for density functional theory.
+\newblock \emph{SoftwareX}, 7:\penalty0 1--5, 2018.
+\newblock \doi{10.1016/j.softx.2017.11.002}.
 
 \bibitem[Dasgupta et~al.(2023)Dasgupta, Palos, Pan, and Paesani]{dasgupta2023}
 Saswata Dasgupta, Etienne Palos, Yuanhui Pan, and Francesco Paesani.
@@ -94,8 +149,8 @@ M.~Dion, H.~Rydberg, E.~Schröder, D.~C. Langreth, and B.~I. Lundqvist.
 \newblock \emph{Physical Review Letters}, 92:\penalty0 246401, 2004.
 \newblock \doi{10.1103/PhysRevLett.92.246401}.
 
-\bibitem[Heßelmann(2013)]{hesselmann2013nldft}
-Andreas Heßelmann.
+\bibitem[He{\ss}elmann(2013)]{hesselmann2013nldft}
+Andreas He{\ss}elmann.
 \newblock Assessment of a nonlocal correction scheme to semilocal density
   functional theory methods.
 \newblock \emph{Journal of Chemical Theory and Computation}, 9:\penalty0
@@ -133,5 +188,16 @@ Lars Goerigk, Andreas Hansen, Christoph Bauer, Stephan Ehrlich, Asim Najibi,
 \newblock \emph{Physical Chemistry Chemical Physics}, 19:\penalty0
   32184--32215, 2017.
 \newblock \doi{10.1039/c7cp04913g}.
+
+\bibitem[Jure{\v{c}}ka et~al.(2006)Jure{\v{c}}ka, {\v{S}}poner,
+  {\v{C}}ern{\'y}, and Hobza]{jurecka2006s22}
+Petr Jure{\v{c}}ka, Ji{\v{r}}{\'i} {\v{S}}poner, Ji{\v{r}}{\'i}
+  {\v{C}}ern{\'y}, and Pavel Hobza.
+\newblock Benchmark database of accurate ({MP2} and {CCSD(T)} complete basis
+  set limit) interaction energies of small model complexes, {DNA} base pairs,
+  and amino acid pairs.
+\newblock \emph{Physical Chemistry Chemical Physics}, 8:\penalty0 1985--1993,
+  2006.
+\newblock \doi{10.1039/b600027d}.
 
 \end{thebibliography}

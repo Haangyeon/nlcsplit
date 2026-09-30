@@ -2,15 +2,15 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 59642 chars, 797 lines
+- source `paper/main.md`: 59970 chars, 800 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - tags cited in the body: 21
 - figures pulled in: 2 -> tracked
-- inline backticked paths in the body text: 14 scanned -> tracked
+- inline backticked paths in the body text: 15 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
-- bib entries cited: 17 of 17
+- bib entries cited: 22 of 22
 
 | tag | artefact | check |
 |---|---|---|
