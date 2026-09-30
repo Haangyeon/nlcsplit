@@ -572,7 +572,7 @@ with it. We use "dispersion" only when quoting external work, and the values in
 Table 1 should be read as "the contribution of the VV10 term", not as a
 dispersion energy.
 
-**Cross-program check: ORCA 6.0.1 agrees on the reported quantity, on six systems.** Our
+**Cross-program check: ORCA 6.0.1 agrees on the reported quantity, on all eight systems.** Our
 explicit sum had only ever been checked against PySCF's native kernel, and both live in
 one library, so they could share an error in the functional parameters or in the kernel
 convention. That check now exists against a second program, and on more than the two
@@ -741,9 +741,11 @@ covering all eight systems, every residual below 1% of the term
 version of this draft claimed such an anchor and had
 to withdraw it; what actually failed was not the check but our ability to find its
 number, because we searched for the words "nonlocal" and "VV10" in an output file
-that labels the quantity `NL Energy, E(C,NL)`. One item remains open there: the
-absolute per-fragment values are still unrefereed - the anchor checks differences of
-that quantity, which is what every claim in this paper is made of.
+that labels the quantity `NL Energy, E(C,NL)`. One scoping limit remains: the absolute
+value, not only the difference, is checked on the water dimer and on both of its monomers
+(§4, where the earlier "unrefereed" flag is retired); on the other seven systems the second
+program checks the difference, which is what every claim in this paper is made of, and not
+each absolute fragment value.
 
 Two further items are open and stated as such rather than smoothed over. The first is a
 number, not a missing run: re-running benzene-methane at level 2 with counterpoise on two

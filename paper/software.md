@@ -352,8 +352,10 @@ refuses to emit the table if the system list or any row's basis, grid level or c
 setting disagrees. Two limitations there are unchanged. A third, fully
 independent implementation (Psi4, or libxc's `xc_nlc_vxc` through its own bindings)
 is still outstanding - the point is that ORCA is the *only* second program, not that there
-are three. And the anchor checks differences of the quantity, so the absolute per-fragment
-values remain unrefereed.
+are three. And the scope of what is checked: on the water dimer the comparison covers the
+absolute term for the complex and for both monomers, while for the other seven systems the
+second program checks the superposition difference - which is the quantity every published
+claim here is made of, but not each absolute per-fragment value.
 
 
 ## 6. Limitations
