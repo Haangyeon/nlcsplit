@@ -2,7 +2,7 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js software`; do not edit here.
 
-- source `paper/software.md`: 42658 chars, 508 lines
+- source `paper/software.md`: 43200 chars, 514 lines
 - output `paper/software.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: 32 lines (metadata; it is not body prose, so it is not in the PDF)
@@ -11,7 +11,7 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js software`; d
 - inline backticked paths in the body text: 31 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
-- bib entries cited: 7 of 22; **not cited anywhere in the body: becke1988, calbo2015vv10review, dion2004, goerigk2017gmtkn55, hamada2011c60au, hesselmann2013nldft, hujo2011hbond, hyldgaard2014interp, jurecka2006s22, kruse2019dna, lehtola2018libxc, sinha2015fdevdw, stratmann1996, vydrov2009vv10, vydrov2010simple**
+- bib entries cited: 7 of 24; **not cited anywhere in the body: altun2018dlpno, becke1988, calbo2015vv10review, dion2004, goerigk2017gmtkn55, hamada2011c60au, hesselmann2013nldft, hujo2011hbond, hyldgaard2014interp, jurecka2006s22, kruse2019dna, lehtola2018libxc, sinha2015fdevdw, stratmann1996, takatani2010s22, vydrov2009vv10, vydrov2010simple**
 
 | tag | artefact | check |
 |---|---|---|

@@ -32,7 +32,8 @@ wheel 的 4e9efb8e… 同时出现在 `20260929T170302Z_wheelclean_pyargs.out` �
 | `gate_selftest_20260930.txt` | 十二条闸门 + 各自的反证 | 命中数、豁免账、自测输出 | 全 0 命中；反证全部按预期响 |
 | `published_tree_rerun_20260930.txt` | **发布树自己**：整份复制到新目录，跑它带着的那份导出脚本，连跑两次 | 产出是否不动点、少掉哪些检查 | 两次都 exit 0，两次产出只差导出时间戳；少掉的检查逐条打在 stderr |
 | `20260930T202235Z_suite65_full_and_counts.out` | **母仓工作树**（不是安装物），`PYTHONPATH=. pytest -q` | 全量 65 = not-slow 45 + slow 20，三份收集数都在这份里 | **65 passed，无跳过，710.73 s，EXIT=0**；抬头带 python/pyscf/numpy/scipy 版本与跑时的 `git status` |
-| `20260930T205444Z_wheel_pyargs_45.out` | **重建后的 wheel**（`149e727b…`），同样 `--target` + `PYTHONPATH`，cwd 在解包目录里 | 全量 45（= 27 not-slow + 18 slow），这是本目录里收集数最大的一份 | **44 passed, 1 skipped, 322.21 s**；跳过的是 `test_geometry.py` 那条设计内的 S22 取回项。**注意**这一跑没设 `OMP_NUM_THREADS=2`（前两份都设了），所以 322 s 与 406–656 s 不可并池比较，只有计数可比 |
+| `20260930T205444Z_wheel_pyargs_45.out` | **重建后的 wheel**（`149e727b…`，36 成员），同样 `--target` + `PYTHONPATH`，cwd 在解包目录里 | 全量 45（= 27 not-slow + 18 slow），这是本目录里收集数最大的一份 | **44 passed, 1 skipped, 322.21 s**；跳过的是 `test_geometry.py` 那条设计内的 S22 取回项。**注意**这一跑没设 `OMP_NUM_THREADS=2`（前两份都设了），所以 322 s 与 406–656 s 不可并池比较，只有计数可比 |
+| `20260930T220142Z_wheel_pyargs_45_member37.out` | **再重建一次的 wheel**（`7e7f9d71…`，37 成员——多出来的只有 `step_m_ccsdt.py`，8 个测试文件逐位相同），同上装法 | 仍是全量 45 | **44 passed, 1 skipped, 504.67 s**。与上一份 1.57 倍的墙钟差发生在同一台机器、同样没设线程变量、测试模块逐位相同的两个 wheel 上，两份日志里都没有可指认的原因 ⇒ 这就是"墙钟只按各自日志引、绝不归一"的实证，可比的是计数不是时间 |
 
 `20260929T213318Z` 那份是本目录里唯一一份**判语指向别处**的证据：它不证明任何数值主张，
 它证明的是"装源码 ≠ 装发布物"这个前提曾经是假的，而闸门 V 现在看住它。

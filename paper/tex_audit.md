@@ -2,16 +2,16 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 76141 chars, 948 lines
+- source `paper/main.md`: 78806 chars, 974 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
-- tags cited in the body: 23
+- tags cited in the body: 24
 - figures pulled in: 2 -> tracked
 - inline backticked paths in the body text: 20 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
-- bib entries cited: 22 of 22
+- bib entries cited: 24 of 24
 
 | tag | artefact | check |
 |---|---|---|
@@ -38,3 +38,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S21 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt`<br>`evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out`<br>`evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.json`<br>`nlcsplit/step_l_sweep_compare.py` | tracked |
 | S22 | `evidence/attribution_referee/run.py`<br>`evidence/attribution_referee/referee_lib.py`<br>`evidence/attribution_referee/summarize.py`<br>`evidence/attribution_referee/probe_quadrature.py`<br>`evidence/attribution_referee/README.md`<br>`evidence/attribution_referee/outputs/results.json`<br>`evidence/attribution_referee/outputs/table.md`<br>`evidence/attribution_referee/outputs/summary.md`<br>`evidence/attribution_referee/outputs/validation.md`<br>`evidence/attribution_referee/outputs/convergence.md`<br>`evidence/attribution_referee/outputs/headline.md`<br>`evidence/attribution_referee/outputs/run_log.txt`<br>`evidence/attribution_referee/outputs/results_run1_20261001.json`<br>`evidence/attribution_referee/outputs/table_run1_20261001.md`<br>`evidence/attribution_referee/outputs/rerun_verify_20261001.log`<br>`evidence/attribution_referee/MANIFEST.sha256` | tracked |
 | S23 | `evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`<br>`evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`<br>`nlcsplit/step_k_population.py`<br>`evidence/population/MANIFEST.sha256` | tracked |
+| S24 | `nlcsplit/step_m_ccsdt.py`<br>`evidence/ccsdt/20260930T212300Z_stepm_ladder.out`<br>`evidence/ccsdt/MANIFEST.sha256` | tracked |

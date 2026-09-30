@@ -458,6 +458,31 @@ methane, benzene...water, benzene...ammonia and benzene...methane respectively
 one grid level before the total binding energy is; a user who only wants dE_NLC
 can stop at level 1.
 
+**Is -6.129 the right answer?** Not a question about the nonlocal term, but it is a
+question the paper invited, and it now has a measurement instead of a caveat. At the same
+official S22 geometry, the same 6-31g\* basis and the same counterpoise convention,
+coupled cluster gives dE_int = -6.856 kcal/mol at CCSD(T) with frozen oxygen 1s
+(-6.887 all-electron, so the frozen-core choice is worth 0.031 here), and -7.085, -5.248,
+-5.932 and -5.203 at cc-pVDZ, aug-cc-pVDZ, cc-pVTZ and aug-cc-pVTZ respectively [S24].
+Two things follow, and they are not in conflict. At fixed basis our functional binds
+0.73 kcal/mol *less* strongly than correlation does in the same basis. As the correlated
+calculation approaches the basis limit it becomes -5.20, at which point the density
+functional result is 0.93 kcal/mol too deep - and that near-limit value is externally
+consistent, because an open-access coupled-cluster study quotes the equilibrium-geometry
+CCSD(T)/CBS water-dimer dissociation energy as -5.01 kcal/mol [[altun2018dlpno]]. The
+correlated ladder moves 1.9 kcal/mol across five bases while the functional's deviation
+from it is about 1. So a verdict of the form "the functional overbinds" obtained by
+comparing one small-basis density-functional number with one CBS reference is not
+supportable: it folds a basis-set effect twice the size of the quantity being judged into
+the judgement. That is a caution about the total binding energy, not about dE_NLC, which is
+what every claim in this paper is made of, and which is grid-converged a level earlier
+(above) and agrees with a second program to 0.0004 kcal/mol on this same complex
+[S18]. A related definitional point, learned from a retraction: the S22 tables report
+*total* interaction energies [[jurecka2006s22]], and the revision that made them
+basis-set-consistent keeps doing exactly that [[takatani2010s22]], so no
+"CCSD(T) dispersion energy" can be read out of them, and an earlier version of this draft
+quoted one.
+
 ### 3.3 The interfragment pair term saturates the frozen-density limit
 
 `inter[(A,B)]`, summed over the retained grid points, is directly comparable to
@@ -833,9 +858,17 @@ two-Gaussian density where a partition-free value exists by construction: the su
 reproduces that value to within the reference's own error bar, while the Becke/owner
 convention sits 1.7e-08 to 1.26e-04 Ha (0.00001-0.0788 kcal/mol) from it - a difference
 resolved in 5 of its 12 configurations against the conservative deterministic error bar
-and in all 12 against an independent Monte-Carlo bar 5.8x tighter. What still does not
-carry a referee is a heteronuclear or chemically realistic
-density.
+and in all 12 against an independent Monte-Carlo bar 5.8x tighter. The case that draft
+excluded, unequal exponents and unequal electron numbers on the two centres, is now run too
+[[S22]]: the exact reference needs no nuclei and the density-factor partition needs no radii,
+so the only convention-dependent input is the element label, and swapping the label at a fixed
+density moves the offset by at most 0.24% of itself. What the heteronuclear case actually
+changes is the size of the effect - the owner/Becke cross term sits 6.2-35.9% of the exact
+cross term there, against 2.5-5.2% on the homonuclear scan, every one of them resolved
+against its own error bar. The homonuclear table understated the non-uniqueness, and it
+understated it in the regime where an EDA is asked to work. What still does not carry a
+referee is a chemically realistic density: nuclei, cusps and orbital structure remain outside
+this check, which is about the attribution rule as a mathematical operation.
 
 Two further items are open and stated as such rather than smoothed over. The first is a
 number, not a missing run: re-running benzene-methane at level 2 with counterpoise on two
@@ -918,14 +951,21 @@ run log left there is a working note and not evidence.
 | S19 | `evidence/centos/20260928T165857Z_centos-step_c.out` lines 6, 15 and 24 | the level-0 ratios of the inter-fragment pair term to the superposition difference: 1.017 for the water dimer at the official S22 geometry, 1.025 at its omegaB97X-V-optimised geometry, and 0.915 for the benzene sandwich - the third of these is a different system, which is why it is not folded into the 0.92-1.08 band |
 | S20 | `nlcsplit/step_k_population.py`, `evidence/population/20260929T131530Z_stepk_pop-official.out`, `evidence/population/20260929T131055Z_stepk_pop-constructed.out` | the level-3 four-scheme population table for the water dimer, from which beta*N_A is read; both runs assert that the fragment populations sum to the electron number. Re-running them is also what showed that the earlier tabulation of this number in the work log was labelled "official geometry" but reproduces only on the constructed one |
 | S21 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt`, `evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out`, `evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.json`, `nlcsplit/step_l_sweep_compare.py` | the independent sweep (water-monomer nonlocal term at levels 0-9, self-consistent and again on one fixed density matrix, ending in a partial `atom_grid` scan that dies on an unsupported angular grid), and the archived stdout plus sidecar JSON of our comparison against it, which carry the per-level difference column behind section 2.1 - the sweep file alone has no comparison column. Produced by the shipped script; its level-9 sum covers 9.2e10 point pairs over 428,920 kept grid points, which is why that one row took hours. The `levels0-8` snapshot taken mid-run is kept beside it, hashed, as the record of what was known before level 9 landed; its header announces the intended 0-9 range, which is why that filename says 0-8 and this one says 0-9. |
-| S22 | `evidence/attribution_referee/run.py`, `evidence/attribution_referee/referee_lib.py`, `evidence/attribution_referee/summarize.py`, `evidence/attribution_referee/probe_quadrature.py`, `evidence/attribution_referee/README.md`, `evidence/attribution_referee/outputs/results.json`, `evidence/attribution_referee/outputs/table.md`, `evidence/attribution_referee/outputs/summary.md`, `evidence/attribution_referee/outputs/validation.md`, `evidence/attribution_referee/outputs/convergence.md`, `evidence/attribution_referee/outputs/headline.md`, `evidence/attribution_referee/outputs/run_log.txt`, `evidence/attribution_referee/outputs/results_run1_20261001.json`, `evidence/attribution_referee/outputs/table_run1_20261001.md`, `evidence/attribution_referee/outputs/rerun_verify_20261001.log`, `evidence/attribution_referee/MANIFEST.sha256` | the partition-free referee: two-Gaussian model density, the cross term by three independent routes (3-D Cartesian tensor product, 5-D cylindrical reduction, importance-sampled Monte-Carlo), the measured combined uncertainty 1.060e-05 Ha, the column that cancels the grid, and the falsification suite (positive control on the documented-wrong pairing, closed-form Gaussian and Coulomb anchors, node-normalisation guard). The two shipped runs give a file-level reproducibility check rather than a sentence: the two tables compare byte-identical, and the field-by-field diff of the two machine-readable results is confined to the recorded wall-clock fields and the worker count. The Monte-Carlo error bar in the same file comes from
+| S22 | `evidence/attribution_referee/run.py`, `evidence/attribution_referee/referee_lib.py`, `evidence/attribution_referee/summarize.py`, `evidence/attribution_referee/probe_quadrature.py`, `evidence/attribution_referee/README.md`, `evidence/attribution_referee/outputs/results.json`, `evidence/attribution_referee/outputs/table.md`, `evidence/attribution_referee/outputs/summary.md`, `evidence/attribution_referee/outputs/validation.md`, `evidence/attribution_referee/outputs/convergence.md`, `evidence/attribution_referee/outputs/headline.md`, `evidence/attribution_referee/outputs/run_log.txt`, `evidence/attribution_referee/outputs/results_run1_20261001.json`, `evidence/attribution_referee/outputs/table_run1_20261001.md`, `evidence/attribution_referee/outputs/rerun_verify_20261001.log`, `evidence/attribution_referee/MANIFEST.sha256`, `evidence/attribution_referee/hetero.py`, `evidence/attribution_referee/outputs/hetero.json`, `evidence/attribution_referee/outputs/hetero_run_20261001.log` | the partition-free referee: two-Gaussian model density, the cross term by three independent routes (3-D Cartesian tensor product, 5-D cylindrical reduction, importance-sampled Monte-Carlo), the measured combined uncertainty 1.060e-05 Ha, the column that cancels the grid, and the falsification suite (positive control on the documented-wrong pairing, closed-form Gaussian and Coulomb anchors, node-normalisation guard). The two shipped runs give a file-level reproducibility check rather than a sentence: the two tables compare byte-identical, and the field-by-field diff of the two machine-readable results is confined to the recorded wall-clock fields and the worker count. The Monte-Carlo error bar in the same file comes from
 `evidence/attribution_referee/mc_tighten.py` (4,000,000 draws per configuration, its own
 seed base) and is stored in
 `evidence/attribution_referee/outputs/mc_tight.json`, a separate sidecar, so neither
 archived run is disturbed by it. Re-running `evidence/attribution_referee/run.py` regenerates
 every number; `evidence/attribution_referee/summarize.py` re-quotes them without
-re-quadrating |
+re-quadrating. `hetero.py` is the heteronuclear extension, and it is written as a sidecar for
+the same reason `mc_tighten.py` is: it must not disturb the archived table. Row 0 is therefore
+homonuclear and labelled as the archived run labels it, and it reproduces the reference cross
+term and the package cross term with a difference of exactly 0.000e+00 - which is what licenses
+the three unequal-centre rows. It skips the referee's own disjoint half-box node set, because
+that construction assumes two congruent boxes, and it runs each density under two different
+element labels so the radii table's contribution is measured instead of assumed |
 | S23 | `evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`, `evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`, `nlcsplit/step_k_population.py`, `evidence/population/MANIFEST.sha256` | the soft-vs-hard reading of the local term, per partition scheme, on both water-dimer geometries at grid level 3: hard populations credit a point to its owner only, soft populations spread it over the fragment factors at that point, and both are computed on PySCF's own partition weights so the measure is the converged one. The two files give the largest soft-hard population difference (1.527e-06 electrons official, 8.686e-07 constructed) and its conversion through beta into kcal/mol. Before these runs existed, this sentence quoted 8.7e-7 electrons on the strength of a working log only - the number was real but its geometry was not the published one, which is why the scope is now stated in the sentence |
+| S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/MANIFEST.sha256` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only |
 
 Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
 water-dimer geometry fix (its inter-fragment minimum is 2.0258 A against 1.95 A in

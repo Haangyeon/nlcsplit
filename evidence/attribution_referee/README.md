@@ -284,15 +284,19 @@ which kernel, which closed form) so a vacuous "0 deviations" cannot hide.
   against the density-factor assignment, on a density where the latter is exact.
   It does not certify `b`, `C`, or the kernel algebra — P1's cross-program anchor
   does that for differences.
-* Homonuclear, equal-exponent, 4+4 electrons.  `GaussPair` accepts unequal
-  `alpha_b`/`n_b` and the decomposition does not assume equality anywhere except
-  the symmetry check `I_AB = I_BA`, but the heteronuclear case is unrefereed here.
-  **Why it is not just a parameter change** (checked 2026-10-01): the reference side
-  needs no nuclei at all, but the package side is evaluated on a PySCF grid whose Becke
-  radii come from the atom types in `mk_mol` (two `He` here).  Making the two centres
-  unequal therefore forces a choice of element - i.e. a choice of the very partition
-  convention under test - before any number means anything.  Doing it properly means
-  reporting the offset as a function of that choice, which is a different experiment.
+* Homonuclear, equal-exponent, 4+4 electrons **in the two archived runs**.  An earlier
+  version of this bullet stopped there and gave a reason for not going heteronuclear:
+  the package side is evaluated on a PySCF grid whose Becke radii come from the atom types
+  in `mk_mol` (two `He`), so making the centres unequal forces a choice of element - a
+  choice of the partition convention under test - before any number means anything.
+  **That reason was wrong in its magnitude and the referee now covers the case anyway**
+  (section 12): two of the three compared quantities need no element at all - the exact
+  reference is a six-dimensional integral of an analytic density pair, and the
+  density-factor soft partition is defined from the density - and the radii table that the
+  third one does read turns out to move the offset by at most 0.24% of itself.
+* What is still not refereed here: a chemically realistic density (nuclei, cusps, orbital
+  structure).  These are still synthetic Gaussian pairs, and the statement is about the
+  attribution machinery as a mathematical operation on a density.
 * The reference is a quadrature, not a closed form.  Its error bar is measured
   (order ladder, truncation scan, 3-D vs 5-D, Monte-Carlo), and any claim about the
   discrepancy smaller than that error bar would be unsupported.
@@ -376,3 +380,46 @@ differ by up to 2.7x while its numbers do not differ at all.  That is the reprod
 claim this directory makes about itself, and it is stated as a file comparison rather
 than as a sentence.
 
+
+## 12. Heteronuclear extension (`hetero.py`, `outputs/hetero.json`)
+
+Run 2026-10-01, Monte-Carlo m = 1,000,000 per configuration, same orders and truncation
+as the main table, same production-grid call (`partition.atom_partition`, level 3,
+`scheme="becke"`).  Full stdout: `outputs/hetero_run_20261001.log`.
+
+**The falsification first.**  Row 0 is homonuclear and labelled `He/He`, exactly as
+`run.py` labels its centres, so its numbers must equal the archived
+`(alpha = 1.0, sep = 4.0)` row or this script is a divergent copy.  Measured:
+`I_AB` differs by **0.000e+00** and the package cross term by **0.000e+00**.  Bit-exact,
+not within tolerance.
+
+**What the element choice is actually worth.**  Each density is run twice, with different
+atom labels at the *same* analytic density, so the radii table is the only thing that
+moved:
+
+| density (n_A, n_B) | labels | d_headline (Ha) | fraction of I_AB | label sensitivity |
+|---|---|---|---|---|
+| (4, 4) control | He/He vs Be/Be | -3.1406e-05 vs -3.1332e-05 | -6.41% / -6.39% | 7.4e-08 = 0.24% of the offset |
+| (2, 4) | He/Be vs He/Ne | -9.1915e-06 vs -9.1951e-06 | -6.18% / -6.18% | 3.6e-09 = 0.04% |
+| (2, 6) | He/C vs He/Be | -5.7651e-05 vs -5.7671e-05 | -35.93% / -35.94% | 2.0e-08 = 0.03% |
+| (4, 6) | Be/C vs He/C | -2.5276e-04 vs -2.5276e-04 | -15.33% / -15.33% | below the printed digits |
+
+So the objection written into section 10 yesterday - that making the centres unequal
+forces a choice of the convention under test - is empirically worth at most a quarter of
+one percent of the quantity being measured.  It was not a reason to stop.
+
+**What the heteronuclear case adds, and it is not reassuring.**  The symmetries that the
+homonuclear table checks for free become real tests here: `|I_BA - I_AB|` = 3.5e-19,
+2.7e-20 and 3.7e-18 Ha on densities where the two centres share nothing but the kernel,
+and `|I_BB - I_AA|` is 1.1e-03, 7.4e-03 and 5.8e-03 Ha - i.e. non-zero, as it must be.
+Block additivity still closes to 2.2e-19 - 1.7e-18 Ha, and the undecomposed-total closure
+to 4.3e-06 Ha worst.
+
+But the **attribution offset grows**: against the same exact reference, the owner/Becke
+cross term sits 6.2-35.9% of `I_AB` on the heteronuclear pairs, where the homonuclear
+scan put it at 2.5-5.2%.  The worst case here (alpha = 1.0 against 0.5, 2 electrons
+against 6, sep = 6 bohr) is **-5.77e-05 Ha = 36% of the cross term**, resolved against an
+error bar of 8.5e-07 Ha.  Every configuration is resolved against its own bar, so this is
+not noise being read as signal - it is the non-uniqueness of grid-point attribution being
+larger where the two fragments' densities are dissimilar, which is exactly the regime an
+EDA is asked to work in.  The homonuclear table understated it.

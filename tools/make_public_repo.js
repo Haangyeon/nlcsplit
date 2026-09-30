@@ -62,6 +62,9 @@ const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
   'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py',
+  // step_m_ccsdt.py：§3.2 那栏 CCSD(T) 阶梯的唯一生产者（S24）。它是包内脚本，
+  // 不进清单的话闸门 V 会拦（"包目录里的模块要么白名单要么写理由"）。
+  'step_m_ccsdt.py',
   'step_j_scaling.py',
   // step_l_sweep_compare.py 原先不在清单里：它是正文 §2.1 那个"与独立脚本一致到 2e-3"
   // 的**唯一**生产者，而 S21 只挂了被比的那份 raw sweep（里面没有比对列）。
@@ -116,7 +119,10 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
   // 2026-10-01：归属裁判（partition-free 精确参照）。main.md §4 现在点名它，
   // 所以这个目录必须随包发布——否则闸门 D 判"读者拿不到的出处"。
   // 它带一层 outputs/，母循环只收顶层文件，嵌套层走下面的 NESTED_EVIDENCE。
-  'attribution_referee'];
+  'attribution_referee',
+  // 2026-10-01：Step M 的 CCSD(T) 阶梯。§4 那条"分不清是泛函还是我们算错"的开放项
+  // 现在靠它变成实测比较，同一个目录里还有它自己的清单。
+  'ccsdt'];
 
 // 有些证据目录天然带一层子目录（裁判代码 + 它的机器可读输出）。白名单是逐目录
 // 显式的，这里也显式列出要跟着发布的那一层，不做递归全盘扫描。

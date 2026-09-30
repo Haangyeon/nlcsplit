@@ -1,4 +1,4 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -199,5 +199,22 @@ Petr Jure{\v{c}}ka, Ji{\v{r}}{\'i} {\v{S}}poner, Ji{\v{r}}{\'i}
 \newblock \emph{Physical Chemistry Chemical Physics}, 8:\penalty0 1985--1993,
   2006.
 \newblock \doi{10.1039/b600027d}.
+
+\bibitem[Altun et~al.(2018)Altun, Neese, and Bistoni]{altun2018dlpno}
+Zekeriya Altun, Frank Neese, and Agnieszka Bistoni.
+\newblock Local energy decomposition analysis of hydrogen-bonded dimers within
+  a domain-based pair natural orbital coupled cluster study.
+\newblock \emph{Beilstein Journal of Organic Chemistry}, 14:\penalty0 919--929,
+  2018.
+\newblock \doi{10.3762/bjoc.14.79}.
+
+\bibitem[Takatani et~al.(2010)Takatani, Hohenstein, Malagoli, Marshall, and
+  Sherrill]{takatani2010s22}
+Taku Takatani, Edward~G. Hohenstein, Krzysztof Malagoli, Michael~W. Marshall,
+  and Charles~D. Sherrill.
+\newblock Basis set consistent revision of the {S22} test set of noncovalent
+  interaction energies.
+\newblock \emph{The Journal of Chemical Physics}, 132:\penalty0 144104, 2010.
+\newblock \doi{10.1063/1.3378024}.
 
 \end{thebibliography}

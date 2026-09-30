@@ -292,7 +292,13 @@ collects 45 (27 under `not slow`, 18 under `slow`) and reports 44 passed and one
 322.21 s. That timing is not comparable with the two above it - both earlier commands are
 recorded with `OMP_NUM_THREADS=2` in their headers, this one left the thread variables unset
 on a 20-core box - which is exactly why the counts are quoted per log and the wall clocks are
-never pooled. Naming the hash rather than
+never pooled. Adding the coupled-cluster script to the packaging list rebuilt the wheel once
+more (`7e7f9d71...`, 37 members, the eight test files byte-identical to the 36-member build),
+and that wheel was also tested out of tree: 44 passed and one skipped again, in 504.67 s. The
+1.57x spread between the two runs on the same box, with the same unset thread variables, on
+wheels whose tests are identical, has no cause recorded in either log - which is the strongest
+argument here for quoting timings per artefact rather than reducing them to one number.
+Naming the hash rather than
 claiming "the current wheel" is the point - every export rebuilds the wheel, so its SHA-256
 changes even when no packaged byte does, and the two runs recorded nine minutes apart on
 2026-09-30 name two different hashes. All of it, including the
