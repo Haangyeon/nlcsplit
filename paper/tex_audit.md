@@ -2,13 +2,13 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 64115 chars, 838 lines
+- source `paper/main.md`: 69767 chars, 890 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
-- tags cited in the body: 21
+- tags cited in the body: 22
 - figures pulled in: 2 -> tracked
-- inline backticked paths in the body text: 18 scanned -> tracked
+- inline backticked paths in the body text: 19 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
 - bib entries cited: 22 of 22
@@ -36,3 +36,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S19 | `evidence/centos/20260928T165857Z_centos-step_c.out` | tracked |
 | S20 | `nlcsplit/step_k_population.py`<br>`evidence/population/20260929T131530Z_stepk_pop-official.out`<br>`evidence/population/20260929T131055Z_stepk_pop-constructed.out` | tracked |
 | S21 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt`<br>`evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out`<br>`evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.json`<br>`nlcsplit/step_l_sweep_compare.py` | tracked |
+| S22 | `evidence/attribution_referee/run.py`<br>`evidence/attribution_referee/referee_lib.py`<br>`evidence/attribution_referee/summarize.py`<br>`evidence/attribution_referee/probe_quadrature.py`<br>`evidence/attribution_referee/README.md`<br>`evidence/attribution_referee/outputs/results.json`<br>`evidence/attribution_referee/outputs/table.md`<br>`evidence/attribution_referee/outputs/summary.md`<br>`evidence/attribution_referee/outputs/validation.md`<br>`evidence/attribution_referee/outputs/convergence.md`<br>`evidence/attribution_referee/outputs/headline.md`<br>`evidence/attribution_referee/outputs/run_log.txt`<br>`evidence/attribution_referee/outputs/results_run1_20261001.json`<br>`evidence/attribution_referee/outputs/table_run1_20261001.md`<br>`evidence/attribution_referee/outputs/rerun_verify_20261001.log`<br>`evidence/attribution_referee/MANIFEST.sha256` | tracked |

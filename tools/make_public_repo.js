@@ -112,7 +112,15 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
   // 以及被引文里的 Crossref 重放记录（main.md §2.4、software.md 都点名它）。
   // 引用闸门 D 的逻辑是"稿件点了名却没随包发布 = 读者拿不到的出处"，所以这两条
   // 必须在正文引用落地的同一次提交里进白名单，不能等下一次导出再补。
-  'orca_widen', 'bib_provenance'];
+  'orca_widen', 'bib_provenance',
+  // 2026-10-01：归属裁判（partition-free 精确参照）。main.md §4 现在点名它，
+  // 所以这个目录必须随包发布——否则闸门 D 判"读者拿不到的出处"。
+  // 它带一层 outputs/，母循环只收顶层文件，嵌套层走下面的 NESTED_EVIDENCE。
+  'attribution_referee'];
+
+// 有些证据目录天然带一层子目录（裁判代码 + 它的机器可读输出）。白名单是逐目录
+// 显式的，这里也显式列出要跟着发布的那一层，不做递归全盘扫描。
+const NESTED_EVIDENCE = { attribution_referee: ['outputs'] };
 
 // ================================================================ 脱敏（只发生在导出副本上）
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
@@ -328,6 +336,15 @@ for (const dir of EVIDENCE_DIRS) {
   fs.mkdirSync(to, { recursive: true });
   const names = fs.readdirSync(from).filter(f => f !== 'MANIFEST.sha256')
     .filter(f => fs.statSync(path.join(from, f)).isFile());
+  // 嵌套层（裁判的 outputs/）作为带前缀的文件名并进同一份清单，这样下面的
+  // MANIFEST 重写、哈希台账与"发布副本哈希对得上"那条判据对它一律成立。
+  for (const sub of (NESTED_EVIDENCE[dir] || [])) {
+    const subFrom = path.join(from, sub);
+    if (!fs.existsSync(subFrom)) { scrubLog.push({ rel: `evidence/${dir}/${sub}`, FATAL: '母仓里没有这一层' }); continue; }
+    fs.readdirSync(subFrom).filter(f => f !== 'MANIFEST.sha256')
+      .filter(f => fs.statSync(path.join(subFrom, f)).isFile())
+      .sort().forEach(f => names.push(`${sub}/${f}`));
+  }
   const origManFile = path.join(from, 'MANIFEST.sha256');
   const origMan = fs.existsSync(origManFile) ? read(origManFile) : '';
   for (const f of names.sort()) {
@@ -731,22 +748,54 @@ const STDLIB = new Set(['os', 'sys', 'json', 'time', 'math', 'ctypes', 'socket',
   'dataclasses', 'typing', 'subprocess', 'shutil', 'tempfile', 're', 'io', 'abc', 'datetime',
   // fastpair.py 一进口就被这条闸门拦住：`from __future__ import annotations` 是语言内建，
   // 不是任何发行包。缺它不是代码问题，是这张名单不完整——补上，并让它别再假报警。
-  '__future__', 'textwrap', 'hashlib', 'glob', 'random', 'zipfile', 'tarfile']);
+  '__future__', 'textwrap', 'hashlib', 'glob', 'random', 'zipfile', 'tarfile',
+  // 2026-10-01：证据脚本随包发布后，闸门 E 第一次扫到它们的 import。`multiprocessing`
+  // 是发行版标准库，不是第三方发行包——缺它同样是这张名单不完整，不是谁的代码有问题。
+  'multiprocessing', 'statistics', 'copy', 'string', 'unittest', 'logging', 'enum']);
 const DECLARED = new Set([...read(path.join(SRC, 'pyproject.toml'))
   .matchAll(/"([A-Za-z][A-Za-z0-9_.\-]*)[<>=!~\[]?/g)].map(m => m[1].toLowerCase()));
 const DIST_OF = { matplotlib: 'matplotlib', scipy: 'scipy', pyscf: 'pyscf', numpy: 'numpy', pytest: 'pytest' };
-const gateE = (() => {
+function undeclaredImports(pyTree, readAt) {
+  const byDir = new Map();
+  for (const rel of pyTree) {
+    const dir = rel.includes('/') ? rel.slice(0, rel.lastIndexOf('/')) : '';
+    if (!byDir.has(dir)) byDir.set(dir, new Set());
+    const set = byDir.get(dir);
+    if (rel.endsWith('.py')) {
+      const base = rel.slice(rel.lastIndexOf('/') + 1).replace(/\.py$/, '');
+      if (base !== '__init__') set.add(base);
+    } else if (rel.includes('/') && !rel.endsWith('.py')) {
+      const seg = rel.slice(rel.lastIndexOf('/') + 1);
+      if (/^[A-Za-z_]\w*$/.test(seg)) set.add(seg);   // 同级的包目录
+    }
+  }
   const out = [];
-  for (const rel of tree.filter(f => f.endsWith('.py'))) {
-    let src; try { src = read(path.join(OUT, rel)); } catch (e) { continue; }
+  for (const rel of pyTree) {
+    let src; try { src = readAt(rel); } catch (e) { continue; }
+    const dir = rel.includes('/') ? rel.slice(0, rel.lastIndexOf('/')) : '';
+    const locals = byDir.get(dir) || new Set();
     for (const m of src.matchAll(/^\s*(?:from|import)\s+([A-Za-z_][\w.]*)/gm)) {
       const top = m[1].split('.')[0];
-      if (STDLIB.has(top) || top === 'nlcsplit') continue;
+      if (STDLIB.has(top) || top === 'nlcsplit' || locals.has(top)) continue;
       const dist = DIST_OF[top] || top.toLowerCase();
       if (!DECLARED.has(dist)) out.push(`${rel}: import ${m[1]}，但 pyproject 未声明 "${dist}"`);
     }
   }
   return [...new Set(out)];
+}
+const gateE = undeclaredImports(tree.filter(f => f.endsWith('.py')),
+                                rel => read(path.join(OUT, rel)));
+// 双向自检：兄弟模块必须放行（否则闸门把 `import referee_lib` 报成依赖，早晚被人整条
+// 关掉），真第三方必须报警。只测单向的闸门等于没测。
+const gateESelftest = (() => {
+  const t = ['evidence/x/run.py', 'evidence/x/referee_lib.py', 'nlcsplit/nlc.py'];
+  const rd = rel => rel.endsWith('run.py')
+    ? 'import referee_lib\nimport multiprocessing\nimport nosuchdistribution\n'
+    : 'import numpy\n';
+  const got = undeclaredImports(t, rd);
+  return { fired: got.length === 1 && /nosuchdistribution/.test(got[0]),
+    sibling_and_stdlib_silent: !/referee_lib|multiprocessing/.test(got.join('|')),
+    reported: got };
 })();
 
 // ---------------------------------------------------------------- 闸门 F：wheel/sdist 成员清单
@@ -1110,6 +1159,7 @@ const report = {
   gateC2_scrub_digit_invariance: gc2,
   gateD_cited_but_unshipped: gateD.absent,
   gateE_undeclared_imports: gateE,
+  gateE_selftest: gateESelftest,
   gateF_wheel_sdist_members: gateF,
   gateG_license: gateG,
   gateR_tree_residue: gr,
@@ -1135,6 +1185,9 @@ const bad = ga.length + gb.length + gc.length + gc2.length + gateD.absent.length
   + gateF.length + gateG.length + gr.length + notInManifest.length + gateU.length + gateV.length
   // 闸门 U 的自检没响 = 这条判据此刻是恒真的，等于没有 —— 不许出货。
   + (gateUSelftest.fired && gateUSelftest.silent_on_valid ? 0 : 1)
+  // 闸门 E 的自检双向都要过：真第三方必须报警，兄弟模块与标准库必须放行。
+  // 只验"会响"的自检会让误伤回来时没人拦住（本日就是误伤先撞上的）。
+  + (gateESelftest.fired && gateESelftest.sibling_and_stdlib_silent ? 0 : 1)
   + gateW.findings.length + (gateW.selftest.fired && gateW.selftest.silent_on_valid ? 0 : 1)
   + (gateVSelftest.fired && gateVSelftest.silent_on_named && gateVSelftest.clean_input_silent ? 0 : 1)
   // 同理：具名豁免如果一笔都没记上，说明检测器根本没扫到自己 —— 那"豁免规则"是装饰。

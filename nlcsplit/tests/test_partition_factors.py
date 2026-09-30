@@ -57,6 +57,38 @@ def test_soft_and_hard_are_different_reads():
     assert abs((base_w[:, None] * S).sum() - base_w.sum()) < 1e-9 * abs(base_w.sum())
 
 
+def test_soft_attribution_owner_masked_matches_analytic_gaussian():
+    """base_w 的拼接点表把空间覆盖 natm 次；软归属必须按 owner 掩膜。
+
+    外部锚是解析积分：h =  centre=(0,0,0.2) 的单位高斯，∫h d³r = pi^{3/2}。
+    PySCF 自己的权重对同一个 h 给到解析值 1e-6 以内，所以"按 owner 掩膜后对 a
+    求和 == PySCF 总权重积分"是可判的；不掩膜（`Σ base_w·S[:,a]·h`）则在 level 1
+    偏 7.4%、level 3 偏 -0.3%，说明它连一个常数倍都不是，不能靠除以 natm 修。
+    """
+    mol = H2O2
+    natm = mol.natm
+    centre = np.array([0.0, 0.0, 0.2])
+    exact = np.pi ** 1.5
+    for level in (1, 2, 3):
+        coords, base_w, S = partition.partition_factors(mol, level=level, scheme="becke")
+        _, w_ref, owner = partition.atom_partition(mol, level=level, scheme="becke")
+        h = np.exp(-np.sum((coords - centre) ** 2, axis=1))
+
+        masked = np.array([(base_w[owner == a] * S[owner == a, a] * h[owner == a]).sum()
+                           for a in range(natm)])
+        assert abs(masked.sum() - exact) / exact < 2e-5, (
+            f"level {level}: owner 掩膜软归属按片段加回 {masked.sum():.6f}，"
+            f"解析值 {exact:.6f}")
+        # 与 PySCF 总权重积分同口径（同一批点、同一个 h）
+        assert abs(masked.sum() - (w_ref * h).sum()) / exact < 2e-5
+
+        naive = ((base_w[:, None] * S) * h[:, None]).sum(axis=0)
+        assert abs(naive.sum() / (natm * (w_ref * h).sum()) - 1.0) < 0.10
+        assert abs(naive.sum() / masked.sum() - natm) < 0.10 * natm
+        # 逐片段：不掩膜的配方在粗网格上偏到百分之十几，不是"差一个 natm 因子"
+        assert np.max(np.abs(naive / natm - masked) / np.maximum(np.abs(masked), 1e-12)) > 0.01
+
+
 def test_unknown_scheme_raises():
     with pytest.raises(KeyError):
         partition.partition_matrix(H2O2, np.zeros((1, 3)), scheme="nope")

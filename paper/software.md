@@ -227,18 +227,23 @@ geometry download, which need an unloaded machine), derives the repository root 
 location instead of a hard-coded working path, and refuses to run the argument-taking ones
 rather than silently running them at their defaults.
 
-The suite collects 63 tests in the working repository - 43 under `-m "not slow"` and 20
-under `-m slow`, a partition of the same collection and not two numbers to be added. The
+The suite collects 64 tests in the working repository - 44 under `-m "not slow"` and 20
+under `-m slow`, a partition of the same collection and not two numbers to be added; the
+whole collection is on record green at 811 s. The
 published wheel ships six test modules plus `__init__.py` and `conftest.py`, which collect
-43, and the 20 that stay behind are exactly `test_fastpair_ide.py`'s - the peer's frozen
+44, and the 20 that stay behind are exactly `test_fastpair_ide.py`'s - the peer's frozen
 control module, whose `fastpair_ide.py` is deliberately not distributed, since shipping the
 test without the module would be a collection-time ImportError. Two different out-of-tree
 runs must not be quoted as one: `pip install .` from the source directory in a clean
 environment passes 62 with one skipped (the S22 geometry fetch, by design), because that
 install pulls in the whole tree including the control module, whereas `pytest --pyargs
 nlcsplit` against the built wheel, run from a directory that is not the source tree,
-exercises only the 43 published tests - 42 passed and one skipped, or 24 passed and
-one skipped under `-m "not slow"`. The full out-of-tree run is on record twice, at 581 s and
+exercises only the published tests - 42 passed and one skipped, or 24 passed and
+one skipped under `-m "not slow"`. Those two archived figures are quoted at the collection
+size they were taken at (43 published tests), because the 44th - a test of the grid measure
+behind `partition.partition_factors`, added 2026-10-01 - postdates both logs; the run
+against the wheel rebuilt by that same export is archived beside them with its own exit
+codes rather than folded into the older sentence. The full out-of-tree run is on record twice, at 581 s and
 at 407 s, because the wheel is rebuilt by every export and its SHA-256 therefore changes even
 when no packaged byte does; both logs, both hashes and the shell-quoting bug that left the
 hash field blank in one of the two are in `evidence/release_qa/` [S19]. Tables map to one
@@ -352,7 +357,20 @@ the reported systems agree with ΔE_NLC to within 1% of the term everywhere
 outputs and their SHA-256 manifests in the repository [S18]; the comparison is regenerated
 from those artefacts by `evidence/orca_widen/generator_cross_program_table.py`, which
 refuses to emit the table if the system list or any row's basis, grid level or counterpoise
-setting disagrees. Two limitations there are unchanged. A third, fully
+setting disagrees. A second program can check what the term is worth; it cannot check who
+owns it, because it does not attribute. That gap is now measured too, in
+`evidence/attribution_referee/`: on a two-Gaussian density an exact reference cross term is
+built that contains no partition, no grid assignment and no fragment ownership anywhere in
+its definition, and evaluated three independent ways - a 3-D Cartesian tensor product, a 5-D
+cylindrical reduction about the internuclear axis, and importance-sampled Monte-Carlo with
+its own standard error. Handed the exact density factors, the package's own summation code
+reproduces that reference to `7.96e-07` Ha worst, inside the reference's combined measured
+error bar of `1.060e-05` Ha; handed the production Becke/owner assignment, the same code
+sits `1.7e-08` to `1.26e-04` Ha away from it, and the offset does not move when the node set
+is changed, so it belongs to the convention rather than to the grid [S21]. The referee states
+its own resolution rather than hiding it: the offset exceeds the error bar in 5 of its 12
+configurations, and in the other 7 it is smaller than the reference's uncertainty, which is
+reported as "cannot distinguish", not as "agrees". Two limitations there are unchanged. A third, fully
 independent implementation (Psi4, or libxc's `xc_nlc_vxc` through its own bindings)
 is still outstanding - the point is that ORCA is the *only* second program, not that there
 are three. And the scope of what is checked: on the water dimer the comparison covers the
@@ -422,3 +440,4 @@ entries are archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`.
 | S18 | `evidence/orca_run/`, `evidence/orca_control/`, `evidence/orca_widen/`, `evidence/orca_widen/cross_program_table.txt` | the ORCA 6.0.1 outputs and their manifests (`evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/MANIFEST.sha256`, `evidence/orca_widen/MANIFEST.sha256`): six runs for the water and benzene-A anchors, the ωB97X control group, and eighteen more covering the remaining six systems, with the archived stdout for every one of the 24; plus the two generators that re-derive the comparison from those outputs and refuse if the system list or any row's definition disagrees |
 | S19 | `evidence/release_qa/` | clean-environment installs and out-of-tree runs, each recorded with the SHA-256 of the wheel that was installed |
 | S20 | `evidence/bound_forms/`, `evidence/fastpair_ab/`, `evidence/scaling/`, `evidence/coretail/` | the certified-screening measurements summarised in §6, reported in full in `paper/p2.md` |
+| S21 | `evidence/attribution_referee/run.py`, `evidence/attribution_referee/referee_lib.py`, `evidence/attribution_referee/summarize.py`, `evidence/attribution_referee/README.md`, `evidence/attribution_referee/outputs/summary.md`, `evidence/attribution_referee/outputs/results.json`, `evidence/attribution_referee/outputs/results_run1_20261001.json`, `evidence/attribution_referee/outputs/table_run1_20261001.md`, `evidence/attribution_referee/MANIFEST.sha256` | the partition-free referee for attribution: the two-Gaussian model density, the three independent evaluations of the exact cross term, the measured error bar it is compared against, and the two shipped runs whose tables are byte-identical apart from recorded wall-clock fields. Re-running `evidence/attribution_referee/run.py` regenerates everything; `evidence/attribution_referee/summarize.py` re-quotes it with no re-quadrature |

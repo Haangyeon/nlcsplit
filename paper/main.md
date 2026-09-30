@@ -644,6 +644,51 @@ this confusion - but we are stating the present agreement, not a diagnosis of th
 number, so the section 3.5 identity is covered by this anchor without needing that story
 to be true.
 
+**A referee for attribution, which no other program can supply.** A second program checks
+the value of the term; it cannot check how the term is *owned*, because it does not
+attribute at all. So `evidence/attribution_referee/` moves to a system where an exact,
+partition-free reference exists by construction: two normalised Gaussians, four electrons
+each, centred at `+/- sep/2` on the z axis, with `Phi` built once from the total density
+and `I_XY = int int rho_X Phi rho_Y` taken for each pair of density factors. No Becke weight,
+no grid assignment and no fragment ownership appear anywhere in that definition, and
+`E_NL = 1/2 (I_AA + I_BB) + I_AB` holds exactly, so `I_AB` is what the inter-fragment block
+would have to be if attribution were a property of the density rather than of a convention.
+It is computed three ways - a 3-D x 3-D Cartesian tensor product, a 5-D cylindrical
+reduction about the internuclear axis (different nodes, domain shape and Jacobian), and
+importance-sampled Monte-Carlo using the density factor itself as the importance - and the
+Monte-Carlo agrees with the quadrature within its own standard error everywhere, worst
+`|z| = 2.23`.
+
+The outcome separates cleanly, and the two halves say different things. Handed the exact
+density factors, the package's own summation code reproduces `I_AB` to `7.96e-07` Ha worst,
+inside the reference's combined uncertainty `U = 1.060e-05` Ha (0.00665 kcal/mol, assembled
+from three measured error bars: order-ladder last change, domain-truncation shift, and the
+Cartesian-versus-cylindrical disagreement). The arithmetic is therefore refereed, and by a
+route that does not share our library. Handed the production Becke/owner assignment, the
+same code lands `1.68e-08` to `1.26e-04` Ha from `I_AB` (0.00001-0.0788 kcal/mol), and
+because the same comparison is also run on a second, disjoint node set where the grid
+cancels, that offset tracks the partition rule and not the grid: the grid's own cost in the
+same quantity stays below `U` at every configuration. Reported as sizes, the offset is
+0.0007-1.84% of the whole VV10 term and 0.32-11.79% of the cross term it is meant to be.
+
+The resolution is stated rather than assumed: the offset exceeds `U` in **5 of the 12
+configurations** (2x, 3x, 3x, 4x and 12x `U`), and in the other 7 it is smaller than the
+reference's own error bar - there, this referee does not certify the convention, it reports
+that it cannot distinguish it [S22]. Those five resolved offsets run 0.013-0.079 kcal/mol,
+which is 0.55-1.84% of the whole VV10 term and 2.5-9.7% of the cross term, the same order as
+the four-scheme spread of section 2.3 (0.004-0.247 kcal/mol) - the distance from one
+convention to a partition-free reference is about the distance between conventions, which is
+the consistency this section wanted.
+
+Two limits travel with that result. The densities are synthetic (no nuclei, no cusps, no
+orbital structure, homonuclear and equal-exponent), so what is refereed is the attribution
+machinery as a mathematical operation on a density, not a chemical statement; and the
+positive control on these densities - the documented-wrong pairing of section 3.5 - moves
+the term by 0.0052 kcal/mol, comparable to the resolved offsets, so this referee is not a
+high-resolution instrument, it is a resolution-limited one. It does reproduce: two
+independent executions of the whole pipeline give tables that are byte-identical except in
+the recorded wall-clock fields, and both runs are shipped in that directory.
+
 **How we know the literature search means anything.** The zeros in section 1 are
 only as good as the instrument, so we calibrated it in the same session: a known
 paper title was retrieved exactly (1 record), a broad concept query returned 3,317
@@ -748,7 +793,13 @@ that labels the quantity `NL Energy, E(C,NL)`. One scoping limit remains: the ab
 value, not only the difference, is checked on the water dimer and on both of its monomers
 (§4, where the earlier "unrefereed" flag is retired); on the other seven systems the second
 program checks the difference, which is what every claim in this paper is made of, and not
-each absolute fragment value.
+each absolute fragment value. Attribution has a referee of its own now (section 4), on a
+two-Gaussian density where a partition-free value exists by construction: the summation code
+reproduces that value to within the reference's own error bar, while the Becke/owner
+convention sits 1.7e-08 to 1.26e-04 Ha (0.00001-0.0788 kcal/mol) from it - a difference this
+referee can resolve in 5 of its 12 configurations and cannot distinguish from zero in the
+other 7. What still does not carry a referee is a heteronuclear or chemically realistic
+density.
 
 Two further items are open and stated as such rather than smoothed over. The first is a
 number, not a missing run: re-running benzene-methane at level 2 with counterpoise on two
@@ -819,6 +870,7 @@ hash-listed under `evidence/*/MANIFEST.sha256`, and were not re-typed by hand.
 | S19 | `evidence/centos/20260928T165857Z_centos-step_c.out` lines 6, 15 and 24 | the level-0 ratios of the inter-fragment pair term to the superposition difference: 1.017 for the water dimer at the official S22 geometry, 1.025 at its omegaB97X-V-optimised geometry, and 0.915 for the benzene sandwich - the third of these is a different system, which is why it is not folded into the 0.92-1.08 band |
 | S20 | `nlcsplit/step_k_population.py`, `evidence/population/20260929T131530Z_stepk_pop-official.out`, `evidence/population/20260929T131055Z_stepk_pop-constructed.out` | the level-3 four-scheme population table for the water dimer, from which beta*N_A is read; both runs assert that the fragment populations sum to the electron number. Re-running them is also what showed that the earlier tabulation of this number in the work log was labelled "official geometry" but reproduces only on the constructed one |
 | S21 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt`, `evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out`, `evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.json`, `nlcsplit/step_l_sweep_compare.py` | the independent sweep (water-monomer nonlocal term at levels 0-9, self-consistent and again on one fixed density matrix, ending in a partial `atom_grid` scan that dies on an unsupported angular grid), and the archived stdout plus sidecar JSON of our comparison against it, which carry the per-level difference column behind section 2.1 - the sweep file alone has no comparison column. Produced by the shipped script; its level-9 sum covers 9.2e10 point pairs over 428,920 kept grid points, which is why that one row took hours. The `levels0-8` snapshot taken mid-run is kept beside it, hashed, as the record of what was known before level 9 landed; its header announces the intended 0-9 range, which is why that filename says 0-8 and this one says 0-9. |
+| S22 | `evidence/attribution_referee/run.py`, `evidence/attribution_referee/referee_lib.py`, `evidence/attribution_referee/summarize.py`, `evidence/attribution_referee/probe_quadrature.py`, `evidence/attribution_referee/README.md`, `evidence/attribution_referee/outputs/results.json`, `evidence/attribution_referee/outputs/table.md`, `evidence/attribution_referee/outputs/summary.md`, `evidence/attribution_referee/outputs/validation.md`, `evidence/attribution_referee/outputs/convergence.md`, `evidence/attribution_referee/outputs/headline.md`, `evidence/attribution_referee/outputs/run_log.txt`, `evidence/attribution_referee/outputs/results_run1_20261001.json`, `evidence/attribution_referee/outputs/table_run1_20261001.md`, `evidence/attribution_referee/outputs/rerun_verify_20261001.log`, `evidence/attribution_referee/MANIFEST.sha256` | the partition-free referee: two-Gaussian model density, the cross term by three independent routes (3-D Cartesian tensor product, 5-D cylindrical reduction, importance-sampled Monte-Carlo), the measured combined uncertainty 1.060e-05 Ha, the column that cancels the grid, and the falsification suite (positive control on the documented-wrong pairing, closed-form Gaussian and Coulomb anchors, node-normalisation guard). The two shipped runs give a file-level reproducibility check rather than a sentence: the two tables compare byte-identical, and the field-by-field diff of the two machine-readable results is confined to the recorded wall-clock fields and the worker count. Re-running run.py regenerates every number; summarize.py re-quotes them without re-quadrating |
 
 Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
 water-dimer geometry fix (its inter-fragment minimum is 2.0258 A against 1.95 A in
