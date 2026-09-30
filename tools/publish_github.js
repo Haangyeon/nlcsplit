@@ -14,6 +14,7 @@
  *   NLCSPLIT_GH_TOKEN_FILE=.publish/gh_token.tmp  同上（值不进 shell 历史 / 不进对话记录）
  */
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const cp = require('child_process');
 
@@ -34,6 +35,8 @@ const TOKEN_FILE = process.env.NLCSPLIT_GH_TOKEN_FILE || '';
 const TOKEN = process.env.NLCSPLIT_GH_TOKEN || (TOKEN_FILE && fs.existsSync(TOKEN_FILE)
   ? fs.readFileSync(TOKEN_FILE, 'utf8').trim() : '');
 const DO_PUSH = flag('push');
+// 事后复核用：只读远端，一个字也不写。推过一次之后再跑，不该再造第二条历史。
+const VERIFY_ONLY = flag('verify-only');
 
 const die = m => { console.error('中止：' + m); process.exit(1); };
 
@@ -97,7 +100,7 @@ if (leaks.length) { console.log('泄漏：'); leaks.forEach(x => console.log('  
 console.log(`目标：https://github.com/${OWNER || '<owner>'}/${REPO}  可见性=${VIS}`);
 if (leaks.length) die('上面这些串会进公共历史，先处理再发。');
 
-if (!DO_PUSH) {
+if (!DO_PUSH && !VERIFY_ONLY) {
   console.log('\ndry-run 结束（没有联网、没有写凭据）。真要发：加 --push，并先 '
     + '`git remote -v` 确认本仓当前**没有** remote。');
   process.exit(0);
@@ -109,22 +112,54 @@ if (!OWNER) die('--push 需要 --owner <你的 login>。');
 if (!/^[A-Za-z0-9._-]+$/.test(REPO)) die('仓库名不合法。');
 if (!['private', 'public'].includes(VIS)) die('visibility 只能是 private 或 public。');
 
+// body 必须走文件：Windows 上 execFileSync 把带引号的 JSON 当参数递给 curl.exe 时，
+// 双引号会被 argv 解析吃掉，GitHub 回 "Problems parsing JSON"——一个纯粹的传输层假错。
 const gh = (method, url, body) => {
-  const args = ['-sS', '-X', method, url, '-H', 'Authorization: Bearer ' + TOKEN,
+  const args = ['-sS', '--max-time', '120', '-X', method, url, '-H', 'Authorization: Bearer ' + TOKEN,
     '-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2022-11-28'];
-  if (body) args.push('-H', 'Content-Type: application/json', '-d', JSON.stringify(body));
-  const out = cp.execFileSync('curl', args, { encoding: 'utf8' });
-  return JSON.parse(out || '{}');
+  let tmp = null;
+  if (body) {
+    tmp = path.join(os.tmpdir(), `nlcsplit-gh-body-${process.pid}.json`);
+    fs.writeFileSync(tmp, JSON.stringify(body));
+    args.push('-H', 'Content-Type: application/json', '-d', '@' + tmp);
+  }
+  try {
+    const out = cp.execFileSync('curl', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    return JSON.parse(out || '{}');
+  } catch (e) {
+    // 不能把 node 的原始异常抛出去：它会连同 stdout 一起回显，一次成功的 dump 就能
+    // 把整棵树的正文灌进日志。只留状态与截断后的头部。
+    die(`GitHub 调用失败 ${method} ${url}\n   ${(e.message || '').split('\n')[0].slice(0, 160)}`
+      + `\n   ${(e.stdout || '').slice(0, 200)}`);
+  } finally {
+    if (tmp) fs.rmSync(tmp, { force: true });
+  }
 };
 
-const created = gh('POST', 'https://api.github.com/user/repos', {
-  name: REPO, private: VIS === 'private', description: 'nlcsplit — fragment and pair resolution of the VV10 nonlocal-correlation energy (PySCF)',
-  has_issues: true, has_wiki: false, has_discussions: false, auto_init: false,
-});
-if (!created.full_name) die('建仓失败：' + JSON.stringify(created).slice(0, 300));
-console.log('已建仓库：', created.full_name, created.private ? '(private)' : '(PUBLIC)');
+// 建仓前先查：已存在就复用（并把可见性核对清楚），否则一次 POST 建一个。
+// "建仓失败：409 already exists" 是最难查的假失败——仓库其实是对的。
+let repo = gh('GET', `https://api.github.com/repos/${OWNER}/${REPO}`);
+if (repo.full_name) {
+  if (repo.visibility !== VIS) {
+    die(`已存在的仓库 ${repo.full_name} 可见性是 ${repo.visibility}，与 --visibility ${VIS} 不符。`
+      + '不擅自改可见性——这一步由你在 GitHub 上决定。');
+  }
+  if (repo.size > 0) die(`${repo.full_name} 已有内容（size=${repo.size} KiB）。不往非空仓库里推。`);
+  console.log('复用已存在的仓库：', repo.full_name, repo.private ? '(private)' : '(PUBLIC)');
+} else {
+  repo = gh('POST', 'https://api.github.com/user/repos', {
+    name: REPO, private: VIS === 'private', description: 'nlcsplit — fragment and pair resolution of the VV10 nonlocal-correlation energy (PySCF)',
+    has_issues: true, has_wiki: false, has_discussions: false, auto_init: false,
+  });
+  if (!repo.full_name) die('建仓失败：' + JSON.stringify(repo).slice(0, 300));
+  console.log('已建仓库：', repo.full_name, repo.private ? '(private)' : '(PUBLIC)');
+}
+const FULL = repo.full_name;
 
-const url = `https://github.com/${created.full_name}.git`;
+if (VERIFY_ONLY) {
+  console.log('--verify-only：不建仓、不提交、不推送，只做第 4 步的逐 blob 哈希核对。');
+} else {
+const url = `https://github.com/${FULL}.git`;
 const run = (...a) => cp.execFileSync('git', a, { cwd: BUNDLE, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 try { fs.rmSync(path.join(BUNDLE, '.git'), { recursive: true, force: true }); } catch (e) {}
 run('init', '-b', 'main');
@@ -132,22 +167,55 @@ run('add', '-A');
 run('-c', 'user.name=Angran Xia', '-c', 'user.email=haangyeon@snnu.edu.cn',
   'commit', '-m', 'nlcsplit 0.1.0 — exported release tree, produced by tools/make_public_repo.js');
 // token 不进 remote URL：那只会在 .git/config 与 reflog 里留下长期可用的凭据。
+// 也不用 `-c http.extraHeader=Authorization: Bearer …`：2026-09-30 实测吃 401，
+// git 随即去 /dev/tty 要用户名（本沙箱没有 tty，直接 fatal）。GitHub 的 git-over-HTTPS
+// 端点认的是 Basic——PAT 放密码位；Bearer 只有 REST 收。
+// 另外，值走环境变量 + --config-env：因为 node 在子进程非零退出时会把**整条命令行**
+// 印进异常里，上一轮就是靠这条路把 token 泄进了会话记录。参数里没有敏感字节，就印不出来。
 run('remote', 'add', 'origin', url);
-cp.execFileSync('git', ['-C', BUNDLE, '-c', 'credential.helper=',
-  '-c', `http.extraHeader=Authorization: Bearer ${TOKEN}`,
-  'push', '-u', 'origin', 'main'], { stdio: ['ignore', 'inherit', 'inherit'] });
+const basic = 'Authorization: Basic ' + Buffer.from('x-access-token:' + TOKEN).toString('base64');
+try {
+  cp.execFileSync('git', ['-C', BUNDLE, '-c', 'credential.helper=',
+    '--config-env=http.extraHeader=NLCSPLIT_GH_AUTH', 'push', '-u', 'origin', 'main'],
+  { stdio: ['ignore', 'inherit', 'inherit'], env: Object.assign({}, process.env, { NLCSPLIT_GH_AUTH: basic }) });
+} catch (e) {
+  // git 失败时 node 会把整条命令回显进错误里——这里必须自己吞掉，否则凭据进日志。
+  die('推送失败（git 自己的输出已回显在上面；本脚本刻意不复述命令行，以免凭据进日志）。\n'
+    + '  · refusing to allow a Personal Access Token to create or update workflow …\n'
+    + '    → 树里有 .github/workflows/*，classic PAT 必须有 workflow 档\n'
+    + '      （或 fine-grained token 勾上 Contents + Workflows 读写）。\n'
+    + '  · could not read Username → token 不被接受或已失效。\n'
+    + '  · [rejected] non-fast-forward → 远端 main 已经有东西了；先看清那是什么，\n'
+    + '    本脚本绝不 force 覆盖别人的历史。');
+}
+}
 
 // ---- 4. 推完之后按哈希核对：公开的确实就是我审过的那棵树 -------------------
-const head = run('rev-parse', 'HEAD').trim();
-const local = new Set(run('ls-tree', '-r', '--format=%(objectname) %(path)', head)
-  .split(/\r?\n/).filter(Boolean).map(l => l.trim()));
-const api = gh('GET', `https://api.github.com/repos/${created.full_name}/git/trees/${head}?recursive=1`);
+// 比对基准是**导出树里的字节**（git hash-object），不是刚建的那个本地 commit：
+// 这样 --verify-only 可以在事后、甚至换一个会话里再跑一次，而且重跑不会像
+// "重新 init+commit" 那样造出一个与远端无共同祖先的第二条历史。
+// 另注：?recursive=1 返回的是 blob + 中间目录 tree 两种条目（2026-09-30 实测：
+// 121 个文件对 144 条，差的 23 条正是目录）。只比 blob，并把目录条数印出来——
+// 否则这个闸门会因为自己的类型过滤缺失而谎报"远端多了 23 个文件"。
+// /commits/main 会把每个文件的整段 patch 都带回来（实测 >1 MB，一次失败就把
+// 整棵树灌进日志）；只要 SHA 就用最瘦的 ref 端点。
+const ref = gh('GET', `https://api.github.com/repos/${FULL}/git/ref/heads/main`);
+const head = (ref.object || {}).sha;
+if (!head) die('读不到远端 main：' + JSON.stringify(ref).slice(0, 200));
+const shas = cp.execFileSync('git', ['hash-object', '--stdin-paths'],
+  { encoding: 'utf8', input: files.map(f => path.join(BUNDLE, f)).join('\n') })
+  .split(/\r?\n/).filter(Boolean);
+const local = new Set(files.map((f, i) => `${shas[i]} ${f}`));
+const api = gh('GET', `https://api.github.com/repos/${FULL}/git/trees/${head}?recursive=1`);
 if (api.truncated) die('远端树被 API 截断，未能完整核对。');
-const remote = new Set((api.tree || []).map(t => `${t.sha} ${t.path}`));
+const all = api.tree || [];
+const remote = new Set(all.filter(t => t.type === 'blob').map(t => `${t.sha} ${t.path}`));
+console.log(`远端 main = ${head}`);
+console.log(`核对：本地导出树 ${local.size} 个 blob，远端 ${remote.size} 个 blob`
+  + `（API 另有 ${all.length - remote.size} 条目录项）`);
 const onlyLocal = [...local].filter(x => !remote.has(x));
 const onlyRemote = [...remote].filter(x => !local.has(x));
-console.log(`核对：本地 ${local.size} 个 blob，远端 ${remote.size} 个；`
-  + `仅本地 ${onlyLocal.length}，仅远端 ${onlyRemote.length}`);
+console.log(`仅本地 ${onlyLocal.length}，仅远端 ${onlyRemote.length}`);
 [...onlyLocal, ...onlyRemote].slice(0, 10).forEach(x => console.log('   差异', x));
 if (onlyLocal.length || onlyRemote.length) die('远端与导出树不一致 —— 别把这个链接发出去。');
-console.log('一致。发布完成：' + created.html_url);
+console.log('一致。发布完成：' + repo.html_url);
