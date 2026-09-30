@@ -526,6 +526,22 @@ const uncited = [...defMap.keys()].filter(t => !usedInBody.includes(t)).sort();
 const fails = rows.filter(r => /FAIL/.test(r[2])).length + uncited.length
   + (inlineBad === 'tracked' ? 0 : 1) + (verdict(FIGS) === 'tracked' ? 0 : 1);
 
+// 交叉引用的反斜杠会被某些编辑/管道环节吃掉（实测：main.md 里曾有两处 "(Fig.~\r" + "ef{fig:1}"，
+// 编译出来的 PDF 里就是可见垃圾 "ef{fig:1}"，而 \ref 计数为 0 —— 也就是说两篇图的引用全断了）。
+// 规则：产物里任何 `{fig:x}/{tab:x}/{sec:x}/{app:x}/{eq:x}` 都必须由 \ref|\eqref|\pageref 引出。
+{
+  const orphans = [];
+  for (const m of body.matchAll(/(.{0,12})\{(?:(fig|tab|sec|app|eq):)([\w-]+)\}/g)) {
+    // 合法前导：\ref / \eqref / \pageref，以及**定义端** \label。第一版忘了 \label，
+    // 于是把两处合法的 \label{fig:n} 报成孤儿——假阳性闸门会让好稿子出不了图。
+    if (!/(?:\\label|\\(?:eq|page)?ref)$/.test(m[1])) orphans.push(m[1] + '{' + m[2] + ':' + m[3] + '}');
+  }
+  if (orphans.length) block('E-REF-ORPHAN', '产物里有 ' + orphans.length
+    + ' 处交叉引用丢了 \\ref 前导：' + orphans.slice(0, 4).join(' , ')
+    + '。这种串会原样印进 PDF。',
+    '在 ' + SRC + ' 里把该处补成 `\\ref{...}`（十有八九是被某次批量编辑吃掉了反斜杠-r）。');
+}
+
 // 出处对不上就**不出稿**。以前只数不算拦：本项目真的把过一条"与 ORCA 差 6e-4"
 // 写进 README，而那份 ORCA 输出里根本没有单列的非局域项——当时的闸门也是"报 FAIL 但照样写"。
 // 细节必须随错误一起印出来，因为阻断后 audit 文件不会落盘。

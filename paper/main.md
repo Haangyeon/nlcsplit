@@ -54,9 +54,13 @@ systems is still open and is listed as a load-bearing limitation, not as future 
 
 Applied to eight S22 complexes at official GMTKN55 geometries
 (omegaB97X-V/6-31G*), the decomposition gives a result that argues against a
-common shorthand: the share of the nonlocal term in the exchange-correlation
-contribution ranges from 16% (water dimer) to 223% (methane dimer), and the two
-geometries of the same benzene dimer give 97% and 52%. The nonlocal term is
+common shorthand: the nonlocal and semi-local parts of the exchange-correlation
+change are not locked in a fixed ratio - the nonlocal term supplies 16% of the
+exchange-correlation contribution for the water dimer but 97% and 52% for the two
+geometries of the same benzene dimer, and on the methane dimer the two parts carry
+opposite signs (-0.517 against a semi-local remainder of +0.285 kcal/mol), so no
+share is quoted for that row and the nonlocal term alone exceeds the
+counterpoise-corrected interaction energy (-0.517 against -0.466). The nonlocal term is
 therefore not a fixed fraction of the correlation energy and should not be
 reported as "the dispersion" without qualification. The inter-fragment pair term
 accounts for 0.92-1.08 of the frozen-density superposition difference in the six
@@ -385,7 +389,7 @@ the fraction of exact exchange; it is tabulated explicitly in
 **Figure 1.** The same quantity two ways, per system: the VV10 term ΔE_NLC and the remainder ΔE_xc - ΔE_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of ΔE_xc belongs to the VV10 term. Data: `nlcsplit/logs/step_h.json`, produced by `nlcsplit/step_h_s22.py`; drawn by `nlcsplit/figures.py` [S2].
 
 
-| System | atoms | dE_int | dE_xc (total) | dE_NLC | dE_NLC/dE_xc |
+| System | atoms | dE_int | dE_xc (total) | dE_NLC | share of dE_xc (only where it is defined) |
 |---|---|---|---|---|---|
 | benzene dimer (A, parallel-displaced) | 24 | -3.580 | -4.486 | -4.367 | 97% |
 | benzene dimer (B, T-shaped) | 24 | -3.188 | -4.555 | -2.388 | 52% |
@@ -394,9 +398,20 @@ the fraction of exact exchange; it is tabulated explicitly in
 | benzene...methane | 17 | -1.785 | -2.322 | -1.404 | 60% |
 | water dimer | 6 | -7.816 | -3.708 | -0.593 | 16% |
 | ammonia dimer | 8 | -5.167 | -0.881 | -0.678 | 77% |
-| methane dimer | 10 | -0.664 | -0.232 | -0.517 | 223% |
+| methane dimer | 10 | -0.664 | -0.232 | -0.517 | n/a (see note) |
 
 All entries in kcal/mol, all at grid level 1. The two benzene rows were tabulated at level 0 in an earlier version of this table; moving them to level 1 shifts dE_NLC by 0.081 (A) and 0.013 (B) kcal/mol. Level 0 is therefore not adequate for a 24-atom aromatic dimer, unlike the six-atom water dimer where levels 1 and 2 agree to the last digit (section 3.2).
+
+**Why the methane row has no share.** Its ratio is |dE_NLC|/|dE_xc| = 2.2, which trips the
+cancellation test that ships with the code (`nlcsplit/step_f_dispersion.py`: above 2, the
+denominator is reported as two signed terms, never as a percentage - here -0.517 plus a
+semi-local remainder of +0.285). Quoting "223%" would have advertised a ratio whose
+divisor is an accident of two larger numbers. What that row does support, without any
+forbidden ratio, is a comparison against a physical quantity: at level 2 with a
+counterpoise correction the whole interaction energy is -0.466 while the nonlocal term
+alone is -0.517 [`evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`], i.e. the VV10
+term exceeds the net binding by 11% of it - a margin ~10^3 times the cross-program
+reproducibility of these two numbers (0.0007 and 4.5e-5 kcal/mol).
 The final column is the reason this decomposition is worth having: the nonlocal
 term ranges from one sixth to more than the whole of the rest of XC, and in the
 methane dimer it exceeds it, so that the remainder of the XC contribution is
@@ -486,8 +501,7 @@ type: hydrogen bonding spans 7.2% (water) and 4.5% (ammonia), dispersion-driven
 complexes span 0.8% (methane) and 18.2% (benzene...water), and the two benzene
 dimer geometries differ by a factor of eleven. A single blanket uncertainty
 percentage for this class of method would misstate the methane dimer by more than
-twenty-fold. Error bars must be reported per system (Fig.~
-ef{fig:2}). Second, the span is an
+twenty-fold. Error bars must be reported per system (Fig.~\ref{fig:2}). Second, the span is an
 attribution property rather than a one-particle-basis property. On the
 constructed water-dimer geometry, re-running the four schemes at level 1 across
 five basis sets gives spans of 0.0249 (STO-3G), 0.0400 (6-31G\*), 0.0382
@@ -541,10 +555,13 @@ it, which is precisely why it converges a grid level earlier than dE_int does
 [S10].
 
 **The nonlocal term is not the dispersion energy.** Section 3.2 is the evidence:
-dE_NLC ranges from 16% to 223% of dE_xc across eight complexes drawn from one
-benchmark set (Fig.~
-ef{fig:1}), and for the two geometries of the same benzene dimer it
-is 97% and 52%. A quantity whose share of another varies that far cannot be identified
+dE_NLC accounts for anywhere between 16% and 97% of dE_xc across the seven complexes
+where that share is defined by our own cancellation test (Fig.~\ref{fig:1}) - and note that this
+is not a smooth ladder: the two geometries of the same benzene dimer give 97% and 52%.
+The eighth complex, the methane dimer, is the case a percentage cannot describe at all:
+its two parts carry opposite signs, so the nonlocal term is not a fraction of the change
+but the thing that has to overcome it. A quantity whose relation to another varies that
+far - and in one case changes character - cannot be identified
 with it. We use "dispersion" only when quoting external work, and the values in
 Table 1 should be read as "the contribution of the VV10 term", not as a
 dispersion energy.
