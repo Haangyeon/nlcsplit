@@ -377,7 +377,8 @@ block does fire, and at the accuracy the decomposition needs it still evaluates 
 of the far-field point pairs; and with no other runnable user task at the sampling instant
 (a contention gate, not a claim that the machine was idle), the screened path is slower than
 the dense sum in every one of 33 timed screened/exact pairs across two independent windows
-on the same box - 1.08-10.28x in the archived window and 5.46-13.29x in the second, with no
+on the same box - 1.08-10.28x in the archived window and 1.37-13.29x in the second (1.95-10.28x
+and 2.63-13.29x at the tightest tolerance tested), with no
 faster sample in either. The radius the
 bound subtracts is set by the far tail of each atom's density, so the certified separation
 comes out zero for every pair, including the ones facing each other across the
