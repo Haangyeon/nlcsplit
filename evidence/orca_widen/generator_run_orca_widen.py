@@ -22,16 +22,39 @@ import subprocess
 import sys
 import time
 
-# 本文件在 <repo>/scratch/ 下，所以仓库根是 dirname(dirname(abspath)) —— 两层。
-# 上一版多套了一层 dirname，指到 E:\Project，于是 import 直接失败（驱动秒退、exit 0 假成功）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 仓库根靠"同时含有 nlcsplit/ 与 scratch/"往上找，不靠本文件在第几层。
+# 这脚本原先按"我在 <repo>/scratch/ 下"硬算 dirname 两层，被归档到 evidence/orca_widen/
+# 之后那个算法指向 <repo>/evidence —— import 会失败、DATA 会指向不存在的目录。
+# 一份随证据发布、却跑不起来的生成脚本，等于没有生成脚本。
+def _find_root(start):
+    d = os.path.dirname(os.path.abspath(start))
+    while True:
+        if os.path.isdir(os.path.join(d, "nlcsplit")) and os.path.isdir(os.path.join(d, "scratch")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise SystemExit(f"找不到仓库根（需要同时含 nlcsplit/ 与 scratch/），从 {start} 向上已到头")
+        d = parent
+
+
+ROOT = _find_root(__file__)
+sys.path.insert(0, ROOT)
 from nlcsplit import geomlib                                            # noqa: E402
 
-DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scratch", "lit", "s22")
+DATA = os.path.join(ROOT, "scratch", "lit", "s22")
+if not os.path.isdir(DATA):
+    raise SystemExit(f"S22 几何目录不存在：{DATA}（先跑 nlcsplit/tools/get_s22.sh 取官方几何）")
 WORK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "orca_local", "widen")
 ORCA = os.path.expanduser("~/orca6/orca")
-KCAL = 627.8509
-SYSTEMS = ["甲烷二聚体", "氨二聚体", "苯-水", "苯-甲烷"]
+# 627.509474，不是 627.8509。这一行上一版写错了，而它下面那个 delta_NLC_kcal 恰好
+# 因为 converged 判据写错而从未被写进 JSON —— 也就是说一个单位错被另一个单位错挡住了。
+# 全仓其余 30+ 处都用 627.509474（nlcsplit/step_*.py 的 KCAL），此处必须一致。
+KCAL = 627.509474
+# 表 1 八个体系里，除两个 24 原子苯二聚体外的全部小体系；水与苯(A)另见
+# nlcsplit/logs/orca_anchor.json（在集群上跑的），所以本脚本覆盖的是"扩出来的那批"。
+# 苯二聚体(B) 挂在最后：它是 24 原子、和锚点里的苯(A) 同一尺寸，跑不跑得动由本机决定，
+# 但它进的是同一个清单 —— 体系数只能由这份清单和断言决定，不能由"跑起来方便"决定。
+SYSTEMS = ["甲烷二聚体", "氨二聚体", "苯-水", "苯-氨", "苯-甲烷", "苯二聚体(B)"]
 # WIDEN_ONLY 用于单独重跑某个体系；写错名字必须**报错退出**，
 # 不能像没有自检的驱动那样悄悄把全部体系再跑一遍。
 _only = os.environ.get("WIDEN_ONLY")
@@ -40,7 +63,11 @@ if _only:
     if not picked:
         raise SystemExit(f"WIDEN_ONLY={_only!r} 未匹配任何体系，可选：{SYSTEMS}")
     SYSTEMS = picked
-CARD = "! WB97X-V 6-31G* TightSCF\n%pal nprocs 4 end\n%maxcore 1000\n\n* xyz 0 1\n"
+# %maxcore 1000 是 8–17 原子那批用的；24 原子的苯二聚体(B) 在它上面死在复合物一步
+# （单体两步都过了），所以留一个环境变量口子：同一份卡片、只调内存，改的是什么写在
+# JSON 里，不用猜。默认值不变，历史那 15 份的口径不动。
+MAXCORE = int(os.environ.get("ORCA_MAXCORE", "1000"))
+CARD = f"! WB97X-V 6-31G* TightSCF\n%pal nprocs 4 end\n%maxcore {MAXCORE}\n\n* xyz 0 1\n"
 
 NL_RE = re.compile(r"NL Energy, E\(C,NL\) *: *(-?\d+\.\d+) Eh")
 SCNL_RE = re.compile(r"SC\+NL Energy: *(-?\d+\.\d+)")

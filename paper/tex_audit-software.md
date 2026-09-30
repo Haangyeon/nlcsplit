@@ -2,7 +2,7 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js software`; do not edit here.
 
-- source `paper/software.md`: 30963 chars, 410 lines
+- source `paper/software.md`: 30967 chars, 410 lines
 - output `paper/software.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: 32 lines (metadata; it is not body prose, so it is not in the PDF)

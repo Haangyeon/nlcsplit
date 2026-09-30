@@ -46,11 +46,12 @@ double sum is exact rather than approximate; block additivity holds to
 3.5e-18 Ha. On the same grid and density the explicit sum reproduces PySCF's
 native kernel to ~1e-8 Ha, and to 1.3e-4 kcal/mol an independently written script
 that reaches the same quantity by a different code path, over ten grid levels (0-9,
-up to 430,768 integration points) [S21]. A check against a second *program* now exists for two of the eight
+up to 430,768 integration points) [S21]. A check against a second *program* now exists for seven of the eight
 systems (§4): ORCA 6.0.1 prints the same term as its own `NL Energy, E(C,NL)` and the
-superposition differences agree to 4e-4 kcal/mol (water dimer) and 0.042 kcal/mol
-(benzene dimer A), with the grids not matched; extending that anchor past those two
-systems is still open and is listed as a load-bearing limitation, not as future work.
+superposition differences agree to within 1% of the term everywhere - 4e-4 kcal/mol
+(0.07%) on the water dimer up to 0.042 kcal/mol (0.95%) on the benzene sandwich - with
+the grids not matched. Only the second benzene-dimer geometry remains unanchored, and it
+is listed as a load-bearing limitation, not as future work.
 
 Applied to eight S22 complexes at official GMTKN55 geometries
 (omegaB97X-V/6-31G*), the decomposition gives a result that argues against a
@@ -267,8 +268,9 @@ script's self-consistent column the difference runs from -1.058×10⁻⁴ (level
 -1.242×10⁻⁴ (level 8) and back to -1.230×10⁻⁴ (level 9), same sign at all ten levels and
 no drift with grid density; its fixed-density column differs only at level 0
 (-1.056×10⁻³), where that column is itself the outlier [S21]. A
-second program has since been brought to bear on the same quantity - ORCA 6.0.1, on two
-of the eight systems, to 4e-4 and 0.042 kcal/mol - but its grids are not matched to
+second program has since been brought to bear on the same quantity - ORCA 6.0.1, on seven
+of the eight systems, with every residual below 1% of the term - but its grids are not
+matched to
 ours, so that anchor is quoted as a joint grid-plus-kernel difference in §4 rather than
 as a kernel-only check here.
 
@@ -312,7 +314,7 @@ database itself is Jurečka et al., PCCP 8, 1985-1993 (2006) [[jurecka2006s22]],
 also confirmed by reverse DOI lookup. We do not trace these twenty-two complexes back
 beyond that: an attribution to a still earlier hydrogen-bonded benchmark
 (PCCP 5, 1811 (2003)) resolves to no Crossref record on two separate attempts
-(2026-09-29 and 2026-09-30, queries archived in `evidence/claims_audit/G_s22_provenance_20260930.md`),
+(2026-09-29 and 2026-09-30, queries archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`),
 so we cite only the chain that could be pinned. The geometry files we used come from
 the GMTKN55 distribution, so our numbers depend on that, not on any earlier compilation.
 Fragment boundaries are derived from covalent connectivity with a 1.65 Å cutoff — longer than the longest covalent bond appearing in these
@@ -330,8 +332,9 @@ Two routes to E_NLC are computed and compared at run time, with a hard failure i
 they disagree: our explicit pair sum, and PySCF's native kernel
 (`numint.nr_nlc_vxc`). These are independent implementations of the kernel but
 share a library, so agreement between them validates the arithmetic and not the
-functional parameters. A second-program anchor exists for two of the eight systems (§4);
-the remaining six are still unanchored, and no claim in this paper depends on them. Energy
+functional parameters. A second-program anchor now exists for seven of the eight systems (§4);
+the one that remains unanchored is the second benzene-dimer geometry, and no claim in
+this paper depends on it. Energy
 accounting is checked independently: for a hybrid functional the exact-exchange
 energy is folded into `vhf.exc` by `get_veff` and is absent from `nr_rks`, so
 we close e_tot = e_nuc + e₁ + e_coul + e_xc to ≤9×10⁻¹² kcal/mol rather than
@@ -569,34 +572,57 @@ with it. We use "dispersion" only when quoting external work, and the values in
 Table 1 should be read as "the contribution of the VV10 term", not as a
 dispersion energy.
 
-**Cross-program check: ORCA 6.0.1 agrees on the reported quantity.** Our
+**Cross-program check: ORCA 6.0.1 agrees on the reported quantity, on six systems.** Our
 explicit sum had only ever been checked against PySCF's native kernel, and both live in
 one library, so they could share an error in the functional parameters or in the kernel
-convention. That check now exists against a second program. ORCA 6.0.1 prints the term
+convention. That check now exists against a second program, and on more than the two
+systems we first reported. ORCA 6.0.1 prints the term
 natively for `! WB97X-V` as `NL Energy, E(C,NL)`; the control showing that the label is
 VV10-specific rather than a generic DFT printout is `evidence/orca_control/h2o_wb97x.out`, an ωB97X run
-with no `-V`, which contains no such line [S18]. Six serial runs (S22 official complex
-geometries, 6-31G*, each terminating normally with a converged SCF and carrying exactly
-one `NL Energy` line) give, for the superposition difference that Table 1 actually
-reports:
+with no `-V`, which contains no such line [S18]. Twenty-one serial runs - the water dimer
+and benzene sandwich (S22 #2, #11) on the cluster, the five remaining systems of at most
+17 atoms on this machine, all at S22 official complex geometries with 6-31G*, each
+terminating normally with a converged SCF and carrying exactly one `NL Energy` line -
+give, for the superposition difference that Table 1 reports. The last two columns compare
+the residual with the partition-scheme span of the same row (§3.4), which is the
+quantity a referee has to be smaller than to be informative:
 
-| system | ΔE_NLC ORCA | ΔE_NLC PySCF | difference |
-|---|---|---|---|
-| water dimer (S22 #2) | -0.5931 | -0.5935 | 0.0004 kcal/mol (0.07%) |
-| benzene dimer A (S22 #11) | -4.3252 | -4.3668 | 0.0416 kcal/mol (0.95%) |
+| system | ΔE_NLC ORCA | ΔE_NLC PySCF | difference | span | residual/span |
+|---|---|---|---|---|---|
+| water dimer (S22 #2) | -0.5931 | -0.5935 | 0.0004 (0.07%) | 0.0435 | 0.009 |
+| ammonia dimer (S22 #1) | -0.6745 | -0.6780 | 0.0035 (0.51%) | 0.0290 | 0.120 |
+| methane dimer (S22 #8) | -0.5160 | -0.5170 | 0.0010 (0.19%) | 0.0040 | 0.242 |
+| benzene...water (S22 #17) | -1.2522 | -1.2590 | 0.0068 (0.54%) | 0.2470 | 0.028 |
+| benzene...ammonia (S22 #18) | -1.3189 | -1.3270 | 0.0081 (0.61%) | 0.2240 | 0.036 |
+| benzene...methane (S22 #10) | -1.3912 | -1.4040 | 0.0128 (0.91%) | 0.2130 | 0.060 |
+| benzene dimer A (S22 #11) | -4.3252 | -4.3668 | 0.0416 (0.95%) | 0.0320 | **1.301** |
 
-Two things must be said about that agreement rather than glossed. First, the grids are
+All seven agree to better than 1% of the term, and the residual tracks the magnitude of
+ΔE_NLC rather than the size of the system, which is what a quadrature difference looks
+like. Three things must be said about it rather than glossed. First, the grids are
 not matched - ORCA uses its own nonlocal quadrature (Lebedev-110, IntAcc 4.004) against
 PySCF's `grids.level=1` - so the residual is the joint grid-plus-implementation
-difference and we do not attribute it to either side. The benzene gap, 0.042 kcal/mol, is
-1.3x the 0.032 kcal/mol attribution span reported for that same geometry (table 2), which
-is a useful warning that cross-program noise is of the same order as the quantity being
-resolved; it must never be folded into the attribution uncertainty. Second, the two water monomers
+difference and we do not attribute it to either side. Second, in six of the seven systems
+the cross-program residual is smaller than the attribution span it would have to resolve,
+by 8 to 100 times; the exception is the benzene sandwich, where 0.042 kcal/mol is
+1.3x the 0.032 kcal/mol span for that same geometry. That single row is the warning this
+comparison exists to provide: cross-program noise can be of the same order as the
+quantity being resolved, so it must never be folded into the attribution uncertainty.
+Third, the two water monomers
 of S22 #2 are not equivalent (donor r_OH 0.9639/0.9571 vs acceptor 0.9590/0.9590), so the
 monomer term had to be computed twice - using 2x one monomer would have introduced
 ~0.0004 kcal/mol, exactly the size of the residual. A repeat of one input inside the same
 allocation reproduced its VV10 term to 1.6e-11 Eh, so the residual is not run-to-run
-noise [S18].
+noise [S18]. The widened set was assembled after an audit of our own record found that
+`evidence/orca_widen/orca_widen.json` marked all twelve of its runs `converged: false`
+while the archived outputs print `SCF CONVERGED AFTER n CYCLES` and `ORCA TERMINATED
+NORMALLY`: the flag came from a criterion that looked for a different program's wording.
+The flags were re-derived from the logs without re-running anything, with the assertion
+that no energy value moves (`evidence/orca_widen/generator_rescan_convergence.py`), and
+the table above is generated from the tracked artefacts by
+`evidence/orca_widen/generator_cross_program_table.py`, which refuses to emit it if the
+system list disagrees with the one it declares, or if any row's basis, grid level or
+counterpoise setting disagrees.
 
 What this also checks is the absolute value, not just the difference. An earlier log of
 ours recorded a ~0.14 kcal/mol disagreement on the water monomer between our explicit sum
@@ -703,13 +729,14 @@ electrostatics, exchange-repulsion, polarisation or charge transfer. It is not
 faster than the production kernels it could be compared against - it is
 quadratic in the grid. Its arithmetic was for most of this project verified only
 against a second implementation of the same kernel inside the same library; that
-gap is now closed for the quantity Table 1 reports, by six ORCA 6.0.1 single points
-that agree to 0.0004 kcal/mol on the water dimer and 0.0416 kcal/mol on the benzene
-dimer (section 4). An earlier version of this draft claimed such an anchor and had
+gap is now closed for the quantity Table 1 reports, by twenty-one ORCA 6.0.1 single points
+spanning seven of the eight systems, every residual below 1% of the term
+(0.0004 kcal/mol on the water dimer up to 0.0416 on the benzene sandwich). An earlier
+version of this draft claimed such an anchor and had
 to withdraw it; what actually failed was not the check but our ability to find its
 number, because we searched for the words "nonlocal" and "VV10" in an output file
 that labels the quantity `NL Energy, E(C,NL)`. Two items remain open there: the
-absolute per-fragment values are still unrefereed, and the anchor covers 2 of the 8
+absolute per-fragment values are still unrefereed, and the anchor covers 7 of the 8
 systems.
 
 Two further items are open and stated as such rather than smoothed over. The first is a
@@ -777,7 +804,7 @@ hash-listed under `evidence/*/MANIFEST.sha256`, and were not re-typed by hand.
 | S15 | `evidence/retrieval_calibration/oa_stab.js`, `evidence/retrieval_calibration/openalex_stability.json`, `evidence/retrieval_calibration/xref_calib2.js`, `evidence/retrieval_calibration/xref_r3.js` | measured recall of the open indexes: 4/4 known titles at rank 0, 0/4 and 1/3 for legitimate topical strings |
 | S16 | `RESEARCH-20260929-lit.md` §8.1 | the institutional-access precondition of the search, and why the first round was counted from the UI |
 | S17 | `RESEARCH-20260929-lit.md` §13 | second round: full enumeration through WoS's own record endpoint (RecordsSearched = 58,664,816, search date 2026-09-29), the three calibration strings reproduced record-for-record, the two zero-hit strings, complete readings of the two 4-record and four broad strings, and the three added citations whose DOIs were checked against both Crossref and WoS |
-| S18 | `nlcsplit/logs/orca_anchor.json`, `evidence/orca_run/h2o_dimer.out`, `evidence/orca_run/h2o_mono0.out`, `evidence/orca_run/h2o_mono1.out`, `evidence/orca_run/benz_dimer.out`, `evidence/orca_run/benz_mono0.out`, `evidence/orca_run/benz_mono1.out`, `evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/h2o_wb97x.out`, `evidence/orca_control/h2o_wb97xv.out`, `evidence/orca_control/MANIFEST.sha256` | the cross-program anchor: six serial ORCA 6.0.1 runs (S22 official geometries, 6-31G\*, each with a converged SCF and exactly one `NL Energy, E(C,NL)` line), the per-file sha256 manifest, and the omegaB97X (no `-V`) control that prints no such line |
+| S18 | `nlcsplit/logs/orca_anchor.json`, `evidence/orca_run/h2o_dimer.out`, `evidence/orca_run/h2o_mono0.out`, `evidence/orca_run/h2o_mono1.out`, `evidence/orca_run/benz_dimer.out`, `evidence/orca_run/benz_mono0.out`, `evidence/orca_run/benz_mono1.out`, `evidence/orca_run/MANIFEST.sha256`, `evidence/orca_control/h2o_wb97x.out`, `evidence/orca_control/h2o_wb97xv.out`, `evidence/orca_control/MANIFEST.sha256`, `evidence/orca_widen/orca_widen.json`, `evidence/orca_widen/RECHECK_convergence.txt`, `evidence/orca_widen/generator_rescan_convergence.py`, `evidence/orca_widen/generator_merge_run.py`, `evidence/orca_widen/generator_cross_program_table.py`, `evidence/orca_widen/cross_program_table.txt`, `evidence/orca_widen/MANIFEST.sha256` | the cross-program referee: three ORCA 6.0.1 runs each (S22 official geometries, 6-31G\*, every run with a converged SCF and exactly one `NL Energy, E(C,NL)` line) for water and the benzene sandwich from `nlcsplit/logs/orca_anchor.json`, plus fifteen more runs from `evidence/orca_widen/` covering ammonia, methane, benzene...water, benzene...ammonia and benzene...methane; the per-file sha256 manifests; the omegaB97X (no `-V`) control that prints no such line; the re-scan that corrected twelve falsely-flagged `converged` fields without touching any energy; and the generator that emits the seven-row comparison and refuses if the system list disagrees with the one it declares, or if any row's basis, grid level or counterpoise setting disagrees |
 | S19 | `evidence/centos/20260928T165857Z_centos-step_c.out` lines 6, 15 and 24 | the level-0 ratios of the inter-fragment pair term to the superposition difference: 1.017 for the water dimer at the official S22 geometry, 1.025 at its omegaB97X-V-optimised geometry, and 0.915 for the benzene sandwich - the third of these is a different system, which is why it is not folded into the 0.92-1.08 band |
 | S20 | `nlcsplit/step_k_population.py`, `evidence/population/20260929T131530Z_stepk_pop-official.out`, `evidence/population/20260929T131055Z_stepk_pop-constructed.out` | the level-3 four-scheme population table for the water dimer, from which beta*N_A is read; both runs assert that the fragment populations sum to the electron number. Re-running them is also what showed that the earlier tabulation of this number in the work log was labelled "official geometry" but reproduces only on the constructed one |
 | S21 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt`, `evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out`, `evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.json`, `nlcsplit/step_l_sweep_compare.py` | the independent sweep (water-monomer nonlocal term at levels 0-9, self-consistent and again on one fixed density matrix, ending in a partial `atom_grid` scan that dies on an unsupported angular grid), and the archived stdout plus sidecar JSON of our comparison against it, which carry the per-level difference column behind section 2.1 - the sweep file alone has no comparison column. Produced by the shipped script; its level-9 sum covers 9.2e10 point pairs over 428,920 kept grid points, which is why that one row took hours. The `levels0-8` snapshot taken mid-run is kept beside it, hashed, as the record of what was known before level 9 landed; its header announces the intended 0-9 range, which is why that filename says 0-8 and this one says 0-9. |

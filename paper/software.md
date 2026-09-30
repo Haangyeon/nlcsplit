@@ -41,7 +41,7 @@ source. **The front matter contains fields only the author can supply (ORCID,
 corresponding status, co-author confirmation); they are marked rather than filled.**
 `references.bib` is the shared list; the entries this paper cites were reverse-checked
 against Crossref by DOI, not by title search (see `RESEARCH-20260929-lit.md` §9 for why
-that distinction mattered, and `evidence/claims_audit/G_s22_provenance_20260930.md` for
+that distinction mattered, and `evidence/bib_provenance/G_s22_provenance_20260930.md` for
 the queries behind the two software entries).*
 
 ## Abstract
@@ -391,7 +391,7 @@ place, and are cited as they are kept.
 Literature is not in this table. Where a sentence needs a published work it uses a
 `[[key]]` citation resolved against `paper/references.bib`, whose entries were
 reverse-checked through Crossref by DOI; the queries for the software and benchmark
-entries are archived in `evidence/claims_audit/G_s22_provenance_20260930.md`.
+entries are archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`.
 
 | Tag | Artefact | What it fixes |
 |---|---|---|

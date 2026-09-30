@@ -26,7 +26,7 @@
 \date{Draft --- 29 September 2026\\ \small \textit{ORCIDs PENDING, author-supplied}}
 \begin{document}
 \maketitle
-*SoftwareX / JOSS shape. Every numerical claim carries a \texttt{[S\#]} tag into this paper's own \texttt{\#\# Appendix: sources}, which resolves each tag to a tracked artefact in this repository --- not to \texttt{paper/main.md}, whose tags number a different set. Archived stdout lives under \texttt{evidence/**} with SHA-256 manifests; \texttt{nlcsplit/logs/} is gitignored scratch and is not a source. \textbf{The front matter contains fields only the author can supply (ORCID, corresponding status, co-author confirmation); they are marked rather than filled.} \texttt{references.bib} is the shared list; the entries this paper cites were reverse-checked against Crossref by DOI, not by title search (see \texttt{RESEARCH-20260929-lit.md} \S{}9 for why that distinction mattered, and \texttt{evidence/claims\_audit/G\_s22\_provenance\_20260930.md} for the queries behind the two software entries).*
+*SoftwareX / JOSS shape. Every numerical claim carries a \texttt{[S\#]} tag into this paper's own \texttt{\#\# Appendix: sources}, which resolves each tag to a tracked artefact in this repository --- not to \texttt{paper/main.md}, whose tags number a different set. Archived stdout lives under \texttt{evidence/**} with SHA-256 manifests; \texttt{nlcsplit/logs/} is gitignored scratch and is not a source. \textbf{The front matter contains fields only the author can supply (ORCID, corresponding status, co-author confirmation); they are marked rather than filled.} \texttt{references.bib} is the shared list; the entries this paper cites were reverse-checked against Crossref by DOI, not by title search (see \texttt{RESEARCH-20260929-lit.md} \S{}9 for why that distinction mattered, and \texttt{evidence/bib\_provenance/G\_s22\_provenance\_20260930.md} for the queries behind the two software entries).*
 
 \section{Abstract}
 
@@ -120,7 +120,7 @@ Quadratic cost in retained grid points, with no sub-quadratic approximation. One
 
 Paths are relative to the repository root, because that is what the export gate resolves them against. Every path below is tracked by git, and the build refuses to produce \texttt{software.tex} if one is not. Three rows used to name \texttt{logs/<something>.out}, which is not a path in this repository: \texttt{nlcsplit/logs/*.out} is gitignored scratch, and those files are tracked only as the hash-manifested copies under \texttt{evidence/**} (the build does place a scrubbed copy of two of them inside the package, but a citation should point at one tracked original, not at a generated duplicate). The two \texttt{.json} logs in the S2 row are tracked in place, and are cited as they are kept.
 
-Literature is not in this table. Where a sentence needs a published work it uses a \texttt{[[key]]} citation resolved against \texttt{paper/references.bib}, whose entries were reverse-checked through Crossref by DOI; the queries for the software and benchmark entries are archived in \texttt{evidence/claims\_audit/G\_s22\_provenance\_20260930.md}.
+Literature is not in this table. Where a sentence needs a published work it uses a \texttt{[[key]]} citation resolved against \texttt{paper/references.bib}, whose entries were reverse-checked through Crossref by DOI; the queries for the software and benchmark entries are archived in \texttt{evidence/bib\_provenance/G\_s22\_provenance\_20260930.md}.
 
 \begin{table}[htbp]
 \centering

@@ -107,7 +107,12 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
   'orca_control', 'population', 'agentb_sweep',
   // P2 引的三份：核/尾界测量、A2b 双实现对账、几何判据与近场探针的原始 stdout。
   // p2.md 一旦被引用闸门扫到，这些目录没进白名单就会"引用落空"。
-  'coretail', 'fastpair_ab', 'bound_forms', 'release_qa'];
+  'coretail', 'fastpair_ab', 'bound_forms', 'release_qa',
+  // 2026-09-30：跨程序裁判扩到 7 个体系（main.md 的 [S18] 现在按文件名指这些）；
+  // 以及被引文里的 Crossref 重放记录（main.md §2.4、software.md 都点名它）。
+  // 引用闸门 D 的逻辑是"稿件点了名却没随包发布 = 读者拿不到的出处"，所以这两条
+  // 必须在正文引用落地的同一次提交里进白名单，不能等下一次导出再补。
+  'orca_widen', 'bib_provenance'];
 
 // ================================================================ 脱敏（只发生在导出副本上）
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
