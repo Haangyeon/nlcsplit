@@ -369,8 +369,11 @@ at atom-block granularity the *smallest* block-pair bound in a real water dimer 
 against a quantity of -8.3e-4 Ha, so nothing is prunable at that granularity whatever the
 tolerance (0 of 21 pairs, and 0 of 300 on the 24-atom sandwich); refining below the atom
 block does fire, and at the accuracy the decomposition needs it still evaluates 84.4-95.4%
-of the far-field point pairs; and on an unloaded machine the screened path is 1.08-10.28x
-slower than the dense sum across the whole ladder, with no faster sample. The radius the
+of the far-field point pairs; and with no other runnable user task at the sampling instant
+(a contention gate, not a claim that the machine was idle), the screened path is slower than
+the dense sum in every one of 33 timed screened/exact pairs across two independent windows
+on the same box - 1.08-10.28x in the archived window and 5.46-13.29x in the second, with no
+faster sample in either. The radius the
 bound subtracts is set by the far tail of each atom's density, so the certified separation
 comes out zero for every pair, including the ones facing each other across the
 inter-fragment gap. That is a statement about this particular bound, not about screening in
