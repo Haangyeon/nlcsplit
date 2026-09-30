@@ -1,5 +1,5 @@
 # Fragment-Resolved Nonlocal Correlation: Pair Attribution of the VV10 Term
-## Draft — §1–§5 prose (written 2026-09-29)
+## Draft — §1-§6 and the provenance appendix written (2026-09-29 to 2026-09-30); no venue template applied yet
 
 **Authors and affiliation.** Angran Xia (corresponding; `haangyeon@snnu.edu.cn`) and
 Changwei Wang — School of Chemistry & Chemical Engineering, Shaanxi Normal University,
