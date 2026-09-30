@@ -63,7 +63,7 @@
 | `PySCF 2.12.1, OMP_NUM_THREADS=4`（原句含反引号包裹的 `OMP_NUM_THREADS=4`） | 276 | `sun2020pyscf` | 10.1063/5.0006074 | VERIFIED（Crossref 里**不存在** 2.12 版专属论文；按 title 检索 PySCF、限 2024 年以后共 5 条命中，其中没有一条是以 2.12 为对象的软件论文，最接近的只有 `pu2025pyscf`（硬件/算法篇）。软件版本号只能写进正文/软件表，bib 里没有为它编造 DOI） |
 | 同上（`§7 Condition 1 is structural for VV10 as implemented in PySCF`） | 360 | `sun2018pyscf` | 10.1002/wcms.1340 | VERIFIED（原始框架论文；Crossref issued=2017 网络首发、published-print=2018-01，bib 取 2018） |
 | 同上（可选第三条） | — | `pu2025pyscf` | 10.1063/5.0285025 | VERIFIED（APL Comput. Phys. 1, 016101 (2025)，PySCF 硬件/算法增补篇；是否引用由作者定，P2 现文不需要它） |
-| 主篇 `libxc … exports \`xc_nlc_coef\` and nothing else`（p2 未点名 libxc） | — | `lehtola2018libxc` | 10.1016/j.softx.2017.11.002 | VERIFIED（SoftwareX **7** (2018) **1-5**，与委托单给的卷/页/DOI 完全一致） |
+| 主篇原句：`the two libxc shared objects on this machine (conda-forge 5.2.3 and the 7.0.0 bundled with PySCF) export xc_nlc_coef and nothing else …`（p2 全文未点名 libxc，故 p2 侧无裸串可替换） | — | `lehtola2018libxc` | 10.1016/j.softx.2017.11.002 | VERIFIED（SoftwareX **7** (2018) **1-5**，与委托单给的卷/页/DOI 完全一致；作者 Lehtola, Steigemann, Oliveira, Marques） |
 | 主篇 `eight S22 complexes at official GMTKN55 geometries` | — | `goerigk2017gmtkn55` | 10.1039/c7cp04913g | VERIFIED（PCCP 19, 32184-32215, 2017；键与 references.bib 已有条目同名同 DOI，未另起新键） |
 | `compact dimers (S22) have no inter-block region that is both distant and negligible.` | 356 | `jurecka2006s22` | 10.1039/b600027d | VERIFIED（PCCP 8, 1985-1993, 2006 —— S22/S22c/S66 数据库的正式出处） |
 
@@ -77,7 +77,7 @@
 | 委托单给的 S22 定位符 `JCP 2005, 123, 054103 前后` | **定位符指向别的论文，不能用来当 S22 引** | 走 Crossref 期刊路由（ISSN 0021-9606，vol 123 issue 5，日期 2005-08-01）逐条比对 article-number：123 卷 054103 = **10.1063/1.1992483，D. Wu & D. A. Kofke, "Phase-space overlap measures. I. Fail-safe bias detection in free energies calculated by molecular simulation"**，与非共价基准集无关。S22 用 B 表最后一行（10.1039/b600027d） |
 | 委托单里 "PySCF 2.12 版相关论文" | **Crossref 无此文** | 已按 title/bibliographic 两种检索 + 2024 年起时间过滤查证：没有任何一条以 2.12 为对象的软件论文。可作软件引用的只有 2018（框架）、2020（近期发展）、2025（APL 硬件/算法篇）三篇，其余命中都是模块论文（PyQMC、可微分量子化学等）。版本号写进正文/软件表（`PySCF 2.12.1`），bib 里不给它编 DOI |
 | GMTKN55 的作者猜测（"Keen & …？Kozarieva/Kardas？"） | **猜测不成立** | 标题含 GMTKN55 的原始数据库论文是 **Goerigk, Hansen, Bauer, Ehrlich, Najibi & Grimme, PCCP 19, 32184-32215 (2017)**，10.1039/c7cp04913g（回查命中，作者与委托单的两种猜测都不同）。检索里出现的 Kesharwani/Karton/Sylvetsky/Martin、Gould、Bryenton/Johnson 都是**后续再评估/子集篇**，不是 GMTKN55 本身 |
-| p2.md §1 末尾 "Four method names carried in our own earlier notes could not be located in any of five indexes" | 与本轮无关，无需 bib | 那四个方法名在现文里已不出现（p2.md 全文检索：0 次），保持现状即可 |
+| p2.md §1 末尾 "Four method names carried in our own earlier notes could not be located in any of five indexes and are therefore not named anywhere above." | 与本轮无关，无需 bib | 依该句自述，那四个方法名不在正文出现，本表没有可登记的裸串，也没有为它们建条目；将来若要恢复任何一个名字，必须先各自走 DOI/已知条目回查，不能凭笔记里的名字直接写入 |
 
 ---
 
@@ -112,4 +112,16 @@ curl -s -H "User-Agent: $UA" "https://api.crossref.org/journals/0021-9606/works?
 ```
 
 原始 JSON 响应落在临时目录（`%LOCALAPPDATA%\Temp\p2_bib_batch1.json` 等），**临时目录会被清，不作为存档**；
-可复核的存档就是本表 D/E 两节 + `paper/references-p2.bib` 头注里的来源说明。
+可复核的存档就是本表 D/E/F 三节 + `paper/references-p2.bib` 头注里的来源说明。
+
+## F. 交付件的本机校验（2026-09-30，编译层）
+
+在临时目录（不在仓库内）用本机 MiKTeX 24.1 的 `bibtex.exe` 实跑了一遍 `paper/references-p2.bib`，
+aux 里 24 个 `\citation{}` 覆盖全部键，样式 `unsrt`（与主篇 `unsrtnat` 同一类句首大小写行为）：
+
+- 解析条目 **24**，渲染 `\bibitem` **24**，重复键 **0**；
+- `.blg` 里 **0 error / 0 warning**（第一轮跑出过 2 个 error：头注里出现了 at 符号，BibTeX 把它当条目开头 —— 已改掉并在头注留了提醒）；
+- 生成的 `.bbl` 里 **无任何非 ASCII 字符**：人名变音符全部走 LaTeX 转义（`Lazi{\'c}`、`Bl{\"u}gel`、`Jure{\v{c}}ka`、`Grubm{\"u}ller` 等），pdflatex 侧不会因编码炸；
+- 条目体内也无裸 UTF-8（中文只出现在 `%` 注释行，BibTeX 不解析）。
+- 因为 `unsrt`/`unsrtnat` 会把题名改成"只有首词大写"，题名里的专有名词/缩写（`{JuNoLo}`、`{noloco}`、`{PySCF}`、`{GMTKN55}`、`{vdW-DF}`、`{Ewald}`、`{GROMACS}`、`{AO--MP2}`、`{Waals}`、Dehnen 整条题名）加了花括号保护；**只保护大小写，没有增删 API 返回的任何字符**。
+

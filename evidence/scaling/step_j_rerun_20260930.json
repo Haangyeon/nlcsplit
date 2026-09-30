@@ -1,0 +1,580 @@
+{
+ "generated_utc": "2026-09-30T09:41:10Z",
+ "pyscf_version": "2.12.1",
+ "basis": "6-31g*",
+ "xc": "wb97x_v",
+ "omp_num_threads": "4",
+ "load_gate": 1,
+ "rows": [
+  {
+   "level": 0,
+   "natm": 3,
+   "nelec": 10,
+   "t_scf_s": 13.482217633,
+   "load_after_scf": {
+    "load1": 1.53,
+    "other_runnable": 0
+   },
+   "runs": {
+    "exact": {
+     "tau_ha": null,
+     "wall_s": 0.10688756599999749,
+     "n_grid": 2230,
+     "n_kept_points": 2002,
+     "pointpairs_far": 1291836,
+     "pointpairs_evaluated": 1291836,
+     "pointpairs_dropped": 0,
+     "work_frac_evaluated": 1.0,
+     "n_leaves": 223,
+     "n_leafpairs_total": 16566,
+     "n_leafpairs_evaluated": 0,
+     "n_accepted": 0,
+     "n_visited": 0,
+     "cert_err_ha": 0.0,
+     "abs_dE_kcal": null,
+     "E_nl_ha": 0.042655658572088015,
+     "E_pair": -0.005778390119572655,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 1.53,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-08": {
+     "tau_ha": 1e-08,
+     "wall_s": 0.9573360079999986,
+     "n_grid": 2230,
+     "n_kept_points": 2002,
+     "pointpairs_far": 1291836,
+     "pointpairs_evaluated": 938292,
+     "pointpairs_dropped": 353544,
+     "work_frac_evaluated": 0.7263243941181389,
+     "n_leaves": 223,
+     "n_leafpairs_total": 16566,
+     "n_leafpairs_evaluated": 8544,
+     "n_accepted": 3298,
+     "n_visited": 11839,
+     "cert_err_ha": 1.0331149440819592e-05,
+     "abs_dE_kcal": 0.001267520252306914,
+     "E_nl_ha": 0.04265767849418433,
+     "E_pair": -0.005776370197476337,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 1.53,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-10": {
+     "tau_ha": 1e-10,
+     "wall_s": 0.5944202499999989,
+     "n_grid": 2230,
+     "n_kept_points": 2002,
+     "pointpairs_far": 1291836,
+     "pointpairs_evaluated": 1148456,
+     "pointpairs_dropped": 143380,
+     "work_frac_evaluated": 0.889010679374162,
+     "n_leaves": 223,
+     "n_leafpairs_total": 16566,
+     "n_leafpairs_evaluated": 12243,
+     "n_accepted": 2528,
+     "n_visited": 14768,
+     "cert_err_ha": 7.315323084456167e-08,
+     "abs_dE_kcal": 1.2273941641804072e-05,
+     "E_nl_ha": 0.04265567813185906,
+     "E_pair": -0.0057783705598016075,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 1.53,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-12": {
+     "tau_ha": 1e-12,
+     "wall_s": 0.6844117730000008,
+     "n_grid": 2230,
+     "n_kept_points": 2002,
+     "pointpairs_far": 1291836,
+     "pointpairs_evaluated": 1232369,
+     "pointpairs_dropped": 59467,
+     "work_frac_evaluated": 0.9539670670270839,
+     "n_leaves": 223,
+     "n_leafpairs_total": 16566,
+     "n_leafpairs_evaluated": 14601,
+     "n_accepted": 1144,
+     "n_visited": 15742,
+     "cert_err_ha": 2.82413379684145e-10,
+     "abs_dE_kcal": 6.827713044037398e-08,
+     "E_nl_ha": 0.04265565868089455,
+     "E_pair": -0.005778390010766118,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 1.53,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    }
+   },
+   "n_monomers": 1,
+   "wall_total_s": 15.8309505
+  },
+  {
+   "level": 0,
+   "natm": 6,
+   "nelec": 20,
+   "t_scf_s": 56.27538684100001,
+   "load_after_scf": {
+    "load1": 3.01,
+    "other_runnable": 0
+   },
+   "runs": {
+    "exact": {
+     "tau_ha": null,
+     "wall_s": 0.4430456919999983,
+     "n_grid": 4460,
+     "n_kept_points": 4075,
+     "pointpairs_far": 6824954,
+     "pointpairs_evaluated": 6824954,
+     "pointpairs_dropped": 0,
+     "work_frac_evaluated": 1.0,
+     "n_leaves": 392,
+     "n_leafpairs_total": 62660,
+     "n_leafpairs_evaluated": 0,
+     "n_accepted": 0,
+     "n_visited": 0,
+     "cert_err_ha": 0.0,
+     "abs_dE_kcal": null,
+     "E_nl_ha": 0.08452505949412127,
+     "E_pair": -0.012384541979017536,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 2.93,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-08": {
+     "tau_ha": 1e-08,
+     "wall_s": 2.417132658,
+     "n_grid": 4460,
+     "n_kept_points": 4075,
+     "pointpairs_far": 6824954,
+     "pointpairs_evaluated": 3759786,
+     "pointpairs_dropped": 3065168,
+     "work_frac_evaluated": 0.5508881085498891,
+     "n_leaves": 392,
+     "n_leafpairs_total": 62660,
+     "n_leafpairs_evaluated": 29433,
+     "n_accepted": 13555,
+     "n_visited": 42973,
+     "cert_err_ha": 5.2789405762117617e-05,
+     "abs_dE_kcal": 0.0071178344494820375,
+     "E_nl_ha": 0.08453640248533285,
+     "E_pair": -0.012373198987805947,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 2.93,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-10": {
+     "tau_ha": 1e-10,
+     "wall_s": 2.8402300609999998,
+     "n_grid": 4460,
+     "n_kept_points": 4075,
+     "pointpairs_far": 6824954,
+     "pointpairs_evaluated": 5587100,
+     "pointpairs_dropped": 1237854,
+     "work_frac_evaluated": 0.8186282281169953,
+     "n_leaves": 392,
+     "n_leafpairs_total": 62660,
+     "n_leafpairs_evaluated": 47253,
+     "n_accepted": 8196,
+     "n_visited": 55434,
+     "cert_err_ha": 2.946517409559414e-07,
+     "abs_dE_kcal": 4.60535439527942e-05,
+     "E_nl_ha": 0.08452513288511512,
+     "E_pair": -0.012384468588023683,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 2.78,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-12": {
+     "tau_ha": 1e-12,
+     "wall_s": 4.219179790999988,
+     "n_grid": 4460,
+     "n_kept_points": 4075,
+     "pointpairs_far": 6824954,
+     "pointpairs_evaluated": 6398217,
+     "pointpairs_dropped": 426737,
+     "work_frac_evaluated": 0.9374740108138457,
+     "n_leaves": 392,
+     "n_leafpairs_total": 62660,
+     "n_leafpairs_evaluated": 56573,
+     "n_accepted": 3778,
+     "n_visited": 60336,
+     "cert_err_ha": 1.1851315551116942e-09,
+     "abs_dE_kcal": 1.1662957767324632e-07,
+     "E_nl_ha": 0.08452505967998233,
+     "E_pair": -0.012384541793156472,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 2.78,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    }
+   },
+   "n_monomers": 2,
+   "wall_total_s": 66.22031115099999
+  },
+  {
+   "level": 0,
+   "natm": 9,
+   "nelec": 30,
+   "t_scf_s": 114.806598601,
+   "load_after_scf": {
+    "load1": 4.07,
+    "other_runnable": 0
+   },
+   "runs": {
+    "exact": {
+     "tau_ha": null,
+     "wall_s": 0.49856229100001315,
+     "n_grid": 6690,
+     "n_kept_points": 6155,
+     "pointpairs_far": 16691466,
+     "pointpairs_evaluated": 16691466,
+     "pointpairs_dropped": 0,
+     "work_frac_evaluated": 1.0,
+     "n_leaves": 571,
+     "n_leafpairs_total": 143747,
+     "n_leafpairs_evaluated": 0,
+     "n_accepted": 0,
+     "n_visited": 0,
+     "cert_err_ha": 0.0,
+     "abs_dE_kcal": null,
+     "E_nl_ha": 0.12636997913204273,
+     "E_pair": -0.019020279418444308,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 4.07,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-08": {
+     "tau_ha": 1e-08,
+     "wall_s": 3.079585380000026,
+     "n_grid": 6690,
+     "n_kept_points": 6155,
+     "pointpairs_far": 16691466,
+     "pointpairs_evaluated": 7693775,
+     "pointpairs_dropped": 8997691,
+     "work_frac_evaluated": 0.46094063876714003,
+     "n_leaves": 571,
+     "n_leafpairs_total": 143747,
+     "n_leafpairs_evaluated": 53319,
+     "n_accepted": 28950,
+     "n_visited": 82233,
+     "cert_err_ha": 0.00011544752057610147,
+     "abs_dE_kcal": 0.014326627892157492,
+     "E_nl_ha": 0.12639281006684822,
+     "E_pair": -0.018997448483638834,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.9,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-10": {
+     "tau_ha": 1e-10,
+     "wall_s": 4.73897645400001,
+     "n_grid": 6690,
+     "n_kept_points": 6155,
+     "pointpairs_far": 16691466,
+     "pointpairs_evaluated": 12436722,
+     "pointpairs_dropped": 4254744,
+     "work_frac_evaluated": 0.7450946489661243,
+     "n_leaves": 571,
+     "n_leafpairs_total": 143747,
+     "n_leafpairs_evaluated": 95704,
+     "n_accepted": 21477,
+     "n_visited": 117145,
+     "cert_err_ha": 8.24404516434394e-07,
+     "abs_dE_kcal": 0.0001444847385420648,
+     "E_nl_ha": 0.1263702093831298,
+     "E_pair": -0.019020049167357257,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.67,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-12": {
+     "tau_ha": 1e-12,
+     "wall_s": 5.407547795999989,
+     "n_grid": 6690,
+     "n_kept_points": 6155,
+     "pointpairs_far": 16691466,
+     "pointpairs_evaluated": 15240118,
+     "pointpairs_dropped": 1451348,
+     "work_frac_evaluated": 0.9130485003534141,
+     "n_leaves": 571,
+     "n_leafpairs_total": 143747,
+     "n_leafpairs_evaluated": 123966,
+     "n_accepted": 9820,
+     "n_visited": 133750,
+     "cert_err_ha": 3.4162096115115037e-09,
+     "abs_dE_kcal": 6.110888852433158e-07,
+     "E_nl_ha": 0.12636998010587486,
+     "E_pair": -0.019020278444612168,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.45,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    }
+   },
+   "n_monomers": 3,
+   "wall_total_s": 128.54095706700002
+  },
+  {
+   "level": 0,
+   "natm": 12,
+   "nelec": 40,
+   "t_scf_s": 201.625859604,
+   "load_after_scf": {
+    "load1": 3.96,
+    "other_runnable": 0
+   },
+   "runs": {
+    "exact": {
+     "tau_ha": null,
+     "wall_s": 0.7218993390000037,
+     "n_grid": 8920,
+     "n_kept_points": 8235,
+     "pointpairs_far": 30884264,
+     "pointpairs_evaluated": 30884264,
+     "pointpairs_dropped": 0,
+     "work_frac_evaluated": 1.0,
+     "n_leaves": 800,
+     "n_leafpairs_total": 290525,
+     "n_leafpairs_evaluated": 0,
+     "n_accepted": 0,
+     "n_visited": 0,
+     "cert_err_ha": 0.0,
+     "abs_dE_kcal": null,
+     "E_nl_ha": 0.16821241550597277,
+     "E_pair": -0.025659009513828577,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.8,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-08": {
+     "tau_ha": 1e-08,
+     "wall_s": 4.338810645000024,
+     "n_grid": 8920,
+     "n_kept_points": 8235,
+     "pointpairs_far": 30884264,
+     "pointpairs_evaluated": 11579258,
+     "pointpairs_dropped": 19305006,
+     "work_frac_evaluated": 0.37492420088107004,
+     "n_leaves": 800,
+     "n_leafpairs_total": 290525,
+     "n_leafpairs_evaluated": 85957,
+     "n_accepted": 57456,
+     "n_visited": 143347,
+     "cert_err_ha": 0.0002198043571600363,
+     "abs_dE_kcal": 0.024440165537534975,
+     "E_nl_ha": 0.16825136338890956,
+     "E_pair": -0.025620061630891783,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.8,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-10": {
+     "tau_ha": 1e-10,
+     "wall_s": 7.543157736000012,
+     "n_grid": 8920,
+     "n_kept_points": 8235,
+     "pointpairs_far": 30884264,
+     "pointpairs_evaluated": 20445302,
+     "pointpairs_dropped": 10438962,
+     "work_frac_evaluated": 0.6619973848170706,
+     "n_leaves": 800,
+     "n_leafpairs_total": 290525,
+     "n_leafpairs_evaluated": 168229,
+     "n_accepted": 47645,
+     "n_visited": 215808,
+     "cert_err_ha": 1.8049148855481565e-06,
+     "abs_dE_kcal": 0.00029948947228619025,
+     "E_nl_ha": 0.16821289277282636,
+     "E_pair": -0.025658532246974987,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.37,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-12": {
+     "tau_ha": 1e-12,
+     "wall_s": 9.59197870600002,
+     "n_grid": 8920,
+     "n_kept_points": 8235,
+     "pointpairs_far": 30884264,
+     "pointpairs_evaluated": 26666671,
+     "pointpairs_dropped": 4217593,
+     "work_frac_evaluated": 0.8634387725736317,
+     "n_leaves": 800,
+     "n_leafpairs_total": 290525,
+     "n_leafpairs_evaluated": 230810,
+     "n_accepted": 26522,
+     "n_visited": 257266,
+     "cert_err_ha": 9.186692487479359e-09,
+     "abs_dE_kcal": 1.772955617366481e-06,
+     "E_nl_ha": 0.1682124183313574,
+     "E_pair": -0.025659006688443946,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.01,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    }
+   },
+   "n_monomers": 4,
+   "wall_total_s": 223.84063185099998
+  },
+  {
+   "level": 1,
+   "natm": 6,
+   "nelec": 20,
+   "t_scf_s": 48.214380683,
+   "load_after_scf": {
+    "load1": 3.53,
+    "other_runnable": 0
+   },
+   "runs": {
+    "exact": {
+     "tau_ha": null,
+     "wall_s": 3.723311305999971,
+     "n_grid": 19936,
+     "n_kept_points": 17199,
+     "pointpairs_far": 120040968,
+     "pointpairs_evaluated": 120040968,
+     "pointpairs_dropped": 0,
+     "work_frac_evaluated": 1.0,
+     "n_leaves": 683,
+     "n_leafpairs_total": 190797,
+     "n_leafpairs_evaluated": 0,
+     "n_accepted": 0,
+     "n_visited": 0,
+     "cert_err_ha": 0.0,
+     "abs_dE_kcal": null,
+     "E_nl_ha": 0.08451066296984674,
+     "E_pair": -0.012425753487738576,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.81,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-08": {
+     "tau_ha": 1e-08,
+     "wall_s": 5.109702873999993,
+     "n_grid": 19936,
+     "n_kept_points": 17199,
+     "pointpairs_far": 120040968,
+     "pointpairs_evaluated": 49936048,
+     "pointpairs_dropped": 70104920,
+     "work_frac_evaluated": 0.4159917137622549,
+     "n_leaves": 683,
+     "n_leafpairs_total": 190797,
+     "n_leafpairs_evaluated": 69688,
+     "n_accepted": 33303,
+     "n_visited": 102976,
+     "cert_err_ha": 0.00012911325674961997,
+     "abs_dE_kcal": 0.015343209174566715,
+     "E_nl_ha": 0.08453511393004536,
+     "E_pair": -0.012401302527539963,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.58,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-10": {
+     "tau_ha": 1e-10,
+     "wall_s": 7.221129698000027,
+     "n_grid": 19936,
+     "n_kept_points": 17199,
+     "pointpairs_far": 120040968,
+     "pointpairs_evaluated": 82106903,
+     "pointpairs_dropped": 37934065,
+     "work_frac_evaluated": 0.6839906772494537,
+     "n_leaves": 683,
+     "n_leafpairs_total": 190797,
+     "n_leafpairs_evaluated": 111908,
+     "n_accepted": 27928,
+     "n_visited": 139821,
+     "cert_err_ha": 9.223100739254484e-07,
+     "abs_dE_kcal": 7.878768047350903e-05,
+     "E_nl_ha": 0.08451078852600762,
+     "E_pair": -0.012425627931577697,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 3.19,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    },
+    "tau1e-12": {
+     "tau_ha": 1e-12,
+     "wall_s": 9.784137324000028,
+     "n_grid": 19936,
+     "n_kept_points": 17199,
+     "pointpairs_far": 120040968,
+     "pointpairs_evaluated": 101348224,
+     "pointpairs_dropped": 18692744,
+     "work_frac_evaluated": 0.8442802960402652,
+     "n_leaves": 683,
+     "n_leafpairs_total": 190797,
+     "n_leafpairs_evaluated": 142358,
+     "n_accepted": 18518,
+     "n_visited": 160861,
+     "cert_err_ha": 4.916975473755325e-09,
+     "abs_dE_kcal": 4.38188873701236e-07,
+     "E_nl_ha": 0.08451066366814516,
+     "E_pair": -0.012425752789440152,
+     "cert_ge_actual": true,
+     "load_after": {
+      "load1": 2.85,
+      "other_runnable": 0
+     },
+     "valid_timing": true
+    }
+   },
+   "n_monomers": 2,
+   "wall_total_s": 74.09256987700002
+  }
+ ]
+}

@@ -1,0 +1,319 @@
+% paper/references-p2.bib — P2（认证化筛选 / VV10 双重和）专用文献库
+% 与 paper/references.bib 分开维护：P2 的先例引用在 paper/p2.md 里目前全是正文裸串，
+% 本文件把这些裸串逐条落成真条目。**本文件不改动 paper/p2.md，也不改动 references.bib。**
+% 逐条对照表（含核实状态、裸串原文、页码分歧）见
+%   evidence/claims_audit/D_p2_bib_mapping.md
+%
+% 元数据来源（2026-09-30 逐条 API 回查；完整的 UA 与复核命令见映射表 E 节）：
+%   - Crossref  works 端点按 DOI 精确回查 —— 下面 23 条 article 条目
+%   - arXiv     id_list 查询 —— 仅 laikov2026faster 这一条 preprint
+% 只写入 API 返回的字段；API 没给的字段（issue、月份、access date 等）留空不补。
+% 提醒一：BibTeX 会把注释行里的 at 符号当作条目开头，本文件头注里不要写那个符号。
+% 提醒二：题里那些大写字母（JuNoLo、noloco、GROMACS、vdW-DF、Ewald、Waals、AO--MP2、Dehnen 的 (N)）
+%        都用花括号包住了：主篇用 unsrtnat.bst，它会把题名改成"句首大写"，不加括号的会被压成小写。
+%        括号只保护大小写，没有改动 API 返回的任何一个字符。
+% 说明一：PRL/PRB/JCP/JCTC(WIREs) 若干条 Crossref 的 page 字段为空，其 pages 值取自
+%        article-number 字段（例如 PRL 103, 063004）。这在本仓库 references.bib 里是同一做法。
+% 说明二：Crossref 把 "PySCF" 品牌存成 P<scp>y</scp>SCF（小写 y 的上标标记），剥掉标记后
+%        得到 "P y SCF"；两条 PySCF 条目按刊名页的实际拼写写 {PySCF}，此处备案。
+% 说明三：键名沿用 references.bib 的"姓+年份+短词"风格；同一篇文献若已在 references.bib
+%        里有条目（vydrov2009vv10 / vydrov2010simple / lazic2010junolo / goerigk2017gmtkn55），
+%        本文件复用同一键名，避免两份库对同一文献用两个键。
+% 本文件已用 MiKTeX 的 bibtex + unsrt 编译校验：24 条全部解析成 24 个 bibitem，0 error 0 warning。
+
+% ---------------------------------------------------------------------------
+% §1 "What is not new" —— VV10 及其快速求值
+% ---------------------------------------------------------------------------
+
+% 裸串 [Vydrov & Van Voorhis 2009, PRL 103, 063004]
+@article{vydrov2009vv10,
+  author  = {Oleg A. Vydrov and Troy Van Voorhis},
+  title   = {Nonlocal van der {Waals} Density Functional Made Simple},
+  journal = {Physical Review Letters},
+  volume  = {103},
+  pages   = {063004},
+  year    = {2009},
+  doi     = {10.1103/physrevlett.103.063004},
+}
+
+% 裸串 [same authors 2010, JCP 133, 244103]（"same authors" 不可作键，落真条目）
+@article{vydrov2010simple,
+  author  = {Oleg A. Vydrov and Troy Van Voorhis},
+  title   = {Nonlocal van der {Waals} density functional: The simpler the better},
+  journal = {The Journal of Chemical Physics},
+  volume  = {133},
+  pages   = {244103},
+  year    = {2010},
+  doi     = {10.1063/1.3521275},
+}
+
+% 裸串 [Sabatini, Gorni & de Gironcoli 2013, PRB 87, 041108]
+@article{sabatini2013efficient,
+  author  = {Riccardo Sabatini and Tommaso Gorni and Stefano de Gironcoli},
+  title   = {Nonlocal van der {Waals} density functional made simple and efficient},
+  journal = {Physical Review B},
+  volume  = {87},
+  pages   = {041108},
+  year    = {2013},
+  doi     = {10.1103/physrevb.87.041108},
+}
+
+% 裸串 [Lazić et al. 2010, CPC 181, 371-379, doi:10.1016/j.cpc.2009.09.016, JuNoLo]
+@article{lazic2010junolo,
+  author  = {Predrag Lazi{\'c} and Nicolae Atodiresei and Mojtaba Alaei and Vasile Caciuc and Stefan Bl{\"u}gel and Radovan Brako},
+  title   = {{JuNoLo} -- {J{\"u}lich} nonlocal code for parallel post-processing evaluation of {vdW-DF} correlation energy},
+  journal = {Computer Physics Communications},
+  volume  = {181},
+  pages   = {371-379},
+  year    = {2010},
+  doi     = {10.1016/j.cpc.2009.09.016},
+}
+
+% 裸串 [noloco, Nabok, Puschnig & Ambrosch-Draxl 2011, CPC 182, 1657-1670]
+% ⚠ 稿件写 1657-1670，Crossref 记录为 1657-1662；本条目按 Crossref 写，分歧已登记在映射表。
+@article{nabok2011noloco,
+  author  = {Dmitrii Nabok and Peter Puschnig and Claudia Ambrosch-Draxl},
+  title   = {{noloco}: An efficient implementation of van der {Waals} density functionals based on a {Monte-Carlo} integration technique},
+  journal = {Computer Physics Communications},
+  volume  = {182},
+  pages   = {1657-1662},
+  year    = {2011},
+  doi     = {10.1016/j.cpc.2011.04.015},
+}
+
+% ---------------------------------------------------------------------------
+% §1 "the 'have a proof' half" —— 分层/多极 + 可证误差界
+% ---------------------------------------------------------------------------
+
+% 裸串 [Schwegler, Challacombe & Head-Gordon 1998, J. Chem. Phys. 109, 8764-8769, doi:10.1063/1.477546]
+@article{schwegler1998multipole,
+  author  = {Eric Schwegler and Matt Challacombe and Martin Head-Gordon},
+  title   = {A multipole acceptability criterion for electronic structure theory},
+  journal = {The Journal of Chemical Physics},
+  volume  = {109},
+  pages   = {8764-8769},
+  year    = {1998},
+  doi     = {10.1063/1.477546},
+}
+
+% 裸串 [Dehnen 2002, J. Comput. Phys. 179, 27-42, doi:10.1006/jcph.2002.7026]
+% 题名按 Crossref 存录原样（整条加括号保护大小写），
+% API 返回的 title 里没有 "log"，我也没有从记忆补 —— proof 时需对出版页原文再确认一次。
+@article{dehnen2002hierarchical,
+  author  = {Walter Dehnen},
+  title   = {{A Hierarchical (N) Force Calculation Algorithm}},
+  journal = {Journal of Computational Physics},
+  volume  = {179},
+  pages   = {27-42},
+  year    = {2002},
+  doi     = {10.1006/jcph.2002.7026},
+}
+
+% 裸串 Burow & Sierka [JCTC 7, 3097-3104, 2011]
+@article{burow2011hierarchical,
+  author  = {Asbj{\"o}rn M. Burow and Marek Sierka},
+  title   = {Linear Scaling Hierarchical Integration Scheme for the Exchange-Correlation Term in Molecular and Periodic Systems},
+  journal = {Journal of Chemical Theory and Computation},
+  volume  = {7},
+  pages   = {3097-3104},
+  year    = {2011},
+  doi     = {10.1021/ct200412r},
+}
+
+% 裸串 [Lambrecht & Ochsenfeld 2005, JCP 123, 184101, …]
+@article{lambrecht2005estimates,
+  author  = {Daniel S. Lambrecht and Christian Ochsenfeld},
+  title   = {Multipole-based integral estimates for the rigorous description of distance dependence in two-electron integrals},
+  journal = {The Journal of Chemical Physics},
+  volume  = {123},
+  pages   = {184101},
+  year    = {2005},
+  doi     = {10.1063/1.2079967},
+}
+
+% 裸串 [… Lambrecht, Doser & Ochsenfeld, same volume 184102]
+@article{lambrecht2005screening,
+  author  = {Daniel S. Lambrecht and Bernd Doser and Christian Ochsenfeld},
+  title   = {Rigorous integral screening for electron correlation methods},
+  journal = {The Journal of Chemical Physics},
+  volume  = {123},
+  pages   = {184102},
+  year    = {2005},
+  doi     = {10.1063/1.2079987},
+}
+
+% 裸串 [Doser et al. 2008, PCCP 10, 3335]
+% Crossref 的 page 字段只有起始页 3335（RSC 存录如此），未补全末页。
+@article{doser2008tighter,
+  author  = {Bernd Doser and Daniel S. Lambrecht and Christian Ochsenfeld},
+  title   = {Tighter multipole-based integral estimates and parallel implementation of linear-scaling {AO--MP2} theory},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {10},
+  pages   = {3335},
+  year    = {2008},
+  doi     = {10.1039/b804110e},
+}
+
+% 裸串 [Engblom 2011, Appl. Numer. Math. 61, 1096-1102, doi:10.1016/j.apnum.2011.06.011]
+@article{engblom2011wellseparated,
+  author  = {Stefan Engblom},
+  title   = {On well-separated sets and fast multipole methods},
+  journal = {Applied Numerical Mathematics},
+  volume  = {61},
+  pages   = {1096-1102},
+  year    = {2011},
+  doi     = {10.1016/j.apnum.2011.06.011},
+}
+
+% ---------------------------------------------------------------------------
+% §1 "Publishing a refutation is not new either" —— 静电/N-body 速度比较这一文体
+% ---------------------------------------------------------------------------
+
+% 裸串 [Luty et al. 1994, Mol. Simul. 14, 11-20, doi:10.1080/08927029408022004]
+@article{luty1994pppmesh,
+  author  = {Brock A. Luty and Malcolm E. Davis and Ilario G. Tironi and Wilfred F. Van Gunsteren},
+  title   = {A Comparison of Particle-Particle, Particle-Mesh and {Ewald} Methods for Calculating Electrostatic Interactions in Periodic Molecular Systems},
+  journal = {Molecular Simulation},
+  volume  = {14},
+  pages   = {11-20},
+  year    = {1994},
+  doi     = {10.1080/08927029408022004},
+}
+
+% 裸串 [Petersen 1995, J. Chem. Phys. 103, 3668-3679, doi:10.1063/1.470043]
+@article{petersen1995pmesh,
+  author  = {Henrik G. Petersen},
+  title   = {Accuracy and efficiency of the particle mesh {Ewald} method},
+  journal = {The Journal of Chemical Physics},
+  volume  = {103},
+  pages   = {3668-3679},
+  year    = {1995},
+  doi     = {10.1063/1.470043},
+}
+
+% 裸串 [Deserno & Holm 1998, J. Chem. Phys. 109, 7678-7693, doi:10.1063/1.477414]
+@article{deserno1998meshup,
+  author  = {Markus Deserno and Christian Holm},
+  title   = {How to mesh up {Ewald} sums. {I}. A theoretical and numerical comparison of various particle mesh routines},
+  journal = {The Journal of Chemical Physics},
+  volume  = {109},
+  pages   = {7678-7693},
+  year    = {1998},
+  doi     = {10.1063/1.477414},
+}
+
+% 裸串 [Gumerov & Duraiswami 2008, J. Comput. Phys. 227, 8290-8313, doi:10.1016/j.jcp.2008.05.023]
+@article{gumerov2008fmmgpu,
+  author  = {Nail A. Gumerov and Ramani Duraiswami},
+  title   = {Fast multipole methods on graphics processors},
+  journal = {Journal of Computational Physics},
+  volume  = {227},
+  pages   = {8290-8313},
+  year    = {2008},
+  doi     = {10.1016/j.jcp.2008.05.023},
+}
+
+% 裸串 [Kohnke, Kutzner & Grubmüller 2020, JCTC 16, 6938-6949, doi:10.1021/acs.jctc.0c00744]
+@article{kohnke2020gmxfmm,
+  author  = {Bartosz Kohnke and Carsten Kutzner and Helmut Grubm{\"u}ller},
+  title   = {A {GPU-Accelerated} Fast Multipole Method for {GROMACS}: Performance and Accuracy},
+  journal = {Journal of Chemical Theory and Computation},
+  volume  = {16},
+  pages   = {6938-6949},
+  year    = {2020},
+  doi     = {10.1021/acs.jctc.0c00744},
+}
+
+% ---------------------------------------------------------------------------
+% §1 最近的竞争者：Laikov 预印本（Crossref 无此记录，元数据来自 arXiv API）
+% ---------------------------------------------------------------------------
+
+% 裸串 "Nonlocal van der Waals density functional made faster" [arXiv:2511.04169, v2 of 2026-09-30]
+% ⚠ 稿件的 "v2 of 2026-09-30" 与 arXiv API 不符：v1 提交于 2025-11-06，**v2 是 2026-01-19**，
+%   且 API 无 v3（2026-09-30 查询）。2026-09-30 应是取回日期而非版本号日期，已登记映射表。
+@misc{laikov2026faster,
+  author        = {Dimitri N. Laikov},
+  title         = {Nonlocal van der {Waals} density functional made faster},
+  year          = {2026},
+  eprint        = {2511.04169},
+  archivePrefix = {arXiv},
+  primaryClass  = {physics.chem-ph},
+  note          = {v2, updated 2026-01-19 (v1 submitted 2025-11-06); preprint, no DOI in Crossref},
+  url           = {http://arxiv.org/abs/2511.04169v2},
+}
+
+% ---------------------------------------------------------------------------
+% 共用软件/基准条目（P2 与主篇都要，2026-09-30 新增）
+% P2 正文目前只是裸提名称（PySCF 2.12.1 / S22），没有裸串引用；下列条目供加引用时用。
+% ---------------------------------------------------------------------------
+
+% 软件：PySCF（p2 §6 用 2.12.1，§7 Condition 1 亦点名 PySCF）
+% NOTE 2026-09-30：Crossref 里**没有**专属于 2.12 版的论文；按标题检索 PySCF 得到的
+% 只有下面 2018/2020 两篇正稿和一篇 2025 年 APL Comput. Phys. 硬件/算法增补篇。
+% 2.12 这个版本号只能靠 url/版本字段承载，bib 里我没有编造 DOI。
+@article{sun2020pyscf,
+  author  = {Qiming Sun and Xing Zhang and Samragni Banerjee and Peng Bao and Marc Barbry and Nick S. Blunt and Nikolay A. Bogdanov and George H. Booth and Jia Chen and Zhi-Hao Cui and Janus J. Eriksen and Yang Gao and Sheng Guo and Jan Hermann and Matthew R. Hermes and Kevin Koh and Peter Koval and Susi Lehtola and Zhendong Li and Junzi Liu and Narbe Mardirossian and James D. McClain and Mario Motta and Bastien Mussard and Hung Q. Pham and Artem Pulkin and Wirawan Purwanto and Paul J. Robinson and Enrico Ronca and Elvira R. Sayfutyarova and Maximilian Scheurer and Henry F. Schurkus and James E. T. Smith and Chong Sun and Shi-Ning Sun and Shiv Upadhyay and Lucas K. Wagner and Xiao Wang and Alec White and James Daniel Whitfield and Mark J. Williamson and Sebastian Wouters and Jun Yang and Jason M. Yu and Tianyu Zhu and Timothy C. Berkelbach and Sandeep Sharma and Alexander Yu. Sokolov and Garnet Kin-Lic Chan},
+  title   = {Recent developments in the {PySCF} program package},
+  journal = {The Journal of Chemical Physics},
+  volume  = {153},
+  pages   = {024109},
+  year    = {2020},
+  doi     = {10.1063/5.0006074},
+}
+
+@article{sun2018pyscf,
+  author  = {Qiming Sun and Timothy C. Berkelbach and Nick S. Blunt and George H. Booth and Sheng Guo and Zhendong Li and Junzi Liu and James D. McClain and Elvira R. Sayfutyarova and Sandeep Sharma and Sebastian Wouters and Garnet Kin-Lic Chan},
+  title   = {{PySCF}: the {Python}-based simulations of chemistry framework},
+  journal = {WIREs Computational Molecular Science},
+  volume  = {8},
+  pages   = {e1340},
+  year    = {2018},
+  doi     = {10.1002/wcms.1340},
+}
+
+@article{pu2025pyscf,
+  author  = {Zhichen Pu and Qiming Sun},
+  title   = {Enhancing {PySCF}-based quantum chemistry simulations with modern hardware, algorithms, and {Python} tools},
+  journal = {APL Computational Physics},
+  volume  = {1},
+  pages   = {016101},
+  year    = {2025},
+  doi     = {10.1063/5.0285025},
+}
+
+% 库：libxc（主篇用它当 (b, C) 参数来源，且明确说它当不了数值裁判）
+@article{lehtola2018libxc,
+  author  = {Susi Lehtola and Conrad Steigemann and Micael J. T. Oliveira and Miguel A. L. Marques},
+  title   = {Recent developments in {libxc} --- A comprehensive library of functionals for density functional theory},
+  journal = {SoftwareX},
+  volume  = {7},
+  pages   = {1-5},
+  year    = {2018},
+  doi     = {10.1016/j.softx.2017.11.002},
+}
+
+% 基准集：GMTKN55（主篇/software.md 用其官方几何；键名沿用 references.bib）
+@article{goerigk2017gmtkn55,
+  author  = {Lars Goerigk and Andreas Hansen and Christoph Bauer and Stephan Ehrlich and Asim Najibi and Stefan Grimme},
+  title   = {A look at the density functional theory zoo with the advanced {GMTKN55} database for general main group thermochemistry, kinetics and noncovalent interactions},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {19},
+  pages   = {32184-32215},
+  year    = {2017},
+  doi     = {10.1039/c7cp04913g},
+}
+
+% 基准集：S22（p2 §7 条件 4 裸提 "(S22)"；主篇八条复合物的几何/参照来源）
+% NOTE 委托单上给的定位符 "JCP 2005, 123, 054103" 经查**不是** S22：
+% Crossref 期刊路由（ISSN 0021-9606, v123 i5）里 054103 = Wu & Kofke,
+% "Phase-space overlap measures. I…"（10.1063/1.1992483），与非协作用基准无关。
+% S22 的正式出处是下面这条（22 个复合物，MP2/CCSD(T) CBS 参照值）。
+@article{jurecka2006s22,
+  author  = {Petr Jure{\v{c}}ka and Ji{\v{r}}{\'i} {\v{S}}poner and Ji{\v{r}}{\'i} {\v{C}}ern{\'y} and Pavel Hobza},
+  title   = {Benchmark database of accurate ({MP2} and {CCSD(T)} complete basis set limit) interaction energies of small model complexes, {DNA} base pairs, and amino acid pairs},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {8},
+  pages   = {1985-1993},
+  year    = {2006},
+  doi     = {10.1039/b600027d},
+}
