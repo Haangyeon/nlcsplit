@@ -709,6 +709,16 @@ const gateD = (() => {
         pubInternal.push(`${tag}: ${rel}（故意只在母仓，公开读者打不开）`);
         continue;
       }
+      // A token ending in `/` names a directory; `copied` lists files, so comparing them
+      // literally can never match and the gate blocked a good build for a reason that was
+      // false on its face ("存在但未随包发布 evidence/orca_widen/" — it is shipped).
+      // The honest directory rule: at least one file under it must have been copied.
+      if (rel.endsWith('/')) {
+        if (!copied.some(c => c.startsWith(rel))) {
+          absent.push(`${tag}: 该目录下没有任何随包发布的文件 ${rel}`);
+        }
+        continue;
+      }
       if (!copied.includes(published)) absent.push(`${tag}: 存在但未随包发布 ${rel}`);
     }
   }

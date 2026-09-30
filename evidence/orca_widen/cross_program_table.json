@@ -17,7 +17,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.12.1",
-   "pyscf_host": "Haangyeon",
    "orca_source": "nlcsplit/logs/orca_anchor.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -35,7 +34,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "evidence/orca_widen/orca_widen.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -53,7 +51,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "evidence/orca_widen/orca_widen.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -71,7 +68,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "evidence/orca_widen/orca_widen.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -89,7 +85,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "evidence/orca_widen/orca_widen.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -107,7 +102,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "evidence/orca_widen/orca_widen.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -125,7 +119,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "nlcsplit/logs/orca_anchor.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   },
@@ -143,7 +136,6 @@
    "pyscf_level": 1,
    "pyscf_basis": "6-31g*",
    "pyscf_version": "2.14.0",
-   "pyscf_host": "ubuntu",
    "orca_source": "evidence/orca_widen/orca_widen.json",
    "pyscf_source": "nlcsplit/logs/step_h.json"
   }

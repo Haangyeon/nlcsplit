@@ -93,7 +93,9 @@ def main():
             "attribution_span_kcal_mol": round(span, 4) if span is not None else None,
             "residual_over_span": round(abs(diff) / span, 3) if span else None,
             "pyscf_level": p.get("level"), "pyscf_basis": p.get("basis"),
-            "pyscf_version": p.get("pyscf_version"), "pyscf_host": p.get("host"),
+            "pyscf_version": p.get("pyscf_version"),
+            # 不发宿主机的名字：它对表里任何一个数都不承重，而一旦写进来，导出时
+            # 脱敏闸门会把它替掉——于一份"读者可以照着重算"的工件就变成被改过的工件。
             "orca_source": o["source"], "pyscf_source": steph_rel,
         })
     if problems:
