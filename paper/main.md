@@ -681,13 +681,16 @@ convention to a partition-free reference is about the distance between conventio
 the consistency this section wanted.
 
 Two limits travel with that result. The densities are synthetic (no nuclei, no cusps, no
-orbital structure, homonuclear and equal-exponent), so what is refereed is the attribution
-machinery as a mathematical operation on a density, not a chemical statement; and the
-positive control on these densities - the documented-wrong pairing of section 3.5 - moves
-the term by 0.0052 kcal/mol, comparable to the resolved offsets, so this referee is not a
-high-resolution instrument, it is a resolution-limited one. It does reproduce: two
-independent executions of the whole pipeline give tables that are byte-identical except in
-the recorded wall-clock fields, and both runs are shipped in that directory.
+orbital structure), so what is refereed is the attribution machinery as a mathematical
+operation on a density, not a chemical statement; and the positive control on these
+densities - the documented-wrong pairing of section 3.5 - moves the term by 0.0052 kcal/mol,
+comparable to the resolved offsets, so this referee is not a high-resolution instrument, it
+is a resolution-limited one. Extending it to heteronuclear pairs is not a parameter change:
+the reference itself needs no nuclei, but the package side is evaluated on a grid whose
+Becke radii come from atomic numbers, so making the two centres unequal forces a choice of
+radii - the very convention under test - and that has not been done here. It does reproduce:
+two independent executions of the whole pipeline give tables that are byte-identical except
+in the recorded wall-clock fields, and both runs are shipped in that directory.
 
 **How we know the literature search means anything.** The zeros in section 1 are
 only as good as the instrument, so we calibrated it in the same session: a known

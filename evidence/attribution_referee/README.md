@@ -287,6 +287,12 @@ which kernel, which closed form) so a vacuous "0 deviations" cannot hide.
 * Homonuclear, equal-exponent, 4+4 electrons.  `GaussPair` accepts unequal
   `alpha_b`/`n_b` and the decomposition does not assume equality anywhere except
   the symmetry check `I_AB = I_BA`, but the heteronuclear case is unrefereed here.
+  **Why it is not just a parameter change** (checked 2026-10-01): the reference side
+  needs no nuclei at all, but the package side is evaluated on a PySCF grid whose Becke
+  radii come from the atom types in `mk_mol` (two `He` here).  Making the two centres
+  unequal therefore forces a choice of element - i.e. a choice of the very partition
+  convention under test - before any number means anything.  Doing it properly means
+  reporting the offset as a function of that choice, which is a different experiment.
 * The reference is a quadrature, not a closed form.  Its error bar is measured
   (order ladder, truncation scan, 3-D vs 5-D, Monte-Carlo), and any claim about the
   discrepancy smaller than that error bar would be unsupported.
