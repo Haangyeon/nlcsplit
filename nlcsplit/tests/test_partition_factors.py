@@ -89,6 +89,33 @@ def test_soft_attribution_owner_masked_matches_analytic_gaussian():
         assert np.max(np.abs(naive / natm - masked) / np.maximum(np.abs(masked), 1e-12)) > 0.01
 
 
+def test_base_w_on_real_density_is_not_a_measure_at_all():
+    """把上一条的光滑函数换成真实密度 ρ：多算的倍率根本不是一个常数。
+
+    锚同样是外部的：Σ w_pyscf·ρ 必须回到电子数（PySCF 自己的权重做这件事），而
+    Σ base_w·ρ 在水二聚体 level 0/1/2/3 上实测是 100.19 / 690.26 / 279.08 / 94.75
+    个"电子"（ne=20），即隐含倍率 5.01 / 34.5 / 14.0 / 4.74 —— 非单调、也不收敛到
+    natm=6。所以"除以原子数"这类补丁在这里错得更远（6 倍 vs 34.5 倍）。
+    这条测试存在的意义：光滑高斯上的 7% 偏差会让人误以为找到了规律。
+    """
+    pytest.importorskip("pyscf")
+    from pyscf import gto
+    mol = gto.M(atom=geomlib.h2o_dimer(), basis="6-31g*", unit="Angstrom", verbose=0)
+    mf, _, _, _, _ = partition.scf_grid(mol, level=1)
+    coords, base_w, S = partition.partition_factors(mol, level=1, scheme="becke")
+    _, w_ref, owner = partition.atom_partition(mol, level=1, scheme="becke")
+    ao = mf._numint.eval_ao(mol, coords, deriv=1)
+    rho = mf._numint.eval_rho(mol, ao, mf.make_rdm1(), xctype="GGA")[0]
+
+    ne = mol.nelectron
+    assert abs(float((w_ref * rho).sum()) - ne) / ne < 1e-4        # 外部锚：PySCF 权重
+    assert abs(float((base_w * rho).sum()) / ne - mol.natm) > 1.0  # 拼接测度：错一个量级
+    masked = sum(float((base_w[owner == a] * S[owner == a, a] * rho[owner == a]).sum())
+                 for a in range(mol.natm))
+    assert abs(masked - ne) / ne < 1e-4                            # 掩膜写法可锚
+    assert abs(float((base_w * rho).sum()) / masked - mol.natm) > 1.0
+
+
 def test_unknown_scheme_raises():
     with pytest.raises(KeyError):
         partition.partition_matrix(H2O2, np.zeros((1, 3)), scheme="nope")

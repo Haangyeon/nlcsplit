@@ -98,6 +98,33 @@ def main():
         nres = sum(1 for x in d if abs(x) > unc)
         L.append("- resolved (|d_headline| > U): %d of %d configurations"
                  % (nres, len(d)))
+    # A second, independent error bar.  U bounds the *deterministic* reference's own
+    # quadrature error and is dominated by the 3-D vs 5-D disagreement; the Monte-Carlo
+    # route bounds a different estimator's total error (its statistical s.e. plus the
+    # observed MC-vs-5-D gap).  mc_tighten.py writes it to a separate sidecar so the two
+    # archived runs stay byte-identical; if the sidecar is absent this section is simply
+    # omitted rather than guessed at.
+    mc_path = os.path.join(OUT, "mc_tight.json")
+    if os.path.exists(mc_path):
+        with open(mc_path, encoding="utf-8") as fh:
+            mc = json.load(fh)
+        comb = {(x["alpha"], x["sep"]): max(2.0 * x["mc_se_ha"],
+                                            abs(x["cross_check_vs_5d_ha"]))
+                for x in mc["rows"]}
+        have = [r for r in rows if (r["alpha"], r["sep"]) in comb]
+        if have:
+            bars = [comb[(r["alpha"], r["sep"])] for r in have]
+            nmc = sum(1 for r in have if abs(r["d_headline"]) > comb[(r["alpha"], r["sep"])])
+            L.append("- second, independent bar from the Monte-Carlo route"
+                     " (`mc_tighten.py`, %d draws per configuration): per configuration"
+                     " max(2 s.e., |MC - 5-D|); worst %.3e Ha = %.5f kcal/mol, i.e. %.1f x"
+                     " tighter than U"
+                     % (mc["meta"]["m_per_config"], max(bars), max(bars) * KCAL,
+                        unc / max(bars)))
+            L.append("- resolved against the Monte-Carlo bar: %d of %d configurations"
+                     " (against U: %d of %d). The two numbers answer different questions"
+                     " and a configuration is only called resolved against the bar named"
+                     " with it." % (nmc, len(have), nres if unc == unc else -1, len(rows)))
     L.append("- Monte-Carlo z-scores on I_AB across configurations: worst |z| = %.2f"
              % max(abs(r["mc_z"]) for r in rows))
     L.append("- closure |1/2 sum(I_XY) - undecomposed total|: worst %.3e Ha"

@@ -19,25 +19,34 @@ LEVEL = int(os.environ.get("NCLV", "1"))
 BASIS = (os.environ.get("NCSYS") or
          "sto-3g,6-31g*,aug-cc-pvdz,def2-svp,def2-tzvp").split(",")
 SCHEMES = ["becke", "becke-becke-rad", "becke-treutler", "stratmann"]
-FRAGS = geomlib.FRAGS["(H2O)2"]
+# 几何可切换：默认走 geomlib.h2o_dimer()（构造几何，历史归档就是它）；给 NCOFF
+# 指到 S22 官方几何目录，则在官方水二聚体上跑同一条阶梯——这才是 §6 那条
+# "阶梯只在构造几何上"的界唯一能闭合的办法。
+OFFDIR = os.environ.get("NCOFF")
+if OFFDIR:
+    GEOM_ATOMS, GEOM_FRAGS = geomlib.s22_system("水二聚体", OFFDIR)
+    GEOM_LABEL = f"官方 S22 几何 {OFFDIR}/S22_02.xyz"
+else:
+    GEOM_ATOMS, GEOM_FRAGS = geomlib.h2o_dimer(), geomlib.FRAGS["(H2O)2"]
+    GEOM_LABEL = "构造几何 geomlib.h2o_dimer()"
 
 
 def one(basis, scheme):
-    mol = gto.M(atom=geomlib.h2o_dimer(), basis=basis, verbose=0, unit="Angstrom")
+    mol = gto.M(atom=GEOM_ATOMS, basis=basis, verbose=0, unit="Angstrom")
     mf, X0, W0, rho0, sig0 = partition.scf_grid(mol, xc="wb97x_v", level=LEVEL, basis=basis)
     b, C = mf._numint.nlc_coeff("wb97x_v")[0][0]
     X, W, owner = partition.atom_partition(mol, level=LEVEL, scheme=scheme)
     ao = mf._numint.eval_ao(mol, X, deriv=1)
     rho = mf._numint.eval_rho(mol, ao, mf.make_rdm1(), xctype="GGA")
     sig = rho[1] ** 2 + rho[2] ** 2 + rho[3] ** 2
-    res = nlc.fragment_decomposition(X, W, rho[0], sig, FRAGS, b=b, C=C, owner=owner)
+    res = nlc.fragment_decomposition(X, W, rho[0], sig, GEOM_FRAGS, b=b, C=C, owner=owner)
     _, exc_ref, _ = numint.nr_nlc_vxc(mf._numint, mol, mf.grids, "wb97x_v", mf.make_rdm1())
     return dict(N=len(X), E_AB=res["inter"][(0, 1)], bias=res["E_total"] - exc_ref,
                 ne=mol.nelectron)
 
 
 def main():
-    print(f"== 水二聚体 E_AB 基组阶梯（ωB97X-V，网格 level={LEVEL}）==")
+    print(f"== 水二聚体 E_AB 基组阶梯（ωB97X-V，网格 level={LEVEL}，几何：{GEOM_LABEL}）==")
     print(f"{'基组':13s} {'ne':>4s} {'N':>7s} " +
           " ".join(f"{s[:14]:>15s}" for s in SCHEMES) + f" {'方案跨度':>10s} {'bias':>9s}")
     tab = {}

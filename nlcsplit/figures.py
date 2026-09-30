@@ -2,6 +2,9 @@
 
 图 1  吸引/排斥分开：每体系 ΔE_NLC 与 ΔE_xc(其余) 两根柱（色散体系里后者是正的）
 图 2  归属方案不确定度：跨度占 |P_frz| 的百分比，按体系类型排
+图 3  P2 的主图：可证屏蔽的代价。数据源走 load_cited()，即**论文点名的那两个
+      evidence/scaling 工件**，并且两个时间窗一起画 —— 少画一窗等于替正文少报一个
+      对本方不利的数。只有单窗可用时退回单窗并打印警告，不静默。
 """
 import json
 import os
@@ -119,7 +122,10 @@ def fig3(windows):
         for lvl in (0, 1):
             sub = sorted([r for r in good if r["level"] == lvl and r["_win"] == wlabel],
                          key=lambda r: r["runs"]["exact"]["pointpairs_far"])
-            if len(sub) < 2:
+            # 以前这里 `if len(sub) < 2: continue`——单个点的子集不连线，但它也是通过
+            # 争用闸门的样本，跳过就等于图上少一个体系、正文的"11 个全画"变成假话。
+            # 线型对单点无害（画不出线段而已），所以不再跳过。
+            if not sub:
                 continue
             m, c = mark[lvl]
             axA.plot([r["runs"]["exact"]["pointpairs_far"] for r in sub],

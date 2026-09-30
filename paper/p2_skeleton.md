@@ -242,7 +242,7 @@
 | E2 | ε–加速比曲线 + 标度曲线（绝对/相对 τ 各一） | `nlcsplit/step_j_scaling.py`、`evidence/scaling/step_j.json`、`figs/fig3_screening_cost.png` | 逐样本记录外部可运行任务与 OMP 线程；加速比按**点对**计；标度注明 τ 口径 | §5 口径 2、§6、§9 | **做完**：24/24 样本空载可用，数字见 §6 表。**相对 τ 那一臂仍未做**（E4 一并） |
 | E3 | 双实现互验比对 | `evidence/fastpair_ab/`（比对 JSON + 验证 stdout + 对方侧车） | 三条 [freeze] 契约；不读对方源码/正文 | §7 全节 | **做完**：见 §7 结果段（对方核正确、屏蔽惰性） |
 | E4 | 多片段体系（≥3 片或水链）成本 + 界 | 水链已在 E2 里用到 4 个单体；≥3 片**归属**的界退化未测 | 证明/证伪"更大体系上界退化缓解" | §6 诚实边界、§8 第 3 步 | **部分**：E2 给了 1–4 单体的功/时；多片归属未做 |
-| E5 | NLC 屏蔽先例正式检索（WoS/多库，划界 FMM/MAC/ShortRange 类） | `RESEARCH-*.md` 增量 | 主张句里"first/error-certified"类措辞的存废由检索结果定 | §1、§4 划界 | **未做**；现稿一律不写 first |
+| E5 | NLC 屏蔽先例正式检索（WoS/多库，划界 FMM/MAC/ShortRange 类） | `RESEARCH-*.md` 增量 | 主张句里"first/error-certified"类措辞的存废由检索结果定 | §1、§4 划界 | **未做**；现稿一律不写 first ⇒ **已做（2026-09-30 深夜）**：见 `RESEARCH-20260930-p2-novelty.md`，44 条 WoS Core Collection 检索式全部实际执行（`RecordsSearched = 58,669,534`，从站点自己的 searchInfo 读），与 FMM/MAC/ShortRange 逐条划界，p2.md §1 已引它并据其结论**不写 first**。本行此前是 stale（"未做"），下一位别再重跑这轮检索 |
 | E6 | 第三裁判（libxc `xc_nlc_vxc` 直调） | — | 与 ORCA 锚点、原生核三方对账 | §7 锚点 (b)(c) 加固 | **NOT_APPLICABLE**：本机的 libxc 只导出 `xc_nlc_coef`（给系数，不给能量），当不了裁判；同时撤回一条误报的"fchini 核文件路径"。第三裁判仍是 ORCA |
 
 ---

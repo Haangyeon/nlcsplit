@@ -29,6 +29,8 @@ Per configuration.  `d_headline` = package inter[0,1] (PySCF production grid) - 
 - share of the whole VV10 term: min 0.0007%  median -0.1508%  max 1.8435%
 - share of the cross term it is meant to be: min 0.322%  median -4.302%  max 11.790%
 - resolved (|d_headline| > U): 5 of 12 configurations
+- second, independent bar from the Monte-Carlo route (`mc_tighten.py`, 4000000 draws per configuration): per configuration max(2 s.e., |MC - 5-D|); worst 1.819e-06 Ha = 0.00114 kcal/mol, i.e. 5.8 x tighter than U
+- resolved against the Monte-Carlo bar: 12 of 12 configurations (against U: 5 of 12). The two numbers answer different questions and a configuration is only called resolved against the bar named with it.
 - Monte-Carlo z-scores on I_AB across configurations: worst |z| = 2.23
 - closure |1/2 sum(I_XY) - undecomposed total|: worst 7.900e-06 Ha
 - symmetry |I_BB - I_AA| / |I_BA - I_AB|: worst 2.255e-17 / 2.711e-18 Ha

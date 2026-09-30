@@ -2804,3 +2804,79 @@ PASS；`NLCSPLIT_SELFTEST=1` 全绿（毒样本 11 命中、8 条覆盖名全响
 - 导出 exit 0 / 173 文件 / 13 道致命闸门全空。工作树干净。本窗口可交付项到此为空；
   剩下的只有他那一档（private→public、repository-code、两个 ORCID、二作邮箱/通讯、存档 DOI、
   CI 首次真跑）与 P2 选刊。
+
+## 2026-10-01 05:0x（UTC 2026-09-30T21:0x）— 三份修复代理回收 + 证据归档闭合 + 闸门重跑
+
+**先说我自己造成的两处错，都已当场纠正：**
+
+1. **我把一份已经归档的工件又"归档"了一遍，并在抬头里写了句假话。** 内部笔记
+   `paper/notes/gaps_and_figures.md` 说 `-1.341` 的原件不在仓里，我照它把
+   `evidence/l2cp/20260929T051849Z_l2_benzmeth-wsl.out` 当缺失件重造，加了 24 行抬头，
+   其中"until now only the −1.202 side had an artefact"是**错的**——`git status` 显示
+   `M` 而不是 `A`，说明该文件 11 行早就在 HEAD 里（第 6 行就是苯-甲烷），[S8] 也点名了它。
+   已 `git checkout HEAD --` 回退（正文一字节未动），l2cp 清单重算并通过校验。
+   笔记那条也在文件里补了带日期的更正节。**教训：审计笔记自己会过期，它报"缺口"时
+   先 `git ls-files` 复核，别拿它的缺失结论当事实**——我这次差点把一条已关的缺口
+   重新写成新的撤回记录。
+2. **我给新建的两份归档写了不实的运行时刻。** `step_d_floor` 我按"今天跑的"标了
+   `working tree at commit ed0ba86`，实际源日志 mtime 是 2026-09-28 23:02（+08），
+   那个 commit 之前一个都不是。改成：文件名用**运行本身的 UTC**
+   （`20260928T150222Z_`），抬头只说"该时刻之前最后一个 commit 是 45bc3b1，
+   跑的是工作树、可能带未提交改动"，不认领被测 commit。pytest 那份同理，
+   明确写"commit under test 不在 stdout 里，所以本归档不声称是哪一个"。
+
+**回收的三个修复代理（各自只改自己拥有的文件，改完我都对着工件复述过）：**
+
+* README + MAIN-skeleton（8 项）：65=45+20、wheel 45=27+18；rho_floor 跨度改成
+  **1e-10…1e-14 区间、level 1 = 2.1e-11 / level 2 = 4.2e-11**——它两处的单位都写成了
+  kcal/mol，我按 `step_d_floor.out` 判读块改回 **Ha**（同一行括号里才是 Ha，
+  前面的 0.000000 是 kcal/mol），README:57 与 MAIN-skeleton:105 各一处；
+  base_w 机制从"重叠区重复计数"改成"径向网格铺满全分子、倍率非常数 100.19/690.26/
+  279.08/94.75"；`4.4e-16 / 8e-13` 那两个无出处读数删掉，换成断言实际阈值。
+* software.md（8 项）：43/44 两组 wheel 数字逐个钉回它自己的日志；"thirteen gates"
+  与报告键数对上（A B C C2 D E F G R T U V W）；§5 里"没有任何跟踪工件记录过一次全量跑"
+  这句在我把 65 那跑归档后**立刻过期**，已改成引用新日志并写明它测的是工作树不是安装物。
+* p2.md（12 项）：`1.95-10.85×` 带窗口口径、"3 of the 11"、τ=1e-13 那格从"95+% 仍在算"
+  改成**按工件读数 9.811% 可跳 ⇒ ≥89% 照算**，并点名 `evidence/coretail/…coretail_bound.out`；
+  "two cheapest-ratio cases"改成明说 9 原子 level-1 在 **τ=1e-12** 的计数器
+  （391,955 visited / 348,536 of 493,395 leafpairs / 236,127,947 of 297,165,609 点= 79.5%），
+  因为原来那句把 τ=1e-8 的"最便宜比值"和 τ=1e-12 的计数器写在了同一句里；
+  引文里两处指向忽略区的路径改到新归档。
+
+**代理报的缺陷我没照收的一条：** p2 代理说"361 处 bound evaluations 应是 783,946"。
+按 `evidence/scaling/step_j.json` 里 9 原子 level-1 τ=1e-12 那行实测，字段就叫
+`n_visited = 391955`，而 783946 在两份 scaling 侧车里 grep 不到 ⇒ 正文维持 391,955，
+并把口径写明"每访问一个节点 pair 一次界判定"。
+
+**新归档四份（都带来源 sha256、都进清单、都被正文点名）：**
+`evidence/recompute/20260928T150222Z_step_d_floor.out`、
+`evidence/fastpair_ab/20260929T105823Z_pytest_fastpair_L2_L4.out`、
+`evidence/centos/20260928T193520Z_centos-step_h_l1.out`（水 level-1 未校正 −7.816，第 14 行）、
+`evidence/centos/20260928T193520Z_centos-step_h_benz_l0.out`（苯(A) level-0 −4.448/−4.457/−0.009）。
+MAIN-skeleton 里 6 处 `logs/*.out` 引用重指到 evidence/（其中 4 处原件本来就在仓里，
+只是路径写的是忽略区），并把一个 `step_h_*.out` 通配引用换成两份具体文件。
+
+**归属裁判那侧**：`mc_tighten.py` 的点号导入 `from evidence.attribution_referee import
+referee_lib` 让闸门 E 把 `evidence` 当成未声明发行件 ⇒ 改成和 run.py 一样的同级导入。
+改完必须重算 sidecar（17 s），两次连跑逐字段比对：**只有 `meta.runtime_s` 变，
+12 行里没有任何字段变**；worst combined bar 仍是 1.819e-06 Ha、12/12、worst mc_se 9.094e-07，
+`summarize.py` 重跑后 `summary.md` 逐字节相同。这段可复现性说明写进了 README §11。
+
+**65 项全量跑归档**：`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`
+（65 passed、无跳过、710.73 s；抬头带三份 `--collect-only` 计数、python/pyscf/numpy/scipy
+版本与跑时 `git status`）。**wheel 重建成 45 收集**：`--target` 装到仓库外、
+cwd 在解包目录里跑 ⇒ 44 passed, 1 skipped, 322.21 s
+（`20260930T205444Z_wheel_pyargs_45.out`）。43→44→45 的两级各对应一个具名测试，
+我按 `git show HEAD` 的函数清单核过（这轮实际只净增 1 项，不是我先前以为的 2 项）。
+322 s 与 406–656 s **不可并池**：前两份的命令带 `OMP_NUM_THREADS=2`，这份没设、
+机器 20 核 ⇒ BLAS 多线程。这句话在归档抬头和 software.md 里都写了。
+最后再跑一次导出把 wheel 又换成 27aadd3c——我把新旧 wheel 的 31 个打包成员逐个 SHA-256
+比过：**0 mismatch、0 缺失**，所以那条 45 项跑测的内容就是最新构建的字节，容器哈希变了
+只是 mtime。
+
+**闸门状态**：`node tools/md2tex.js main|p2|software` 三份 failed checks 全 0
+（中途它抓出我自己改文件名后没同步的 S7 引用，以及 S22 里两个裸相对路径）；
+三份 PDF 重编译 0 error；`audit_p2.js` PASS 0 findings；`audit_share_rule.js` 硬规则 PASS
+（41 条仅报告、7 条未认体系名那句自认保留）；`make_public_repo.js` **13 条致命闸门全空、
+exit 0、出货**，导出树 186 个文件、44 条 ledger、36 个被抹路径的文件。
+五个 evidence 目录清单全部重算并 `sha256sum -c` 通过。

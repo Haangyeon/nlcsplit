@@ -324,7 +324,25 @@ shift 2.026e-06 Ha, Cartesian-3D vs cylindrical-5D disagreement 7.965e-06 Ha, gi
   reproduces the partition-free reference when handed the exact density factors.**
 * Resolved against U: **5 of 12 configurations** have |d_headline| > U (2x, 3x, 4x, 3x,
   12x).  The other 7 are smaller than the reference's own error bar, so this referee
-  does not say the convention is right there — it says it cannot tell.
+  does not say the convention is right there — it says it cannot tell.  U is bounded by
+  the 3-D Cartesian versus 5-D cylindrical disagreement (7.97e-06 Ha) — two deterministic
+  node sets differing in shape and Jacobian — not by a lack of order in either ladder.
+* **A second, independent and much tighter bar resolves all 12.** `mc_tighten.py` re-runs
+  the Monte-Carlo route at 4,000,000 draws per configuration and writes a separate sidecar
+  (`outputs/mc_tight.json`), so neither archived `results.json` is disturbed by it.  The
+  bar is `max(2 s.e., |MC − 5-D|)`: the estimator's own scatter, plus the observed gap
+  between the Monte-Carlo and the 5-D value, which is where any systematic they share
+  would surface.  Worst over the 12 configurations: 1.819e-06 Ha = 0.00114 kcal/mol,
+  **5.8x tighter than U**, and every offset clears it.  `summarize.py` prints the two
+  counts side by side (12 of 12 against the Monte-Carlo bar, 5 of 12 against U) because
+  they answer different questions; neither is quietly substituted for the other.
+  The sidecar is deterministic apart from one field: two consecutive runs of
+  `mc_tighten.py` differ in `meta.runtime_s` and in no other key of `meta` or of the 12
+  rows, checked field by field. It was regenerated once after the script's sibling import
+  was switched from `evidence.attribution_referee.referee_lib` to the plain
+  `import referee_lib` the other scripts in this directory use (the dotted form made the
+  export gate read `evidence` as an undeclared distribution); that regeneration is why the
+  sidecar's hash moved while 1.819e-06 Ha, 9.09e-07 Ha and 12/12 did not.
 * Relative sizes where resolved: 0.74-1.84% of the whole VV10 term, 2.5-5.2% of the
   cross term; the single largest relative offset, 11.79% of `I_AB`, sits at
   `alpha = 0.5, sep = 10.0` where the absolute difference (3.7e-06 Ha) is below U.

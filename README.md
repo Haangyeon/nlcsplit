@@ -11,9 +11,11 @@ PySCF 原生核的总量对照。纯 Python + NumPy，后端用 PySCF 出密度�
 
 ```bash
 pip install .            # 依赖 numpy 与 pyscf>=2.12
-python -m pytest -q nlcsplit/tests                    # 64 项：44 秒级 + 20 项 slow
-python -m pytest -q -m "not slow" nlcsplit/tests      # 43 项，本机 2.5 s
+python -m pytest -q nlcsplit/tests                    # 65 项：45 秒级 + 20 项 slow
+python -m pytest -q -m "not slow" nlcsplit/tests      # 45 项，本机约数秒
 ```
+
+（上面的计数按 `--collect-only` 实测：源码树收集 **65** = 45（`-m "not slow"`）+ 20（`-m slow`）。发布 wheel 不含 `test_fastpair_ide.py`（其 import 的 `fastpair_ide.py` 是对照件，不随包分发），那 20 项（18 秒级 + 2 slow）在 wheel 里没有，故 wheel 上是 45 = 27 + 18。）
 
 ## 快速上手
 
@@ -51,9 +53,9 @@ E_nl         = -7.8130   E_loc = 60.8303   E_total = 53.0172
 |---|---|
 | 核 | VV10：`w0=√(C·σ²/ρ⁴ + 4πρ/3)`，`κ=b(3π/2)(ρ/9π)^{1/6}`，`Φ=−3/(2gg'(g+g'))` |
 | 配对 | `g = w0(r_i)R² + κ(r_i)`、`g' = w0(r_j)R² + κ(r_j)`（**同中心**配对，与 PySCF 原生核一致；跨程序一致性已在八个体系上用 ORCA 6.0.1 的 `NL Energy, E(C,NL)` 核过，见"它准不准"）。旧的交叉配对 `g=w0(r_j)R²+κ(r_i)` 水偏高 +0.138、Ar +0.42、苯 +0.91 kcal/mol，保留只为做定义敏感性对照 |
-| 半份 | `pair_energy(A,B)` 返回 **半份** 成对项；`fragment_decomposition` 里 `inter[(A,B)] = 2·blk` 是完整一份，故 `E_nl = Σintra + Σinter` 可加性严格成立（实测残差 ≤2e-18 Ha） |
-| 远区 | `rho_floor`（默认 1e-12）以下点不参与双重和；片间项对这一裁剪不敏感（1e-8…1e-16 五档跨度 4e-11 kcal/mol，代价是丢 10–23% 的点） |
-| 测度 | `partition.partition_factors` 返回的 `base_w` **不是**空间测度，别拿它直接做软归属。每个原子的径向网格都铺到整个分子，拼接后 `Σ base_w·h` 把 h 积分约 natm 遍——而且不是恰好 natm：H2O2/6-31g\*（6 原子）上对一个单位高斯（解析值 π^{3/2}）实测 1.0738 / 1.0125 / 0.9969 倍于 `natm·π^{3/2}`（level 1/2/3）。正确写法按 owner 掩膜：`Σ_{i: owner(i)=a} base_w_i·S[i,a]·h`，它对 a 求和复现解析值到 1.5e-5 / 1.8e-6 / 1.0e-7 相对；`base_w/natm` 这种"除以原子数"的补丁按片段仍偏 7–13%，不要用。本包生产路径（`step_h_s22.py`、`step1_validate.py`、`examples/check_soft_partition.py`）走 `atom_partition` 的权重，不受影响；坑与锚都在 `nlcsplit/tests/test_partition_factors.py` |
+| 半份 | `pair_energy(A,B)` 返回 **半份** 成对项；`fragment_decomposition` 里 `inter[(A,B)] = 2·blk` 是完整一份，故 `E_nl = Σintra + Σinter` 可加性严格成立（实测残差 ≤6.94e-18 Ha） |
+| 远区 | `rho_floor`（默认 1e-12）以下点不参与双重和；片间项对这一裁剪不敏感。水二聚体（构造几何, 6-31g\*, becke, `step_d_floor.py`）扫 floor 1e-8…1e-16 五档：验收区间 floor=1e-10…1e-14 三档跨度 **level 1 = 2.1e-11、level 2 = 4.2e-11 Ha**（日志把这两个数打在括号里，单位是 Ha；同一行的 kcal/mol 读数是 0.000000）；含 1e-8、1e-16 端点的全五档跨度按 `P_frz` 最大单点偏移 ~1e-8 kcal/mol、四舍五入到 0.000000、四舍五入到 0.000000 ⇒ floor 在哪档都可当实现细节。代价是丢 10.7%（lvl1,1e-16）–22.6%（lvl2,1e-8）的点 |
+| 测度 | `partition.partition_factors` 返回的 `base_w` **不是**空间测度，别拿它直接做软归属。每个原子的径向网格都铺到整个分子，拼接后 `Σ base_w·h` 把 h 积分约 natm 遍——而且不是恰好 natm：H2O2/6-31g\*（6 原子）上对一个单位高斯（解析值 π^{3/2}）实测 1.0738 / 1.0125 / 0.9969 倍于 `natm·π^{3/2}`（level 1/2/3）。正确写法按 owner 掩膜：`Σ_{i: owner(i)=a} base_w_i·S[i,a]·h`，它对 a 求和复现解析值到 1.5e-5 / 1.8e-7 / 到打印位相同 相对；`base_w/natm` 这种"除以原子数"的补丁按片段仍偏 7–13%，不要用。本包生产路径（`step_h_s22.py`、`step1_validate.py`、`examples/check_soft_partition.py`）走 `atom_partition` 的权重，不受影响；坑与锚都在 `nlcsplit/tests/test_partition_factors.py` |
 
 ## 它准不准
 
@@ -99,8 +101,12 @@ E_nl         = -7.8130   E_loc = 60.8303   E_total = 53.0172
   7.0.0）在十三个非局域入口点里只导出 `xc_nlc_coef`，没有 `xc_nlc_vxc`、没有 `xc_run`
   ——与 libxc 自己的说法一致：这类 vdW 项"不能用交给 Libxc 的局域密度信息求值，
   必须由调用程序处理"。所以它只给 (b, C) 参数，不给积分的独立数值。Psi4 本机取不到。
-* **跨版本/跨机器复现**：PySCF 2.12.1（本机）与 2.14.0（远端）在同一 level 下网格点数差
-  1.6%（19936 vs 20248），但 `step_f` 的每个能量分项**逐位一致** ⇒ 能量对网格已收敛。
+* **跨版本/跨机器复现**：PySCF 2.12.1（本机 WSL）与 2.14.0（远端 CentOS）在同一 level 下
+  网格点数不同：官方水二聚体、level 1、分区网格，复合物 **18336 → 20248（+10.4%）**，
+  而同一份日志里 `E_NLC=+52.9345`、`E_xc(其余)=-11757.5276`、单体 `+26.7636/+26.7644`
+  **逐位一致** ⇒ 能量对网格已收敛，点数差是 PySCF 网格构造本身改了。（曾有两版错配：
+  `18368` 是把 18336 抄错；`19936 vs 20248 = 1.6%` 是拿**构造几何**的点数去比**官方几何**，
+  把几何差混进了版本差。两条都在 `paper/main.md` §2 记了出处。）
 * **网格收敛**：同一基组内 level 0→2 的片间项散布 ≤0.008 kcal/mol。
 * **已知最大不确定项**：人为的归属方案。同一体系同一网格，Becke / Becke 半径修正 /
   Becke–Treutler / Stratmann 四种方案的片间项跨度：水（构造几何, lvl1）
@@ -159,9 +165,11 @@ Apache-2.0，见 `LICENSE`。
 coords, base_w, S = partition.partition_factors(mol, level=1, scheme="becke")
 ```
 
-1. `Σ_a S[i,a] == 1` 逐点成立（实测最大偏差 4.4e-16）；
+1. `Σ_a S[i,a] == 1` 逐点成立——生产代码里的阈是 `assert err < 1e-12`（`partition.py:154`），测试同阈（`test_partition_factors.py:29`）；
 2. `base_w[i] · S[i, owner(i)]` 必须逐点等于 **PySCF 自己**的
-   `gen_grid.get_partition` 权重（实测 8e-13 绝对值，四方案 × level 0/1/2）。
+   `gen_grid.get_partition` 权重——按 `base_w` 归一的相对差 `< 1e-12`、逐点误差按总权累积 `< 1e-13`（`partition.py:163,166`）；测试里 `test_partition_factors.py:33,34` 取绝对差 `< 1e-11`、累积 `< 1e-14`。
+
+> 这两条此前在 README 里写成"实测最大偏差 4.4e-16 / 实测 8e-13 绝对值（四方案 × level 0/1/2）"。全库 grep：`4.4e-16`、`8e-13` 在 `nlcsplit/logs/`、`evidence/`、`PROGRESS-*.md` 里 0 命中，没有任何工件记录这两个实测值——上面给的是断言**实际使用的阈值**，不是读数。快测试覆盖四方案 × level 0，level 1/2 在 `@pytest.mark.slow` 档（`test_partition_factors.py:37-43`）。
 
 第 2 条是**外部锚**：比对对象是 `libdft.VXCgen_grid` 的输出，
 不是本仓库另写的一份公式，所以它不算自证。
@@ -169,8 +177,5 @@ coords, base_w, S = partition.partition_factors(mol, level=1, scheme="becke")
 两条容易踩的口径，这里写死：
 
 * **软归属必须喂分区后的 `weights`（或 `atom_partition` 的 `w`），不要喂 `base_w`。**
-  `base_w` 是各原子子网格的**原始体积元**，其并集在重叠区重复计数——
-  实测拿它配一次因子积分电子数会得到 **94.75 个**（该体系真值 20）。
-* 喂 `w_ref` 之后，"软归属"与"owner 硬归属"对**局域项**的差别只有
-  **≤8.7e-7 个电子**（×β 后 ≤2.6e-6 kcal/mol）——两者数值上是同一件事，
-  不必当成竞争口径。
+  `base_w` 是各原子子网格的**原始体积元**，拼接它**不是**"重叠区把同一点重复计数"——拼接点表里没有重复坐标（`partition_factors` 返回的点表与 `atom_partition` 相同）；真正的机制是每个原子的径向网格都铺到**整个分子**，于是每个子网格都把同一个空间函数积了一遍。而且这个倍率**不是常数**：对水二聚体（构造几何 `geomlib.h2o_dimer()`）的真实密度 ρ，`Σ base_w·ρ` 在 level 0/1/2/3 = **100.19 / 690.26 / 279.08 / 94.75**（ne=20，隐含倍率 5.0 / 34.5 / 14.0 / 4.7，非单调、也不收敛到 natm=6），所以"除以原子数"这类补丁错得更远。钉住它的是 `nlcsplit/tests/test_partition_factors.py` 里两条：`test_soft_attribution_owner_masked_matches_analytic_gaussian`（光滑高斯锚，按 owner 掩膜后复现解析值 ∫h=π^{3/2}，不掩膜连常数倍都不是）与 `test_base_w_on_real_density_is_not_a_measure_at_all`（换成真实密度 ρ，证明倍率根本不是一个常数）。
+* **软归属与 owner 硬归属对局域项的差别只到浮点级，但要标清几何与网格档。** 水二聚体、6-31g\*、ωB97X-V、**level 3**（ne=20）实测四方案里软硬布居最大差：**构造几何 = 8.686e-07 个电子（×β = 2.642e-06 kcal/mol）**、**官方 S22 几何 = 1.527e-06 个电子（×β = 4.644e-06 kcal/mol）**（`evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`、`evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`）。旧稿只写"≤8.7e-7 个电子（2.6e-6 kcal/mol）"——那是**构造几何、level 3** 那一档，官方几何其实到 1.5e-6；两者都远小于方案间跨度（β·ΔN_A ≈ 0.30–0.33 kcal/mol，差好几个量级），所以 `fragment_decomposition(soft=)` 里"Becke 因子乘了两次"数值上无关紧要，不必当成竞争口径。

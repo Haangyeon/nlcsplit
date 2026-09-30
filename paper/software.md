@@ -91,12 +91,18 @@ native PySCF kernel to ~1e-8 Ha [S9].
 hard-coded. Same-centre pairing is the convention that reproduces the native
 kernel; the cross-pairing variant `g = w0(r_j)R² + κ(r_i)` is retained as a
 definition-sensitivity control and raises monomer energies by 0.138 (water), 0.418
-(argon) and 0.914 (benzene) kcal/mol [S5].
+(argon) and 0.914 (benzene) kcal/mol at grid level 1 [S5]. The offset is not a constant and
+it moves with the grid - the level-0 benzene figure is not the level-1 one - so those three
+numbers are one batch at one level and must not be mixed with another batch. What [S5] now
+points at is the script that regenerates the comparison, not an archived record of it: no
+tracked file in this repository holds these three values, so they are re-measurable but not
+checkable against stored stdout.
 
 **Blocks and additivity.** `pair_energy(A, B)` returns the half block
 ½ Σ_{i∈A} Σ_{j∈B}; the inter-fragment term is reported as twice that, so
 `E_nl = Σ_A intra[A] + Σ_{A<B} inter[A,B]` holds as an identity. Measured
-residual: 0.0 to 3.5e-18 Ha [S2].
+residual: 1.73e-18 to 6.94e-18 Ha, over the five partitions and two repeated schemes of the
+archived level-1 water-dimer run [S2].
 
 **Why decomposing only the double sum is exact.** β is a constant and ∫ρ is the
 electron number, so the local term β∫ρ = βN cancels identically from any
@@ -201,9 +207,34 @@ left inside the release directory were never opened at all. Both are now fixed -
 walks the tree and fails by default on path forms, bare cluster addresses and account
 names - and the published copies are scrubbed of those paths while the numbers are left
 untouched, with a byte-level ledger of every replacement kept beside the release and the
-archived stdout in this repository still hashing to what was recorded for it. After the fix
-the word appears in 5 published files, all of them the disclaimer or prose about it, and the
-path forms in 0. Two further defects were found while re-checking this section on
+archived stdout in this repository still hashing to what was recorded for it. After the fix,
+counted where the count belongs - over the exported tree (dist/nlcsplit, which is build
+output and is not itself tracked), text files and exact case - the word appears in 9 files
+and the working-machine path forms in 0. The 9 are the disclaimer itself (the package
+docstring, `README.md`), prose about the disclaimer (`CONTRIBUTING.md`, the published
+docs/tables_and_provenance.md, `.github/workflows/ci.yml`), the two scanners' own detection
+patterns (`tools/audit_no_gamess.js`, `tools/make_public_repo.js`) and two archived scanner
+stdout files under `evidence/release_qa/`. Counting case-insensitively gives 13: the four
+extra are `EXPORT-MANIFEST.txt`, the release-QA README and its own manifest, and the gate
+self-test record, each hit being a file-name reference to the scanner rather than a new
+occurrence of the claim. Compiled residue is outside both counts - a `.pyc` carries the same
+strings in compiled form, the export manifest lists none, and gate R fails a build containing
+any, which is not a hypothetical: a later pytest run has left residue of exactly that kind
+inside the export directory on this machine, and the next rebuild has to clear it. That is a
+count of a tree, and it is not what the shipped scanner does: it refuses to read a tree at all
+(`--no-install` is rejected outright, because a stale copy of the build directory is how an
+earlier version of this check passed), installs into a throwaway target, and walks what lands
+in site-packages, where the occurrences it permits are the exemptions it prints by name. The
+archived run of that scan
+(`evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out`) reports 45 installed
+files, three named exemptions, 0 GAMESS hits outside the exemption ledger and 0
+licence-conflict signals at rc=0. Only two of the three exemptions are the licence disclaimer
+- the docstring and the same sentence as rendered into the wheel's METADATA; the third is
+pip's own `direct_url.json`, discussed below. The remote copy is not counted a third time
+here: it is checked blob against blob by `tools/publish_github.js` in its verify-only mode,
+and the one push on record matched 121 local blobs to 121 remote ones with nothing unmatched
+on either side (`evidence/release_qa/publish_record_20260930.txt`). Two further defects were
+found while re-checking this section on
 2026-09-29, and both were of the kind a source-tree reading cannot see. The first: an
 earlier build was reported fixed and still shipped two script-style `test_*.py` modules at
 package top level; the wheel now has 36 members and none of them is a script-style test - it grew again when
@@ -227,28 +258,46 @@ geometry download, which need an unloaded machine), derives the repository root 
 location instead of a hard-coded working path, and refuses to run the argument-taking ones
 rather than silently running them at their defaults.
 
-The suite collects 64 tests in the working repository - 44 under `-m "not slow"` and 20
-under `-m slow`, a partition of the same collection and not two numbers to be added; the
-whole collection is on record green at 811 s. The
-published wheel ships six test modules plus `__init__.py` and `conftest.py`, which collect
-44, and the 20 that stay behind are exactly `test_fastpair_ide.py`'s - the peer's frozen
-control module, whose `fastpair_ide.py` is deliberately not distributed, since shipping the
-test without the module would be a collection-time ImportError. Two different out-of-tree
-runs must not be quoted as one: `pip install .` from the source directory in a clean
-environment passes 62 with one skipped (the S22 geometry fetch, by design), because that
-install pulls in the whole tree including the control module, whereas `pytest --pyargs
-nlcsplit` against the built wheel, run from a directory that is not the source tree,
-exercises only the published tests. Every archived figure below is quoted at the collection
-size it was taken at, since the 44th published test - a check of the grid measure behind
-`partition.partition_factors`, added 2026-10-01 - postdates all of them: the wheel run is on
-record at 42 passed and one skipped, twice, at 581 s and at 407 s, and its `-m "not slow"`
-subset at 24 passed and one skipped. After the added test the rebuilt wheel was run again,
-twice more, and both new logs name the wheel they tested: 43 passed and one skipped in
-655.52 s, then 43 passed and one skipped in 519.36 s against a 36-member build recorded by
-SHA-256 in its own log. Naming the hash rather than claiming "the current wheel" is the
-point - every export rebuilds the wheel, so its SHA-256 changes even when no packaged byte
-does. All of it, including the shell-quoting bug that left the hash field blank in one of
-the two older logs, is in `evidence/release_qa/` [S19]. Tables map to one
+The suite collects 65 tests in the working repository - 45 under `-m "not slow"` and 20
+under `-m slow`, a partition of the same collection and not two numbers to be added. All 65
+have since been executed: 65 passed with nothing skipped in 710.73 s, and the three
+collection counts together with the run's Python, PySCF, NumPy and SciPy versions are in one
+archived log (`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) [S19].
+That execution is of the working tree under `PYTHONPATH=.`, and the
+log's own header prints `git status`, which listed uncommitted changes - so it establishes
+the floor for the code as it then stood and says nothing about what an install ships. The
+out-of-tree material below belongs to objects smaller
+than the working tree. The published wheel ships six test modules plus `__init__.py` and
+`conftest.py`; those six collect 45 in today's tree, and the 20 that stay behind are exactly
+`test_fastpair_ide.py`'s - the peer's frozen control module, whose `fastpair_ide.py` is
+deliberately not distributed, since shipping the test without the module would be a
+collection-time ImportError. Two different objects must not be quoted as one: `pip install .`
+from the source directory in a clean environment collects 63, because that install pulls in
+the whole tree including the control module, and its archived full run is 62 passed and one
+skipped (the S22 geometry fetch, by design) in 1739.26 s, whose `-m "not slow"` subset is on
+record twice at 42 passed and one skipped and 20 deselected, in 10.78 s and in 11.56 s;
+`pytest --pyargs nlcsplit` against the built wheel, run from a directory that is not the
+source tree, exercises only the published tests. Every figure below is quoted at the
+collection size of the log it is taken from, and none of them is a sum of the others: the
+43-test wheel is on record at 42 passed and one skipped, twice, at 580.82 s and at 406.75 s,
+and its `-m "not slow"` subset at 24 passed and one skipped and 18 deselected in 4.63 s. The
+44th published test - the soft-attribution check against an analytic Gaussian, added in the
+2026-10-01 commit `647a280` - postdates those three logs and predates the two that follow it,
+which are runs of a 44-test wheel and each name the wheel it tested: 43 passed and one
+skipped in 655.52 s against `d175c7b8...`, then 43 passed and one skipped in 519.36 s against
+a 36-member build recorded as `d123d1c8...` in its own log. The 45th, the grid-measure check
+`test_base_w_on_real_density_is_not_a_measure_at_all`, is newer than those logs and has since
+been run: rebuilding the export produced `149e727b...`, whose out-of-tree `--pyargs` run
+collects 45 (27 under `not slow`, 18 under `slow`) and reports 44 passed and one skipped in
+322.21 s. That timing is not comparable with the two above it - both earlier commands are
+recorded with `OMP_NUM_THREADS=2` in their headers, this one left the thread variables unset
+on a 20-core box - which is exactly why the counts are quoted per log and the wall clocks are
+never pooled. Naming the hash rather than
+claiming "the current wheel" is the point - every export rebuilds the wheel, so its SHA-256
+changes even when no packaged byte does, and the two runs recorded nine minutes apart on
+2026-09-30 name two different hashes. All of it, including the
+shell-quoting bug that left the hash field blank in one of the two older logs, is in
+`evidence/release_qa/` [S19]. Tables map to one
 `step_*.py` each;
 the archived stdout a claim cites lives under `evidence/**` with a UTC-stamped filename and
 a hash manifest, while working logs under `nlcsplit/logs/` are gitignored scratch and are
@@ -265,9 +314,9 @@ fires on a fault we put in deliberately to prove it would.
 
 | gate | what it checks | standing |
 |---|---|---|
-| R | walks the **published tree** and fails by default on working-machine paths, bare cluster addresses and account names | real defect: 13 `.pyc` files pytest had left inside the release directory, never opened by the old word-only check |
+| R | walks the **export tree** for build and pytest residue left inside it - `__pycache__` and `.pyc`, `.egg-info`, a stray `setup.cfg` - which is how a compiled docstring carries a repository path out even when every source file is clean | real defect: 13 `.pyc` files pytest had left inside the release directory, never opened by the old check, which iterated the list of copied names instead of walking the tree |
 | A | no GAMESS source artefacts (matched on source patterns, not on the word "gamess", which the disclaimer itself contains) | real defect: a permanent false positive on our own disclaimer, which is why it matches patterns and not the word |
-| B | no credentials or internal network strings | real defect: a scrub that re-injected a proxy address into a comment |
+| B | walks the **published tree** and fails by default on credentials and internal-network strings - private-key blocks, password assignments, `ssh … @` targets, bare-IP users - and, through the ten named rules that stay out of the release, on working-machine paths, bare cluster addresses and account names | real defect: the 13 published files that carried `/root/gamess_work/...` and `/mnt/e/Project/GAMESS/...` while the gate reported every one of its arrays empty, because its patterns covered artefact extensions but not path forms |
 | C | every `evidence/*/MANIFEST.sha256` reproduces byte-for-byte | real defect: a Windows path making `sha256sum` report six mismatches that were not there |
 | C2 | the scrubbing changed no digit in any number, **and** every file in a published evidence directory is registered in that directory's own source manifest | the second half fired on real input the day it was written: a comparison JSON produced by a step script landed in `evidence/agentb_sweep/` with no manifest entry, and the build refused to ship it (`shipped: false`) |
 | D | every path cited by the companion text's provenance appendix is actually shipped | real defect: three citations that resolved to nothing in the published tree |
@@ -338,11 +387,24 @@ configuration. An earlier out-of-tree import by path - weaker, since it read the
 tree rather than an installed distribution - found that `step_i_gridrepr.py` ran a full
 self-consistent-field sweep at import time because it had no `__main__` guard, since fixed.
 
-The continuous-integration workflow is written but has **never executed**, because
-there is no remote repository yet. Reviewers should read it as intent. Writing it down
-did produce one real fix: its PySCF version matrix interpolated as
-`pip install "pyscf==>=2.13"`, which is not a valid requirement, so the second job
-would have died at the install step.
+The continuous-integration workflow is written, and the reason we first gave for its
+silence has gone: as of 2026-09-30 the exported tree does have a remote. It was pushed to
+the private repository Haangyeon/nlcsplit, default branch main, head
+`0b903ab3...`, and the push was checked by comparing 121 blobs of the export with 121 on the
+remote, SHA for SHA, nothing unmatched on either side
+(`evidence/release_qa/publish_record_20260930.txt`). The working repository itself still has
+no remote of its own, and the same record says so. What remains true is the weaker claim,
+and we state only that: **no CI run has ever been observed.** The push is the first event
+that could have triggered one, the Actions page did not render on the machine that pushed,
+and no run record was read - so whether a run exists is unknown rather than negative, and it
+is still an open item. The same record names two more things still open: the repository is
+private, and `CITATION.cff` therefore carries no repository-code - going public and filling
+that field are one step, and it is the author's to take. Reviewers should
+read the workflow as configuration that has never been shown to execute. Writing it down did
+produce one real fix: its PySCF version matrix interpolated as
+`pip install "pyscf==>=2.13"`, which is not a valid requirement, so the second job would have
+died at the install step - the class of defect only an executed run would have caught, which
+is why the unobserved run is still a limitation.
 
 Independent verification of the arithmetic now has a second program behind it. An
 earlier version of this documentation withdrew an ORCA agreement because re-reading
@@ -431,10 +493,10 @@ entries are archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`.
 | Tag | Artefact | What it fixes |
 |---|---|---|
 | S1 | `RESEARCH-20260929-lit.md` §1, §6, §9 | the literature screen behind the statement-of-need comparison, together with that file's own measurement that open-index *subject* search recall is poor — which is why §1 calls the gap a screen and not an enumeration |
-| S2 | `nlcsplit/logs/step_h.json`, `nlcsplit/logs/step_h_l2cp.json`, `MAIN-skeleton.md` Table 2 (uncertainty decomposition), Table 3 (P_frz against the superposition difference) and Table 4b (the S22 subset) | the block-additivity identity and its measured residual (0.0 to 3.5e-18 Ha), and the per-system tables the decomposition claims to reproduce |
+| S2 | `evidence/recompute/20260929T010500Z_step1_geomfix.out`, `evidence/recompute/MANIFEST.sha256`, `nlcsplit/logs/step_h.json`, `nlcsplit/logs/step_h_l2cp.json`, `MAIN-skeleton.md` Table 2 (uncertainty decomposition), Table 3 (P_frz against the superposition difference) and Table 4b (the S22 subset) | the per-scheme block-sum residual - 1.73e-18 to 6.94e-18 Ha, printed for five partitions and two repeated schemes of the level-1 water dimer at lines 6-14 of the first artefact - the only measured additivity residual for a real system in this repository. The partition-free referee reports its own block-additivity residual on a two-Gaussian model density (worst 1.735e-18 Ha, row S21), which is a different object and not interchangeable with this one. Earlier versions of this row cited the two json logs for the residual: they carry the per-system tables and no additivity field at all |
 | S3 | `nlcsplit/step_f_dispersion.py` | that `β∫ρ = βN` cancels identically from a superposition difference, so the inter-fragment term needs no local-density convention — and the denominator rule that refuses to quote a share when the sum cancels |
-| S5 | `nlcsplit/step_e_kernel.py` | the definition-sensitivity control: cross-pairing instead of same-centre pairing raises monomer energies by 0.138 (water), 0.418 (argon) and 0.914 (benzene) kcal/mol |
-| S7 | `nlcsplit/step_d_floor.py` | the `rho_floor = 1e-12` far-field cut, and the reported cost of it (10.7–22.6% of points dropped, carrying ≤ 2.3e-6 electrons) |
+| S5 | `nlcsplit/step_e_kernel.py` | the definition-sensitivity control as a generator rather than as a record: the script that compares same-centre with cross pairing on one grid and one density and prints the per-variant totals. The 0.138 (water), 0.418 (argon) and 0.914 (benzene) kcal/mol of §2 are its level-1 output; the stdout that recorded them lived in nlcsplit/logs, which is gitignored, and was never archived into `evidence/` - so this row points at a re-measurement, not at a stored result, and closing it means a run whose output lands in a manifest-ed evidence directory |
+| S7 | `nlcsplit/step_d_floor.py`, `evidence/recompute/20260928T150222Z_step_d_floor.out` | the `rho_floor = 1e-12` far-field cut, and the reported cost of it (10.7–22.6% of points dropped, carrying ≤ 2.3e-6 electrons) |
 | S9 | `nlcsplit/step_i_gridrepr.py`, `evidence/recompute/20260929T_step_i_gridrepr.out` | agreement of the explicit pair sum with PySCF's native VV10 kernel on a fixed grid, and the grid-representation residual quoted in §1 and §2 |
 | S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out` | the level-2 counterpoise numbers, computed on the cluster and archived with their stdout |
 | S12 | `evidence/recompute/20260929T003144Z_stepg-recompute.out` | the basis-set and grid sensitivity of the attribution, including the ±5% agreement among the four basis sets beyond STO-3G |
