@@ -2,12 +2,12 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 57013 chars, 767 lines
+- source `paper/main.md`: 57578 chars, 775 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - tags cited in the body: 21
 - figures pulled in: 2 -> tracked
-- inline backticked paths in the body text: 9 scanned -> tracked
+- inline backticked paths in the body text: 11 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
 - bib entries cited: 17 of 17

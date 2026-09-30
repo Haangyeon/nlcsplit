@@ -2,6 +2,7 @@
 title: 'nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation energy'
 authors:
   - name: Angran Xia
+    name_localized: 夏盎然   # 中文名记在这里：这份文件不进 md2tex/pdflatex 管线，CJK 不会撞字体
     orcid: TBD  # 需本人提供，禁止代填
     affiliation: 1
     corresponding: true  # 待本人确认
@@ -9,7 +10,11 @@ authors:
     orcid:
     affiliation: 1
 affiliations:
-  - name: 'Shaanxi Normal University, Xi'an, China  # 院系与官方英文全称由本人补，此处刻意不猜'
+  # 院系英文全称取该学院自己的英文站措辞（chem.snnu.edu.cn/english/，2026-09-30 抓取核对：
+  # "School of Chemistry & Chemical Engineering" + "Shaanxi Normal University"）。
+  # 没有另造"College of Chemistry and Materials Science"那种在官网上查不到的写法。
+  # 门牌地址与邮编刻意不写：未从一手来源核实，投稿时由本人补。
+  - name: 'School of Chemistry & Chemical Engineering, Shaanxi Normal University, Xi''an, China'
     index: 1
 date: 29 September 2026
 bibliography: references.bib  # 尚未生成；DOI 已在 §Sources 逐条回查

@@ -74,7 +74,14 @@ const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py
   // 发出去就是一道收集期 ImportError。
   'test_fastpair.py', 'test_tolerance_probe.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
-const ROOT = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'pyproject.toml', 'conftest.py'];
+// CITATION.cff 也在根清单里：JOSS/SoftwareX 的审稿人按这份文件核署名与授权，
+// 它不在包里就等于让读者去 git clone 才能拿到引用信息。
+const ROOT = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'pyproject.toml', 'conftest.py', 'CITATION.cff'];
+// 署名类文件**不参与脱敏**（逐字节写出）。脱敏表的目的是把机构标识从证据日志里抹掉，
+// 但同一条规则扫到署名、单位或版权行上，改的就是作者身份：2026-09-30 实测到
+// CITATION.cff 的一行注释里的机构主机名被换成 chem.<CLUSTER>.edu.cn —— 一份没人能访问的串。
+// 这些文件里若真出现了该抹的东西，正确反应是**不出货、由人决定**，不是静默改写。
+const NO_SCRUB = ['CITATION.cff', 'LICENSE', 'pyproject.toml'];
 // CI 配置也属于"发布物"：只在工作区里有、公开仓里没有，等于闸门 E 之外的那道门禁
 // 对读者不存在。
 const WORKFLOW = { '.github/workflows/ci.yml': '.github/workflows/ci.yml' };
@@ -234,6 +241,7 @@ function put(rel, raw) {              // 走脱敏的写盘
 for (const f of ROOT) {
   const p = path.join(SRC, f);
   if (!fs.existsSync(p)) { console.error('MISSING root file: ' + f); process.exit(2); }
+  if (NO_SCRUB.includes(f)) { copied.push(write(f, read(p))); continue; }
   put(f, read(p));
 }
 function read(p) { return fs.readFileSync(p, 'utf8'); }
@@ -467,6 +475,12 @@ function checkResidue(treeList) {
 }
 const gr = checkResidue(tree);
 
+// 哪些文件闸门**该打开**。这里原来是两份扩展名白名单（A 与 B 还不一致，B 多了 cfg|ini），
+// 白名单的意思是"新文件格式默认不看"——2026-09-30 加 CITATION.cff 时正好撞上：
+// 往里种了一条机构标识串，两条闸门都静悄悄过去了。改成默认全开、只排除已知二进制，
+// 于是"没被检查"这件事必须靠显式声明才会发生。
+const BINARY_EXT = /\.(pyc|pyo|whl|tar|gz|tgz|zip|bz2|xz|png|jpg|jpeg|gif|pdf|woff2?|ttf|eot|ico|so|dll|dylib|npy|npz|h5|onnx)$/i;
+const isText = rel => !BINARY_EXT.test(rel);
 // ---------------------------------------------------------------- 闸门 A：无 GAMESS **源码**
 // 注意：/gamess/i 一律命中是**误报**——README/CONTRIBUTING/__init__ 里出现这个词，
 // 正是因为我们在声明"本包不含 GAMESS 代码"。一个永远失败的门禁和一个不会失败的门禁一样没用。
@@ -486,7 +500,7 @@ function classifyGamess(rel, line) {
 function checkGamessSource(root, treeList) {
   const hits = [], words = [], exempt = [];
   for (const rel of treeList) {
-    if (!/\.(py|sh|json|md|toml|txt|out|c|f|f90|js|yml|yaml)$/.test(rel)) continue;
+    if (!isText(rel)) continue;
     let t; try { t = read(path.join(root, rel)); } catch (e) { continue; }
     // 逐行而非整文件：闸门 B 的教训——只报"这个文件命中过"就没法做具名豁免，
     // 因为豁免必须落在**具体那一行**上。
@@ -525,7 +539,7 @@ function scanIntranet(root, treeList) {
   // 这不是泄漏，但**必须记账并打印**——一个把豁免藏起来的扫描器和没有扫描器等价。
   hits.exempt = [];
   for (const rel of treeList) {
-    if (!/\.(py|sh|json|md|toml|txt|out|c|f|f90|js|yml|yaml|cfg|ini)$/.test(rel)) continue;
+    if (!isText(rel)) continue;
     let t; try { t = read(path.join(root, rel)); } catch (e) { continue; }
     t.split(/\r?\n/).forEach((line, i) => {
       for (const [name, re] of secretPats) {

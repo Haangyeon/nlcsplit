@@ -1,6 +1,14 @@
 # Fragment-Resolved Nonlocal Correlation: Pair Attribution of the VV10 Term
 ## Draft — §1–§5 prose (written 2026-09-29)
 
+**Author.** The affiliation above was supplied by the author on 2026-09-30; its English
+wording is taken from the college's own English site rather than translated by us. The
+author's Chinese name and the college's Chinese name are recorded in
+`paper/software.md`'s front matter and deliberately not typeset here, because this file goes
+through pdflatex, which has no CJK font — `tools/md2tex.js` refuses characters it cannot map
+rather than dropping them silently. ORCID, e-mail and the corresponding-author designation are
+PENDING: author-supplied, not guessed.
+
 Number provenance is tagged `[S#]`; the tag-to-artefact table is the appendix at the end of
 this file, mirrored in `paper/tex_audit.md`. The formal Web of Science search was run twice
 on 2026-09-29 through the institutional login. The second round used WoS's own record

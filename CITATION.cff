@@ -1,0 +1,30 @@
+# CFF 1.2.0。字段只写**已核实**的内容：
+#   · 署名与单位由本人 2026-09-30 提供；院系英文措辞取自该学院自己的英文站
+#     （站名与本行的原始出处记在 PROGRESS-nlcsplit.md，那份文件按设计不随包发布——
+#     把主机名写在这里会被导出脱敏改成 chem.<CLUSTER>.edu.cn 这种没人能访问的串，
+#     2026-09-30 实测到过一次，所以这里只留描述不留 URL）。
+#   · orcid / email 一律不填：这两个字段只能由本人给，代填就是伪造身份。
+#     缺字段在 CFF 里是合法的（orcid 与 email 都是可选），所以这里宁缺不造。
+#   · repository-code 没有 remote 之前留空，推送时一并补。
+cff-version: 1.2.0
+message: "If you use nlcsplit, please cite the software record and the method paper."
+title: "nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation energy"
+authors:
+  - family-names: Xia
+    given-names: Angran
+    # 中文名走 CFF 的 name-variant（这是它为该字段准备的合法形态），不自造 key：
+    # 校验器不认 name-pinyin，多写一个不认识的字段等于交一份验证不过的元数据。
+    name-variant:
+      - family-names: 夏
+        given-names: 盎然
+    affiliation: School of Chemistry & Chemical Engineering, Shaanxi Normal University
+    affiliation-place: Xi'an, Shaanxi, China
+version: 0.1.0
+date-released: 2026-09-30
+license: Apache-2.0
+repository-type: code
+keywords:
+  - nonlocal correlation
+  - VV10
+  - energy decomposition
+  - PySCF

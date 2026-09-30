@@ -2672,3 +2672,44 @@ MANIFEST 重算并 `sha256sum -c` 全 OK）。文件名标 `levels0-8`，但**�
 同时在 ci.yml 里写明**这个 job 跑的是发布副本**：private 判据不在里面，
 闸门 B 只剩形状类、闸门 D 没有正文可扫，完整十二条由母仓那次运行负责。
 让 CI 的绿灯说它没说的话，和闸门恒真是同一个病。
+
+---
+
+## 2026-09-30：署名进来之后，闸门先抓了我自己两次
+
+本人给了署名：**陕西师范大学化学化工学院 夏盎然**（英文按他 LICENSE/pyproject 里已有的
+"Angran Xia"）。院系英文措辞**不翻译**，取该学院自己的英文站 `chem.snnu.edu.cn/english/`
+上的写法："School of Chemistry & Chemical Engineering"。另一份常见译法
+"College of Chemistry and Materials Science" 在学院官网上查不到，所以没用它。
+ORCID、邮箱、是否通讯作者、有没有第二作者仍然缺——缺的一律留 `PENDING`，不代填。
+
+落到文稿上：`paper/main.md` / `paper/p2.md` 各加一段署名与来源说明；`tools/md2tex.js` 的
+`\author` 从"只有名字 + thanks"改成名字 + 单位 + 缺项声明；`paper/software.md` 的 YAML
+front matter 填了单位，中文名记在 `name-variant`（我一开始写的 `name-pinyin` 不是 CFF 字段，
+校验器不认）；新增 `CITATION.cff` 并放进导出根清单——JOSS 审稿人按它核署名与授权。
+
+**抓到我自己的第一处**：main.md 里直接放汉字 → `md2tex` 拒绝输出未知字符（这正是它该有的
+行为），但 `main.tex` 是上一轮的旧文件，pdflatex 照样吐出 20 页 PDF，`main.log` 里 30 条错误、
+正文全被推进前言。"生成了 PDF"不等于稿子没坏。于是给 md2tex 加了前言花括号配平检查，
+并在它自己的自测里翻车一次：我种的"少一个闭括号"样例写成 `'\author{Angran Xia}'`，
+那串其实是**配平的**，于是自测把一次干净构建拦死了。改成 `'\author{X'` 之后：
+干净构建过、真把闭括号拿掉就 FATAL 且不写文件。
+
+**抓到我自己的第二处（更要紧）**：把 `CITATION.cff` 设成"逐字节写出、不参与脱敏"之后，
+我种一条 `affiliation: ... SNNU` 想验证它会拦住——**rc=0，两条闸门都没响**。
+原因是 scanIntranet 和 checkGamessSource 各自维护一份"该打开哪些扩展名"的**白名单**
+（而且两份还不一致，B 多了 `cfg|ini`），`.cff` 不在里面，文件根本没被打开过。
+这就是这个仓库反复犯的那类错：判据说"默认失败"，遍历范围却是"默认不看"。
+改成 `isText()`——默认全开、只排除已知二进制扩展名，"没被检查"必须显式声明才会发生。
+重跑：种的那条现在报 `CITATION.cff:20 <- 校内标识串`，exit 1，不出货；干净状态 119 文件、
+12 条闸门全 0 命中。
+
+顺带一个真实取舍：`CITATION.cff` 注释里原本写了出处主机名 `chem.snnu.edu.cn`，
+被 IDENT 规则改成 `chem.<CLUSTER>.edu.cn`——一份没人能访问的串。署名类文件既然不参与脱敏，
+出处 URL 就从随包文件里挪走，只在下面这条记录里留着：**英文措辞核实于
+`chem.snnu.edu.cn/english/`（2026-09-30 抓取）**。
+
+复核：`md2tex` 21 标签 0 失败、`main.pdf` 17 页 0 错误；`audit_p2` 对 p2.md 与 software.md 均
+PASS；`NLCSPLIT_SELFTEST=1` 全绿（毒样本 11 命中、8 条覆盖名全响、豁免通道 ok、脱敏不动点）；
+读者副本连跑两次 rc=0 且到不动点，`CITATION.cff` 在发布树里与源件逐字节相同、署名行未被改写；
+`pytest -m "not slow"` 43 passed。无 remote、未推送。
