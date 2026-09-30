@@ -238,15 +238,17 @@ runs must not be quoted as one: `pip install .` from the source directory in a c
 environment passes 62 with one skipped (the S22 geometry fetch, by design), because that
 install pulls in the whole tree including the control module, whereas `pytest --pyargs
 nlcsplit` against the built wheel, run from a directory that is not the source tree,
-exercises only the published tests - 42 passed and one skipped, or 24 passed and
-one skipped under `-m "not slow"`. Those two archived figures are quoted at the collection
-size they were taken at (43 published tests), because the 44th - a test of the grid measure
-behind `partition.partition_factors`, added 2026-10-01 - postdates both logs; the run
-against the wheel rebuilt by that same export is archived beside them with its own exit
-codes rather than folded into the older sentence. The full out-of-tree run is on record twice, at 581 s and
-at 407 s, because the wheel is rebuilt by every export and its SHA-256 therefore changes even
-when no packaged byte does; both logs, both hashes and the shell-quoting bug that left the
-hash field blank in one of the two are in `evidence/release_qa/` [S19]. Tables map to one
+exercises only the published tests. Every archived figure below is quoted at the collection
+size it was taken at, since the 44th published test - a check of the grid measure behind
+`partition.partition_factors`, added 2026-10-01 - postdates all of them: the wheel run is on
+record at 42 passed and one skipped, twice, at 581 s and at 407 s, and its `-m "not slow"`
+subset at 24 passed and one skipped. After the added test the rebuilt wheel was run again,
+twice more, and both new logs name the wheel they tested: 43 passed and one skipped in
+655.52 s, then 43 passed and one skipped in 519.36 s against a 36-member build recorded by
+SHA-256 in its own log. Naming the hash rather than claiming "the current wheel" is the
+point - every export rebuilds the wheel, so its SHA-256 changes even when no packaged byte
+does. All of it, including the shell-quoting bug that left the hash field blank in one of
+the two older logs, is in `evidence/release_qa/` [S19]. Tables map to one
 `step_*.py` each;
 the archived stdout a claim cites lives under `evidence/**` with a UTC-stamped filename and
 a hash manifest, while working logs under `nlcsplit/logs/` are gitignored scratch and are
