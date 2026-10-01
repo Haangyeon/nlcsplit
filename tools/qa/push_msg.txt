@@ -1,0 +1,23 @@
+evidence(ci): archive the first executed Actions runs, failures included
+
+Adds evidence/release_qa/20261001T150706Z_github_actions_first_runs.out: the run, job and step
+fields for all five runs on main as the API returns them, then the pytest summary lines taken
+verbatim from the two green arms of run #5. The manuscript had reported "no CI run has ever
+been observed"; that is corrected in paper/software.md, together with how the check produced
+silence instead of an answer - an unauthenticated request against a then-private repository.
+
+The step counts are in the file because a step reported success without a denominator is the
+same void as the 404 read as absence: both arms show 30 passed / 1 skipped / 18 deselected on
+the fast lane and 48 passed / 1 skipped on the full and out-of-tree runs, i.e. the published
+tree collects 49 items, not the 69 the working repository does, since test_fastpair_ide.py is
+not distributed with the control module it imports.
+
+MANIFEST.sha256 regenerated for the directory (25 entries, sha256sum -c --strict clean).
+
+Two notes on getting this file onto disk, both kept because they are the interesting part:
+the counts section was first written empty - the log lines carry a GitHub timestamp prefix and
+the filter meant to drop noise was `grep -vE "^20.."`, which deleted exactly the three lines
+wanted while the section header survived and the script exited 0; and the truncation that was
+supposed to replace that empty section did not run, because `grep -n -F "--- 追加："` let the
+leading dashes be parsed as options. The duplicate block was then removed by line range and
+re-verified, rather than by regenerating the whole archive over an unconfirmed state.
