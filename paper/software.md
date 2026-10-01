@@ -454,24 +454,41 @@ configuration. An earlier out-of-tree import by path - weaker, since it read the
 tree rather than an installed distribution - found that `step_i_gridrepr.py` ran a full
 self-consistent-field sweep at import time because it had no `__main__` guard, since fixed.
 
-The continuous-integration workflow is written, and the reason we first gave for its
-silence has gone: as of 2026-09-30 the exported tree does have a remote. It was pushed to
-the private repository Haangyeon/nlcsplit, default branch main, head
-`0b903ab3...`, and the push was checked by comparing 121 blobs of the export with 121 on the
-remote, SHA for SHA, nothing unmatched on either side
-(`evidence/release_qa/publish_record_20260930.txt`). The working repository itself still has
-no remote of its own, and the same record says so. What remains true is the weaker claim,
-and we state only that: **no CI run has ever been observed.** The push is the first event
-that could have triggered one, the Actions page did not render on the machine that pushed,
-and no run record was read - so whether a run exists is unknown rather than negative, and it
-is still an open item. The same record names two more things still open: the repository is
-private, and `CITATION.cff` therefore carries no repository-code - going public and filling
-that field are one step, and it is the author's to take. Reviewers should
-read the workflow as configuration that has never been shown to execute. Writing it down did
-produce one real fix: its PySCF version matrix interpolated as
-`pip install "pyscf==>=2.13"`, which is not a valid requirement, so the second job would have
-died at the install step - the class of defect only an executed run would have caught, which
-is why the unobserved run is still a limitation.
+The continuous-integration workflow has now been observed executing, and what it showed was
+not the thing we had written down. Recording the workflow had already produced one real fix:
+its PySCF version matrix interpolated as `pip install "pyscf==>=2.13"`, which is not a valid
+requirement, and that class of defect only an executed run catches. What we had reported in
+place of an execution was the weaker claim **no CI run has ever been observed**, and it was
+wrong. Asking the API with credentials returned five runs on `main`: #1 (`0b903ab`) and #2
+(`99584d4`) completed `failure` in both matrix arms, #3-#5 completed `success`, #5 being the
+current head. The earlier look was made without credentials at a repository that was then
+private, and that request cannot return a run list at all - it is a method that produces
+silence, which we had read as absence. It is the same failure shape as the withdrawn ORCA
+agreement recorded later in this section: the label we searched for was not the label that
+exists.
+
+Both failures sat in one step, `Run node tools/make_public_repo.js`, and had one cause. That
+step is a shipping decision rather than a check on already-shipped content, and its
+share-rule gate spawns `tools/audit_share_rule.js`, which the release list did not carry.
+Absent that file, the gate's bidirectional self-test returns non-zero for the deliberately
+wrong sample *and* for the correct one, so the gate does the right thing - refuse to ship on a
+self-test it cannot trust - and reddens every push while nothing in the chemistry is wrong.
+Two changes follow, both in the shipped tree. The scanner ships now, and its default document
+list falls back to the material a published copy actually contains, printing that it fell
+back; falling back does not relax the rule, because an unreadable file still fails and a
+denominator of zero also fails. And the workflow no longer runs the exporter, keeping the two
+steps that can hold on a published tree. The archived observation is
+`evidence/release_qa/20261001T150706Z_github_actions_first_runs.out`: run, job and step fields
+as the API returns them, plus the pytest summary lines verbatim, because a step reported
+`success` with no count is the same void as the 404 we had mistaken for one. On both arms the
+fast lane reads 30 passed, 1 skipped, 18 deselected, and the full and out-of-tree runs each
+read 48 passed, 1 skipped. That is 49 items, not the 69 the working repository collects:
+`test_fastpair_ide.py` is not distributed, because the control module it imports is not
+distributed either.
+
+The fifteen shipping gates still run in the working repository before a release, with their
+private rules module and their manuscripts present, and CI does not vouch for them - it cannot,
+since four of the fifteen read material that is deliberately not published.
 
 Independent verification of the arithmetic now has a second program behind it. An
 earlier version of this documentation withdrew an ORCA agreement because re-reading
