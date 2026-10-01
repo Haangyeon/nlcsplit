@@ -371,7 +371,7 @@ not cited as evidence. Including a naive triple-loop versus BLAS
 comparison of the kernel, per-scheme additivity checks, and geometry guards that
 assert bond lengths and angles at construction time.
 
-Fourteen export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
+Fifteen export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
 ships in the published tree). They are
 not all of equal standing, and the difference matters: some exist because they caught a real
 defect, others only because we could not otherwise show the earlier ones were not vacuous.
@@ -417,7 +417,7 @@ together with the fault fixtures that exercise them, now live in
 report. The published copy keeps the shape-based rules (credential assignment, private-key
 block, `ssh … @`, bare-IP user), loads the named rules when they are present, and prints
 `note_private_rules_loaded`; a run that cannot load them is not reported as clean - it says
-so, and gate B is then checking four rules rather than fourteen. Running the published copy
+so, and gate B is then checking four rules rather than fifteen. Running the published copy
 against a copy of the published tree turned up two more holes of the same kind: rebuilding
 crashed on the two appendix sources that are renamed on the way out, and the proxy scrub was
 not idempotent, stacking its own replacement comment a second time. Both are fixed, and a

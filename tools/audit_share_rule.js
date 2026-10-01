@@ -29,7 +29,7 @@ const filesFlag = (argv.find(a => a.startsWith('--files=')) || '').slice(8);
 // 下面 skippedFiles 那条 FAIL(0) 照旧触发；一份都不在 ⇒ 分母为 0，同样算失败。
 const SRC_LIST = ['paper/main.md', 'paper/p2.md', 'paper/software.md', 'paper/joss/paper.md',
   'README.md', 'MAIN-skeleton.md'];
-const SHIPPED_LIST = ['README.md', 'docs/tables_and_provenance.md'];
+const SHIPPED_LIST = ['README.md', 'docs/tables_and_provenance.md', 'paper/joss/paper.md'];
 const here = (r) => fs.existsSync(path.isAbsolute(r) ? r : path.join(ROOT, r));
 const DEFAULT_LIST = SRC_LIST.every(here) ? SRC_LIST : SHIPPED_LIST;
 if (!SRC_LIST.every(here)) console.error(`默认名单退化：用发布形态的 ${DEFAULT_LIST.length} 份材料`);
