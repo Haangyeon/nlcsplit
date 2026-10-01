@@ -3325,3 +3325,37 @@ D 看不见这类——它读的是主篇附录表里反引号路径，而这里
   `bhosts chinahpc` = MAX 36 / RUN 36 / closed ⇒ 整机满，不是我的请求超了。没动 93284。
 - 一次性 classic PAT（scopes `repo, workflow`，到期 2026-10-02）还没撤销；本地文件
   `E:\tmp\nlcsplit_pat.tmp` 也还在。CI 结论拿到就删。
+
+## 2026-10-01 23:0x — Actions 跑绿、原始观测归档、一次性 token 已删
+
+### 观测结果（不是"应该绿"，是读到的）
+`main` 上六个 run：#1 `0b903ab` 与 #2 `99584d4` 双臂 **failure**；#3 `8c291ac`、#4 `2432ed4`、
+#5 `0a05675` 双臂 **success**（墙钟 23m48s / 27m44s / 23m38s）。#6 `ebaa0f9`（只加证据文件）在跑。
+run #5 三档 pytest 的逐字汇总行也取回来了，两臂一致：快车道 `30 passed, 1 skipped, 18 deselected`，
+全量与树外各 `48 passed, 1 skipped` ⇒ 发布树收 **49** 项，母仓收 **69** 项，
+差的就是故意不发的 `test_fastpair_ide.py`。这与 README 里那两个数是同一套，现在是独立第二次记录。
+归档件：`evidence/release_qa/20261001T150706Z_github_actions_first_runs.out`，
+该目录 MANIFEST 重算 25 条、`sha256sum -c --strict` 干净。
+
+### 这一段里我又造了两次空转，都写下来
+- 归档尾部的 pytest 汇总**第一版是空的**：GitHub 的 job 日志每行带 `…Z` 时间戳前缀，
+  而我为了去噪写的 `grep -vE "^20[0-9]{2}-"` 正好把要的那三行全杀了——段落标题在、内容零行、
+  脚本 exit 0。和"0 违规"与"0 条被解析"打印长得一样是同一件事。
+- 准备修这段时，用来"截掉旧段"的 `grep -n -m1 -F "--- 追加："` 把以 `-` 开头的模式当选项解析并报错，
+  于是截断没执行、文件里留下**两个**追加段。按行号删掉空的那段后重新校验 marker 数 = 1。
+
+### 凭据收尾
+`nlcsplit publish once`（classic，`repo`+`workflow`）已从账号删除。走的是那张 token 自己的详情页
+`/settings/tokens/5646135316`，不是列表页的行内 Delete —— 列表里四行同名按钮，旁边就是他长期存在的
+`mace_tf`，那一下删错不可逆。删后用旧 token 请求 `/repos` 得 **401** 作证。
+本地 `E:\tmp\nlcsplit_pat.tmp` 与 `/e/tmp/pubwork` 都清掉了；后者的 `.git/config` 里烙着
+`https://x-access-token:ghp_…@github.com/...`——`git clone` 带凭据的 URL 会写进配置文件，
+"输出统一 redact"管不到这一处。删之前确认过那棵树没有未推送提交（`origin/main..HEAD` 为空）。
+一件必须说的事实：中途读取 settings 页面时，一张陈旧的创建成功页把 token 明文吐进了会话记录。
+它现在死了（401 已证），但这不是可以靠"用完即删"预防的形态——下次应当**先删掉再读任何页面**。
+
+### 文稿与产物
+`paper/software.md` 里那句 **no CI run has ever been observed** 已经改掉，写成查对之后看到的
+东西，并把"这个方法只会产生沉默"讲清楚（未认证打 private 仓，本来就拿不到 run 列表）。
+三份稿重编译：main 24 页 / p2 11 页 / software 13 页，全部 0 LaTeX error、0 判据失败。
+远端 `main = ebaa0f9`，**214 个 blob 与本地导出树逐字节相同**（`--no-filters`）。
