@@ -1,0 +1,138 @@
+% 由 scratch/make_joss_bib.js 从 paper/references.bib 原样抽取，勿手改。
+% 每条在母表里已经 Crossref DOI 精确回查（年/卷/页/题名/作者数一致）。
+% 刊名一律全称：JOSS 明令禁止小众缩写。
+
+@article{vydrov2009vv10,
+  author  = {Oleg A. Vydrov and Troy Van Voorhis},
+  title   = {Nonlocal van der Waals Density Functional Made Simple},
+  journal = {Physical Review Letters},
+  volume  = {103},
+  pages   = {063004},
+  year    = {2009},
+  doi     = {10.1103/PhysRevLett.103.063004},
+}
+
+@article{mardirossian2014wb97xv,
+  author  = {Narbe Mardirossian and Martin Head-Gordon},
+  title   = {{$\omega$}B97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {16},
+  pages   = {9904},
+  year    = {2014},
+  doi     = {10.1039/c3cp54374a},
+}
+
+@article{mardirossian2016wb97mv,
+  author  = {Narbe Mardirossian and Martin Head-Gordon},
+  title   = {{$\omega$} B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation},
+  journal = {The Journal of Chemical Physics},
+  volume  = {144},
+  pages   = {214110},
+  year    = {2016},
+  doi     = {10.1063/1.4952647},
+}
+
+@article{lazic2010junolo,
+  author  = {Predrag Lazić and Nicolae Atodiresei and Mojtaba Alaei and Vasile Caciuc and Stefan Blügel and Radovan Brako},
+  title   = {JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy},
+  journal = {Computer Physics Communications},
+  volume  = {181},
+  pages   = {371-379},
+  year    = {2010},
+  doi     = {10.1016/j.cpc.2009.09.016},
+}
+
+@article{dasgupta2023,
+  author  = {Saswata Dasgupta and Etienne Palos and Yuanhui Pan and Francesco Paesani},
+  title   = {Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals},
+  journal = {Journal of Chemical Theory and Computation},
+  volume  = {20},
+  pages   = {49-67},
+  year    = {2023},
+  doi     = {10.1021/acs.jctc.3c00903},
+}
+
+@article{hyldgaard2014interp,
+  author  = {Per Hyldgaard and Kristian Berland and Elsebeth Schr{\"o}der},
+  title   = {Interpretation of van der Waals density functionals},
+  journal = {Physical Review B},
+  volume  = {90},
+  pages   = {075148},
+  year    = {2014},
+  doi     = {10.1103/PhysRevB.90.075148},
+}
+
+@article{becke1988,
+  author  = {A. D. Becke},
+  title   = {A multicenter numerical integration scheme for polyatomic molecules},
+  journal = {The Journal of Chemical Physics},
+  volume  = {88},
+  pages   = {2547-2553},
+  year    = {1988},
+  doi     = {10.1063/1.454033},
+}
+
+@article{stratmann1996,
+  author  = {R.Eric Stratmann and Gustavo E. Scuseria and Michael J. Frisch},
+  title   = {Achieving linear scaling in exchange-correlation density functional quadratures},
+  journal = {Chemical Physics Letters},
+  volume  = {257},
+  pages   = {213-223},
+  year    = {1996},
+  doi     = {10.1016/0009-2614(96)00600-8},
+}
+
+@article{harris2020numpy,
+  author  = {Charles R. Harris and K. Jarrod Millman and St{\'e}fan J. van der Walt and Ralf Gommers and Pauli Virtanen and David Cournapeau and Eric Wieser and Julian Taylor and Sebastian Berg and Nathaniel J. Smith and Robert Kern and Matti Picus and Stephan Hoyer and Marten H. van Kerkwijk and Matthew Brett and Allan Haldane and Jaime Fern{\'a}ndez del R{\'i}o and Mark Wiebe and Pearu Peterson and Pierre G{\'e}rard-Marchant and Kevin Sheppard and Tyler Reddy and Warren Weckesser and Hameer Abbasi and Christoph Gohlke and Travis E. Oliphant},
+  title   = {Array programming with {NumPy}},
+  journal = {Nature},
+  volume  = {585},
+  pages   = {357-362},
+  year    = {2020},
+  doi     = {10.1038/s41586-020-2649-2},
+}
+
+% 宿主程序：PySCF（主篇一切网格/密度/能量与两版本对照 2.12.1 vs 2.14.0 的出处）
+% NOTE：Crossref 里**没有**专属某个版本的论文，版本号只能由正文承载，bib 不编 DOI。
+
+@article{sun2018pyscf,
+  author  = {Qiming Sun and Timothy C. Berkelbach and Nick S. Blunt and George H. Booth and Sheng Guo and Zhendong Li and Junzi Liu and James D. McClain and Elvira R. Sayfutyarova and Sandeep Sharma and Sebastian Wouters and Garnet Kin-Lic Chan},
+  title   = {{PySCF}: the {Python}-based simulations of chemistry framework},
+  journal = {WIREs Computational Molecular Science},
+  volume  = {8},
+  pages   = {e1340},
+  year    = {2018},
+  doi     = {10.1002/wcms.1340},
+}
+
+@article{sun2020pyscf,
+  author  = {Qiming Sun and Xing Zhang and Samragni Banerjee and Peng Bao and Marc Barbry and Nick S. Blunt and Nikolay A. Bogdanov and George H. Booth and Jia Chen and Zhi-Hao Cui and Janus J. Eriksen and Yang Gao and Sheng Guo and Jan Hermann and Matthew R. Hermes and Kevin Koh and Peter Koval and Susi Lehtola and Zhendong Li and Junzi Liu and Narbe Mardirossian and James D. McClain and Mario Motta and Bastien Mussard and Hung Q. Pham and Artem Pulkin and Wirawan Purwanto and Paul J. Robinson and Enrico Ronca and Elvira R. Sayfutyarova and Maximilian Scheurer and Henry F. Schurkus and James E. T. Smith and Chong Sun and Shi-Ning Sun and Shiv Upadhyay and Lucas K. Wagner and Xiao Wang and Alec White and James Daniel Whitfield and Mark J. Williamson and Sebastian Wouters and Jun Yang and Jason M. Yu and Tianyu Zhu and Timothy C. Berkelbach and Sandeep Sharma and Alexander Yu. Sokolov and Garnet Kin-Lic Chan},
+  title   = {Recent developments in the {PySCF} program package},
+  journal = {The Journal of Chemical Physics},
+  volume  = {153},
+  pages   = {024109},
+  year    = {2020},
+  doi     = {10.1063/5.0006074},
+}
+
+% 库：libxc（主篇用它当 (b, C) 参数来源，并明确论证它当不了数值裁判）
+
+@article{jurecka2006s22,
+  author  = {Petr Jure{\v{c}}ka and Ji{\v{r}}{\'i} {\v{S}}poner and Ji{\v{r}}{\'i} {\v{C}}ern{\'y} and Pavel Hobza},
+  title   = {Benchmark database of accurate ({MP2} and {CCSD(T)} complete basis set limit) interaction energies of small model complexes, {DNA} base pairs, and amino acid pairs},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {8},
+  pages   = {1985-1993},
+  year    = {2006},
+  doi     = {10.1039/b600027d},
+}
+
+@article{goerigk2017gmtkn55,
+  author  = {Lars Goerigk and Andreas Hansen and Christoph Bauer and Stephan Ehrlich and Asim Najibi and Stefan Grimme},
+  title   = {A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions},
+  journal = {Physical Chemistry Chemical Physics},
+  volume  = {19},
+  pages   = {32184-32215},
+  year    = {2017},
+  doi     = {10.1039/c7cp04913g},
+}

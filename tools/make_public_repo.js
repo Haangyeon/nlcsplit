@@ -93,7 +93,7 @@ const NO_SCRUB = ['CITATION.cff', 'LICENSE', 'pyproject.toml'];
 // 对读者不存在。
 const WORKFLOW = { '.github/workflows/ci.yml': '.github/workflows/ci.yml' };
 // 闸门代码本身也是发布物。`CONTRIBUTING.md` 与软件文都写着"跑 node tools/make_public_repo.js
-// 复核这十四条闸门"，可 tools/ 整个不在包里 —— 那对读者就是一句空指令（和"引用指向 gitignore
+// 复核这十五条闸门"，可 tools/ 整个不在包里 —— 那对读者就是一句空指令（和"引用指向 gitignore
 // 里的 logs/"是同一类病：写的人能跑，别人不能）。所以把它和许可证扫描器一起放进去。
 // audit_share_rule.js 是 2026-10-01 加进来的：闸门 W 直接 exec 它，而 make_public_repo.js
 // 随包发布——一个发布出去的工具硬依赖一个不发布的兄弟文件，正是闸门 U 针对的那类缺陷，
@@ -278,12 +278,31 @@ for (const f of STEPS) put('nlcsplit/' + f, read(path.join(SRC, 'nlcsplit', f)))
 for (const f of TESTS) put('nlcsplit/tests/' + f, read(path.join(SRC, 'nlcsplit/tests', f)));
 for (const f of EXAMPLES) put('nlcsplit/examples/' + f, read(path.join(SRC, 'nlcsplit/examples', f)));
 put('nlcsplit/run_all.sh', read(path.join(SRC, 'nlcsplit', 'run_all.sh')));
-// 闸门代码进包：见 TOOLS 上方注释。缺了它，"读者可自行复核这十一条闸门"是空指令。
+// 闸门代码进包：见 TOOLS 上方注释。缺了它，"读者可自行复核这十五条闸门"是空指令。
 // **逐字节原样写，不走 scrubText**：这份文件里就带着判据的字面量定义，一被脱敏就等于
 // 把读者要跑的那把尺子的刻度磨掉，而且替换串落在正则字面量里会直接语法崩。
 // 代价是它必然命中自己的判据 —— 那部分以 hits.exempt / exempt_ledger 具名记账并打印，
 // 不是静默放过；点名机构的串则根本不在这份文件里（见 intranet_patterns.private.js）。
 for (const f of TOOLS) copied.push(write('tools/' + f, read(path.join(SRC, 'tools', f))));
+
+// ---------------------------------------------------------------- JOSS 稿随仓发布
+// `paper/**` 整体不发布是对的（未发表稿），但 **JOSS 的投稿稿必须在仓库里**：JOSS 的
+// 流程是从仓库构建 paper.md，编辑器要的是仓内路径。所以这一份是有意例外，别的稿不是。
+// 图件是**字节拷贝**，不走 read()/utf8 —— PNG 当文本读会当场损坏；也不走 scrubText，
+// 因为它是由随包发布的 nlcsplit/figures.py 从 nlcsplit/logs/*.json 生成的，
+// 读者重跑就能得到同一张图（图里的每个数都来自已发布的侧车）。
+const JOSS_TEXT = ['paper/joss/paper.md', 'paper/joss/paper.bib'];
+const JOSS_BINARY = { 'figs/fig1_xc_split.png': 'paper/joss/fig1_xc_split.png' };
+for (const rel of JOSS_TEXT) {
+  const p = path.join(SRC, rel);
+  if (!fs.existsSync(p)) { console.error('MISSING ' + rel); process.exit(2); }
+  put(rel, read(p));
+}
+for (const [src, dst] of Object.entries(JOSS_BINARY)) {
+  const p = path.join(SRC, src);
+  if (!fs.existsSync(p)) { console.error(`MISSING 图件 ${src}（先跑 python3 -m nlcsplit.figures）`); process.exit(2); }
+  copied.push(write(dst, fs.readFileSync(p)));   // Buffer，不过文本管线
+}
 
 // 几何获取脚本：把写死的本机代理改成"仅在环境里已有则沿用"，否则公开后别人照抄会连不上。
 // 提成函数是为了让 selftest 能把它**跑两遍**验证不动点——2026-09-29 的读者模拟
@@ -655,7 +674,7 @@ const selfScan = {
 };
 const selfScanOk = selfScan.in_tree.length === SELF_DETECT.length
   && selfScan.gamess_exempt > 0 && emailSelftest.all_correct;
-// 专有判据的加载状态：母仓这次运行必须加载到，否则"十一条闸门"名不副实（闸门 B 只剩形状类）。
+// 专有判据的加载状态：母仓这次运行必须加载到，否则"十五条闸门"名不副实（闸门 B 只剩形状类）。
 // 缺文件不是读者的错，所以不 block，但必须打印 —— 见下面 console.error 与报告字段。
 const privateLoaded = PRIV ? PRIV.SECRET_PATS.length : 0;
 // 在母仓里跑（认 PROGRESS-nlcsplit.md：它按设计不进发布树）却没加载到专有判据 = 闸门 B
@@ -755,6 +774,39 @@ const gateD = (() => {
     }
   }
   return { absent, pubInternal };
+})();
+
+// ---------------------------------------------------------------- 闸门 Y：JOSS 稿里的相对链接必须真的随包
+// JOSS 是从仓库里的路径构建 paper.md 的，一条断链在编辑那边就是渲染成空白方框——而图件
+// 恰恰最容易指向"母仓有、发布树没有"的东西（figs/** 按设计不发布）。闸门 D 只认主篇附录
+// 表格里 `反引号包住的路径`，看不见 markdown 的 []() 与 ![]()，所以这条单独立一个。
+// 2026-10-01 加，同日把 paper/joss/ 放进发布清单的时候。
+function jossBrokenLinks(text, baseDir, isCopied) {
+  return [...text.matchAll(/!?\[[^\]]*\]\(\s*([^)\s]+)[^)]*\)/g)]
+    .map(m => m[1].replace(/#.*$/, ''))
+    .filter(u => !/^(?:https?:|mailto:|#)/i.test(u))
+    .map(u => path.posix.normalize(path.posix.join(baseDir, u)))
+    .filter(p => !isCopied(p));
+}
+const gateY = (() => {
+  const rel = 'paper/joss/paper.md';
+  if (!fs.existsSync(path.join(SRC, rel))) {
+    return { broken: [], n: 'no joss paper in this tree', selftest: 'skipped with the manuscript' };
+  }
+  const set = new Set(copied);
+  const text = read(path.join(SRC, rel));
+  const broken = jossBrokenLinks(text, 'paper/joss', p => set.has(p))
+    .map(p => `${rel}: 链接目标没随包发布 ${p}`);
+  // 双向自检走的是**同一个** jossBrokenLinks：脏样例必须正好响在那条假路径上，
+  // 干净样例（只有真图）必须静默。只验"会响"拦不住误伤，只验"不响"就是恒真。
+  const only = (t) => jossBrokenLinks(t, 'paper/joss', p => p === 'paper/joss/fig1_xc_split.png');
+  const dirty = only('![a](fig1_xc_split.png)\n![b](__no_such_figure__.png)\n');
+  const clean = only('![a](fig1_xc_split.png)\n');
+  const selftest = {
+    fired: dirty.length === 1 && dirty[0] === 'paper/joss/__no_such_figure__.png',
+    silent_on_valid: clean.length === 0,
+  };
+  return { broken, n: (text.match(/!?\[[^\]]*\]\(\s*(?:https?:|mailto:)/gi) || []).length, selftest };
 })();
 
 // ---------------------------------------------------------------- 闸门 E：用到的依赖都得声明
@@ -1224,6 +1276,7 @@ const report = {
   gateU_selftest: gateUSelftest,
   gateV_install_vs_release: gateV,
  gateW_share_rule_in_docs: gateW.findings, note_gateW_selftest: gateW.selftest,
+  gateY_joss_links: gateY.broken, gateY_selftest: gateY.selftest,
   gateV_selftest: gateVSelftest,
   note_internal_only_modules: INTERNAL_ONLY_MODULES,
   note_word_only_gamess: wordOnly,
@@ -1232,7 +1285,9 @@ const report = {
   note_evidence_dirs_without_source_manifest: missingSourceManifest,
   scrubbed_files: scrubLog.filter(e => !e.FATAL).map(e => e.rel),
   excluded_by_design: EXPLICITLY_EXCLUDED.concat(['PROGRESS-*.md', 'HANDOFF-*.md',
-    'STEP0-*.md', 'paper/**', 'scratch/**', 'figs/**']),
+    'STEP0-*.md', 'scratch/**',
+    'paper/**（唯一例外 joss/：JOSS 投稿稿必须在仓库里，JOSS 从仓内路径构建）',
+    'figs/**（唯一例外 fig1_xc_split.png：字节拷贝进 paper/joss/，可由随包的 nlcsplit/figures.py 重生成）']),
   relocated_into_docs: RELOCATED,
   note_relocated_passthrough: relocatedPassthrough,
 };
@@ -1245,11 +1300,16 @@ const bad = ga.length + gb.length + gc.length + gc2.length + gateD.absent.length
   // 只验"会响"的自检会让误伤回来时没人拦住（本日就是误伤先撞上的）。
   + (gateESelftest.fired && gateESelftest.sibling_and_stdlib_silent ? 0 : 1)
   + gateW.findings.length + (gateW.selftest.fired && gateW.selftest.silent_on_valid ? 0 : 1)
-  + gateX.length  + (gateXSelftest.fired && gateXSelftest.clean_input_silent ? 0 : 1)
+  + gateX.length + (gateXSelftest.fired && gateXSelftest.clean_input_silent ? 0 : 1)
+  + gateY.broken.length
+  // joss 稿缺失时上面已经 exit(2)，这里的字符串分支只在"发布副本里没有稿"这种
+  // 设计上不该出现的状态下走到 —— 那时它算失败，不算通过。
+  + (typeof gateY.selftest === 'string' ? 1
+     : (gateY.selftest.fired && gateY.selftest.silent_on_valid ? 0 : 1))
   + (gateVSelftest.fired && gateVSelftest.silent_on_named && gateVSelftest.clean_input_silent ? 0 : 1)
   // 同理：具名豁免如果一笔都没记上，说明检测器根本没扫到自己 —— 那"豁免规则"是装饰。
   + (selfScanOk ? 0 : 1)
-  // 在母仓跑却没加载到专有判据 = 闸门 B 被削掉一半还宣称跑了十一条。
+  // 在母仓跑却没加载到专有判据 = 闸门 B 被削掉一半还宣称跑了十五条。
   + (IS_PRIVATE_REPO && !PRIV ? 1 : 0);
 if (bad) {
   // 闸门没过：把还没搬进 dist/ 的新产物直接丢掉，旧产物原地不动。"不出货"必须是可验证的，

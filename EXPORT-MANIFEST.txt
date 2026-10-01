@@ -1,4 +1,4 @@
-208 files
+211 files
 .github/workflows/ci.yml
 CITATION.cff
 CONTRIBUTING.md
@@ -203,6 +203,9 @@ nlcsplit/tests/test_partition_factors.py
 nlcsplit/tests/test_regression.py
 nlcsplit/tests/test_tolerance_probe.py
 nlcsplit/tools/get_s22.sh
+paper/joss/fig1_xc_split.png
+paper/joss/paper.bib
+paper/joss/paper.md
 pyproject.toml
 tools/audit_no_gamess.js
 tools/audit_share_rule.js
