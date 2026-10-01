@@ -249,7 +249,7 @@ lvl2 = −0.5235，与今天在**当前代码+当前几何**上重算的结果�
    其 level-1 一列与修复后的 `stepg-recompute` 在三种共有基组上吻合到 4 位小数，
    所以结论不依赖这一点，但**整条阶梯仍需在弛豫几何上重跑一遍**。
 
-## 4. Limitations（必须自己先说，别等审稿人）
+## 4. Scope, independent verification, and limitations（必须自己先说，别等审稿人）
 - **不是 EDA**：没有分离静电/交换/极化/电荷转移。我们只给 ΔE_xc 的两分
   （非局域 vs 其余）+ 片间/片内成对结构。
   ~~没做 BSSE-CP 校正~~ → **已做**：六个体系全部跑过 level 2 + 完整反泊松。batch5 那份 `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out` 含前五个（BSSE 1.69 / 1.49 / 0.20 / 1.07 / 0.76 kcal/mol），苯-甲烷在 2026-09-29 补齐（`evidence/l2cp/20260929T051849Z_l2_benzmeth-wsl.out`，BSSE 0.44）——与本文件"待补项 6"的"六个已全部到位"一致，此前"只有五个"的说法作废。且要讲清 **ΔE_NLC 本身不需要 CP**：

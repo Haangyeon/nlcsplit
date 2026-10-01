@@ -319,7 +319,16 @@ result with the check that licenses it, rather than presented as a run that happ
 Naming the hash rather than
 claiming "the current wheel" is the point - every export rebuilds the wheel, so its SHA-256
 changes even when no packaged byte does, and the two runs recorded nine minutes apart on
-2026-09-30 name two different hashes. All of it, including the
+2026-09-30 name two different hashes. The mechanism was measured rather than assumed, and it
+is worth knowing precisely because the naive version of the claim is wrong: four rebuilds of
+a tree whose `nlcsplit/` and `nlcsplit/tests/` bytes never moved gave three distinct hashes,
+two of the four builds being byte-identical to their neighbour - the zip entries carry the
+build time at two-second resolution, so builds inside one tick reproduce and builds across a
+tick do not. What never moved is the member list: 38 members in each build, with the wheel's
+per-member digest list (its `RECORD` file) comparing clean line by line across builds. So
+`RECORD` identifies the software and the artifact hash identifies the build, and this
+paragraph quotes them apart for that reason
+(`evidence/release_qa/20261001T053741Z_wheel_hash_is_not_content.txt`). All of it, including the
 shell-quoting bug that left the hash field blank in one of the two older logs, is in
 `evidence/release_qa/` [S19]. Tables map to one
 `step_*.py` each;
