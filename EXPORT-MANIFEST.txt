@@ -1,4 +1,4 @@
-207 files
+208 files
 .github/workflows/ci.yml
 CITATION.cff
 CONTRIBUTING.md
@@ -205,4 +205,5 @@ nlcsplit/tests/test_tolerance_probe.py
 nlcsplit/tools/get_s22.sh
 pyproject.toml
 tools/audit_no_gamess.js
+tools/audit_share_rule.js
 tools/make_public_repo.js
