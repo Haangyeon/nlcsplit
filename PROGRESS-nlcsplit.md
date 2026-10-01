@@ -3217,3 +3217,51 @@ Ha 当 kcal/mol 用＝宣称比实测不敏感约 260 倍。两个量都远小�
 **下一步**：2.12.1 档跑完 → 两份预演日志归档进 `evidence/release_qa/` 并刷新其 MANIFEST →
 按实测把 JOSS 里的测试计数句写成"两档、树内树外都跑过"（现在那句"49 of which ship inside the
 package"混用了**两个不同对象**：导出的 wheel 收 49，`pip install .` 源码树收 69，不能当一件说）。
+
+## 2026-10-01 晚 苯的耦合簇：排队、标定、以及我差点写进论文的一条假限制
+
+**tcc 侧**（PBS 是假，LSF 是真）
+- 队列 = **LSF 10.1**，`normal`，`bsub`；我第一次按 `#PBS` 提被 `qsub: Unknown queue` 拒，
+  而用户自己的 `~/sub.pbs` 里一直写的是 `#BSUB`。`qstat` 在这台机上返回空。
+- 节点 `chinahpc` 36 槽，**全被占**：XAR 12（93284，从 9-30 13:42 起）+ cwwang 24。
+- 我提的 **93285 nlcbenz**（8 槽 / 48 h / rusage mem=16000）现 PEND。脚本先跑水做校验，
+  与母仓归档 -6.8559 比，|差|>0.0005 kcal/mol 就拒绝往下跑苯；过了才按 AO 递增跑
+  苯-水 / 苯-氨 / 苯-甲烷，每体系单独落盘。
+- 环境是搬过去的：tcc 无外网、根盘只剩 2.2 G、没有 PySCF ⇒ pyscf 2.12.1 的
+  `py3-none-manylinux_2_17` wheel 连 numpy/scipy/h5py/setuptools 一起 scp 到
+  `/share/BackUp/XAR/nlcc/lib`，装完由解释器自证。
+  依赖表我连错两次：先按记忆装（少 h5py），再用写坏的 `sed` 取 METADATA
+  （把 `extra == "…"` 的可选依赖当必装，且只返回一个捕获组 ⇒ 取空）。
+- **tcc 本地钟比 UTC 慢 32–34 分钟**，它打的 UTC 不能当时间戳。
+
+**耗时标定（新归档 `evidence/ccsdt/20261001T122458Z_benzene_mono_timing_anchor.out`）**
+用正式函数 `step_m_ccsdt.correlated()`、8 线程：苯单体 nao=96 → 冻核档 **13.1 s**、
+全电子档 **26.7 s**。（T) 5.1 / 12.4 s。这把"每体系 3–10 小时"那个我拍的数杀掉了：
+93285 起算后应在**一小时量级**内完成。
+
+**我差点写进论文的一条假限制（已拦下）**
+本来要把 main.md §3.2 的"本机跑不动"改写成"苯二聚体 t3 要 729 GB，节点 172 GB 放不下"。
+读了 `pyscf/cc/ccsd_t.py:101`：
+`bufsize = (max_memory*0.5e6/8 - nocc**3*3*num_threads())/(nocc*nmo)`，
+虚指标对是按 `prange_tril` **分块收缩**的，全数组从不物化 ⇒ 那个数不是内存需求。
+729 GB 还是我拿 nocc³·nvir³ 算的（该用组合数 C(occ,3)，脚本里 C 形式给的是 102 GB），
+两个都不是"为什么不算苯二聚体"的依据。§3.2 先不动，等 93285 给出苯-水的实测墙钟，
+再从同系列外推；没实测过的限制不写进论文。
+
+**公开仓这一步：停在凭据上，不是停在权限上**
+- 未登录侧确认仍是 private：`api.github.com` 与 html 都返回 **404**。
+- 用户开了浏览器会话，repo/settings 页**不需要 sudo** 就能进，Danger Zone 里
+  "Change to public / I want to make this repository public" 就位。
+- 但**推今天的树**必须先有凭据：`/settings/personal-access-tokens/new` 直接弹
+  **Confirm access**（GitHub Mobile 确认 / 验证器码）。2FA 只有他能给，我不代填也不存。
+- 所以顺序上我**没有点 Make public**：远端还是 9-30 那棵 121 blob 旧树
+  （README 写"12 export gates"、`run_all.sh` 漏 `step_m`），公开一棵已知有缺陷的旧快照
+  不值得为省一次 2FA。等他给一下验证，我连着做完：建一天期、只此一仓、
+  Contents+Workflows 读写的 token → `publish_github.js --push` → 逐 blob 核对 →
+  网页点 public → 删本地 token 文件、他去 revoke。
+- 另一台窗口 20:00–20:01 建了 `scratch/gh_publish.js`/`gh_probe.js`/`E:\tmp\nlcsplit-gh-profile`
+  且日志为空；查 `Win32_Process` 无活的 node 在推。我没动远端以免两边撞同一分支。
+  （顺带：这台机跑着 `@modelcontextprotocol/server-github`（PID 43312），
+  但它没接到本会话，所以那把凭据我也调不到。）
+
+提交 `fd68174` 之后本轮未提交；工作区改动 = 上述归档 + MANIFEST 9 条。
