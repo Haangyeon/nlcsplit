@@ -93,13 +93,18 @@ const NO_SCRUB = ['CITATION.cff', 'LICENSE', 'pyproject.toml'];
 // 对读者不存在。
 const WORKFLOW = { '.github/workflows/ci.yml': '.github/workflows/ci.yml' };
 // 闸门代码本身也是发布物。`CONTRIBUTING.md` 与软件文都写着"跑 node tools/make_public_repo.js
-// 复核这十一条闸门"，可 tools/ 整个不在包里 —— 那对读者就是一句空指令（和"引用指向 gitignore
+// 复核这十四条闸门"，可 tools/ 整个不在包里 —— 那对读者就是一句空指令（和"引用指向 gitignore
 // 里的 logs/"是同一类病：写的人能跑，别人不能）。所以把它和许可证扫描器一起放进去。
-const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js'];
+// audit_share_rule.js 是 2026-10-01 加进来的：闸门 W 直接 exec 它，而 make_public_repo.js
+// 随包发布——一个发布出去的工具硬依赖一个不发布的兄弟文件，正是闸门 U 针对的那类缺陷，
+// 只不过 U 只看 Python import，看不见 node 的 spawnSync 路径。公开仓的 CI 第一次变红
+// 就是这个洞露出来的地方（详见 .github/workflows/ci.yml 里同日的注释）。
+const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js', 'audit_share_rule.js'];
 // 放进去就带来一个真问题：这两个文件**本身就是检测模式的定义**，逐行扫必然命中自己。
 // 处理是**具名豁免 + 把豁免量报出来**（见报告里的 note_detector_selfscan），
 // 而不是悄悄 continue —— 一个把豁免藏起来的扫描器，和没有扫描器等价。
-const SELF_DETECT = TOOLS.map(f => 'tools/' + f);
+// 名单写死而不是 = TOOLS：第三个文件里没有判据定义，把它算进"检测器"就等于给它开豁免空白支票。
+const SELF_DETECT = ['tools/make_public_repo.js', 'tools/audit_no_gamess.js'];
 // 明确**不**带：centos_run*.sh, centos_setup.sh（集群 IP/绝对路径）, PROGRESS-*（两代理的协调
 // 与撤回流水，不是证据）, HANDOFF-*, STEP0-*, paper/, scratch/, figs/。
 // RESEARCH-* 与 MAIN-skeleton.md 改为改名进 docs/，见下面 RELOCATED —— 附录要靠它们落地。

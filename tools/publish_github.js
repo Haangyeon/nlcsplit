@@ -140,12 +140,20 @@ const gh = (method, url, body) => {
 // "建仓失败：409 already exists" 是最难查的假失败——仓库其实是对的。
 let repo = gh('GET', `https://api.github.com/repos/${OWNER}/${REPO}`);
 if (repo.full_name) {
-  if (repo.visibility !== VIS) {
-    die(`已存在的仓库 ${repo.full_name} 可见性是 ${repo.visibility}，与 --visibility ${VIS} 不符。`
-      + '不擅自改可见性——这一步由你在 GitHub 上决定。');
+  // 这两条是**推送前**的护栏：防止把别人的历史盖掉、防止推错可见性的仓。
+  // --verify-only 一个字节都不写，所以它必须绕过这两条——否则"推完之后核对"
+  // 这个动作本身在唯一的合法时机（仓库已非空）下永远跑不了。2026-10-01 实测：
+  // 推完当天 --verify-only 就被 size>0 拦死，而本文件下面写着它"可以在事后再跑一次"。
+  if (!VERIFY_ONLY) {
+    if (repo.visibility !== VIS) {
+      die(`已存在的仓库 ${repo.full_name} 可见性是 ${repo.visibility}，与 --visibility ${VIS} 不符。`
+        + '不擅自改可见性——这一步由你在 GitHub 上决定。');
+    }
+    if (repo.size > 0) die(`${repo.full_name} 已有内容（size=${repo.size} KiB）。不往非空仓库里推。`);
   }
-  if (repo.size > 0) die(`${repo.full_name} 已有内容（size=${repo.size} KiB）。不往非空仓库里推。`);
-  console.log('复用已存在的仓库：', repo.full_name, repo.private ? '(private)' : '(PUBLIC)');
+  console.log('目标仓库：', repo.full_name, repo.private ? '(private)' : '(PUBLIC)');
+} else if (VERIFY_ONLY) {
+  die(`--verify-only：${OWNER}/${REPO} 读不到，核对不会建仓、也不会替你修任何东西。`);
 } else {
   repo = gh('POST', 'https://api.github.com/user/repos', {
     name: REPO, private: VIS === 'private', description: 'nlcsplit — fragment and pair resolution of the VV10 nonlocal-correlation energy (PySCF)',
@@ -194,6 +202,11 @@ try {
 // 比对基准是**导出树里的字节**（git hash-object），不是刚建的那个本地 commit：
 // 这样 --verify-only 可以在事后、甚至换一个会话里再跑一次，而且重跑不会像
 // "重新 init+commit" 那样造出一个与远端无共同祖先的第二条历史。
+// `--no-filters` 不是可选的：本机 Windows git 的 core.autocrlf=true，去掉这个开关
+// hash-object 会把 CRLF 归一成 LF 再取 SHA，于是"审过的字节"和"比对的哈希"是两回事。
+// 2026-10-01 首次推完就这样报了 4 个假差异（两份 ORCA 输出、orca_crosscheck.py、
+// step_h.json——全是带 CRLF 的文件），而远端存的其实是与导出树逐字节相同的内容，
+// 也和 evidence/*/MANIFEST 里 `sha256sum -b` 的口径一致。带 CRLF 的工件必须按字面比。
 // 另注：?recursive=1 返回的是 blob + 中间目录 tree 两种条目（2026-09-30 实测：
 // 121 个文件对 144 条，差的 23 条正是目录）。只比 blob，并把目录条数印出来——
 // 否则这个闸门会因为自己的类型过滤缺失而谎报"远端多了 23 个文件"。
@@ -202,7 +215,7 @@ try {
 const ref = gh('GET', `https://api.github.com/repos/${FULL}/git/ref/heads/main`);
 const head = (ref.object || {}).sha;
 if (!head) die('读不到远端 main：' + JSON.stringify(ref).slice(0, 200));
-const shas = cp.execFileSync('git', ['hash-object', '--stdin-paths'],
+const shas = cp.execFileSync('git', ['hash-object', '--no-filters', '--stdin-paths'],
   { encoding: 'utf8', input: files.map(f => path.join(BUNDLE, f)).join('\n') })
   .split(/\r?\n/).filter(Boolean);
 const local = new Set(files.map((f, i) => `${shas[i]} ${f}`));

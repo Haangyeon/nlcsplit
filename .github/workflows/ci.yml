@@ -22,22 +22,24 @@ jobs:
       # 树外再跑一遍：验的是"发布出去的包"而不是工作目录，缺文件在这里才会露出来。
       - run: python -m pytest -q --pyargs nlcsplit -p no:cacheprovider
         working-directory: /tmp
-      # 发布闸门 A B C C2 D E F G R T U V W X（十四条，exit!=0 就不出货）：
+      # 发布闸门 A B C C2 D E F G R T U V W X（十四条，exit!=0 就不出货）**不在这里跑**：
       # A 无 GAMESS 源码工件 / B 无内网串 / C 证据哈希双向闭合 /
       # C2 脱敏未动数字且母仓每份证据都登记过 / D 引用可达 / E 外部依赖已声明 /
       # F wheel 与 sdist 成员清单 / G LICENSE 署名在源文件里 / T 导出清单完整 /
       # R 发布树无构建残留 / U 包内 import 的兄弟模块真的随包发出去了 /
       # V pip install . 会装的包目录模块要么随 wheel 发、要么具名给不发布的理由 /
       # W 正文与 README 不得为 |dNLC/dxc|>2 的体系报占比 /
-      # X 每个随包的 step_*.py 都出现在 run_all.sh 的 CMD 表里（2026-10-01 加，
-      #   起因就是第 14 个脚本漏登记）
+      # X 每个随包的 step_*.py 都出现在 run_all.sh 的 CMD 表里
       # （每条自检没响 = 恒真 = 不出货）
+      # 为什么撤掉 `node tools/make_public_repo.js` 这一步（2026-10-01）：它是**出货决定**，
+      # 不是对已发布内容的检验。三个输入在发布副本里按设计不存在——
+      # tools/intranet_patterns.private.js（点名机构标识，不发布）、paper/*.md（正文不发布，
+      # 于是闸门 D 与 W 的真实扫描没有对象）、以及闸门 W 自身依赖的
+      # tools/audit_share_rule.js（当时没随包发）。闸门 W 的自检对脏样例和干净样例都返回
+      # 非零（"Cannot find module"），保守地拒绝出货，把 main 上的每一次 push 都判红。
+      # 十四条由发布前的母仓运行负责，CI 不替它担保；这里留下的两步是真能在这个树上成立的。
       - uses: actions/setup-node@v4
         with: {node-version: "20"}
-      # 本 job 跑的是**发布副本**：tools/intranet_patterns.private.js 不在这里（它点名机构标识），
-      # 所以闸门 B 只剩形状类判据、闸门 D 没有正文可扫。脚本每次都会把这两件事打在 stderr，
-      # 完整十四条由母仓那次运行负责（发布前本地跑），CI 不替它担保。
-      - run: node tools/make_public_repo.js
       # 法律性声明那条检查也要在 CI 里有反证，不能只靠"我记得跑过"。
       # 真装一遍的完整扫描不在这里：CI 的临时目录里没有 PyPI 上的 nlcsplit，装的是本树，
       # 而那与 --selftest 之外的事项在本地已经跑过并归档（evidence/release_qa/）。

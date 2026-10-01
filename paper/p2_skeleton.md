@@ -229,7 +229,8 @@
   这条同时是对 P1 数字不被污染的保护，写进 §9。
 - 计时受 load<0.5 门禁；6 计算代理并发期间**本骨架不新增任何计时数**（任务约束）。
 - 代码：`nlcsplit/fastpair.py` + `tests/test_fastpair.py` + `examples/probe_bound_forms.py`，
-  发布走 P3 的导出闸门（`tools/make_public_repo.js` 五闸门；白名单扩到 fastpair 的申请
+  发布走 P3 的导出闸门（`tools/make_public_repo.js` 十四条，出货前在母仓跑；发布副本的
+  CI 只跑测试与两份扫描器，见 `.github/workflows/ci.yml` 里 2026-10-01 那段；白名单扩到 fastpair 的申请
   状态 UNVERIFIED/PENDING，PROGRESS 18:5x p3-releasecheck 在跑）。
 
 ---

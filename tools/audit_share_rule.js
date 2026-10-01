@@ -22,7 +22,18 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const argv = process.argv.slice(2);
 const filesFlag = (argv.find(a => a.startsWith('--files=')) || '').slice(8);
-const DOCS = (filesFlag || 'paper/main.md,paper/p2.md,paper/software.md,paper/joss/paper.md,README.md,MAIN-skeleton.md')
+// 默认名单是**母仓**的六份材料。本文件现在随包发布（导出器把它列进 TOOLS，因为它就是
+// 闸门 W 的被调用方），而在发布副本里 paper/** 与 MAIN-skeleton.md 按设计不存在——
+// 直接照旧名单跑会得到"5 份读不到"，那是正确但无意义的红。所以：名单齐全用母仓名单，
+// 否则退到发布形态里真有的两份。**这个退化不放松任何判据**：退化后仍有读不到的文件时，
+// 下面 skippedFiles 那条 FAIL(0) 照旧触发；一份都不在 ⇒ 分母为 0，同样算失败。
+const SRC_LIST = ['paper/main.md', 'paper/p2.md', 'paper/software.md', 'paper/joss/paper.md',
+  'README.md', 'MAIN-skeleton.md'];
+const SHIPPED_LIST = ['README.md', 'docs/tables_and_provenance.md'];
+const here = (r) => fs.existsSync(path.isAbsolute(r) ? r : path.join(ROOT, r));
+const DEFAULT_LIST = SRC_LIST.every(here) ? SRC_LIST : SHIPPED_LIST;
+if (!SRC_LIST.every(here)) console.error(`默认名单退化：用发布形态的 ${DEFAULT_LIST.length} 份材料`);
+const DOCS = (filesFlag || DEFAULT_LIST.join(','))
   .split(',').map(s => s.trim()).filter(Boolean);
 const SHARE_WORDS = /占比|份额|占\s*|share|proportion|of\s*d?E_xc|of\s*ΔE_xc|of\s*the\s*exchange-correlation/i;
 
