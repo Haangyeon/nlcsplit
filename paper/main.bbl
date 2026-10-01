@@ -11,52 +11,6 @@ Oleg~A. Vydrov and Troy~Van Voorhis.
 \newblock \emph{Physical Review Letters}, 103:\penalty0 063004, 2009.
 \newblock \doi{10.1103/PhysRevLett.103.063004}.
 
-\bibitem[Sun et~al.(2018)Sun, Berkelbach, Blunt, Booth, Guo, Li, Liu, McClain,
-  Sayfutyarova, Sharma, Wouters, and Chan]{sun2018pyscf}
-Qiming Sun, Timothy~C. Berkelbach, Nick~S. Blunt, George~H. Booth, Sheng Guo,
-  Zhendong Li, Junzi Liu, James~D. McClain, Elvira~R. Sayfutyarova, Sandeep
-  Sharma, Sebastian Wouters, and Garnet Kin-Lic Chan.
-\newblock {PySCF}: the {Python}-based simulations of chemistry framework.
-\newblock \emph{WIREs Computational Molecular Science}, 8:\penalty0 e1340,
-  2018.
-\newblock \doi{10.1002/wcms.1340}.
-
-\bibitem[Sun et~al.(2020)Sun, Zhang, Banerjee, Bao, Barbry, Blunt, Bogdanov,
-  Booth, Chen, Cui, Eriksen, Gao, Guo, Hermann, Hermes, Koh, Koval, Lehtola,
-  Li, Liu, Mardirossian, McClain, Motta, Mussard, Pham, Pulkin, Purwanto,
-  Robinson, Ronca, Sayfutyarova, Scheurer, Schurkus, Smith, Sun, Sun, Upadhyay,
-  Wagner, Wang, White, Whitfield, Williamson, Wouters, Yang, Yu, Zhu,
-  Berkelbach, Sharma, Sokolov, and Chan]{sun2020pyscf}
-Qiming Sun, Xing Zhang, Samragni Banerjee, Peng Bao, Marc Barbry, Nick~S.
-  Blunt, Nikolay~A. Bogdanov, George~H. Booth, Jia Chen, Zhi-Hao Cui, Janus~J.
-  Eriksen, Yang Gao, Sheng Guo, Jan Hermann, Matthew~R. Hermes, Kevin Koh,
-  Peter Koval, Susi Lehtola, Zhendong Li, Junzi Liu, Narbe Mardirossian,
-  James~D. McClain, Mario Motta, Bastien Mussard, Hung~Q. Pham, Artem Pulkin,
-  Wirawan Purwanto, Paul~J. Robinson, Enrico Ronca, Elvira~R. Sayfutyarova,
-  Maximilian Scheurer, Henry~F. Schurkus, James E.~T. Smith, Chong Sun,
-  Shi-Ning Sun, Shiv Upadhyay, Lucas~K. Wagner, Xiao Wang, Alec White,
-  James~Daniel Whitfield, Mark~J. Williamson, Sebastian Wouters, Jun Yang,
-  Jason~M. Yu, Tianyu Zhu, Timothy~C. Berkelbach, Sandeep Sharma, Alexander~Yu.
-  Sokolov, and Garnet Kin-Lic Chan.
-\newblock Recent developments in the {PySCF} program package.
-\newblock \emph{The Journal of Chemical Physics}, 153:\penalty0 024109, 2020.
-\newblock \doi{10.1063/5.0006074}.
-
-\bibitem[Harris et~al.(2020)Harris, Millman, van~der Walt, Gommers, Virtanen,
-  Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, van Kerkwijk,
-  Brett, Haldane, del R{\'i}o, Wiebe, Peterson, G{\'e}rard-Marchant, Sheppard,
-  Reddy, Weckesser, Abbasi, Gohlke, and Oliphant]{harris2020numpy}
-Charles~R. Harris, K.~Jarrod Millman, St{\'e}fan~J. van~der Walt, Ralf Gommers,
-  Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg,
-  Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van
-  Kerkwijk, Matthew Brett, Allan Haldane, Jaime~Fern{\'a}ndez del R{\'i}o, Mark
-  Wiebe, Pearu Peterson, Pierre G{\'e}rard-Marchant, Kevin Sheppard, Tyler
-  Reddy, Warren Weckesser, Hameer Abbasi, Christoph Gohlke, and Travis~E.
-  Oliphant.
-\newblock Array programming with {NumPy}.
-\newblock \emph{Nature}, 585:\penalty0 357--362, 2020.
-\newblock \doi{10.1038/s41586-020-2649-2}.
-
 \bibitem[Mardirossian and Head-Gordon(2014)]{mardirossian2014wb97xv}
 Narbe Mardirossian and Martin Head-Gordon.
 \newblock {$\omega$}b97x-v: A 10-parameter, range-separated hybrid, generalized
@@ -97,6 +51,14 @@ Saswata Dasgupta, Etienne Palos, Yuanhui Pan, and Francesco Paesani.
   49--67, 2023.
 \newblock \doi{10.1021/acs.jctc.3c00903}.
 
+\bibitem[He{\ss}elmann(2013)]{hesselmann2013nldft}
+Andreas He{\ss}elmann.
+\newblock Assessment of a nonlocal correction scheme to semilocal density
+  functional theory methods.
+\newblock \emph{Journal of Chemical Theory and Computation}, 9:\penalty0
+  273--283, 2013.
+\newblock \doi{10.1021/ct300735g}.
+
 \bibitem[Lazić et~al.(2010)Lazić, Atodiresei, Alaei, Caciuc, Blügel, and
   Brako]{lazic2010junolo}
 Predrag Lazić, Nicolae Atodiresei, Mojtaba Alaei, Vasile Caciuc, Stefan
@@ -105,6 +67,13 @@ Predrag Lazić, Nicolae Atodiresei, Mojtaba Alaei, Vasile Caciuc, Stefan
   evaluation of vdw-df correlation energy.
 \newblock \emph{Computer Physics Communications}, 181:\penalty0 371--379, 2010.
 \newblock \doi{10.1016/j.cpc.2009.09.016}.
+
+\bibitem[Hyldgaard et~al.(2014)Hyldgaard, Berland, and
+  Schr{\"o}der]{hyldgaard2014interp}
+Per Hyldgaard, Kristian Berland, and Elsebeth Schr{\"o}der.
+\newblock Interpretation of van der waals density functionals.
+\newblock \emph{Physical Review B}, 90:\penalty0 075148, 2014.
+\newblock \doi{10.1103/PhysRevB.90.075148}.
 
 \bibitem[Kruse et~al.(2018)Kruse, Ban\'{a}\v{s}, and \v{S}poner]{kruse2019dna}
 Holger Kruse, Pavel Ban\'{a}\v{s}, and Ji\v{r}\'{\i} \v{S}poner.
@@ -148,21 +117,6 @@ M.~Dion, H.~Rydberg, E.~Schröder, D.~C. Langreth, and B.~I. Lundqvist.
 \newblock Van der waals density functional for general geometries.
 \newblock \emph{Physical Review Letters}, 92:\penalty0 246401, 2004.
 \newblock \doi{10.1103/PhysRevLett.92.246401}.
-
-\bibitem[He{\ss}elmann(2013)]{hesselmann2013nldft}
-Andreas He{\ss}elmann.
-\newblock Assessment of a nonlocal correction scheme to semilocal density
-  functional theory methods.
-\newblock \emph{Journal of Chemical Theory and Computation}, 9:\penalty0
-  273--283, 2013.
-\newblock \doi{10.1021/ct300735g}.
-
-\bibitem[Hyldgaard et~al.(2014)Hyldgaard, Berland, and
-  Schr{\"o}der]{hyldgaard2014interp}
-Per Hyldgaard, Kristian Berland, and Elsebeth Schr{\"o}der.
-\newblock Interpretation of van der waals density functionals.
-\newblock \emph{Physical Review B}, 90:\penalty0 075148, 2014.
-\newblock \doi{10.1103/PhysRevB.90.075148}.
 
 \bibitem[Becke(1988)]{becke1988}
 A.~D. Becke.
@@ -216,5 +170,51 @@ Taku Takatani, Edward~G. Hohenstein, Krzysztof Malagoli, Michael~W. Marshall,
   interaction energies.
 \newblock \emph{The Journal of Chemical Physics}, 132:\penalty0 144104, 2010.
 \newblock \doi{10.1063/1.3378024}.
+
+\bibitem[Sun et~al.(2018)Sun, Berkelbach, Blunt, Booth, Guo, Li, Liu, McClain,
+  Sayfutyarova, Sharma, Wouters, and Chan]{sun2018pyscf}
+Qiming Sun, Timothy~C. Berkelbach, Nick~S. Blunt, George~H. Booth, Sheng Guo,
+  Zhendong Li, Junzi Liu, James~D. McClain, Elvira~R. Sayfutyarova, Sandeep
+  Sharma, Sebastian Wouters, and Garnet Kin-Lic Chan.
+\newblock {PySCF}: the {Python}-based simulations of chemistry framework.
+\newblock \emph{WIREs Computational Molecular Science}, 8:\penalty0 e1340,
+  2018.
+\newblock \doi{10.1002/wcms.1340}.
+
+\bibitem[Sun et~al.(2020)Sun, Zhang, Banerjee, Bao, Barbry, Blunt, Bogdanov,
+  Booth, Chen, Cui, Eriksen, Gao, Guo, Hermann, Hermes, Koh, Koval, Lehtola,
+  Li, Liu, Mardirossian, McClain, Motta, Mussard, Pham, Pulkin, Purwanto,
+  Robinson, Ronca, Sayfutyarova, Scheurer, Schurkus, Smith, Sun, Sun, Upadhyay,
+  Wagner, Wang, White, Whitfield, Williamson, Wouters, Yang, Yu, Zhu,
+  Berkelbach, Sharma, Sokolov, and Chan]{sun2020pyscf}
+Qiming Sun, Xing Zhang, Samragni Banerjee, Peng Bao, Marc Barbry, Nick~S.
+  Blunt, Nikolay~A. Bogdanov, George~H. Booth, Jia Chen, Zhi-Hao Cui, Janus~J.
+  Eriksen, Yang Gao, Sheng Guo, Jan Hermann, Matthew~R. Hermes, Kevin Koh,
+  Peter Koval, Susi Lehtola, Zhendong Li, Junzi Liu, Narbe Mardirossian,
+  James~D. McClain, Mario Motta, Bastien Mussard, Hung~Q. Pham, Artem Pulkin,
+  Wirawan Purwanto, Paul~J. Robinson, Enrico Ronca, Elvira~R. Sayfutyarova,
+  Maximilian Scheurer, Henry~F. Schurkus, James E.~T. Smith, Chong Sun,
+  Shi-Ning Sun, Shiv Upadhyay, Lucas~K. Wagner, Xiao Wang, Alec White,
+  James~Daniel Whitfield, Mark~J. Williamson, Sebastian Wouters, Jun Yang,
+  Jason~M. Yu, Tianyu Zhu, Timothy~C. Berkelbach, Sandeep Sharma, Alexander~Yu.
+  Sokolov, and Garnet Kin-Lic Chan.
+\newblock Recent developments in the {PySCF} program package.
+\newblock \emph{The Journal of Chemical Physics}, 153:\penalty0 024109, 2020.
+\newblock \doi{10.1063/5.0006074}.
+
+\bibitem[Harris et~al.(2020)Harris, Millman, van~der Walt, Gommers, Virtanen,
+  Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, van Kerkwijk,
+  Brett, Haldane, del R{\'i}o, Wiebe, Peterson, G{\'e}rard-Marchant, Sheppard,
+  Reddy, Weckesser, Abbasi, Gohlke, and Oliphant]{harris2020numpy}
+Charles~R. Harris, K.~Jarrod Millman, St{\'e}fan~J. van~der Walt, Ralf Gommers,
+  Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg,
+  Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van
+  Kerkwijk, Matthew Brett, Allan Haldane, Jaime~Fern{\'a}ndez del R{\'i}o, Mark
+  Wiebe, Pearu Peterson, Pierre G{\'e}rard-Marchant, Kevin Sheppard, Tyler
+  Reddy, Warren Weckesser, Hameer Abbasi, Christoph Gohlke, and Travis~E.
+  Oliphant.
+\newblock Array programming with {NumPy}.
+\newblock \emph{Nature}, 585:\penalty0 357--362, 2020.
+\newblock \doi{10.1038/s41586-020-2649-2}.
 
 \end{thebibliography}
