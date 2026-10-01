@@ -854,11 +854,14 @@ for the water dimer. Differences are safe; absolutes are not, unless the
 population convention is stated alongside them.
 
 **Cost, and what it buys.** The explicit double sum is quadratic in the number of
-retained grid points; we have not implemented a sub-quadratic approximation, and
-the point-value kernel that PySCF ships is both cheaper and accurate to ~1e-8 Ha
-on its own grid (section 3.1). The cost is not prohibitive in itself - JuNoLo ran
-the same N² sum over massively parallel hardware for surface calculations [S14] -
-but it is a real constraint, and it is worth naming the trade honestly. We are therefore not claiming that this
+retained grid points. A sub-quadratic route was built and measured, not merely
+declined: section 3.6 times a screened traversal against the exact sum over 33
+pairs and finds none faster, because the certificate available at pair granularity
+is loose by a factor of 2.4e5 at its tightest real case. The point-value kernel
+that PySCF ships remains both cheaper and accurate to ~1e-8 Ha on its own grid
+(section 3.1). The cost is not prohibitive in itself - JuNoLo ran the same N² sum
+over massively parallel hardware for surface calculations [S14] - but it is a real
+constraint, and it is worth naming the trade honestly. We are therefore not claiming that this
 method computes dE_NLC better. What it buys is the (i, j) index structure: the
 0.92-1.08 frozen-density result of section 3.3, and the per-pair numbers behind
 Table 1, are not recoverable from a scheme that collapses the pair sum to point
