@@ -259,17 +259,23 @@ location instead of a hard-coded working path, and refuses to run the argument-t
 rather than silently running them at their defaults.
 
 The suite collects 69 tests in the working repository - 49 under `-m "not slow"` and 20
-under `-m slow`, a partition of the same collection and not two numbers to be added. The
-first 65 of them have been executed together - 65 passed with nothing skipped in 710.73 s -
-and the three collection counts of that run together with its Python, PySCF, NumPy and SciPy
-versions are in one archived log
-(`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) [S19]; the four added
-since then are pure-logic and pass in 0.28 s, with the 49-test fast subset re-run green and
-the change surface written down in
-`evidence/release_qa/20260930T230121Z_suite69_fast_and_diffsurface.out`.
+under `-m slow`, a partition of the same collection and not two numbers to be added. All 69
+have been executed: 69 passed with nothing skipped in 380.52 s, on the tree that carries the
+convention guard added last
+(`evidence/release_qa/20260930T233800Z_suite69_full.out`) [S19]. An earlier run of the first
+65 of them - 65 passed, nothing skipped, 710.73 s, with the three collection counts and the
+Python, PySCF, NumPy and SciPy versions in its own archived log
+(`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) - is kept beside it, and
+the useful fact is that the two disagree on wall clock by 1.87x while the added tests take
+0.28 s collectively: that is machine load, not content, and it is why no figure here is
+called "the suite time". Between those two runs an intermediate artefact
+(`...20260930T230121Z_suite69_fast_and_diffsurface.out`) recorded a partial run with the slow
+20 carried over on a change-surface argument; the full run above replaced it, and the
+argument survives only as a worked example of when a carry-over would have been legitimate.
 That execution is of the working tree under `PYTHONPATH=.`, and the
-log's own header prints `git status`, which listed uncommitted changes - so it establishes
-the floor for the code as it then stood and says nothing about what an install ships. The
+log's own header prints `git status` - the 65-test one listed uncommitted changes - so it
+establishes the floor for the code as it then stood and says nothing about what an install
+ships. The
 out-of-tree material below belongs to objects smaller
 than the working tree. The published wheel ships seven test modules plus `__init__.py` and
 `conftest.py`; those seven collect 49 in today's tree, and the 20 that stay behind are exactly

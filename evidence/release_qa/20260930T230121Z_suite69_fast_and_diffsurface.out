@@ -40,3 +40,10 @@ Python module imports inside the tests are unchanged from that run.
 ....                                                                     [100%]
 4 passed in 0.28s
 EXIT=0
+
+--- ADDENDUM 2026-09-30T23:38Z (local 2026-10-01) ---
+The carry-over written up above was NOT left standing: the author asked whether it could
+really be skipped, so the full suite was run instead of argued about, and it passes -
+69 passed in 380.52 s, see `20260930T233800Z_suite69_full.out` in this directory. The
+argument in this file is kept because "when is a carry-over legitimate" is worth having on
+record; it is no longer the only evidence for the slow 20.
