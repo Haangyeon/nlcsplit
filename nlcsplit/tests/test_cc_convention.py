@@ -31,6 +31,13 @@ def test_core_count_is_per_element_and_zero_for_hydrogen():
     assert freeze_count(["O"]) == 1
     assert freeze_count(["H", "H"]) == 0
     assert freeze_count(["O", "H", "H"]) == 1
+    # the three-system ladder also runs ammonia and methane, so N and C must count exactly
+    # like O; an element silently missing from the table would freeze nothing and quietly
+    # change every number in that row
+    assert freeze_count(["N"]) == 1
+    assert freeze_count(["C"]) == 1
+    assert freeze_count(["N", "H", "H", "H"]) == 1
+    assert freeze_count(["C", "H", "H", "H", "H"]) == 1
 
 
 def test_frozen_plan_sums_from_fragments_to_the_united_set(dimer_split):

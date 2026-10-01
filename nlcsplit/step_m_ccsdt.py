@@ -31,6 +31,11 @@ CCSD(T)/CBS 参考值来判定这是泛函性质还是我们的实现问题"—�
     PYTHONPATH=. python3 -u nlcsplit/step_m_ccsdt.py
 基组用逗号挑，默认先跑与正文同基组那一档：
     BASES="6-31g*,cc-pvdz" PYTHONPATH=. python3 -u nlcsplit/step_m_ccsdt.py
+体系也用逗号挑（`geomlib.S22` 的键名）；缺省只跑水二聚体：
+    SYSTEMS="水二聚体,氨二聚体,甲烷二聚体" BASES="6-31g*" PYTHONPATH=. python3 -u nlcsplit/step_m_ccsdt.py
+三个体系那一跑是为什么：§3.2 只在**水**上做了这个锚点，而六体系表里氨（反泊松 -3.675）
+与甲烷（-0.466）同表并列，锚点却只有一行——不对称。苯系四个与苯-水/苯-氨本机跑不动，
+留在限制里。跑完的汇总表把 CCSD(T) 与正文那一行并排打印，别把两张表混读。
 """
 
 import math
@@ -43,7 +48,15 @@ from nlcsplit import geomlib                           # noqa: E402
 KCAL = 627.509474
 OFFDIR = os.environ.get("S22DIR", "scratch/lit/s22")
 BASES = [b.strip() for b in os.environ.get("BASES", "6-31g*").split(",") if b.strip()]
-NAME = "水二聚体"
+NAME = "水二聚体"                       # 缺省只跑这一个；SYSTEMS 环境变量可给多个
+SYSTEMS = [s.strip() for s in os.environ.get("SYSTEMS", NAME).split(",") if s.strip()]
+# 正文 §3.2 那栏在六体系表里报过的两个数（未校正 / 反泊松，kcal/mol，level 2，6-31g*）。
+# 放在这里只用于打印对照，不参与任何计算；出处 evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out。
+REPORTED = {
+    "水二聚体": (-7.816, -6.129),
+    "氨二聚体": (-5.166, -3.675),
+    "甲烷二聚体": (-0.662, -0.466),
+}
 METHODS = ("MP2", "CCSD", "CCSD(T)")
 
 
@@ -54,15 +67,20 @@ def build(symbols, coords, basis):
                  charge=0, spin=0, verbose=0)
 
 
-def oo_distance(symbols, coords):
-    isyO = [i for i, s in enumerate(symbols) if s == "O"]
-    if len(isyO) < 2:
-        return float("nan")
-    a, b = coords[isyO[0]], coords[isyO[1]]
-    return math.dist(a, b)
+def min_interfragment_distance(symbols, coords, frags):
+    """最近的一对"分属两个片段"的原子间距（Å）——与 step_h 打印的"片间min"同一口径。
+
+    别用它当 O..O 用：水二聚体上它是 H···O = 1.95 Å（O..O = 2.91 Å 是另一回事），
+    氨/甲烷二聚体上根本没有 O。
+    """
+    best = float("inf")
+    for i in frags[0]:
+        for j in frags[1]:
+            best = min(best, math.dist(coords[i], coords[j]))
+    return best
 
 
-CORE_SHELLS = {"O": 1}          # K shells per element; H and He have none
+CORE_SHELLS = {"O": 1, "N": 1, "C": 1}   # K shells per element; H and He have none
 
 
 def freeze_count(symbols):
@@ -124,19 +142,49 @@ def main():
     # 设在 main() 而不是模块顶层：`tests/test_cc_convention.py` 要 import 这个模块，
     # 一个在导入时就改写 BLAS 线程数的脚本会改变整套测试的运行条件。
     os.environ.setdefault("OMP_NUM_THREADS", "8")
-    atoms, frags = geomlib.s22_system(NAME, OFFDIR)
+    summary = {}
+    for name in SYSTEMS:
+        summary[name] = ladder(name)
+    if len(SYSTEMS) > 1:
+        # 汇总表必须自报基组：正文那一行（REPORTED）是 6-31g* 的数，把它贴在别的基组
+        # 旁边就是逼读者误读。只在 6-31g* 那一档并排打印，其余基组明写"不同基组，别比"。
+        show_ref = "6-31g*" in BASES
+        print("== 汇总：CCSD(T) 反泊松相互作用能（kcal/mol，冻核，basis = %s）=="
+              % ", ".join(BASES))
+        print("  %-12s %8s %8s %8s %8s   %s" % ("体系", "MP2", "CCSD", "CCSD(T)",
+                                                "全电子",
+                                                "正文那一行（6-31g*）" if show_ref
+                                                else "正文那一行：不同基组，不要并读"))
+        for name in SYSTEMS:
+            row = summary[name].get("6-31g*", summary[name].get(BASES[0], {}))
+            ref = REPORTED.get(name)
+            tail = ("未校正 %+.3f / 反泊松 %+.3f" % ref) if (show_ref and ref) else \
+                   ("见 6-31g* 那一跑" if ref else "（正文没有这一行）")
+            print("  %-12s %8.3f %8.3f %8.3f %8.3f   %s"
+                  % (name, row.get("MP2", float("nan")), row.get("CCSD", float("nan")),
+                     row.get("CCSD(T)", float("nan")), row.get("CCSD(T)_ae", float("nan")),
+                     tail))
+
+
+def ladder(name):
+    """一个体系的整条阶梯；返回 {basis: {method: dE_CP}} 供 main() 汇总。"""
+    atoms, frags = geomlib.s22_system(name, OFFDIR)
     symbols = [a[0] for a in atoms]
     coords = [a[1] for a in atoms]
-    print("== Step M · 水二聚体 CCSD(T) 反泊松锚点 ==")
-    print("  几何 : 官方 S22 %s/S22_02.xyz（初始几何，未弛豫），原子 %d，O..O=%.4f A"
-          % (OFFDIR, len(atoms), oo_distance(symbols, coords)))
+    xyz = geomlib.S22.get(name, "?") if hasattr(geomlib, "S22") else "?"
+    print("== Step M · %s CCSD(T) 反泊松锚点 ==" % name)
+    print("  几何 : 官方 S22 %s（初始几何，未弛豫），原子 %d，片间最短距离 %.4f A"
+          % (xyz, len(atoms), min_interfragment_distance(symbols, coords, frags)))
     print("  片段 : %s  （与 l2cp 那一行同一划分）" % (frags,))
     print("  基组 : %s" % (", ".join(BASES),))
-    print("  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻 O 1s 与全电子各报一次")
+    print("  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次")
     print("  线程 : OMP_NUM_THREADS=%s   单位: 总能量 Ha，相互作用 kcal/mol (x%.6f)"
           % (os.environ["OMP_NUM_THREADS"], KCAL))
-    print("  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -7.816，反泊松 -6.129 kcal/mol")
+    if name in REPORTED:
+        print("  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 %+.3f，反泊松 %+.3f kcal/mol"
+              % REPORTED[name])
     print()
+    out = {}
 
     for basis in BASES:
         print("### basis = %s" % basis)
@@ -150,7 +198,7 @@ def main():
                  mono_cp[0].nao, mono_cp[1].nao,
                  coreO, sum(coreO)))
 
-        for label, ae in (("frozen(O 1s)", False), ("all-electron", True)):
+        for label, ae in (("frozen(cores)", False), ("all-electron", True)):
             t0 = time.time()
             # 复合物与单体的冻核数出自同一次 freeze_plan。第一版不是这样：它只在复合物
             # 一侧切约定（fz 随档位换，单体写死成 coreO），于是"全电子"那一档拿全电子的
@@ -164,14 +212,17 @@ def main():
             print("  --- %s  (复合物冻 %d，单体冻 %s) ---" % (label, fz_d, fz_m))
             print("    %-9s %18s %18s %18s %12s" % ("method", "E_dimer", "sum E_mono",
                                                     "dE_CP kcal/mol", "s"))
+            out.setdefault(basis, {})
             for k in METHODS:
                 dcp = (ed[k][0] - sum(x[k][0] for x in em)) * KCAL
+                out[basis][k if not ae else k + "_ae"] = dcp
                 print("    %-9s %18.10f %18.10f %+18.4f %12.1f"
                       % (k, ed[k][0], sum(x[k][0] for x in em), dcp, ed[k][1]))
             print("    RHF 参考=%18.10f  收敛 RHF=%s CCSD=%s MP2=%s   本档合计 %.0f s"
                   % (ed["_ref_and_conv"][0], ed["_ref_and_conv"][1],
                      ed["_ref_and_conv"][2], ed["_ref_and_conv"][3], time.time() - t0))
         print()
+    return out
 
 
 if __name__ == "__main__":

@@ -483,6 +483,24 @@ basis-set-consistent keeps doing exactly that [[takatani2010s22]], so no
 "CCSD(T) dispersion energy" can be read out of them, and an earlier version of this draft
 quoted one.
 
+**The same anchor on ammonia and methane is what makes it usable.** The single-system
+version above would read as "the functional is 0.7 kcal/mol too shallow", and that reading
+does not survive being repeated. At 6-31g\*, with every other setting identical, the three
+systems give correlated values of -6.856, -4.455 and -0.178 kcal/mol against our function's
+-6.129, -3.675 and -0.466 [S24]: shallower by 0.73 and 0.78 on the two hydrogen-bonded
+systems, *deeper* by 0.29 on the methane dimer, which at that point looks like the sign of
+the discrepancy is system-dependent. It is not, and the way it fails is worth recording
+because an earlier draft of this paragraph said the opposite. Re-running the correlated side
+in aug-cc-pVDZ moves the methane value by a factor of five (-0.178 to -0.947) and inverts
+that comparison - the methane dimer is dispersion-bound and 6-31g\* has no diffuse
+functions, so its small-basis number was a basis artefact and the companion archive had
+flagged it as such before the second basis was run. What the three systems establish is
+therefore narrower and firmer than a sign: at a fixed basis the deviation is 0.3-0.8
+kcal/mol with no single sign, and the correlated reference itself moves 0.18 to 0.95
+(methane), 4.46 to 3.33 (ammonia) and 6.86 to 5.25 (water) when only the basis changes. Two
+effects of the same size cannot separate each other, which is why this section judges the
+functional nowhere and judges dE_NLC instead.
+
 ### 3.3 The interfragment pair term saturates the frozen-density limit
 
 `inter[(A,B)]`, summed over the retained grid points, is directly comparable to
@@ -965,7 +983,7 @@ the three unequal-centre rows. It skips the referee's own disjoint half-box node
 that construction assumes two congruent boxes, and it runs each density under two different
 element labels so the radii table's contribution is measured instead of assumed |
 | S23 | `evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`, `evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`, `nlcsplit/step_k_population.py`, `evidence/population/MANIFEST.sha256` | the soft-vs-hard reading of the local term, per partition scheme, on both water-dimer geometries at grid level 3: hard populations credit a point to its owner only, soft populations spread it over the fragment factors at that point, and both are computed on PySCF's own partition weights so the measure is the converged one. The two files give the largest soft-hard population difference (1.527e-06 electrons official, 8.686e-07 constructed) and its conversion through beta into kcal/mol. Before these runs existed, this sentence quoted 8.7e-7 electrons on the strength of a working log only - the number was real but its geometry was not the published one, which is why the scope is now stated in the sentence |
-| S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/README.md`, `evidence/ccsdt/MANIFEST.sha256`, `nlcsplit/tests/test_cc_convention.py` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only. Two runs are kept because the second one exists to prove the first is still valid: after the frozen-core selection was refactored into a single call feeding both sides of the difference, the ladder was re-run with the script as it now ships, and stripped of wall-clock columns the two files differ in five lines, all of them one print statement whose wording changed - no energy moved. `nlcsplit/tests/test_cc_convention.py` pins that invariant, and one of its four tests rebuilds the broken pairing on purpose to show the guard can fail |
+| S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`, `evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`, `evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/README.md`, `evidence/ccsdt/MANIFEST.sha256`, `nlcsplit/tests/test_cc_convention.py` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only. Two runs are kept because the second one exists to prove the first is still valid: after the frozen-core selection was refactored into a single call feeding both sides of the difference, the ladder was re-run with the script as it now ships, and stripped of wall-clock columns the two files differ in five lines, all of them one print statement whose wording changed - no energy moved. `nlcsplit/tests/test_cc_convention.py` pins that invariant, and one of its four tests rebuilds the broken pairing on purpose to show the guard can fail |
 
 Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
 water-dimer geometry fix (its inter-fragment minimum is 2.0258 A against 1.95 A in
