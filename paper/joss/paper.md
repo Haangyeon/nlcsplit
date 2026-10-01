@@ -121,12 +121,15 @@ On the reporting side, the package applies one rule to its own output: where
 code reports the two absolute terms and refuses to state a share. An export-time gate applies
 the same rule to the prose. Fifteen gates run on every rebuild, each with a bidirectional
 self-test, and six of them exist because they caught a real defect in this release rather than
-a planted one. The suite collects 69 tests; all 69 pass in the source tree under both PySCF
-versions in the CI matrix (2.12.1 and 2.14.0) and pass again from outside the tree against the
-installed package, where one test skips by design because the benchmark geometry it needs is
-not part of the install. The distributed wheel carries 49 of the 69; the 20 that stay behind
-belong to a frozen control implementation that is deliberately not distributed, and shipping
-its test without it would be a collection-time ImportError.
+a planted one. Two different trees are being counted here and must not be quoted as one. In the
+working repository the suite collects 69 tests and all 69 pass under each PySCF version in the
+matrix (2.12.1 and 2.14.0); those are local rehearsals, archived alongside the rest. What
+GitHub Actions executes is the published tree, where the suite collects 49: 48 pass and one
+skips by design, because the benchmark geometry that test fetches is not part of the install.
+Both arms reach that count twice, once in the checked-out tree and once from outside it against
+the installed package. The 20 tests that stay in the working repository belong to a frozen
+control implementation that is deliberately not distributed, and shipping its test without it
+would be a collection-time ImportError.
 
 # Research impact
 
