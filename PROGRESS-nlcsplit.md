@@ -3265,3 +3265,63 @@ package"混用了**两个不同对象**：导出的 wheel 收 49，`pip install 
   但它没接到本会话，所以那把凭据我也调不到。）
 
 提交 `fd68174` 之后本轮未提交；工作区改动 = 上述归档 + MANIFEST 9 条。
+
+## 2026-10-01 22:3x — 公开仓转 public 完成；CI 第一次真跑的**结果是红的**，根因是流程放错地方
+
+### 做成了什么
+- `Haangyeon/nlcsplit` 由 private 转 **public**（API PATCH 200；匿名 `github.com` 与
+  `raw.githubusercontent.com` 都回 200，`api.github.com` 那次 403 是共享出口 IP 的 rate limit，
+  不是权限——换一个出口再问就是 200）。仓描述同步改掉"12 条闸门"那句过期话。
+- 远端 main 现在 = `0a05675`，**213 个 blob 与本地导出树逐字节相同**（`--no-filters`，见下）。
+  提交链：`0b903ab`(旧) → `99584d4`(今天的树) → `8c291ac`(CI 修法) → `2432ed4`(JOSS 稿+图) → `0a05675`(ORCID)。
+  全部是一个个普通 commit 叠在 origin/main 上，没有 force、没有改写历史。
+
+### CI 一直在跑，而它**两次都判红**——我之前记的"CI 未见执行"是错的
+`total_count=5`。run #1（0b903ab，2026-09-30T04:59Z）双臂 `conclusion=failure`，
+失败步骤都是 `Run node tools/make_public_repo.js`，后面的步骤全被 skip。
+为什么我昨天没看见：那次我用**未认证**请求读 `/actions/runs`，仓库当时是 private ⇒ 404，
+我把 404 读成"没有 run"。今天带着 token 再问才有 200。又一次"零命中 ≠ 不存在"。
+
+根因不是测试挂，是**把出货决定放进了已发布仓的 CI**：
+- 导出器闸门 W 用 `spawnSync` 调 `tools/audit_share_rule.js`，而这个文件**当时不随包发布**
+  （TOOLS 只有两个）。在发布副本里它不存在 ⇒ 自检的脏样例与干净样例**都**返回非零
+  （Cannot find module），闸门按设计保守拒绝出货 ⇒ 每次 push 判红。
+- 这正是闸门 U 专门针对的缺陷类（随包发布的工具硬依赖一个不发布的兄弟文件），
+  只不过 U 只看 Python import，看不见 node 的路径。
+
+修法（两条都做）：① `audit_share_rule.js` 进 TOOLS 随包发布，它的默认名单在 `paper/` 缺席时
+退到发布形态真有的材料并**打印退化**（读不到仍算 FAIL，分母为 0 也算失败，不放松判据）；
+② ci.yml 撤掉出货那步，留下在这个树上真能成立的两步（pytest 双档 + 许可证扫描器自检），
+注释写清撤的是哪步、为什么，避免有人再加回红叉。
+
+### 顺手补的新闸门 Y（十四条 ⇒ **十五条**）
+JOSS 是从仓内路径构建 `paper.md` 的，所以那一篇必须进公开树。加 `paper/joss/{paper.md,paper.bib,fig1_xc_split.png}`，
+PNG **走字节拷贝**（经 read()/utf8 会当场坏）。图用 `python3 -m nlcsplit.figures` 从随包的
+`step_h.json` 侧重生成；生成前后 `git status figs/` 无变化 ⇒ 图上没有过期数。
+新闸门 Y：随包 JOSS 稿里每条相对 markdown 链接必须指向本树真发布的文件，双向自检。
+D 看不见这类——它读的是主篇附录表里反引号路径，而这里的失败形态是指向 `figs/**`。
+计数一涨，所有"十四"的说法当场改齐（ci.yml、paper.md、software.md、p2_skeleton、PLAN-next、导出器注释、仓描述）。
+
+### 三处我自己造的错，都在这一轮里被抓出来
+1. `publish_github.js --verify-only` 被"仓库必须为空/可见性相符"两条**推送前**护栏拦死——
+   而同一文件注释写着它可以事后再跑。护栏绕开 verify-only 之后，第一次核对报出
+   **4 个假差异**：本机 `core.autocrlf=true`，`git hash-object` 会把 CRLF 归一再取 SHA，
+   比的就不是我审过的字节。加 `--no-filters` 后 213/213 全等。带 CRLF 的工件必须按字面比。
+2. `push_manual.sh` 把整段 commit message 塞进双引号，而消息里有英文撇号（`manuscript's`）：
+   bash 当场截断字符串 ⇒ git 报 pathspec 错 ⇒ **提交根本没产生**，可脚本继续跑，
+   push 回显 "Everything up-to-date" 看着像成功。两处一起修：消息走 `-F` 文件；
+   rc 取 `${PIPESTATUS[0]}`（管道尾是 redact，`$?` 量的是 sed 不是 git），commit/push 任一失败即 exit。
+3. 导出器的脱敏把操作员登录名当主机标识替换，于是 JOSS 稿的 `Source:` 会被发成
+   `github.com/<OPERATOR>/nlcsplit` ——论文里一条断链。改成 "this repository"
+   （稿子本来就在仓里，这也更像该说的话）。另外 YAML 里那条注释曾写着"待本人确认"却把
+   数字印在旁边——最坏的中间态。iD 依 `orcid.org/0009-0006-3366-6054` 现取的公开记录
+   （姓名/单位/claimed/verified-email 四项对上）填进字段，二作没有可核依据所以留 TBD。
+
+### 仍未闭合
+- 最新那次 run（0a05675）的 pytest 双臂还在跑。绿了就把 runs+jobs 的原始 JSON 归档进
+  `evidence/release_qa/`，并改掉 `paper/software.md:457-474` 那句 **"no CI run has ever been observed"**
+  ——它现在是被证伪的，而且证伪的方式（未认证 404 当成没有 run）本身就是那节该讲的教训。
+- tcc 93285（苯的三个体系）仍 PEND：`bjobs -p` 给 "Job slot limit reached: 1 host"，
+  `bhosts chinahpc` = MAX 36 / RUN 36 / closed ⇒ 整机满，不是我的请求超了。没动 93284。
+- 一次性 classic PAT（scopes `repo, workflow`，到期 2026-10-02）还没撤销；本地文件
+  `E:\tmp\nlcsplit_pat.tmp` 也还在。CI 结论拿到就删。

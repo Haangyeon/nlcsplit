@@ -9,10 +9,10 @@ tags:
   - quantum chemistry
 authors:
   - name: Angran Xia
-    orcid: TBD-AUTHOR-1   # 只能由本人提供；未经确认不代填（0009-0006-3366-6054 待本人认可后才写）
+    orcid: 0009-0006-3366-6054
     affiliation: 1
   - name: Changwei Wang
-    orcid: TBD-AUTHOR-2   # 同上
+    orcid: TBD-AUTHOR-2   # to be supplied by the author before submission
     affiliation: 1
 affiliations:
   - name: 'School of Chemistry & Chemical Engineering, Shaanxi Normal University, Xi''an 710119, Shaanxi, China'
