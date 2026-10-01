@@ -1,0 +1,116 @@
+== ARCHIVE: CCSD(T) counterpoise anchor extended from one system to three (6-31g*) ==
+
+Why: section 3.2 of paper/main.md reported the counterpoise-corrected interaction energy for
+six systems and the only correlated anchor was the water dimer, so the comparison was
+asymmetric - ammonia (-3.675) and methane (-0.466) sit in the same table with nothing to
+check them against. This run adds both, same basis (6-31g*), same functional-free method
+stack (RHF reference, MP2/CCSD/CCSD(T) from PySCF), same counterpoise convention
+(E_complex - sum of halves each in its own basis at the complex geometry), same official S22
+initial geometries (S22_02 / S22_01 / S22_08), same frozen-core rule (one 1s per heavy atom
+on both sides of the difference, from a single freeze_plan() call).
+
+Run: OMP_NUM_THREADS=16 BASES="6-31g*" SYSTEMS="水二聚体,氨二聚体,甲烷二聚体"
+     PYTHONPATH=. python3 -u nlcsplit/step_m_ccsdt.py     (PySCF 2.12.1, Python 3.10.12, EXIT=0)
+
+Dimer sizes printed by the run: water nao=36 (2x18), ammonia nao=40 (2x20), methane nao=44 (2x22);
+all three with nelec=20 and a frozen count of 2 on the complex / 1+1 on the halves.
+
+Regression check that comes free: the water row of this three-system run is
+-7.149 / -6.682 / -6.856 / -6.887 (MP2 / CCSD / CCSD(T) / all-electron), identical to the
+values in `20260930T224400Z_stepm_ladder_after_refactor.out`. The generalisation to multiple
+systems moved no number.
+
+What the three rows say together, and what they do not say:
+
+  system    MP2     CCSD    CCSD(T)   all-electron   our wB97X-V CP (level 2)
+  water    -7.149  -6.682   -6.856       -6.887            -6.129
+  ammonia  -4.620  -4.293   -4.455       -4.473            -3.675
+  methane  -0.149  -0.129   -0.178       -0.187            -0.466
+
+At fixed basis the functional is *shallower* than correlation on the two hydrogen-bonded
+systems (by 0.73 and 0.78 kcal/mol) and *deeper* on the methane dimer (by 0.29). The sign
+of the discrepancy is system-dependent, which is a stronger and less convenient statement
+than the single water row could support.
+
+The methane row must NOT be read as evidence about the functional yet: 6-31g* has no
+diffuse functions, and the methane dimer is dispersion-bound, so its correlated value
+(-0.178 kcal/mol) is a basis artefact as much as a physical number. A companion run in
+aug-cc-pVDZ is archived separately; if the sign of the methane deviation does not survive
+that basis, the sentence in section 3.2 says so rather than keeping the convenient reading.
+
+--- verbatim stdout below ---
+== Step M · 水二聚体 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_02.xyz（初始几何，未弛豫），原子 6，片间最短距离 1.9516 A
+  片段 : [[0, 2, 3], [1, 4, 5]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=16   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -7.816，反泊松 -6.129 kcal/mol
+
+### basis = 6-31g*
+  复合物 nao=36 nbas=20 nelec=20；单体 nao=18/18；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.3989543401    -152.3875610975            -7.1494          0.1
+    CCSD         -152.4166629333    -152.4060138618            -6.6824          1.4
+    CCSD(T)      -152.4204261343    -152.4095005169            -6.8559          0.1
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 3 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4022441820    -152.3907991493            -7.1819          0.1
+    CCSD         -152.4195201360    -152.4088222958            -6.7130          1.5
+    CCSD(T)      -152.4233210927    -152.4123461140            -6.8869          0.2
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 3 s
+
+== Step M · 氨二聚体 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_01.xyz（初始几何，未弛豫），原子 8，片间最短距离 2.1493 A
+  片段 : [[0, 2, 3, 4], [1, 5, 6, 7]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=16   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -5.166，反泊松 -3.675 kcal/mol
+
+### basis = 6-31g*
+  复合物 nao=40 nbas=24 nelec=20；单体 nao=20/20；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -112.7112581897    -112.7038949784            -4.6205          0.1
+    CCSD         -112.7418249124    -112.7349833946            -4.2931          1.7
+    CCSD(T)      -112.7467281526    -112.7396280910            -4.4554          0.2
+    RHF 参考=   -112.3718155506  收敛 RHF=True CCSD=True MP2=None   本档合计 4 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -112.7151308010    -112.7077370253            -4.6397          0.1
+    CCSD         -112.7452837179    -112.7384144798            -4.3105          1.8
+    CCSD(T)      -112.7502292207    -112.7431008443            -4.4731          0.2
+    RHF 参考=   -112.3718155506  收敛 RHF=True CCSD=True MP2=None   本档合计 4 s
+
+== Step M · 甲烷二聚体 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_08.xyz（初始几何，未弛豫），原子 10，片间最短距离 3.1604 A
+  片段 : [[0, 2, 3, 4, 5], [1, 6, 7, 8, 9]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=16   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -0.662，反泊松 -0.466 kcal/mol
+
+### basis = 6-31g*
+  复合物 nao=44 nbas=28 nelec=20；单体 nao=22/22；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2           -80.6627369312     -80.6624997876            -0.1488          0.1
+    CCSD          -80.7040660339     -80.7038604541            -0.1290          1.4
+    CCSD(T)       -80.7095164355     -80.7092322119            -0.1784          0.4
+    RHF 参考=    -80.3890989545  收敛 RHF=True CCSD=True MP2=None   本档合计 3 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2           -80.6672155143     -80.6669637859            -0.1580          0.1
+    CCSD          -80.7082746516     -80.7080553382            -0.1376          1.6
+    CCSD(T)       -80.7137787311     -80.7134804289            -0.1872          0.2
+    RHF 参考=    -80.3890989545  收敛 RHF=True CCSD=True MP2=None   本档合计 3 s
+
+== 汇总：CCSD(T) 反泊松相互作用能（kcal/mol，冻核）==
+  体系                MP2     CCSD  CCSD(T)      全电子   正文对应行
+  水二聚体           -7.149   -6.682   -6.856   -6.887   未校正 -7.816 / 反泊松 -6.129
+  氨二聚体           -4.620   -4.293   -4.455   -4.473   未校正 -5.166 / 反泊松 -3.675
+  甲烷二聚体          -0.149   -0.129   -0.178   -0.187   未校正 -0.662 / 反泊松 -0.466
+EXIT=0

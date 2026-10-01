@@ -1,0 +1,49 @@
+== ARCHIVE: suite state after the CCSD(T) refactor - 49 fast tests run, 20 slow carried ==
+
+Collection, measured: 69 tests in the working tree = 49 under `-m "not slow"` + 20 under
+`-m slow`.
+
+What was actually executed here, and what was not (the numbers below are the archived
+second execution; a first one gave 49 passed in 27.25 s and 4 passed in 0.54 s):
+
+    $ PYTHONPATH=. python3 -m pytest -m "not slow" -q
+    49 passed, 20 deselected in 26.13s
+
+    $ PYTHONPATH=. python3 -m pytest nlcsplit/tests/test_cc_convention.py -q
+    4 passed in 0.28s
+
+The 20 slow tests were NOT re-run, and that is a claim with a checkable justification
+rather than a convenience. `git diff --name-only afdefba HEAD -- nlcsplit/` returns exactly
+one path, `nlcsplit/step_m_ccsdt.py`, and the working tree adds one more,
+`nlcsplit/tests/test_cc_convention.py`. (afdefba is the commit whose tree the archived
+65-test full run measured - `20260930T202235Z_suite65_full_and_counts.out`, 65 passed,
+710.73 s, whose header prints the `git status` of that tree.) Nothing the slow tests import
+moved: nlc.py, partition.py, fastpair.py, geomlib.py and step_f_dispersion.py are
+byte-identical between the two states, so re-running them would re-measure code that
+has not changed and would cost ~700 s of SCF plus O(N^2) double sums to do it. The slow
+result therefore carries over from the archived full run, and that carry-over is stated
+here rather than hidden behind a "69 passed" line that was never executed.
+
+One methodological note, because the first attempt at the diff-surface check produced a
+false answer: comparing `git show <commit>:file | sha256sum` against `sha256sum file` on
+this working tree reports differences for files nobody touched, because Git normalises
+LF/CRLF between the blob and the checkout. The blob-to-blob `git diff --name-only` above
+is the version that means what it says.
+
+Environment: PySCF 2.12.1, Python 3.10.12 (WSL), numpy 2.2.6, scipy 1.15.3.
+Python module imports inside the tests are unchanged from that run.
+
+--- verbatim pytest output below ---
+.................................................                        [100%]
+49 passed, 20 deselected in 26.13s
+
+....                                                                     [100%]
+4 passed in 0.28s
+EXIT=0
+
+--- ADDENDUM 2026-09-30T23:38Z (local 2026-10-01) ---
+The carry-over written up above was NOT left standing: the author asked whether it could
+really be skipped, so the full suite was run instead of argued about, and it passes -
+69 passed in 380.52 s, see `20260930T233800Z_suite69_full.out` in this directory. The
+argument in this file is kept because "when is a carry-over legitimate" is worth having on
+record; it is no longer the only evidence for the slow 20.

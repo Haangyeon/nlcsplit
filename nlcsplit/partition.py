@@ -99,14 +99,42 @@ def partition_factors(mol, level=3, scheme="becke"):
     """逐点多中心归属因子：返回 (coords (N,3), base_w (N,), S (N,natm))。
 
     base_w 是各原子子网格的原始体积元（未乘任何分区因子），S[:,a] 是归一化后的
-    s_a(r_i)，满足 Σ_a S[i,a] = 1。于是任一空间函数 h 的归属量为 ∫h·s_a，
-    离散成 Σ_i base_w_i · S[i,a] · h(r_i) —— 这才是"软归属"，
-    跟 atom_partition 的 owner 硬指派不是一回事（那个只是取了 S 的一列）。
+    s_a(r_i)，满足 Σ_a S[i,a] = 1。
+
+    ⚠ base_w **不是**空间测度，`Σ_i base_w_i · S[i,a] · h` 也不是 `∫ s_a h` 的近似——
+    它连"差一个常数倍"都不成立，别去猜那个倍数是多少。原因是每个原子的子网格都铺到
+    整个分子的 rmax，拼接点表把同一块空间重复覆盖，而重复几次取决于 h 的形态与网格档；
+    又因为 Σ_a S[i,a] = 1 逐点成立，这个重复不会被子网格归一性吸收掉。
+
+    两组实测（水二聚体 `geomlib.h2o_dimer()`，6-31g*，natm=6，ne=20，becke）：
+      h = ρ（真实密度，带核尖角）：`Σ base_w·ρ` = 100.19 / 690.26 / 279.08 / 94.75
+        （level 0/1/2/3），除以 20 得隐含倍率 5.01 / 34.5 / 14.0 / 4.74 —— 非单调、
+        不收敛到 natm=6。同一批点上 `Σ w_pyscf·ρ` = 19.992976 / 20.000242 / 19.999990 /
+        19.999996，即相对 −3.5e−4 → −2e−7 地收敛到电子数。
+      h = 中心 (0,0,0.2) 的单位高斯（光滑，解析值 ∫h = pi^{3/2} = 5.568328）：
+        `Σ base_w·h` = 35.874 / 33.827 / 33.308（level 1/2/3），对 natm·∫h = 33.410
+        的比是 1.0738 / 1.0125 / 0.9969。只有光滑函数才勉强像"约 natm 倍"。
+
+    软归属的正确写法是**按 owner 掩膜**，也就是只用该原子自己那批子网格点：
+        ∫ s_a h  ≈  Σ_{i: owner(i)=a} base_w_i · S[i,a] · h(r_i)
+    这才是 PySCF 构造网格的本意（每原子子网格带 s_owner 积分一次全空间），且带一个
+    外部锚：对 a 求和必须回到 PySCF 的总权重积分。实测该和 = 5.568243 / 5.568329 /
+    5.568328（level 1/2/3），逐片段值 4.536409 / 0.476582 / 0.476780 / … 在 level 2 与
+    3 之间六位不变。"除以 natm"这种补丁对光滑函数按片段也偏 7–13%，对真实密度 ρ 偏
+    一个量级（隐含倍率 34.5 对 natm=6），都不要用——要软归属就取 `atom_partition`
+    的权重，它已带 Becke 因子，是上面那把收敛的测度。
+
+    nlcsplit 的生产路径（step_h_s22.py、step1_validate.py、examples/check_soft_partition.py）
+    用的都是 atom_partition 的权重，本包里没有任何已报道的数字建立在 base_w 的软归属上；
+    唯一踩在拼接点表上做软归属的是 tests/test_fastpair_ide.py 的 soft 分支，它把同一个
+    base_w 同时喂给被测方与参照方，natm 在比值里自己抵消，因此那条测试检不出这个因子。
 
     两条一致性断言在函数内跑，不过就抛 AssertionError，不返回"看着对"的数组：
       1) Σ_a S[i,a] == 1
       2) base_w · S[owner] == PySCF 自己的 atom_partition weights（逐点）
     第 2 条是外部锚——比对对象是 gen_grid.get_partition 的输出，不是本文件的实现。
+    但它只锚 owner 那一列，锚不住上面的覆盖次数：两条边都乘同一个 base_w，比值恒等
+    于 1。测度本身要靠 test_soft_attribution_owner_masked_matches_analytic_gaussian。
     """
     tab = gen_grid.gen_atomic_grids(mol, {}, level=level)
     atm_coords = np.asarray(mol.atom_coords())

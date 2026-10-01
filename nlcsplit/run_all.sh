@@ -9,6 +9,9 @@
 # 纪律不变：
 #  - 单实例锁：用 mkdir 的可移植锁，不用 flock（flock 在 macOS / Git Bash 上不存在，
 #    本机的 Windows 侧就是第一个踩到的地方；两个 runner 同跑会互相覆盖证据，真发生过）
+#  - **每个随包发布的 step_*.py 都必须登记在下面的 CMD 表里**：导出闸门 X 会拿发布树
+# 与这张表对账，漏一个就拒绝出货。这条纪律是 2026-10-01 补的——上一次修好漏登记时
+# 没留下任何守卫，于是第 14 个脚本（step_m_ccsdt.py）进来就重演了一遍。
 #  - 每个脚本的输出落到带 UTC 时间戳的新文件，不就地覆盖，并登记进 logs/MANIFEST.txt
 #  - 默认只跑**不需要参数、不需要可选依赖、不需要空载机器**的那一组；
 #    其余按组显式点，因为"跑错了把机子占两小时"比"少跑一个"更糟
@@ -40,6 +43,7 @@ declare -A CMD=(
   [step_j]="nlcsplit/step_j_scaling.py"
   [step_k]="nlcsplit/step_k_population.py"
   [step_l]="nlcsplit/step_l_sweep_compare.py"
+  [step_m]="nlcsplit/step_m_ccsdt.py"
   [figures]="nlcsplit/figures.py"
 )
 # 需要命令行参数的：不给参数就**拒绝跑**，而不是让它拿默认值出一个看起来对的数。
@@ -52,7 +56,8 @@ declare -A NOTE=(
   [step_h]="需要 S22 官方几何：先 bash nlcsplit/tools/get_s22.sh；这是正文表 2/3 的来源"
   [step_j]="墙钟标度，**必须空载**：脚本自己带 R 态外部任务计数，脏样本会标 valid_timing=false"
   [step_l]="与被比脚本同为 O(N^2)，level 9 以小时计"
-  [figures]="需要 matplotlib；写 figs/fig{1,2,3}_*.png"
+  [step_m]="需要 S22 官方几何（同 step_h）+ pyscf 的 cc/mp 模块；默认只跑水二聚体 6-31g*（约数分钟），SYSTEMS=/BASES= 可扩到氨/甲烷与 aug-cc-pVDZ，那一档以十分钟计"
+  [figures]="需要 matplotlib；写 figs/fig{1,2,3,4}_*.png（fig4 的数取自 evidence/ccsdt 与 orca_widen 的归档 stdout，读不全就拒绝出图）"
 )
 declare -A PRESETS=(
   [quick]="step1 step2 step_d step_e step_f"

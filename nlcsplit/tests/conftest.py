@@ -7,4 +7,4 @@ PytestUnknownMarkWarning。这文件跟着包一起装，标记在哪儿都是�
 """
 
 def pytest_configure(config):
-    config.addinivalue_line("markers", "slow: 需要完整 SCF/多网格档位，默认由 addopts 排除")
+    config.addinivalue_line("markers", "slow: 需要完整 SCF/多网格档位，只有显式 -m 'not slow' 才排除")

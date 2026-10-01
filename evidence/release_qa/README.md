@@ -31,6 +31,15 @@ wheel 的 4e9efb8e… 同时出现在 `20260929T170302Z_wheelclean_pyargs.out` �
 | `20260929T213318Z_srcdir_install_fileset.out` | `pip install .`（**母仓源码目录**）与 wheel 的成员对照 | 两边各有多少 `.py` | 源码树装出 37，wheel 只有 31 —— 差集就是六个刻意不发布的内部模块 |
 | `gate_selftest_20260930.txt` | 十二条闸门 + 各自的反证 | 命中数、豁免账、自测输出 | 全 0 命中；反证全部按预期响 |
 | `published_tree_rerun_20260930.txt` | **发布树自己**：整份复制到新目录，跑它带着的那份导出脚本，连跑两次 | 产出是否不动点、少掉哪些检查 | 两次都 exit 0，两次产出只差导出时间戳；少掉的检查逐条打在 stderr |
+| `20260930T181000Z_wheel_pyargs_44_firstrun.out` | 44 收集数的 wheel（`d175c7b8…`），`--target` 树外 | 全量 44 | 43 passed, 1 skipped, **655.52 s**。这是"重打之后必须在树外再跑一次"那条规矩落到实处的第一份 |
+| `20260930T181923Z_wheel_pyargs_44.out` | 同上家族的第二次独立跑（`d123d1c8…`，36 成员，哈希写在自己日志里） | 全量 44 | 43 passed, 1 skipped, **519.36 s**。两份跑的收集数相同、容器哈希不同——正是"每次导出都重打 wheel，哈希会变而打包字节可以完全不动" |
+| `publish_record_20260930.txt` | 公开仓那一侧的建立记录（远端、分支、blob 对账） | 121 ↔ 121 | 远端 `<OPERATOR>/nlcsplit`（private）建立，main 的 121 个 blob 与导出树逐个 SHA 相同；**可见性翻转与 `repository-code` 仍归作者** |
+| `20260930T202235Z_suite65_full_and_counts.out` | **母仓工作树**（不是安装物），`PYTHONPATH=. pytest -q` | 全量 65 = not-slow 45 + slow 20，三份收集数都在这份里 | **65 passed，无跳过，710.73 s，EXIT=0**；抬头带 python/pyscf/numpy/scipy 版本与跑时的 `git status` |
+| `20260930T233800Z_suite69_full.out` | **母仓工作树**，`PYTHONPATH=. pytest -q` | 全量 **69 = 49 not-slow + 20 slow**，无跳过 | **69 passed, 380.52 s, EXIT=0**。与 65 项那次（710.73 s）同一台机器、同样设置、新增测试合计 0.28 s ⇒ 1.87 倍差是负载不是内容，两个数都不能当"这个套件的用时"。这份是作者追问"能砍吗"之后实跑出来的，取代了下面那份 carry-over |
+| `20260930T230121Z_suite69_fast_and_diffsurface.out` | **母仓工作树**（不是安装物） | 69 = 49 not-slow + 20 slow，但只跑了 49 项 | **49 passed, 20 deselected in 26.13 s** ＋新模块 4 项 0.28 s 通过。当时那 20 项按"逐文件 diff 只多出 `step_m_ccsdt.py` 与新测试"记为 carry-over；**文件末尾已附 2026-09-30T23:38Z 补记**：全量已实跑通过，本文件只作"何时 carry-over 才算合法"的样例保留 |
+| `20260930T231147Z_wheel_pyargs_49_member38_fast.out` | **再一次重建的 wheel**（`55033716…`，38 成员、7 个测试模块），同上装法 | 收集 49 = 31 not-slow + 18 slow | **30 passed, 1 skipped, 18 deselected in 25.72 s**。18 项 slow **没重跑**，这是明说的 carry-over：那 8 个测试文件与它们 import 的库模块，与 9 分钟前整跑过的 37 成员 wheel 逐字节相同，`git diff --name-only afdefba HEAD -- nlcsplit/` 只列得出 `step_m_ccsdt.py` |
+| `20260930T205444Z_wheel_pyargs_45.out` | **重建后的 wheel**（`149e727b…`，36 成员），同样 `--target` + `PYTHONPATH`，cwd 在解包目录里 | 全量 45（= 27 not-slow + 18 slow），这是本目录里收集数最大的一份 | **44 passed, 1 skipped, 322.21 s**；跳过的是 `test_geometry.py` 那条设计内的 S22 取回项。**注意**这一跑没设 `OMP_NUM_THREADS=2`（前两份都设了），所以 322 s 与 406–656 s 不可并池比较，只有计数可比 |
+| `20260930T220142Z_wheel_pyargs_45_member37.out` | **再重建一次的 wheel**（`7e7f9d71…`，37 成员——多出来的只有 `step_m_ccsdt.py`，8 个测试文件逐位相同），同上装法 | 仍是全量 45 | **44 passed, 1 skipped, 504.67 s**。与上一份 1.57 倍的墙钟差发生在同一台机器、同样没设线程变量、测试模块逐位相同的两个 wheel 上，两份日志里都没有可指认的原因 ⇒ 这就是"墙钟只按各自日志引、绝不归一"的实证，可比的是计数不是时间 |
 
 `20260929T213318Z` 那份是本目录里唯一一份**判语指向别处**的证据：它不证明任何数值主张，
 它证明的是"装源码 ≠ 装发布物"这个前提曾经是假的，而闸门 V 现在看住它。

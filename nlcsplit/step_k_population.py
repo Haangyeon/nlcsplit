@@ -85,6 +85,32 @@ def main():
     print(f"\n  片段 0 的四方案布居跨度 ΔN_A = {spread:.3e} e"
           f"  ⇒ β·ΔN_A = {spread * beta_ha * KCAL:.4f} kcal/mol")
     print(f"  片段 1 = {ne} − 片段 0，跨度与片段 0 相同（电子数守恒，恒等式而非估算）")
+
+    # 软归属 vs owner 硬归属：同一把测度（PySCF 的分区权重 w，它满足
+    # Σ_i w_i f = Σ_a ∫ s_a f = ∫ f），区别只在"整点给 owner"还是"按该点的
+    # 各片因子分摊"。这一段是 main.md §2 那句"至多 8.7e-7 个电子"的出处——
+    # 以前那个数只在 PROGRESS 日志里，没有工件，现在把它算出来并留档。
+    print("\n  软归属 vs owner 硬归属（同网格、同密度、同测度）：")
+    worst = 0.0
+    for sch in SCHEMES:
+        coords, w, owner = partition.atom_partition(mol, level=LEVEL, scheme=sch)
+        rho = rho_at(mol, mf, coords)
+        p = partition.partition_matrix(mol, coords, sch).T     # (N, natm)，与 partition_factors 同形
+        S = p / p.sum(axis=1, keepdims=True)
+        wr = w * rho
+        hard = per_frag(wr, owner, frags)
+        soft = [float((wr * S[:, list(frag)].sum(axis=1)).sum()) for frag in frags]
+        # 容差与上面硬指派那条一致（1e-3）：PySCF 自己的分区权重把 ∫ρ 积到
+        # 19.999996/20，这是网格的固有误差，不是软指派引入的，别拿 1e-6 卡它。
+        assert abs(sum(soft) - ne) < 1e-3, f"软指派不守恒：{sum(soft)} vs {ne}"
+        d = max(abs(a - b) for a, b in zip(hard, soft))
+        worst = max(worst, d)
+        print(f"  {sch:<16} hard N_A={hard[0]:9.6f}/{hard[1]:9.6f}"
+              f"  soft N_A={soft[0]:9.6f}/{soft[1]:9.6f}  max|Δ|={d:.3e} e")
+    print(f"\n  ⇒ 四方案里最大的软硬差 = {worst:.3e} 个电子"
+          f"，乘 β 后 = {worst * beta_ha * KCAL:.3e} kcal/mol")
+    print(f"  读法：软/硬两种读法在数值上是同一件事，差 {worst:.1e} e 远小于上一行"
+          " 的方案间跨度（差若干个量级），所以它不是另一种不确定度来源。")
     print("  读法：这是**一切用 Becke 布居的分解法共有的**性质，不是本方法的贡献；"
           "差值（ΔE_NLC）里 β∫ρ 精确抵消，只有绝对片段能带上这条不确定度。")
 

@@ -1,0 +1,111 @@
+== ARCHIVE: Step M rerun with the shipped script, after the freeze-plan refactor ==
+
+This is the second run of the same ladder, and it exists for one reason: the archived
+`20260930T212300Z_stepm_ladder.out` was produced by `step_m_ccsdt.py` *before* the
+frozen-core selection was refactored into a single `freeze_plan()` entry point. A paper
+may not cite numbers whose producing code no longer exists, so the ladder was re-run with
+what the package now ships.
+
+Reproduction, checked field by field rather than asserted: both files were reduced to
+their basis headers, rung markers, MP2/CCSD/CCSD(T) rows and RHF lines, with every
+trailing wall-clock column stripped. 60 such lines each; five differ, and all five are the
+one print statement whose wording changed ("冻核数 1/1（复合物 2）" became
+"每片段冻核 [1, 1]，合计 2"). Not one energy, not one interaction-energy figure, not one
+convergence flag differs. The refactor moved no number.
+
+Why the earlier archive stays in this directory: the comparison above is only checkable if
+both files exist. See README.md here for which one the paper cites.
+
+Run: OMP_NUM_THREADS=16 MAXMEM_MB=12000 BASES="6-31g*,cc-pvdz,aug-cc-pvdz,cc-pvtz,aug-cc-pvtz"
+     PYTHONPATH=. python3 -u nlcsplit/step_m_ccsdt.py   (PySCF 2.12.1, Python 3.10.12, WSL, EXIT=0)
+
+Conventions are the ones stated in the first archive's header, unchanged: official S22 entry 2
+(initial, unrelaxed geometry, O...O = 2.9104 A), counterpoise only, RHF reference,
+MP2/CCSD/CCSD(T) from PySCF's own modules, frozen-O-1s and all-electron as two separate rungs
+with the frozen count taken from the same call on both sides of the difference.
+
+--- verbatim stdout below ---
+== Step M · 水二聚体 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 scratch/lit/s22/S22_02.xyz（初始几何，未弛豫），原子 6，O..O=2.9104 A
+  片段 : [[0, 2, 3], [1, 4, 5]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*, cc-pvdz, aug-cc-pvdz, cc-pvtz, aug-cc-pvtz
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻 O 1s 与全电子各报一次
+  线程 : OMP_NUM_THREADS=16   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -7.816，反泊松 -6.129 kcal/mol
+
+### basis = 6-31g*
+  复合物 nao=36 nbas=20 nelec=20；单体 nao=18/18；每片段冻核 [1, 1]，合计 2
+  --- frozen(O 1s)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.3989543401    -152.3875610975            -7.1494          0.1
+    CCSD         -152.4166629333    -152.4060138618            -6.6824          1.3
+    CCSD(T)      -152.4204261343    -152.4095005169            -6.8559          0.1
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 3 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4022441820    -152.3907991493            -7.1819          0.1
+    CCSD         -152.4195201360    -152.4088222958            -6.7130          1.5
+    CCSD(T)      -152.4233210927    -152.4123461140            -6.8869          0.1
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 3 s
+
+### basis = cc-pvdz
+  复合物 nao=48 nbas=22 nelec=20；单体 nao=24/24；每片段冻核 [1, 1]，合计 2
+  --- frozen(O 1s)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4687118901    -152.4569288085            -7.3940          0.1
+    CCSD         -152.4870134495    -152.4760642572            -6.8707          1.8
+    CCSD(T)      -152.4934470783    -152.4821560106            -7.0853          0.2
+    RHF 参考=   -152.0625362239  收敛 RHF=True CCSD=True MP2=None   本档合计 4 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4734315316    -152.4615958940            -7.4270          0.0
+    CCSD         -152.4912439730    -152.4802459829            -6.9013          2.2
+    CCSD(T)      -152.4977225305    -152.4863821925            -7.1162          0.2
+    RHF 参考=   -152.0625362239  收敛 RHF=True CCSD=True MP2=None   本档合计 5 s
+
+### basis = aug-cc-pvdz
+  复合物 nao=82 nbas=36 nelec=20；单体 nao=41/41；每片段冻核 [1, 1]，合计 2
+  --- frozen(O 1s)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.5299473715    -152.5216450180            -5.2098          0.1
+    CCSD         -152.5450704380    -152.5371568853            -4.9658          3.1
+    CCSD(T)      -152.5559707371    -152.5476078556            -5.2478          0.9
+    RHF 参考=   -152.0885993170  收敛 RHF=True CCSD=True MP2=None   本档合计 11 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.5350534790    -152.5266177261            -5.2935          0.0
+    CCSD         -152.5496640917    -152.5416250942            -5.0445          4.5
+    CCSD(T)      -152.5606181173    -152.5521284784            -5.3273          1.2
+    RHF 参考=   -152.0885993170  收敛 RHF=True CCSD=True MP2=None   本档合计 12 s
+
+### basis = cc-pvtz
+  复合物 nao=116 nbas=42 nelec=20；单体 nao=58/58；每片段冻核 [1, 1]，合计 2
+  --- frozen(O 1s)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6469816838    -152.6372427086            -6.1113          0.2
+    CCSD         -152.6580369036    -152.6490392967            -5.6461          6.4
+    CCSD(T)      -152.6738219466    -152.6643683604            -5.9322          3.3
+    RHF 参考=   -152.1209551538  收敛 RHF=True CCSD=True MP2=None   本档合计 19 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6745002884    -152.6644403288            -6.3127          0.2
+    CCSD         -152.6852380549    -152.6759104281            -5.8532         10.4
+    CCSD(T)      -152.7012785570    -152.6914931885            -6.1404          6.2
+    RHF 参考=   -152.1209551538  收敛 RHF=True CCSD=True MP2=None   本档合计 27 s
+
+### basis = aug-cc-pvtz
+  复合物 nao=184 nbas=62 nelec=20；单体 nao=92/92；每片段冻核 [1, 1]，合计 2
+  --- frozen(O 1s)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6661700519    -152.6579458117            -5.1608          1.0
+    CCSD         -152.6751869052    -152.6673117644            -4.9417         67.1
+    CCSD(T)      -152.6929039231    -152.6846119143            -5.2033         35.4
+    RHF 参考=   -152.1266174978  收敛 RHF=True CCSD=True MP2=None   本档合计 123 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6972425820    -152.6882655632            -5.6332          0.7
+    CCSD         -152.7061187570    -152.6974572880            -5.4352        116.6
+    CCSD(T)      -152.7241142627    -152.7150330961            -5.6985        101.4
+    RHF 参考=   -152.1266174978  收敛 RHF=True CCSD=True MP2=None   本档合计 254 s
+
+EXIT=0

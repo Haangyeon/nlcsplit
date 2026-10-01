@@ -1,0 +1,18 @@
+# out-of-tree run of the published wheel's own test suite
+# recorded UTC: 2026-09-30T18:19:24Z
+# wheel: dist/nlcsplit-0.1.0-py3-none-any.whl
+# wheel sha256: d123d1c851079672b79f89c8e3ff0867d9c7ca50d451c89326b814e991e681fe
+# wheel mtime (UTC): 2026-09-30T18:04:13Z
+# the last line of the raw output below is the line count of `python3 -m zipfile -l <wheel> (36 members plus its header); the run above is the second independent out-of-tree run of this wheel family, the first took 655.52 s.
+# extraction dir: scratch/wheelchk3 (persistent; an earlier attempt under WSL /tmp was wiped mid-run)
+# invocation cwd: /tmp  (deliberately NOT the source tree, so the import resolves to the wheel)
+# command: PYTHONPATH=<unpacked wheel> OMP_NUM_THREADS=2 python3 -m pytest -q --pyargs nlcsplit
+# environment:
+  python 3.10.12 numpy 2.2.6 pyscf 2.12.1 pytest 9.1.1
+# raw output follows
+wheel_sha256=d123d1c851079672b79f89c8e3ff0867d9c7ca50d451c89326b814e991e681fe
+wheel_mtime=2026-09-30T18:04:13Z
+...............s............................                             [100%]
+43 passed, 1 skipped in 519.36s (0:08:39)
+EXIT_FULL=0
+37

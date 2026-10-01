@@ -1,0 +1,28 @@
+== ARCHIVE: full 69-test suite run on the tree that carries the convention guard ==
+
+    $ PYTHONPATH=. python3 -m pytest -q
+    69 passed in 380.52s (0:06:20)
+    EXIT=0
+
+Why this run exists. An earlier artefact
+(`20260930T230121Z_suite69_fast_and_diffsurface.out`) recorded that only the 49 fast tests
+had been re-run after the CCSD(T) refactor, with the 20 slow ones carried over on the
+argument that nothing they import had changed. The author asked whether that carry-over
+could really be skipped, and the honest answer is that the argument covers "the code did
+not change" but not "adding a module to the session cannot affect the slow tests". So the
+full suite was run instead of argued about, and it passes: 69 of 69, nothing skipped.
+
+Wall clock 380.52 s here against 710.73 s for the archived 65-test run on the same box
+(`20260930T202235Z_suite65_full_and_counts.out`). Same suite, same thread settings, and the
+four added tests are pure logic that take 0.28 s together - so the 1.87x difference is
+machine load, not content, and neither number should be quoted as "the" suite time. The
+counts are the comparable quantity.
+
+Collection, measured: 69 = 49 under `-m "not slow"` + 20 under `-m slow`.
+
+Environment: PySCF 2.12.1, Python 3.10.12 (WSL), numpy 2.2.6, scipy 1.15.3.
+
+--- verbatim pytest output below ---
+.....................................................................    [100%]
+69 passed in 380.52s (0:06:20)
+EXIT=0

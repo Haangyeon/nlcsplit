@@ -1,0 +1,18 @@
+跨程序裁判（ORCA 6.0.1 vs PySCF）：8 个体系，同一量、同一几何、同一基组
+单位 kcal/mol；差 = ORCA - PySCF；相对差按 PySCF 绝对值归一
+
+system                  S22   N       ORCA      PySCF      diff    rel%     span  res/span
+water dimer               2   6    -0.5931    -0.5935    0.0004   0.067   0.0435     0.009
+ammonia dimer             1   8    -0.6745    -0.6780    0.0035   0.514   0.0290     0.120
+methane dimer             8  10    -0.5160    -0.5170    0.0010   0.187   0.0040     0.242
+benzene...water          17  15    -1.2522    -1.2590    0.0068   0.544   0.2470     0.028
+benzene...ammonia        18  16    -1.3189    -1.3270    0.0081   0.612   0.2240     0.036
+benzene...methane        10  17    -1.3912    -1.4040    0.0128   0.909   0.2130     0.060
+benzene dimer (A)        11  24    -4.3252    -4.3668    0.0416   0.952   0.0320     1.301
+benzene dimer (B)        20  24    -2.3685    -2.3880    0.0195   0.817   0.2189     0.089
+
+n = 8 个体系；相对差区间 0.067% – 0.952%
+绝对差最大 0.0416 kcal/mol
+跨程序残差小于同行归属跨度的：7 / 8 个体系（比值 > 1 的那个体系见上表 res/span 列）
+定义与口径由本脚本从三个工件现读现算；任一字段不一致即拒绝出表。
+输入：evidence/orca_widen/orca_widen.json, nlcsplit/logs/orca_anchor.json, nlcsplit/logs/step_h.json

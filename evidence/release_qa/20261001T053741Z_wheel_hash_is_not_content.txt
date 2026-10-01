@@ -1,0 +1,37 @@
+== ARCHIVE: the wheel artifact hash is not a content fingerprint - four rebuilds of an unchanged tree ==
+
+Why this exists. `paper/software.md` names the wheels it tested by their sha256 prefixes,
+across several rebuilds. That is only honest if a reader knows what a hash there identifies.
+It does not identify content: `bdist_wheel` stamps each zip entry with the time of building,
+so the same source tree built a minute later is a different file. Measured here rather than
+asserted, because a reviewer running `make` twice and getting the same bytes would otherwise
+think this paper's hashes are content-addressed - and because the first draft of this very
+paragraph claimed "each rebuild differs", which the fourth rebuild refuted.
+
+What was run: `node tools/make_public_repo.js` four times in a row with nothing changed
+anywhere under `nlcsplit/` or `nlcsplit/tests/` between runs.
+
+    build at 05:36Z   dac44118bba4...   38 members
+    build at 05:36Z   8c0a091292e9...   38 members
+    build at 05:37Z   9e42b4699c6f...   38 members
+    build at 05:37Z   9e42b4699c6f...   38 members   <- identical to the previous build
+
+Three distinct hashes from four builds, and the fourth build reproduced the third exactly.
+The reason is the zip timestamp field, which carries two-second resolution: the two builds
+that landed in the same tick produced byte-identical archives, and the pairs that straddled a
+tick did not. Member count never moved.
+
+Content identity was checked separately and does hold: `nlcsplit-0.1.0.dist-info/RECORD`,
+which lists a digest per member, was extracted from two builds and compared line by line -
+38 lines, `diff` clean, identical. That is the thing to quote when the claim is "the same
+software", and it is what `gateT`/`gateF` compare. The artifact hash is a fingerprint of the
+build moment.
+
+Consequence for the paper: every "the wheel now has N members (`abc12345...`)" sentence in
+`paper/software.md` names a build that was run and logged, not an artifact a reader can
+regenerate by hash. Reproducing them needs `SOURCE_DATE_EPOCH`, which this project does not
+set - deliberately not added here, because pinning the timestamps would break the one check
+that caught the packaging defects this section is about (a rebuild that changes nothing else
+must still be auditable through its member list, not assumed equal by a stable hash).
+
+Producer: `tools/make_public_repo.js`; commands and outputs as pasted above, timestamps in UTC.

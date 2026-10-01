@@ -1,0 +1,57 @@
+== ARCHIVE: pytest fastpair stdout, taken after the L2 assertion was made quantitative ==
+
+Archived 2026-10-01. paper/p2.md quotes three numbers that live only in the lines below -
+the tau=1e-13 budget reading (cert_err 4.688e-10 Ha against a 1e-9 Ha budget,
+-0.523653418 screened against -0.523653446 exact, difference 2.763e-8 kcal/mol) and the
+root-separation statement that box_sep equals ball_sep on all 15 atom-block pairs. Their
+only carrier until now was nlcsplit/logs/20260929T105823Z_pytest_fastpair_after_assert_fix.out,
+which is gitignored scratch, so a reader could not open the thing being cited. The body
+below is that file verbatim.
+
+Run: PYTHONPATH=. pytest -q -s on nlcsplit/tests/test_fastpair.py; 10 passed in 432.61 s.
+The log line's own timestamp (2026-09-29 10:58 UTC) is the date of the run. The commit
+under test is NOT recorded inside the stdout, so this archive does not claim one; what it
+does fix is the file content and, below, its hash.
+Source SHA-256 (nlcsplit/logs/20260929T105823Z_pytest_fastpair_after_assert_fix.out):
+cf2540dc382dc256d7d6af02e19338beec130b561deafebd15c07a710facefb8
+
+Two cautions for anyone reading the sweep as a cost curve:
+  * "省下的点对占比" is the droppable fraction of far+self point pairs, so the evaluated
+    fraction is its complement (9.81% dropped = 90.19% evaluated at tau=1e-13);
+  * these are functional measurements printed from inside tests, not the timed runs in
+    evidence/scaling/, which are the only admissible cost numbers.
+
+--- verbatim stdout below ---
+
+  合成场：界/实际 最坏比值 572097933.7x（200 组随机子集，全部成立）
+...  atom 0: nleaf= 178 mass=7.117  原子球半径=13.09  最大叶半径= 6.78  最大叶盒对角= 9.91  最小盒间距= 0.00  跨原子非零间距叶对=90543/92382 (98.0%)
+  atom 1: nleaf=  86 mass=1.378  原子球半径=13.99  最大叶半径=10.55  最大叶盒对角=14.25  最小盒间距= 0.00  跨原子非零间距叶对=51315/52546 (97.7%)
+  atom 2: nleaf=  87 mass=1.375  原子球半径=13.89  最大叶半径=10.20  最大叶盒对角=13.89  最小盒间距= 0.00  跨原子非零间距叶对=51780/53070 (97.6%)
+  atom 3: nleaf= 166 mass=7.219  原子球半径=13.34  最大叶半径=11.03  最大叶盒对角=12.35  最小盒间距= 0.00  跨原子非零间距叶对=86515/88146 (98.1%)
+  atom 4: nleaf=  94 mass=1.500  原子球半径=11.38  最大叶半径= 7.69  最大叶盒对角=11.16  最小盒间距= 0.00  跨原子非零间距叶对=55405/56682 (97.7%)
+  atom 5: nleaf=  86 mass=1.411  原子球半径=14.07  最大叶半径=10.17  最大叶盒对角=14.99  最小盒间距= 0.00  跨原子非零间距叶对=51324/52546 (97.7%)
+  跨原子叶对合计（有序）：386882/395372 有正盒间距  —— 整原子球判据给不出任何一个
+.
+  h2o2 lvl1 τ=0.0001: 接受   9521/197686 叶对  省下的点对占比 68.27%  实际差 3.647e+00  界 1.172e+02 kcal/mol
+
+  h2o2 lvl1 τ=1e-06: 接受  36019/197686 叶对  省下的点对占比 64.27%  实际差 1.334e+00  界 9.181e+00 kcal/mol
+
+  h2o2 lvl1 τ=1e-08: 接受  32131/197686 叶对  省下的点对占比 40.75%  实际差 1.472e-02  界 8.018e-02 kcal/mol
+
+  h2o2 lvl1 τ=1e-10: 接受  25554/197686 叶对  省下的点对占比 22.09%  实际差 7.697e-05  界 5.217e-04 kcal/mol
+
+  h2o2 lvl1 τ=1e-12: 接受  19157/197686 叶对  省下的点对占比 12.35%  实际差 4.228e-07  界 3.293e-06 kcal/mol
+  h2o2: 界/实际 最坏比值 32.1x
+.
+  L4: 原子路径逐位相同；树路径(8 叶)相对差 0.00e+00，点对记账闭合
+...
+  L2: 取 τ=1e-13 Ha ⇒ cert_err=4.688e-10 Ha ≤ 预算 1e-09  P_frz 屏蔽 -0.523653418 vs 精确 -0.523653446 kcal/mol  差 2.763e-08   省下的点对占比 9.81%
+.
+  τ=1e-8 Ha: 球路径 接受=0 原子对=21 cert_err=0.0e+00  （与不屏蔽逐位同）
+             树路径 接受= 32131/197686 访过内部节点=101119  省下的点对占比 40.75%  cert_err=1.278e-04 Ha
+  Σ|精确半块|×2 = 1.8237 kcal/mol
+  Σ球界 = 1.3632e+07   松 7.47e+06x
+  Σ盒界 = 1.3632e+07   松 7.47e+06x
+  根节点间距：15 个原子块对上 box_sep 与 ball_sep（块与树根各一份，共 60 个数）全为 0.0e+00 ⇒ 根上盒不比球紧，Σ盒界与Σ球界逐位相等：True
+.
+10 passed in 432.61s (0:07:12)
