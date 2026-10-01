@@ -48,7 +48,14 @@ across bases and grids but with no pattern by interaction type - so a
 fragment-resolved nonlocal energy needs a per-system error bar, not a global one.
 For absolute rather than differential fragment energies that scheme dependence is
 exactly beta times the dependence of the Becke population, 3.04 kcal/mol per
-electron, and we report it as a limitation rather than a result.
+electron, and we report it as a limitation rather than a result. We found no published
+implementation that resolves this term into fragment pairs: JuNoLo [[lazic2010junolo]]
+evaluates the same double sum in parallel but returns the correlation energy, and the pair
+index is not recoverable from its output. That index is also not free, and we measure its
+price rather than assert it: a distance-only certificate per block pair is loose by a factor
+of 2.4e5 at the tightest case we found in a real dimer, so of 33 timed screened/exact pairs
+on an unloaded machine none beat the exact sum, the screened path running 1.08-13.29x
+slower while still evaluating 84.4-95.4% of the far-field point pairs [S25].
 
 ## 1. Introduction
 
@@ -587,6 +594,38 @@ sometimes discussed as if they competed. The distinction between the two geometr
 is itself the lesson here: this sentence read "8.7e-7 electrons" for a week, which was
 true of the constructed geometry and silently too small for the one we publish.
 
+### 3.6 The pair index has a cost, and a provable bound does not pay it
+
+Keeping the (i, j) index means the double sum is evaluated rather than folded, so the
+optimisation every quadratic kernel eventually tries is the obvious one: bound each block,
+discard the blocks whose bound cannot matter at the requested accuracy, and hope the arithmetic
+saved outweighs the deciding. We built that path - box separation of the point sets, a leaf-pair
+traversal with a monotone accept rule, and a per-block certificate - and timed it against the
+exact sum twice, on an unloaded machine, with the load sampled before and after each rung so a
+contended window cannot be read as a measurement. It is slower everywhere. Of 33 timed
+screened/exact pairs, none ran faster: the ratio spans 1.08-10.28x in the archived window and
+1.37-13.29x in the re-run window [S25].
+
+The culprit is the bound rather than the traversal. At atom-pair granularity the smallest
+block-pair certificate we found for a real dimer is 197.96 Ha, against the quantity it would
+have to decide on, -8.34e-4 Ha - loose by a factor of 2.4e5 - and the corresponding run reports
+zero pairs whose bound falls below the value and an empty drop list [S25]. A traversal cannot
+recover from that: it can only descend, and descent is the work. The consequence stated in this
+paper's own units: at the coarsest tolerance in the sweep that still reproduces the exact sum to
+|dE| <= 1e-6 kcal/mol, the screened path evaluates 84.4-95.4% of the far-field point pairs, and
+for two of the six systems no tolerance in the sweep meets that target at all, so their admissible
+tolerance is finer still and the share smaller.
+
+We report this as the price of the pair index, not as a defect to be smoothed over. A reader
+deciding whether pair resolution is affordable on their own system needs the number, and the
+mechanism behind it constrains any future claim: a distance-only bound of the kind we implemented
+does not reach 1e-3 Ha at pair granularity for diffuse inter-fragment pairs, so screening on this
+term has to begin from a tighter certificate than the one that makes MBD-style schemes pay, and
+until such a certificate exists the exact double sum is the cheapest correct option we know of.
+The kernel-specific bound for VV10 (which has no multipole expansion to exploit in the near
+field, unlike a charge-charge kernel) remains an open problem; nothing in this paper depends on
+solving it.
+
 ---
 
 ## 4. Scope, independent verification, and limitations
@@ -978,6 +1017,7 @@ that construction assumes two congruent boxes, and it runs each density under tw
 element labels so the radii table's contribution is measured instead of assumed |
 | S23 | `evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`, `evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`, `nlcsplit/step_k_population.py`, `evidence/population/MANIFEST.sha256` | the soft-vs-hard reading of the local term, per partition scheme, on both water-dimer geometries at grid level 3: hard populations credit a point to its owner only, soft populations spread it over the fragment factors at that point, and both are computed on PySCF's own partition weights so the measure is the converged one. The two files give the largest soft-hard population difference (1.527e-06 electrons official, 8.686e-07 constructed) and its conversion through beta into kcal/mol. Before these runs existed, this sentence quoted 8.7e-7 electrons on the strength of a working log only - the number was real but its geometry was not the published one, which is why the scope is now stated in the sentence |
 | S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`, `evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`, `evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/20261001T044833Z_orca_crosscheck.out`, `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out`, `evidence/ccsdt/orca_crosscheck.py`, `evidence/ccsdt/README.md`, `evidence/ccsdt/MANIFEST.sha256`, `nlcsplit/tests/test_cc_convention.py` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only. Two runs are kept because the second one exists to prove the first is still valid: after the frozen-core selection was refactored into a single call feeding both sides of the difference, the ladder was re-run with the script as it now ships, and stripped of wall-clock columns the two files differ in five lines, all of them one print statement whose wording changed - no energy moved. `nlcsplit/tests/test_cc_convention.py` pins that invariant, and one of its four tests rebuilds the broken pairing on purpose to show the guard can fail. `evidence/ccsdt/orca_crosscheck.py` is the third-program check on the same quantity: ORCA 6.0.1, same geometries, same basis, same counterpoise convention, on three systems and both conventions (eight rows, 24 single points), worst difference 0.0002 kcal/mol on the interaction energy and 1.2e-07 Ha between executions on the absolute energies. `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out` is the one to cite for it; it also carries the correction of an earlier claim in this directory, which is why the basis check is stated the way it is. The first version of that check read ORCA's `Number of basis functions` field against PySCF's orbital count and reported agreement at 18 for a water monomer in 6-31G\* - true, but not a criterion: for the same monomer in aug-cc-pVDZ the field prints 47 while ORCA's own SCF and coupled-cluster sections print `Basis Dimension Dim .... 41` and `Number of AO's ... 41`, which is PySCF's number. So the script now reads back the AO dimension per part and compares it with the PySCF nao for the same geometry and basis (24/24 equal), and its verdict refuses to print "agree" unless the energy test and the basis test hold at the same time. The 47 itself is recorded as unexplained rather than rationalised: 25 shells with maximum angular momentum 2 admits no s/p/d/sp bookkeeping that yields both 47 and 41. The frozen-core convention of each ORCA run is likewise read from its own output (`chemical core (4 el)` on a dimer, `(2 el)` on a monomer, `NO frozen core` on the all-electron rungs) rather than assumed from the input keyword |
+| S25 | `nlcsplit/fastpair.py`, `nlcsplit/step_j_scaling.py`, `evidence/scaling/step_j.json`, `evidence/scaling/20260929T1340Z_step_j_scaling.out`, `evidence/scaling/step_j_rerun_20260930.json`, `evidence/scaling/step_j_rerun_20260930.txt`, `evidence/fastpair_ab/fastpair_ab_compare.json`, `evidence/fastpair_ab/fastpair_ide_validation.json`, `nlcsplit/tests/test_fastpair.py`, `evidence/scaling/MANIFEST.sha256` | the wall-clock and certificate numbers in §3.6, recomputed from these sidecars rather than transcribed into the prose: 33 screened/exact pairs over two windows, 1.08-10.28x (archived, 18 pairs) and 1.37-13.29x (re-run, 15 pairs), none faster than exact; the minimum block-pair certificate 197.96 Ha against the -8.34e-4 Ha quantity it would decide on, with n_pairs_bound_below_value = 0 and dropped_pairs = []. Two windows are kept because the second was measured on a different day and the two must not be merged into one interval. Each row carries two different error quantities and conflating them changes the headline: cert_err_ha is the guarantee the traversal can actually use, abs_dE_kcal is the measured deviation from the exact sum. Restricted to tau = 1e-12, exactly 8 of the 11 rows have abs_dE_kcal <= 1e-6 kcal/mol and those span 84.4-95.4% of far-field point pairs evaluated; only 4 rows have a *certificate* that small, and those span 93.7-95.4%. The 84.4% figure is therefore the usable-accuracy statement, not a mistake, and the looser certificate is precisely the result being reported. The monotone accept rule and the box separation are pinned by nlcsplit/tests/test_fastpair.py, which fails if a leaf pair is accepted out of order |
 
 Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
 water-dimer geometry fix (its inter-fragment minimum is 2.0258 A against 1.95 A in

@@ -2,11 +2,11 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 83173 chars, 1000 lines
+- source `paper/main.md`: 87919 chars, 1040 lines
 - output `paper/main.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
-- tags cited in the body: 24
+- tags cited in the body: 25
 - figures pulled in: 3 -> tracked
 - inline backticked paths in the body text: 20 scanned -> tracked
 - appendix rows never cited in the body: none
@@ -39,3 +39,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S22 | `evidence/attribution_referee/run.py`<br>`evidence/attribution_referee/referee_lib.py`<br>`evidence/attribution_referee/summarize.py`<br>`evidence/attribution_referee/probe_quadrature.py`<br>`evidence/attribution_referee/README.md`<br>`evidence/attribution_referee/outputs/results.json`<br>`evidence/attribution_referee/outputs/table.md`<br>`evidence/attribution_referee/outputs/summary.md`<br>`evidence/attribution_referee/outputs/validation.md`<br>`evidence/attribution_referee/outputs/convergence.md`<br>`evidence/attribution_referee/outputs/headline.md`<br>`evidence/attribution_referee/outputs/run_log.txt`<br>`evidence/attribution_referee/outputs/results_run1_20261001.json`<br>`evidence/attribution_referee/outputs/table_run1_20261001.md`<br>`evidence/attribution_referee/outputs/rerun_verify_20261001.log`<br>`evidence/attribution_referee/MANIFEST.sha256`<br>`evidence/attribution_referee/hetero.py`<br>`evidence/attribution_referee/outputs/hetero.json`<br>`evidence/attribution_referee/outputs/hetero_run_20261001.log` | tracked |
 | S23 | `evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`<br>`evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`<br>`nlcsplit/step_k_population.py`<br>`evidence/population/MANIFEST.sha256` | tracked |
 | S24 | `nlcsplit/step_m_ccsdt.py`<br>`evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`<br>`evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`<br>`evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`<br>`evidence/ccsdt/20260930T212300Z_stepm_ladder.out`<br>`evidence/ccsdt/20261001T044833Z_orca_crosscheck.out`<br>`evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out`<br>`evidence/ccsdt/orca_crosscheck.py`<br>`evidence/ccsdt/README.md`<br>`evidence/ccsdt/MANIFEST.sha256`<br>`nlcsplit/tests/test_cc_convention.py`<br>`nlcsplit/tests/test_cc_convention.py`<br>`evidence/ccsdt/orca_crosscheck.py`<br>`evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out` | tracked |
+| S25 | `nlcsplit/fastpair.py`<br>`nlcsplit/step_j_scaling.py`<br>`evidence/scaling/step_j.json`<br>`evidence/scaling/20260929T1340Z_step_j_scaling.out`<br>`evidence/scaling/step_j_rerun_20260930.json`<br>`evidence/scaling/step_j_rerun_20260930.txt`<br>`evidence/fastpair_ab/fastpair_ab_compare.json`<br>`evidence/fastpair_ab/fastpair_ide_validation.json`<br>`nlcsplit/tests/test_fastpair.py`<br>`evidence/scaling/MANIFEST.sha256` | tracked; also §3.6 of the same file |
