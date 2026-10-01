@@ -11,6 +11,15 @@ Oleg~A. Vydrov and Troy~Van Voorhis.
 \newblock \emph{Physical Review Letters}, 103:\penalty0 063004, 2009.
 \newblock \doi{10.1103/PhysRevLett.103.063004}.
 
+\bibitem[Lazić et~al.(2010)Lazić, Atodiresei, Alaei, Caciuc, Blügel, and
+  Brako]{lazic2010junolo}
+Predrag Lazić, Nicolae Atodiresei, Mojtaba Alaei, Vasile Caciuc, Stefan
+  Blügel, and Radovan Brako.
+\newblock Junolo – jülich nonlocal code for parallel post-processing
+  evaluation of vdw-df correlation energy.
+\newblock \emph{Computer Physics Communications}, 181:\penalty0 371--379, 2010.
+\newblock \doi{10.1016/j.cpc.2009.09.016}.
+
 \bibitem[Mardirossian and Head-Gordon(2014)]{mardirossian2014wb97xv}
 Narbe Mardirossian and Martin Head-Gordon.
 \newblock {$\omega$}b97x-v: A 10-parameter, range-separated hybrid, generalized
@@ -58,15 +67,6 @@ Andreas He{\ss}elmann.
 \newblock \emph{Journal of Chemical Theory and Computation}, 9:\penalty0
   273--283, 2013.
 \newblock \doi{10.1021/ct300735g}.
-
-\bibitem[Lazić et~al.(2010)Lazić, Atodiresei, Alaei, Caciuc, Blügel, and
-  Brako]{lazic2010junolo}
-Predrag Lazić, Nicolae Atodiresei, Mojtaba Alaei, Vasile Caciuc, Stefan
-  Blügel, and Radovan Brako.
-\newblock Junolo – jülich nonlocal code for parallel post-processing
-  evaluation of vdw-df correlation energy.
-\newblock \emph{Computer Physics Communications}, 181:\penalty0 371--379, 2010.
-\newblock \doi{10.1016/j.cpc.2009.09.016}.
 
 \bibitem[Hyldgaard et~al.(2014)Hyldgaard, Berland, and
   Schr{\"o}der]{hyldgaard2014interp}
