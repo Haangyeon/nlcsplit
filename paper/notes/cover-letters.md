@@ -30,14 +30,26 @@ from measuring it rather than defining it:
 - The residual uncertainty is the **choice of attribution scheme**, and it is per-system
   (0.004-0.247 kcal/mol absolute, 0.8-18.2% of the Becke value) with no pattern by
   interaction type. This is the number we would ask a reader to carry away.
+- The pair index has a **measured price**, and we report it as a cost rather than a benefit.
+  A certified block-pair screening scheme built on a proved upper bound was timed against the
+  exact sum over 33 screened/exact pairs in two independent windows: none was faster, because
+  the tightest certificate obtainable at atom-pair granularity in a real dimer is loose by a
+  factor of 2.4e5 relative to the quantity it would have to decide on. We did not have a
+  separate paper in it, and we did not fold it into a footnote either.
 
 Because the claim is about a decomposition, we spent as much effort on making the parts
 checkable as on the decomposition itself: the same quantity computed by ORCA 6.0.1 on all
 eight systems, a partition-free exact reference for the attribution step, and a
-CCSD(T)/6-31G* anchor for the binding energies of three of them, computed in both PySCF and
-ORCA and agreeing to three decimal places in kcal/mol. Where a check failed we say so in
-the text; the manuscript carries an appendix that maps every quoted number to an archived
-standard output in the repository.
+CCSD(T)/6-31G* counterpoise anchor for the binding energies of six of the eight complexes,
+computed in both PySCF and ORCA and agreeing to three decimal places in kcal/mol. The anchor
+is what forces the paper's central caution: at a fixed basis the functional's deviation from
+frozen-core CCSD(T) spans +0.780 to −0.288 kcal/mol with no single sign, while changing only
+the basis set moves the reference by up to 1.6 kcal/mol and changing only the integration grid
+moves it by up to 0.127 - and on one complex the grid step alone flips the sign of the
+deviation. Two effects of the same size cannot separate each other, which is why the manuscript
+judges the functional nowhere. Where a check failed we say so in the text; the manuscript
+carries an appendix that maps every quoted number to an archived standard output in the
+repository, and fifteen release gates re-verify that mapping on every rebuild.
 
 The code is a standalone Apache-2.0 Python package (`nlcsplit`) built on PySCF and NumPy.
 It contains no GAMESS source, despite the institution of our starting point. Repository:
@@ -53,7 +65,15 @@ School of Chemistry & Chemical Engineering, Shaanxi Normal University, Xi'an 710
 
 ---
 
-## 2. P2 → J. Chem. Phys.（或 JCTC，二选一，见 `PLAN-next.md` §3.5）
+## 2. P2 → J. Chem. Phys.（**已作废：2026-10-02 并入 P1 §3.6，不单独投**）
+
+本节留档不投递。P2 的三组测量（两窗墙钟 33 对无一更快、最小块界 197.96 Ha 对 −8.34e-4 Ha
+松 2.4e5 倍、达标精度下仍算 84.4-95.4% 远场点对）现在是 `paper/main.md` §3.6 的全部内容，
+附函里也作为"我们把自己的负结果报出来"卖进 JCTC。同一批文字再投第二个期刊会在同一批审稿人
+面前构成重叠投稿，所以这封信标记为作废；p2.md §4（哪种几何判据根本筛得动）与 §5（紧性从哪来）
+没有被压缩进 §3.6，若将来真要第二篇算法文，从那两节重新起稿而不是复用这封信。
+
+以下为作废前的原信正文，仅留档：
 
 Dear Editor,
 
@@ -105,9 +125,11 @@ cannot report. It is pure Python and NumPy on top of PySCF, Apache-2.0, and cont
 GAMESS source.
 
 The `paper.md` we will generate from `paper/software.md` states the verification rather
-than asserting it: 69 tests (49 fast, 20 slow), a published wheel whose members are
-re-tested out of tree, thirteen release gates, and agreement with ORCA 6.0.1 on the
-reported quantity for eight systems.
+than asserting it: the suite collects 69 tests, of which the distributed wheel carries 49 -
+the 20 that stay behind belong to a frozen control implementation that is deliberately not
+shipped, and shipping their test without it would be a collection-time ImportError - a wheel
+whose members are re-tested out of tree, fifteen release gates each with a bidirectional
+self-test, and agreement with ORCA 6.0.1 on the reported quantity for eight systems.
 
 Repository URL: PENDING (public). Archive DOI: PENDING. Authorship and ORCIDs: PENDING.
 No concurrent submission; both authors have approved.
