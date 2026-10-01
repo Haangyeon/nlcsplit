@@ -12,7 +12,12 @@
 #     PROGRESS-nlcsplit.md：机构域名本身在发布卫生判据的射程里，写进随包注释就等于让
 #     闸门去抓作者自己的单位）。门牌号不写——元数据只需要城市+邮编，且校方各页给的
 #     街道号并不完全一致，等本人指定挂哪个再补。
-#   · repository-code 没有 remote 之前留空，推送时一并补。
+#   · repository-code 留空的理由变了，所以把理由改在这里：仓已经有了而且是 public，
+#     但这行要写的是 https://github.com/<操作员名>/nlcsplit，而发布脱敏把那个名字换成
+#     <OPERATOR>（IDENT 里 \bHaangyeon\b 那条）。豁免通道目前只认"作者通讯地址"这一种
+#     形态，为了让一个可选字段通过脱敏去扩它，等于放宽发布卫生判据去换元数据好看——不值。
+#     读者拿到的这份文件就在被引用的那个仓里，仓库地址是它自己的位置；等存档 DOI 建起来，
+#     权威标识用 DOI，不用登录名拼的 URL。
 cff-version: 1.2.0
 message: "If you use nlcsplit, please cite the software record and the method paper."
 title: "nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation energy"
