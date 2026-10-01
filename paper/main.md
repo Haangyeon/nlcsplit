@@ -461,6 +461,22 @@ bases that happen to give close energies - which is the distinction that matters
 because a d-shell convention difference is worth 0.01-0.1 kcal/mol, one order of magnitude
 above the largest disagreement measured [S24].
 
+![The correlated reference ladder per system against this work's value, and the two cross-program checks](figs/fig4_anchor_crosschecks.png)
+
+**Figure 3.** Left three panels: the MP2/CCSD/CCSD(T) counterpoise ladder for each system the
+anchor covers, at 6-31G\* (solid) and aug-cc-pVDZ (dashed), with this work's
+omegaB97X-V/6-31G\* level-2 counterpoise value as the dotted rule. The point is a comparison
+of two spans, and `nlcsplit/figures.py` refuses to draw the figure unless the comparison
+holds: per system, the correlated value's move between the two bases (1.608 / 1.125 / 0.769
+kcal/mol for water / ammonia / methane) exceeds the functional's deviation from the
+frozen-core CCSD(T) at the smaller basis (0.727 / 0.780 / 0.288). Both numbers are read from
+the archived runs, not transcribed. Right two panels: the same quantity computed by two
+programs - (b) the nonlocal term for all eight systems, as a percentage of the term, against
+the 1% guide (§4.2), and (c) the anchor of the left panels recomputed in ORCA 6.0.1, against
+the 0.001 kcal/mol bar [S24].
+
+
+
 ### 3.3 The interfragment pair term saturates the frozen-density limit
 
 `inter[(A,B)]`, summed over the retained grid points, is directly comparable to

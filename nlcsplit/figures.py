@@ -8,6 +8,7 @@
 """
 import json
 import os
+import re
 import sys
 
 import matplotlib
@@ -168,6 +169,175 @@ def fig3(windows):
     return f
 
 
+# ---------------------------------------------------------------------------
+# 图 4 · 结合能锚点的两条核对线。
+#
+# 为什么值得多这一张图：§3.2 与 §4.2 现在各有一张数字表（四级阶梯对 DFT、两个程序的
+# 残差），读者要自己在两张表之间来回核对"到底是泛函偏了还是参考偏了"。一张图把
+# "随基组动的幅度" 与 "跨程序残差的幅度" 放进同一个量级比较里，结论就自明了：
+# 基组效应比两程序之差大两个数量级，所以本文不据结合能判泛函。
+#
+# 数据来源纪律（照 fig3 的做法）：点位置全部从**被论文点名的 stdout** 里现读，
+# 并与同一文件自带的汇总表交叉比对；任一体系缺档、或两处读数不合，就拒绝出图。
+# 归档抬头里那些手写的引文不当数据源。
+# ---------------------------------------------------------------------------
+LADDER = [("6-31G*", "evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out"),
+          ("aug-cc-pVDZ", "evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out")]
+XCHECK = "evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out"
+NLCTAB = "evidence/orca_widen/cross_program_table.txt"
+SYS_EN = {"水二聚体": "water", "氨二聚体": "ammonia", "甲烷二聚体": "methane"}
+SYS_COL = {"水二聚体": "#2b6cb0", "氨二聚体": "#2f855a", "甲烷二聚体": "#b7791f"}
+SYSTEMS = ("水二聚体", "氨二聚体", "甲烷二聚体")
+RUNGS = (("MP2", "frozen"), ("CCSD", "frozen"), ("CCSD(T)", "frozen"), ("CCSD(T)", "all"))
+
+
+def _read(rel):
+    p = os.path.join(ROOT, rel.replace("/", os.sep))
+    if not os.path.exists(p):
+        raise SystemExit("fig4: 被引工件缺失 -> %s" % rel)
+    return open(p, encoding="utf-8", errors="replace").read()
+
+
+def parse_ladder(rel):
+    """明细块与文件自带的汇总表都读，然后比对；不合就抛，不出图。"""
+    txt = _read(rel)
+    rows, name, conv = {}, None, None
+    for line in txt.splitlines():
+        m = re.match(r"== Step M . (\S+?) CCSD", line)
+        if m:
+            name, conv = m.group(1), None
+            continue
+        m = re.match(r"\s*--- (frozen\(cores\)|all-electron)\s", line)
+        if m:
+            conv = "frozen" if m.group(1).startswith("frozen") else "all"
+            continue
+        m = re.match(r"\s+(MP2|CCSD|CCSD\(T\))\s+-?\d+\.\d+\s+-?\d+\.\d+\s+(-?\d+\.\d+)", line)
+        if m and name and conv:
+            rows.setdefault(name, {}).setdefault(conv, {})[m.group(1)] = float(m.group(2))
+    summ = {}
+    for line in txt.splitlines():
+        m = re.match(r"\s+(水二聚体|氨二聚体|甲烷二聚体)\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)"
+                     r"\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)", line)
+        if m:
+            summ[m.group(1)] = dict(zip(("MP2", "CCSD", "CCSD(T)", "all"),
+                                        (float(x) for x in m.groups()[1:])))
+    bad = []
+    for s in SYSTEMS:
+        if s not in rows or s not in summ:
+            bad.append("%s 在两处之一缺席（明细 %s / 汇总 %s）"
+                       % (s, s in rows, s in summ))
+            continue
+        for key, conv_w, meth in (("MP2", "frozen", "MP2"), ("CCSD", "frozen", "CCSD"),
+                                  ("CCSD(T)", "frozen", "CCSD(T)"),
+                                  ("all", "all", "CCSD(T)")):
+            got = rows[s].get(conv_w, {}).get(meth)
+            if got is None:
+                bad.append("%s %s/%s 无明细行" % (s, conv_w, meth))
+            elif abs(got - summ[s][key]) > 5e-4:
+                bad.append("%s %s: 明细 %.4f 与汇总 %.4f 不合" % (s, key, got, summ[s][key]))
+    if bad:
+        raise SystemExit("fig4: %s 交叉比对失败 ->\n  " % rel + "\n  ".join(bad))
+    return rows
+
+
+def parse_xcheck(rel):
+    out = []
+    for line in _read(rel).splitlines():
+        m = re.match(r"\s+(\S+二聚体)\s+(\S+)\s+(frozen|all-e)\s+(-?\d+\.\d+)\s+"
+                     r"(-?\d+\.\d+)\s+([+-]?\d+\.\d+)\s*$", line)
+        if m:
+            out.append((m.group(1), m.group(2), m.group(3),
+                        float(m.group(4)), float(m.group(5)), float(m.group(6))))
+    if len(out) != 8:
+        raise SystemExit("fig4: 跨程序汇总表读到 %d 行，应为 8" % len(out))
+    return out
+
+
+def parse_nlc(rel):
+    out = []
+    for line in _read(rel).splitlines():
+        m = re.match(r"^(\S.*?)\s+(\d+)\s+(\d+)\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)\s+(\d+\.\d+)\s+"
+                     r"(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)\s*$", line)
+        if m:
+            out.append((m.group(1).strip(), float(m.group(7))))
+    if len(out) != 8:
+        raise SystemExit("fig4: 非局域项跨程序表读到 %d 行，应为 8" % len(out))
+    return out
+
+
+def fig4(ladders, xc, nlc, dft):
+    from matplotlib.lines import Line2D
+    systems = ("水二聚体", "氨二聚体", "甲烷二聚体")
+    # 图标题是一句可证伪的话，所以让生成器自己先核一遍：每个体系"相关参考值随基组的移动"
+    # 必须严格大于"本文泛函对该参考值的偏差"。哪一体系不成立就拒绝出图，而不是把标题
+    # 改软到无法反驳——这张图的全部意义就在于两个幅度可以被比较。
+    for cn in systems:
+        span = abs(ladders[1][1][cn]["frozen"]["CCSD(T)"]
+                   - ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        dev = abs(dft[cn] - ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        if not span > dev:
+            raise SystemExit("fig4: %s 上基组跨度 %.3f 不大于泛函偏差 %.3f，标题不成立"
+                             % (cn, span, dev))
+        print("  fig4 标题核验 %-9s 基组跨度 %.3f > 泛函偏差 %.3f kcal/mol"
+              % (SYS_EN[cn], span, dev))
+    fig = plt.figure(figsize=(6.8, 6.1))
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.2, 1.0], hspace=0.52, wspace=0.62,
+                          left=0.155, right=0.965, top=0.845, bottom=0.095)
+    xs = list(range(len(RUNGS)))
+
+    # (a1..a3) 每个体系一根自己的纵轴：混在一张轴上，水/氨/甲烷的量级差会把后两个压扁。
+    for si, cn in enumerate(systems):
+        ax = fig.add_subplot(gs[0, si])
+        for bi, (basis, rows) in enumerate(ladders):
+            ys = [rows[cn][conv][meth] for meth, conv in RUNGS]
+            ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=SYS_COL[cn], ms=4.0, lw=1.3)
+        ax.axhline(dft[cn], color="#c05621", ls=":", lw=1.2)
+        ax.annotate("this work  %.3f" % dft[cn], (0.0, dft[cn]), fontsize=6.2,
+                    color="#c05621", xytext=(2, 4), textcoords="offset points")
+        ax.axhline(0, color="k", lw=0.6)
+        ax.set_xticks(xs)
+        ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=6.5)
+        ax.set_title("%s dimer" % SYS_EN[cn], fontsize=8)
+        if si == 0:
+            ax.set_ylabel("$\\Delta E_{\\rm CP}$ (kcal/mol)", fontsize=8)
+            ax.legend([Line2D([], [], color="0.35", marker="o", ls="-"),
+                       Line2D([], [], color="0.35", marker="s", ls="--")],
+                      ["6-31G*", "aug-cc-pVDZ"], loc="upper center", fontsize=6.5,
+                      frameon=False)
+        ax.tick_params(axis="y", labelsize=7)
+
+    # (b)(c) 两条跨程序核对线，各自单位、各自一条通过线
+    ax2 = fig.add_subplot(gs[1, 0:2])
+    ax2.barh([n for n, _ in nlc][::-1], [r for _, r in nlc][::-1], color="#2b6cb0", height=0.62)
+    ax2.axvline(1.0, color="#c05621", ls="--", lw=1.0)
+    ax2.text(0.985, 3.4, "1% of the term  ", fontsize=6.5, color="#c05621", ha="right")
+    ax2.set_xlabel("$\\Delta E_{\\rm NLC}$: |ORCA - PySCF| as % of the term", fontsize=7.5)
+    ax2.set_xlim(0, 1.18)
+    ax2.tick_params(axis="y", labelsize=6.5)
+    ax2.set_title("(b) the nonlocal term on 8 systems, grids deliberately not matched",
+                  fontsize=8)
+
+    ax3 = fig.add_subplot(gs[1, 2])
+    lab = ["%s %s %s" % (SYS_EN.get(s, s),
+                         "631G*" if b.startswith("6-31") else "avdz",
+                         "fc" if c == "frozen" else "ae") for s, b, c, _, _, _ in xc]
+    ax3.barh(lab[::-1], [abs(d) for *_, d in xc][::-1], color="#4a5568", height=0.62)
+    ax3.axvline(0.001, color="#c05621", ls="--", lw=1.0)
+    ax3.text(0.00095, 3.4, "bar 0.001  ", fontsize=6.5, color="#c05621", ha="right")
+    ax3.set_xlabel("CCSD(T): |ORCA-PySCF| (kcal/mol)", fontsize=7)
+    ax3.set_xlim(0, 0.0012)
+    ax3.tick_params(axis="y", labelsize=6.2)
+    ax3.set_title("(c) the anchor itself", fontsize=8)
+
+    fig.suptitle("Per system the correlated reference moves more with the basis than the\n"
+                 "functional deviates from it - which is why this paper does not judge the\n"
+                 "functional on binding energies", fontsize=8.5, y=0.965)
+    f = os.path.join(OUT, "fig4_anchor_crosschecks.png")
+    fig.savefig(f, dpi=200)
+    return f
+
+
+
 if __name__ == "__main__":
     h = load("step_h.json")
     if not h or not h["rows"]:
@@ -191,3 +361,14 @@ if __name__ == "__main__":
         if len(w) < 2:
             print("警告：只有一个时间窗，fig3 会与正文的 33 对/两窗口径不一致")
         print("出图：", fig3(w))
+    # 图 4：结合能锚点的两条核对线。点位置从**被论文点名的 stdout** 现读，并与同一份
+    # 文件自带的汇总表交叉比对（parse_ladder 里），任何一处不合就抛，不出图。
+    ladders = [(b, parse_ladder(p)) for b, p in LADDER]
+    l2 = load("step_h_l2cp.json") or {}
+    dft = {}
+    for r in l2.get("rows", []):
+        if r["name"] in SYS_EN and r.get("level") == 2 and r.get("cpcorr"):
+            dft[r["name"]] = r["dcp"]
+    if len(dft) != 3:
+        raise SystemExit("fig4: level-2 反泊松的 DFT 对照只取到 %d 个体系（应为 3）" % len(dft))
+    print("出图：", fig4(ladders, parse_xcheck(XCHECK), parse_nlc(NLCTAB), dft))

@@ -3118,3 +3118,27 @@ VERDICT 只在两件事同时成立时才说 agree。氨 +0.0001/−0.0000、甲
 
 闸门状态：13 条致命闸门全空（导出 203 文件 / 树 205），五类自检全部 fired，
 快测 **49 passed / 20 deselected in 25.45 s**，三份 PDF 0 error（main 23 页 / p2 11 页 / software 12 页）。
+
+### 14:5x 补二：给 P1 加了第三张图，图的标题做成可证伪的判据
+
+`figs/fig4_anchor_crosschecks.png`（正文里的 Figure 3，插在 §3.2 末尾）：
+(a1–a3) 三个体系各自的 MP2/CCSD/CCSD(T)冻核/全电子四级阶梯，6-31G\* 实线、aug-cc-pVDZ 虚线，
+本文 ωB97X-V level-2 反泊松值画成同色点线；(b) 八体系 ΔE_NLC 的跨程序相对差 vs 1% 线；
+(c) 锚点本身八行的跨程序绝对差 vs 0.001 线。
+
+数据不是手打的：`nlcsplit/figures.py` 新增 `parse_ladder/parse_xcheck/parse_nlc`，
+只读**被论文点名的 stdout**（两份阶梯归档 + 跨程序归档 + `cross_program_table.txt`），
+并且把明细块与同一文件自带的汇总表交叉比对，任一行读不到或两读不合就 `SystemExit`。
+第一次跑就抓到我自己两个正则错（`--- frozen(cores)` 后面用 `\b` 永远不匹配；
+汇总表差值列是 `%+.4f` 带正号，我只写了 `-?` ⇒ 8 行只读到 5 行）——
+**判据是"少一行就拒绝出图"，所以它没有出一张少三行的图**。
+
+图标题"每个体系里相关参考值随基组的移动都大于泛函对它的偏差"是一句可被推翻的话，
+所以生成器自己核：水 1.608 > 0.727、氨 1.125 > 0.780、甲烷 0.769 > 0.288 kcal/mol，
+不成立就抛。原先我写的标题是"The reference ladder moves more with the basis than the
+functional does"——那是把"同量级、不可分离"（§3.2 的立场）偷偷说成"更大"，已按实测改成
+"Per system the correlated reference moves more with the basis than the functional deviates
+from it"，并把这句话的成立条件写进代码。
+
+闸门：出处审计先拦了一次"图存在但没被 git 跟踪"（正是它该拦的），跟踪后三份 PDF 全绿
+（main 24 页 / p2 11 / software 12，0 LaTeX error，24 标签有出处），13 条致命闸门全空。
