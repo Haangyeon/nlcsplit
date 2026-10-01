@@ -2945,3 +2945,36 @@ tracked"），以及我把两个 bib 键写在同一个 `[[a], [b]]` 里 ⇒ 第
 
 **未完成（下一条继续）**：新 wheel（含 step_m）的树外全量重跑结果待归档——
 收集数应仍是 45（新增的是脚本不是测试），但"发布物被测过"这句必须对**当前**发布物成立。
+
+## 2026-10-01 07:1x（UTC 2026-09-30T23:1x）— 用户问"等啥啊"，于是把那 12 分钟砍掉
+
+被问得对。我原本准备串行等：全量 69 项（≈12 min，其中 20 项 slow 是 SCF+O(N²)，占 700 s）
+→ 重建 wheel → 树外再全跑一次（≈8 min）。**这条链子的唯一产出是"再测一遍没改过的代码"**。
+
+改成的做法，两步都可查：
+1. `git diff --name-only afdefba HEAD -- nlcsplit/` 只列得出 `step_m_ccsdt.py`
+   （afdefba 就是 65 项全跑那份的工作树状态；它自己抬头里印了 `git status`）。
+   慢测 import 的 nlc/partition/fastpair/geomlib/step_f_dispersion 一位没动。
+   ⇒ 20 项 slow 的结果是**可证 carry-over**，不是"我相信它没坏"。
+2. 实跑 49 项快测（26.13 s，全过）+ 新模块 4 项（0.28 s）；wheel 侧装 38 成员的构建，
+   收集 49，跑它的 31 项快测（30 passed + 1 skipped，25.72 s），18 项 slow 同样按 carry-over 写。
+
+两份新归档都在抬头里把"**没跑什么、凭什么不跑**"写在数字旁边：
+`20260930T230121Z_suite69_fast_and_diffsurface.out`、
+`20260930T231147Z_wheel_pyargs_49_member38_fast.out`。
+
+顺带一个自己踩的工具坑：第一次做"改了哪些文件"的比对时我用
+`git show <commit>:file | sha256sum` 对比 `sha256sum file`，结果显示 `fastpair_ide.py`
+也变了——其实没人动它。原因是 Git 在 blob 与 checkout 之间做 LF/CRLF 归一化，
+这台 Windows 机器上工作树是 CRLF。只有 blob 对 blob（`git diff --name-only`）算数。
+这句也写进了归档抬头，免得下次有人拿那个假差异当"改动面"。
+
+计数一次性改到六处：README 14/15/18、CONTRIBUTING:4（原先写"8 项，约 90 s"，早已过期）、
+software.md 收集段与 wheel 段、release_qa README 表。**同时补了 release_qa 表里缺的三行**
+（两份 44 项 wheel 跑与 `publish_record_20260930.txt`），那三个工件原先在目录自己的索引里没有条目。
+
+闸门：`md2tex software` 又抓到我一次（新 wheel 归档还没 `git add` 就被正文点名）。
+三份 PDF 0 error、bibtex 0 error；`audit_p2` PASS；`audit_share_rule` 硬规则 PASS
+（47 条仅报告、7 条未认体系名那句照旧自认没验）；导出 13 条致命闸门全空、出货。
+最后一次出货把 wheel 容器哈希换到 `754b90f0…`：38 个打包文件与我刚测过那份逐个 SHA 相同，
+所以正文引的"测过 55033716 那份"仍然描述当前发布内容——这正是文中"每次导出都重打 wheel"那句的意思。

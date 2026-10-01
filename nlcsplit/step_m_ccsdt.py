@@ -37,8 +37,6 @@ import math
 import os
 import time
 
-os.environ.setdefault("OMP_NUM_THREADS", "8")
-
 from pyscf import gto, cc as pyscf_cc, mp as pyscf_mp  # noqa: E402
 from nlcsplit import geomlib                           # noqa: E402
 
@@ -62,6 +60,26 @@ def oo_distance(symbols, coords):
         return float("nan")
     a, b = coords[isyO[0]], coords[isyO[1]]
     return math.dist(a, b)
+
+
+CORE_SHELLS = {"O": 1}          # K shells per element; H and He have none
+
+
+def freeze_count(symbols):
+    return sum(CORE_SHELLS.get(s, 0) for s in symbols)
+
+
+def freeze_plan(sym_lists, all_electron=False):
+    """Per-molecule frozen-orbital counts, from one place, for one convention rung.
+
+    The invariant this enforces - sum over the fragments equals the count for the
+    united set - is what the counterpoise difference needs. Returning the dimer's
+    number from a separate call is not redundant: it makes the mismatch impossible
+    to write down, which is the only defence against the bug recorded in the header.
+    """
+    if all_electron:
+        return [0] * len(sym_lists)
+    return [freeze_count(s) for s in sym_lists]
 
 
 def correlated(mol, frozen):
@@ -103,6 +121,9 @@ def correlated(mol, frozen):
 
 
 def main():
+    # 设在 main() 而不是模块顶层：`tests/test_cc_convention.py` 要 import 这个模块，
+    # 一个在导入时就改写 BLAS 线程数的脚本会改变整套测试的运行条件。
+    os.environ.setdefault("OMP_NUM_THREADS", "8")
     atoms, frags = geomlib.s22_system(NAME, OFFDIR)
     symbols = [a[0] for a in atoms]
     coords = [a[1] for a in atoms]
@@ -122,21 +143,25 @@ def main():
         dim = build(symbols, coords, basis)
         mono_cp = [build([symbols[i] for i in f], [coords[i] for i in f], basis)
                    for f in frags]
-        coreO = [sum(1 for i in f if symbols[i] == "O") for f in frags]
-        print("  复合物 nao=%d nbas=%d nelec=%d；单体 nao=%d/%d；冻核数 %d/%d（复合物 %d）"
+        frag_syms = [[symbols[i] for i in f] for f in frags]
+        coreO = freeze_plan(frag_syms)
+        print("  复合物 nao=%d nbas=%d nelec=%d；单体 nao=%d/%d；每片段冻核 %s，合计 %d"
               % (dim.nao, dim.nbas, dim.nelectron,
                  mono_cp[0].nao, mono_cp[1].nao,
-                 coreO[0], coreO[1], sum(coreO)))
+                 coreO, sum(coreO)))
 
-        for label, fz in (("frozen(O 1s)", sum(coreO)), ("all-electron", 0)):
+        for label, ae in (("frozen(O 1s)", False), ("all-electron", True)):
             t0 = time.time()
-            ed = correlated(dim, fz)
-            # 冻核数必须跟着这一档一起换。第一版把单体写死成 coreO，于是"全电子"那一档
-            # 拿的是全电子的复合物配冻核的单体，水二聚体上算出 -23.2 kcal/mol 这种
-            # 物理上不可能的数——差值里 17 kcal 全是复合物自己多相关的 O 1s。
-            mono_fz = coreO if fz else [0, 0]
-            em = [correlated(m, c) for m, c in zip(mono_cp, mono_fz)]
-            print("  --- %s  (复合物冻 %d，单体冻 %s) ---" % (label, fz, mono_fz))
+            # 复合物与单体的冻核数出自同一次 freeze_plan。第一版不是这样：它只在复合物
+            # 一侧切约定（fz 随档位换，单体写死成 coreO），于是"全电子"那一档拿全电子的
+            # 复合物配冻核的单体，水二聚体算出 -23.2 kcal/mol 这种物理上不可能的数——
+            # 差值里 17 kcal 全是只在一侧计入的 O 1s 相关。这类错不会让任何东西报错：
+            # 两个数各自都像一个能量，只有它们的差暴露它。
+            fz_d = freeze_plan([symbols], all_electron=ae)[0]
+            fz_m = freeze_plan(frag_syms, all_electron=ae)
+            ed = correlated(dim, fz_d)
+            em = [correlated(m, c) for m, c in zip(mono_cp, fz_m)]
+            print("  --- %s  (复合物冻 %d，单体冻 %s) ---" % (label, fz_d, fz_m))
             print("    %-9s %18s %18s %18s %12s" % ("method", "E_dimer", "sum E_mono",
                                                     "dE_CP kcal/mol", "s"))
             for k in METHODS:

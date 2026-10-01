@@ -258,17 +258,21 @@ geometry download, which need an unloaded machine), derives the repository root 
 location instead of a hard-coded working path, and refuses to run the argument-taking ones
 rather than silently running them at their defaults.
 
-The suite collects 65 tests in the working repository - 45 under `-m "not slow"` and 20
-under `-m slow`, a partition of the same collection and not two numbers to be added. All 65
-have since been executed: 65 passed with nothing skipped in 710.73 s, and the three
-collection counts together with the run's Python, PySCF, NumPy and SciPy versions are in one
-archived log (`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) [S19].
+The suite collects 69 tests in the working repository - 49 under `-m "not slow"` and 20
+under `-m slow`, a partition of the same collection and not two numbers to be added. The
+first 65 of them have been executed together - 65 passed with nothing skipped in 710.73 s -
+and the three collection counts of that run together with its Python, PySCF, NumPy and SciPy
+versions are in one archived log
+(`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) [S19]; the four added
+since then are pure-logic and pass in 0.28 s, with the 49-test fast subset re-run green and
+the change surface written down in
+`evidence/release_qa/20260930T230121Z_suite69_fast_and_diffsurface.out`.
 That execution is of the working tree under `PYTHONPATH=.`, and the
 log's own header prints `git status`, which listed uncommitted changes - so it establishes
 the floor for the code as it then stood and says nothing about what an install ships. The
 out-of-tree material below belongs to objects smaller
-than the working tree. The published wheel ships six test modules plus `__init__.py` and
-`conftest.py`; those six collect 45 in today's tree, and the 20 that stay behind are exactly
+than the working tree. The published wheel ships seven test modules plus `__init__.py` and
+`conftest.py`; those seven collect 49 in today's tree, and the 20 that stay behind are exactly
 `test_fastpair_ide.py`'s - the peer's frozen control module, whose `fastpair_ide.py` is
 deliberately not distributed, since shipping the test without the module would be a
 collection-time ImportError. Two different objects must not be quoted as one: `pip install .`
@@ -298,6 +302,14 @@ and that wheel was also tested out of tree: 44 passed and one skipped again, in 
 1.57x spread between the two runs on the same box, with the same unset thread variables, on
 wheels whose tests are identical, has no cause recorded in either log - which is the strongest
 argument here for quoting timings per artefact rather than reducing them to one number.
+A third rebuild followed the frozen-core refactor of the coupled-cluster script, which also
+shipped the convention guard as the wheel's seventh test module (`55033716...`, 38 members,
+collecting 49): its 31-test fast subset was run out of tree - 30 passed and one skipped in
+25.72 s - and its 18 slow tests were deliberately not, because the eight test files they live
+in and every library module they import are byte-identical to the 37-member wheel that was run
+in full nine minutes earlier. That is written into
+`evidence/release_qa/20260930T231147Z_wheel_pyargs_49_member38_fast.out` as a carried-over
+result with the check that licenses it, rather than presented as a run that happened.
 Naming the hash rather than
 claiming "the current wheel" is the point - every export rebuilds the wheel, so its SHA-256
 changes even when no packaged byte does, and the two runs recorded nine minutes apart on

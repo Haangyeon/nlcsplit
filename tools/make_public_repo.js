@@ -75,7 +75,11 @@ const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py
   // 不发 fastpair 的测试，等于"屏蔽机制已验证"这句话在发布物里没有证据。
   // test_fastpair_ide.py 仍然不发：它 import 的 fastpair_ide.py 是对照件，不在包里，
   // 发出去就是一道收集期 ImportError。
-  'test_fastpair.py', 'test_tolerance_probe.py'];
+  'test_fastpair.py', 'test_tolerance_probe.py',
+  // step_m_ccsdt.py 进包了（§3.2 那栏 CCSD(T) 的生产者），它的冻核约定守卫也得进——
+  // 否则读者拿到一个没有任何东西钉住"反泊松两侧必须同一约定"这条不变式的脚本，
+  // 而这条不变式一旦破了，水二聚体会安静地印出 -23.16 kcal/mol 而不是报错。
+  'test_cc_convention.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
 // CITATION.cff 也在根清单里：JOSS/SoftwareX 的审稿人按这份文件核署名与授权，
 // 它不在包里就等于让读者去 git clone 才能拿到引用信息。

@@ -1,7 +1,10 @@
 # 参与
 
 - 开发在 WSL/Linux 与 PySCF>=2.12 上进行；CI 会同时跑 2.12.1 与更新的版本。
-- 提交前本地跑 `python -m pytest -q`（8 项，约 90 s）。
+- 提交前本地跑 `python -m pytest -q`（69 项：49 快测约 26 s，20 项 slow 约 700 s，
+  合起来 12 分钟左右）。只想快查就 `python -m pytest -q -m "not slow"`（49 项，26 s）。
+  这两条数字是 `--collect-only` 与实跑实测的；上一版这里写的是"8 项，约 90 s"，
+  那早已是过期数（`testpaths` 现在收 69 项），别照抄。
 - 任何新的能量口径必须同时给两条独立取数路径并在不一致时抛错，参照 `nlcsplit/step_f_dispersion.py` 的三条校验。
 - 不要往仓库或脚本里写任何口令、私钥、凭据。
 

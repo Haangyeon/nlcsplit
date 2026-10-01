@@ -11,11 +11,11 @@ PySCF 原生核的总量对照。纯 Python + NumPy，后端用 PySCF 出密度�
 
 ```bash
 pip install .            # 依赖 numpy 与 pyscf>=2.12
-python -m pytest -q nlcsplit/tests                    # 65 项：45 秒级 + 20 项 slow
-python -m pytest -q -m "not slow" nlcsplit/tests      # 45 项，本机约数秒
+python -m pytest -q nlcsplit/tests                    # 69 项：49 快测(本机 26 s) + 20 项 slow(约 700 s)
+python -m pytest -q -m "not slow" nlcsplit/tests     # 49 项，26 s
 ```
 
-（上面的计数按 `--collect-only` 实测：源码树收集 **65** = 45（`-m "not slow"`）+ 20（`-m slow`）。发布 wheel 不含 `test_fastpair_ide.py`（其 import 的 `fastpair_ide.py` 是对照件，不随包分发），那 20 项（18 秒级 + 2 slow）在 wheel 里没有，故 wheel 上是 45 = 27 + 18。）
+（上面的计数按 `--collect-only` 实测：源码树收集 **69** = 49（`-m "not slow"`）+ 20（`-m slow`）。发布 wheel 不含 `test_fastpair_ide.py`（其 import 的 `fastpair_ide.py` 是对照件，不随包分发），那 20 项（18 秒级 + 2 slow）在 wheel 里没有，故 wheel 上是 49 = 31 + 18；wheel 里 31 项快测实跑是 **30 passed + 1 skipped**（那一条 skip 是设计内的 S22 取回项）。两份树外运行与差面证明在 `evidence/release_qa/`。）
 
 ## 快速上手
 
@@ -94,9 +94,10 @@ E_nl         = -7.8130   E_loc = 60.8303   E_total = 53.0172
      两条误差条分开报，因为回答的问题不同：对确定性 U 是 **5/12** 可分辨；另有一条
      独立、紧 5.8 倍的蒙特卡洛条（4,000,000 抽样/构型，`mc_tighten.py` 写 sidecar，
      不动归档结果文件），对它是 **12/12**。
-  4. *异核那一格已从"边界"变成"实测"，而且**推翻了我自己写过的理由***：`hetero.py` +
-     `outputs/hetero.json` + `outputs/hetero_run_20261001.log`。原先 §10 写"异核要先选
-     元素，选元素就是选被测的划分约定，所以不是改参数"。同一密度只换原子标签时偏移最多
+     这一层里**同核那一格已被异核顶掉了，而且顶掉的是我自己写过的理由**：
+     `hetero.py` + `outputs/hetero.json` + `outputs/hetero_run_20261001.log`。目录里 §10
+     原先写"异核要先选元素，而选元素就是选被测的划分约定，所以不是改个参数就行"——
+     同一密度只换原子标签时偏移最多
      动 **0.24%**（(4,4) He/He vs Be/Be 差 7.4e-08 Ha；(2,4) 0.04%；(2,6) 0.03%；(4,6)
      低于打印位），而三个参照量里两个根本不需要元素 ⇒ 那条理由在量级上不成立，跑了。
      控制行（同核、按 `run.py` 的 He/He 打标）对归档 `results.json` 的 `I_AB` 与包交叉项
