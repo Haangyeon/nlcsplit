@@ -305,10 +305,20 @@ than the working tree. The published wheel ships seven test modules plus `__init
 `test_fastpair_ide.py`'s - the peer's frozen control module, whose `fastpair_ide.py` is
 deliberately not distributed, since shipping the test without the module would be a
 collection-time ImportError. Two different objects must not be quoted as one: `pip install .`
-from the source directory in a clean environment collects 63, because that install pulls in
+from the source directory in a clean environment collected 63 in the archived logs quoted
+below, because that install pulls in
 the whole tree including the control module, and its archived full run is 62 passed and one
 skipped (the S22 geometry fetch, by design) in 1739.26 s, whose `-m "not slow"` subset is on
-record twice at 42 passed and one skipped and 20 deselected, in 10.78 s and in 11.56 s;
+record twice at 42 passed and one skipped and 20 deselected, in 10.78 s and in 11.56 s.
+That collection size is not a constant either: re-running the same two shapes on 2026-10-01,
+after four tests had been added, gives 69 collected - the in-tree step 2 of the workflow
+69 passed with nothing skipped in 576.08 s under PySCF 2.14.0 and in 673.47 s under 2.12.1,
+and the out-of-tree step 3 68 passed and one skipped in 824.43 s and 545.01 s respectively,
+the skip again being the S22 geometry fetch, which is only reachable from outside the working
+tree because the downloaded geometry is not part of the install. Both matrix arms were
+therefore run locally before the remote exists, which is the point of the dry-run - and the
+prediction it falsified was ours: no `nlc_coeff` or `get_partition` API drift between the two
+versions showed up at all (`evidence/release_qa/`).
 `pytest --pyargs nlcsplit` against the built wheel, run from a directory that is not the
 source tree, exercises only the published tests. Every figure below is quoted at the
 collection size of the log it is taken from, and none of them is a sum of the others: the

@@ -28,7 +28,7 @@ explicit double sum over pairs of integration grid points, and attributes each g
 atoms and fragments through a real-space partition. The nonlocal term therefore separates
 into intra-fragment and inter-fragment pair blocks that add back to the total: over the five
 partitions and two repeated schemes of an archived water-dimer run the block-additivity
-residual is 1.7e-18 to 6.9e-18 Ha. The package is pure Python and NumPy [@harris2020numpy]
+residual is 1.73e-18 to 6.94e-18 Ha. The package is pure Python and NumPy [@harris2020numpy]
 on top of PySCF [@sun2018pyscf; @sun2020pyscf], is released under Apache-2.0, contains no
 GAMESS source, and reproduces every number it documents from a single named script whose
 standard output is archived with a hash manifest. API details live in the package
@@ -112,8 +112,12 @@ On the reporting side, the package applies one rule to its own output: where
 code reports the two absolute terms and refuses to state a share. An export-time gate applies
 the same rule to the prose. Fourteen gates run on every rebuild, each with a bidirectional
 self-test, and six of them exist because they caught a real defect in this release rather than
-a planted one. The suite collects 69 tests in the repository, 49 of which ship inside the
-package.
+a planted one. The suite collects 69 tests; all 69 pass in the source tree under both PySCF
+versions in the CI matrix (2.12.1 and 2.14.0) and pass again from outside the tree against the
+installed package, where one test skips by design because the benchmark geometry it needs is
+not part of the install. The distributed wheel carries 49 of the 69; the 20 that stay behind
+belong to a frozen control implementation that is deliberately not distributed, and shipping
+its test without it would be a collection-time ImportError.
 
 # Research impact
 
@@ -142,8 +146,9 @@ Finally, the machinery falsified a plausible optimisation. A pair block with a p
 bound should be skippable, and the screening path built from that bound was timed against the
 exact sum in two independent windows, 33 screened/exact pairs in total. None was faster: 1.08-
 10.28× slower in the first window and 1.37-13.29× in the second, recomputed here from the
-archived wall-clock pairs. At the accuracy the bound can guarantee, 84-95% of the far pairs
-still have to be evaluated. The paper reports this as a cost, not as a benefit.
+archived wall-clock pairs. Of those 33 runs, the eight that actually meet the stated
+1e-6 kcal/mol target still evaluate 84.4-95.4% of the far-field point pairs, which is why the
+bound buys nothing. The paper reports this as a cost, not as a benefit.
 
 # Authorship
 

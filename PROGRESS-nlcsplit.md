@@ -3167,3 +3167,53 @@ from it"，并把这句话的成立条件写进代码。
 并把"必须登记"写进它的纪律注释；software.md 的闸门数 13→14 并加 X 那一行。
 
 复跑：13+1 条致命闸门全空（导出 203 文件）、快测 49 passed / 28.09 s、software.pdf 12 页 0 error。
+
+## 2026-10-01 (later) 本地 CI 预演跑通 + S5 归档闭环 + 抓到两处搬数错误（Qoder-nlcsplit）
+
+**用户指令**："开跑。"（= 本地预演 CI）
+
+**预演结果（不是等公开，是本地实测）**
+- `.github/workflows/ci.yml` 第 2、3 步，两档 matrix 都跑**全量含 slow**。
+- pyscf 2.14.0：树内 `python -m pytest -q` → **69 passed，0 skipped，576.08 s**；
+  树外 `--pyargs nlcsplit`（cwd=/tmp）→ **68 passed, 1 skipped, 824.43 s**。
+  ⇒ 我先前预判的红点 (a) `nlc_coeff`/`get_partition` API 漂移 **没有发生**。
+  那个 skip 是 S22 几何抓取，只在树外出现（树内有下载件）。
+- pyscf 2.12.1 同两步在跑（本条写下时未结束，结果见归档件）。
+- 坑与自证：第一次把 `--target` 装在 `/tmp/ci214lib`，WSL 重启把 /tmp 清了，脚本静默退回
+  `~/.local` 的 2.12.1，而日志抬头还写着 2.14。改成 `~/cilibs/pXXX` 并让脚本打印
+  `pyscf.__file__`。另：MSYS 把 `/mnt/e/...` 参数改写成 `D:/Program Files/Git/mnt/...`，
+  第一次"跑"其实是 exit 127、什么都没跑——认日志文件不认通知。
+
+**S5 那个"没有归档载体"的数，补上了**
+`step_e_kernel.py` 重跑并归档 `evidence/recompute/20261001T083716Z_step_e_pairing_control.out`
+（MANIFEST 7 条，`sha256sum -c` 全 OK）。它推翻两处：
+1. software.md 写苯 **+0.914**，实测 **+0.9057**，而 main.md 早就写的正是 0.906
+   ⇒ 两篇稿引同一个 S5 却互相打架，缺载体就是成因。
+2. software.md 说这三个数"at grid level 1"：水/氩对（level 1），**苯错**（脚本自己把苯放 level 0）。
+   甲烷 +0.1346（level 1）两篇都没提，已补。
+
+**另一处单位错（自己搬进 JOSS 草稿时撞出来的）**
+software.md 把 floor 扫描写成"≤5e-11 **kcal/mol**"，归档件打的是 **2.1e-11 Ha**（lvl1）/4.2e-11 Ha（lvl2）。
+Ha 当 kcal/mol 用＝宣称比实测不敏感约 260 倍。两个量都远小于本文 1e-4 kcal/mol 尺度，
+结论不受影响，但数照改，并把"我错在哪"写进正文。教训：**搬数进新文档前重读整行**——
+这条草稿里我原本就抄了这个错数。
+
+**新增 paper/joss/**（JOSS 投稿形态，1445 词）
+- 规格不是靠记忆：JOSS 的 `paper.html` 明列 YAML 键与**六节强制清单**（Summary / Statement of need /
+  State of the field / Software design / Research impact / Authorship），并规定 API 文档不进正文。
+  我原先记的"≤4000 词"是**我自己造的数**，官方页面没有字数上限——已按实测规格写。
+- `paper.bib` 由 `scratch/make_joss_bib.js` 从 `paper/references.bib` **逐字节抽取** 13 条并自证
+  （第一版比对只 trim 了一侧，13 条全报 BYTE MISMATCH —— 自检当场响了，说明它不是恒真）。
+
+**闸门面**
+- 闸门 W 默认清单加入 `paper/joss/paper.md`（新 prose 载体不被扫＝上次 223% 复发的形态；
+  audit_share_rule 读不到文件会 FAIL 并报分母，所以加路径是安全的）。
+- `conftest.py` 的 slow 描述原写"默认由 addopts 排除"，实际 `addopts = "-ra"` 不排除。改成"只有显式
+  `-m 'not slow'` 才排除"。这句话在随包文件里。
+- 全量重打导出：十四条闸门数组**全空**，私有判据 10 条已加载，wheel 仍 38 成员，`rc=0`。
+
+**提交** `81a0e7d`（未 push；远端仍 private，转 public 是那五件里唯一他手上的一件）。
+
+**下一步**：2.12.1 档跑完 → 两份预演日志归档进 `evidence/release_qa/` 并刷新其 MANIFEST →
+按实测把 JOSS 里的测试计数句写成"两档、树内树外都跑过"（现在那句"49 of which ship inside the
+package"混用了**两个不同对象**：导出的 wheel 收 49，`pip install .` 源码树收 69，不能当一件说）。
