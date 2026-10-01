@@ -1,4 +1,4 @@
-211 files
+212 files
 .github/workflows/ci.yml
 CITATION.cff
 CONTRIBUTING.md
@@ -146,6 +146,7 @@ evidence/release_qa/20260930T233800Z_suite69_full.out
 evidence/release_qa/20261001T053741Z_wheel_hash_is_not_content.txt
 evidence/release_qa/20261001T112436Z_ci_dryrun_pyscf212_full.out
 evidence/release_qa/20261001T112436Z_ci_dryrun_pyscf214_full.out
+evidence/release_qa/20261001T150706Z_github_actions_first_runs.out
 evidence/release_qa/MANIFEST.sha256
 evidence/release_qa/README.md
 evidence/release_qa/gate_selftest_20260930.txt

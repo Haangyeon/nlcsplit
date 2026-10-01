@@ -1,0 +1,239 @@
+== ARCHIVE: GitHub Actions 第一次真跑（<OPERATOR>/nlcsplit, workflow "tests"）==
+
+为什么有这份归档。paper/software.md 曾经写着 "no CI run has ever been observed"，
+并把"这条 workflow 从没被执行过"当成一条限制报出去。2026-10-01 带凭据一问，
+total_count 已经是 5，而 run #1 双臂 conclusion=failure。之所以昨天看不见：那次用的是
+未认证请求，仓库当时还是 private ⇒ 404，我把 404 读成"没有 run"。所以这里归档的不只是
+"绿了"，也归档那次红：根因是把**出货决定**（node tools/make_public_repo.js）放进了已发布
+仓的 CI，而它 exec 的 tools/audit_share_rule.js 当时不随包发布，闸门 W 的双向自检对脏样例
+和干净样例**都**返回非零（Cannot find module），于是保守拒绝出货、每次 push 判红。
+
+取数方式：GET /repos/<OPERATOR>/nlcsplit/actions/runs?per_page=20，再逐个 run 取 /jobs。
+每行都是 API 字段的现读现打，没有一个人工誊写的数。
+
+total_count=5  artifact_runs=undefined  (取数时刻 2026-10-01T15:07:07.826Z)
+
+--- run #1  id=36668848450
+    event=push  display_title=nlcsplit 0.1.0 — exported release tree, produced by tools/make_public…
+    head_sha=0b903ab32048954b7f1a9600a0cbc0d4fa9f63fc  branch=main
+    status=completed  conclusion=failure
+    run_started_at=2026-09-30T04:26:29Z  updated_at=2026-09-30T05:09:57Z
+    url=https://github.com/<OPERATOR>/nlcsplit/actions/runs/36668848450
+    job "pytest (2.14.0)"  status=completed  conclusion=failure  runner=GitHub Actions 1000000031
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.14.0" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/make_public_repo.js  -> failure
+      step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped
+      step 22  Post Run actions/setup-node@v4  -> skipped
+      step 23  Post Run actions/setup-python@v5  -> skipped
+      step 24  Post Run actions/checkout@v4  -> success
+      step 25  Complete job  -> success
+    job "pytest (2.12.1)"  status=completed  conclusion=failure  runner=GitHub Actions 1000000032
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.12.1" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/make_public_repo.js  -> failure
+      step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped
+      step 22  Post Run actions/setup-node@v4  -> skipped
+      step 23  Post Run actions/setup-python@v5  -> skipped
+      step 24  Post Run actions/checkout@v4  -> success
+      step 25  Complete job  -> success
+
+--- run #2  id=36872835571
+    event=push  display_title=release: rebuild the export tree (2026-10-01)
+    head_sha=99584d47c87c778c48a81f6d7dc0e863a5e6bbbd  branch=main
+    status=completed  conclusion=failure
+    run_started_at=2026-10-01T13:59:29Z  updated_at=2026-10-01T14:51:50Z
+    url=https://github.com/<OPERATOR>/nlcsplit/actions/runs/36872835571
+    job "pytest (2.14.0)"  status=completed  conclusion=failure  runner=GitHub Actions 1000000033
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.14.0" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/make_public_repo.js  -> failure
+      step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped
+      step 22  Post Run actions/setup-node@v4  -> skipped
+      step 23  Post Run actions/setup-python@v5  -> skipped
+      step 24  Post Run actions/checkout@v4  -> success
+      step 25  Complete job  -> success
+    job "pytest (2.12.1)"  status=completed  conclusion=failure  runner=GitHub Actions 1000000034
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.12.1" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/make_public_repo.js  -> failure
+      step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped
+      step 22  Post Run actions/setup-node@v4  -> skipped
+      step 23  Post Run actions/setup-python@v5  -> skipped
+      step 24  Post Run actions/checkout@v4  -> success
+      step 25  Complete job  -> success
+
+--- run #3  id=36875313116
+    event=push  display_title=fix(ci): stop running the ship-decision tool inside the published tree
+    head_sha=8c291ac8d3c433401fe7395d7777301ce50125fc  branch=main
+    status=completed  conclusion=success
+    run_started_at=2026-10-01T14:18:32Z  updated_at=2026-10-01T14:42:20Z
+    url=https://github.com/<OPERATOR>/nlcsplit/actions/runs/36875313116
+    job "pytest (2.12.1)"  status=completed  conclusion=success  runner=GitHub Actions 1000000035
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.12.1" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/audit_no_gamess.js --selftest  -> success
+      step 20  Post Run actions/setup-node@v4  -> success
+      step 21  Post Run actions/setup-python@v5  -> success
+      step 22  Post Run actions/checkout@v4  -> success
+      step 23  Complete job  -> success
+    job "pytest (2.14.0)"  status=completed  conclusion=success  runner=GitHub Actions 1000000036
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.14.0" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/audit_no_gamess.js --selftest  -> success
+      step 20  Post Run actions/setup-node@v4  -> success
+      step 21  Post Run actions/setup-python@v5  -> success
+      step 22  Post Run actions/checkout@v4  -> success
+      step 23  Complete job  -> success
+
+--- run #4  id=36877094071
+    event=push  display_title=paper(joss): ship the JOSS manuscript and its figure in the repository
+    head_sha=2432ed474fadc06ec6e4ff364fafeb56658e850d  branch=main
+    status=completed  conclusion=success
+    run_started_at=2026-10-01T14:32:08Z  updated_at=2026-10-01T14:59:52Z
+    url=https://github.com/<OPERATOR>/nlcsplit/actions/runs/36877094071
+    job "pytest (2.12.1)"  status=completed  conclusion=success  runner=GitHub Actions 1000000037
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.12.1" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/audit_no_gamess.js --selftest  -> success
+      step 20  Post Run actions/setup-node@v4  -> success
+      step 21  Post Run actions/setup-python@v5  -> success
+      step 22  Post Run actions/checkout@v4  -> success
+      step 23  Complete job  -> success
+    job "pytest (2.14.0)"  status=completed  conclusion=success  runner=GitHub Actions 1000000038
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.14.0" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/audit_no_gamess.js --selftest  -> success
+      step 20  Post Run actions/setup-node@v4  -> success
+      step 21  Post Run actions/setup-python@v5  -> success
+      step 22  Post Run actions/checkout@v4  -> success
+      step 23  Complete job  -> success
+
+--- run #5  id=36877803728
+    event=push  display_title=paper(joss): fill the first author's ORCID from its own public record
+    head_sha=0a0567534caf4f0a38aaae67184bf624cf87fdba  branch=main
+    status=completed  conclusion=success
+    run_started_at=2026-10-01T14:37:37Z  updated_at=2026-10-01T15:01:15Z
+    url=https://github.com/<OPERATOR>/nlcsplit/actions/runs/36877803728
+    job "pytest (2.12.1)"  status=completed  conclusion=success  runner=GitHub Actions 1000000039
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.12.1" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/audit_no_gamess.js --selftest  -> success
+      step 20  Post Run actions/setup-node@v4  -> success
+      step 21  Post Run actions/setup-python@v5  -> success
+      step 22  Post Run actions/checkout@v4  -> success
+      step 23  Complete job  -> success
+    job "pytest (2.14.0)"  status=completed  conclusion=success  runner=GitHub Actions 1000000040
+      step  1  Set up job  -> success
+      step  2  Run actions/checkout@v4  -> success
+      step  3  Run actions/setup-python@v5  -> success
+      step  4  Run python -m pip install --upgrade pip  -> success
+      step  5  Run python -m pip install "pyscf==2.14.0" numpy pytest  -> success
+      step  6  Run python -m pip install .  -> success
+      step  7  Run python -m pytest -q -m "not slow"  -> success
+      step  8  Run python -m pytest -q  -> success
+      step  9  Run python -m pytest -q --pyargs nlcsplit -p no:cacheprovider  -> success
+      step 10  Run actions/setup-node@v4  -> success
+      step 11  Run node tools/audit_no_gamess.js --selftest  -> success
+      step 20  Post Run actions/setup-node@v4  -> success
+      step 21  Post Run actions/setup-python@v5  -> success
+      step 22  Post Run actions/checkout@v4  -> success
+      step 23  Complete job  -> success
+
+--- 判读
+run #1  sha=0b903ab  completed/failure
+run #2  sha=99584d4  completed/failure
+run #3  sha=8c291ac  completed/success
+run #4  sha=2432ed4  completed/success
+run #5  sha=0a05675  completed/success
+
+--- 追加：run #5 (HEAD 0a05675) 三档 pytest 的汇总行，逐字取自 job 日志
+    为什么单列这一段：step=success 只说明没有非零退出，不说明跑了多少项。
+    "0 违规"和"0 条被解析"打印出来长得一样，所以这里要的是分母。
+    （这一段的第一版是空的：日志每行带 GitHub 时间戳前缀，而我当时的过滤里有一条
+      `grep -vE "^20.."`，正好把手要的三行全杀了——段落标题在、内容零行、脚本 exit 0。）
+  [pytest (2.14.0)]
+    30 passed, 1 skipped, 18 deselected in 81.33s (0:01:21)
+    48 passed, 1 skipped in 652.94s (0:10:52)
+    48 passed, 1 skipped in 651.97s (0:10:51)
+  [pytest (2.12.1)]
+    30 passed, 1 skipped, 18 deselected in 55.05s
+    48 passed, 1 skipped in 444.97s (0:07:24)
+    48 passed, 1 skipped in 448.82s (0:07:28)
+    读法：第一行是 `-m "not slow"` 快车道；第二行是全量（含 slow）；第三行是树外
+    `pytest --pyargs nlcsplit`，即从**装好的包**里跑，工作目录不是仓库。
+    两臂三档都是同一组数：48 passed + 1 skipped（全量与树外），快车道 30 passed +
+    1 skipped + 18 deselected——与 README 里"发布 wheel 收 49 项 = 31 + 18，其中那一条
+    skip 是设计内的 S22 取回项"是同一套数，这里是它在 GitHub 上的第二次独立记录。
