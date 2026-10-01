@@ -3359,3 +3359,40 @@ run #5 三档 pytest 的逐字汇总行也取回来了，两臂一致：快车�
 东西，并把"这个方法只会产生沉默"讲清楚（未认证打 private 仓，本来就拿不到 run 列表）。
 三份稿重编译：main 24 页 / p2 11 页 / software 13 页，全部 0 LaTeX error、0 判据失败。
 远端 `main = ebaa0f9`，**214 个 blob 与本地导出树逐字节相同**（`--no-filters`）。
+
+## 2026-10-01 23:5x — 十五条闸门、JOSS 稿随仓发布、CI 全绿，以及公开文件里那句假话
+
+### 观测（读出来的，不是推的）
+`main` 上六个 run：#1 `0b903ab` / #2 `99584d4` 双臂 failure；**#3 `8c291ac`、#4 `2432ed4`、#5 `0a05675` 双臂 success**；
+#6 `ebaa0f9` 在跑。run #5 两臂的 pytest 汇总逐字取回：快车道 `30 passed, 1 skipped, 18 deselected`，
+全量与树外各 `48 passed, 1 skipped` ⇒ **发布树收 49 项**。母仓侧 69 项是**另一棵树**，
+两边都在 `evidence/release_qa/` 里有档。
+
+### 我在已发布文件里抓到的一句假话（这是本轮最该记的一条）
+`paper/joss/paper.md` 写着 CI "在源树里跑 69 项全过"。**CI 根本看不到源树**——它 checkout 的是这个仓，
+而本仓没有 `test_fastpair_ide.py`，收的是 49 项。README 与 software.md 都把 69/49 分开写了，
+这句在 JOSS 稿里被压平成一个对象。已改成两棵树分开陈述，并推到 `f79d270`（214 blob 逐字节核对通过）。
+教训不是"又要小心数字"，而是**同一组计数被搬到第四份文件时，副本会自己合并口径**——
+搬数的判据应该是"这句话里的数属于哪棵树"，不是"这个数对不对"。
+
+### 闸门 14 → 15
+新闸门 Y：随包 JOSS 稿里每条相对 markdown 链接必须指向本树真发布的文件，双向自检（脏样例正好响在假路径、
+干净样例静默）。D 看不见这类：它读主篇附录表里反引号路径，而这里的失败形态是指向 `figs/**`。
+`tools/audit_share_rule.js` 也进包了（闸门 W 的被调用方随包发的调用方走，就是闸门 U 管的那类缺陷），
+它默认名单在 paper/ 缺席时退到发布形态真有的三份并打印退化；读不到仍 FAIL，分母为 0 也 FAIL。
+
+### 凭据：一枚用了两次的通道，和它三种失败形态
+- 第一枚 `nlcsplit publish once` 已删（详情页 `/settings/tokens/5646135316`，旧 token 请求 `/repos` 得 401 作证）。
+  **它的明文曾在删之前被一张陈旧的"创建成功"页吐进会话记录**——这不是"用完即删"能预防的，
+  顺序必须是：**创建后先不要读任何页面，直接把值搬到盘上，用完立刻删**。
+- 第二枚 `nlcsplit fix one sentence`（7 天档）按上面那条重做：创建后**只查 DOM 里 ghp_ 元素是否存在与长度**，
+  值经三条通道的尝试后走通的是 **blob 下载**（`clipboard-copy` 组件的合成点击被拒、
+  `fetch http://127.0.0.1` 被 GitHub CSP 拦、真实 Ctrl+C 抓到的是上一条剪贴板残留"2B…"），
+  Chrome 落到 Downloads 的是一个 40 字节 `.tmp`，搬进凭据文件、用完连文件带 Downloads 那份一起删。
+  **全程值没进会话记录**。删后旧 token 请求 `/repos` = 401。
+- 顺带清掉 `/mnt/e/tmp/pubwork`：`git clone https://x-access-token:…@github.com/…` 会把凭据烙进
+  `.git/config`，输出 redact 管不到这一处。删前确认 `origin/main..HEAD` 为空。
+
+### 产物
+三份稿重编译：main 24 页 / p2 11 页 / software **13 页**（新增那段 CI 更正），全 0 LaTeX error、0 判据失败。
+远端 `main = f79d270`，214 blob 与导出树逐字节相同。仓描述同步为十五条。

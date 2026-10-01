@@ -1,23 +1,19 @@
-evidence(ci): archive the first executed Actions runs, failures included
+paper(joss): stop describing CI as running the source tree - it runs the published tree
 
-Adds evidence/release_qa/20261001T150706Z_github_actions_first_runs.out: the run, job and step
-fields for all five runs on main as the API returns them, then the pytest summary lines taken
-verbatim from the two green arms of run #5. The manuscript had reported "no CI run has ever
-been observed"; that is corrected in paper/software.md, together with how the check produced
-silence instead of an answer - an unauthenticated request against a then-private repository.
+The shipped manuscript said the suite "collects 69 tests; all 69 pass in the source tree under
+both PySCF versions in the CI matrix ... and pass again from outside the tree". GitHub Actions
+never sees the source tree: it checks out this repository, which does not contain
+test_fastpair_ide.py, so its collection is 49, not 69. The 69-vs-49 distinction is stated
+correctly in README.md and in paper/software.md and was flattened here anyway, which is the
+exact failure this project has already been burned by once - two objects quoted as one.
 
-The step counts are in the file because a step reported success without a denominator is the
-same void as the 404 read as absence: both arms show 30 passed / 1 skipped / 18 deselected on
-the fast lane and 48 passed / 1 skipped on the full and out-of-tree runs, i.e. the published
-tree collects 49 items, not the 69 the working repository does, since test_fastpair_ide.py is
-not distributed with the control module it imports.
+What the sentence now separates:
 
-MANIFEST.sha256 regenerated for the directory (25 entries, sha256sum -c --strict clean).
+  working repository   69 collected, 69 passed, under 2.12.1 and 2.14.0 (local rehearsals,
+                       archived under evidence/release_qa/)
+  published tree, CI   49 collected: 48 passed, 1 skipped by design, reached twice per arm -
+                       in the checked-out tree and from outside it against the installed
+                       package
 
-Two notes on getting this file onto disk, both kept because they are the interesting part:
-the counts section was first written empty - the log lines carry a GitHub timestamp prefix and
-the filter meant to drop noise was `grep -vE "^20.."`, which deleted exactly the three lines
-wanted while the section header survived and the script exited 0; and the truncation that was
-supposed to replace that empty section did not run, because `grep -n -F "--- 追加："` let the
-leading dashes be parsed as options. The duplicate block was then removed by line range and
-re-verified, rather than by regenerating the whole archive over an unconfirmed state.
+The skipped one is the S22 geometry retrieval, which is not part of an install. The counts are
+read off the archived API observation added in the previous commit, not restated from memory.
