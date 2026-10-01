@@ -22,7 +22,7 @@ affiliations:
       Campus), Xi''an 710119, Shaanxi, China'
     index: 1
 date: 29 September 2026
-bibliography: references.bib  # 尚未生成；DOI 已在 §Sources 逐条回查
+bibliography: references.bib  # 24 条，DOI 逐条回查（见 RESEARCH-20260929-lit.md §9）
 keywords:
   - nonlocal correlation
   - VV10
@@ -90,13 +90,18 @@ native PySCF kernel to ~1e-8 Ha [S9].
 `β = (1/32)(3/b²)^(3/4)`. Parameters are read from PySCF `nlc_coeff` rather than
 hard-coded. Same-centre pairing is the convention that reproduces the native
 kernel; the cross-pairing variant `g = w0(r_j)R² + κ(r_i)` is retained as a
-definition-sensitivity control and raises monomer energies by 0.138 (water), 0.418
-(argon) and 0.914 (benzene) kcal/mol at grid level 1 [S5]. The offset is not a constant and
-it moves with the grid - the level-0 benzene figure is not the level-1 one - so those three
-numbers are one batch at one level and must not be mixed with another batch. What [S5] now
-points at is the script that regenerates the comparison, not an archived record of it: no
-tracked file in this repository holds these three values, so they are re-measurable but not
-checkable against stored stdout.
+definition-sensitivity control and raises monomer energies by +0.1379 (water), +0.4182
+(argon) and +0.1346 (methane) kcal/mol at grid level 1, and +0.9057 for benzene at level 0
+[S5]. The offset is not a constant and
+it moves with the grid - the level-0 benzene figure is not the level-1 one - so these four
+numbers are one batch at the levels the producing script itself selects, and must not be
+mixed with another batch. [S5] now points at an archived run carrying all four, which it did
+not: an earlier version of this sentence gave benzene as 0.914 kcal/mol and labelled the whole
+list "at grid level 1", and neither value nor label was checkable, because the only carrier had
+been a gitignored working log. The rerun that closed the gap reproduced water and argon to the
+printed digit and gave benzene +0.9057 at level 0 - which is what the companion text already
+said, so the two papers had been disagreeing with each other about one number while citing the
+same source row - and added methane, which neither paper had mentioned.
 
 **Blocks and additivity.** `pair_energy(A, B)` returns the half block
 ½ Σ_{i∈A} Σ_{j∈B}; the inter-fragment term is reported as twice that, so
@@ -131,9 +136,16 @@ this package. The two checks it enforces are pointwise normalisation
 we are claiming to have measured [S17].
 
 **Far-field cut.** Points below `rho_floor = 1e-12` are dropped from the double
-sum. Sweeping 1e-8 … 1e-16 changes the inter-fragment term by ≤5e-11 kcal/mol
-while discarding 10.7-22.6% of points carrying ≤2.3e-6 electrons [S7], so the
-threshold is an implementation detail rather than a parameter.
+sum. Sweeping 1e-8 … 1e-16 moves the inter-fragment term by at most 2.1e-11 Ha at grid level 1
+and 4.2e-11 Ha at level 2 - 1.3e-8 and 2.6e-8 kcal/mol, which the run's own log prints as
+0.000000 - while discarding 10.7-22.6% of points carrying ≤2.3e-6 electrons [S7], so the
+threshold is an implementation detail rather than a parameter. An earlier version of this
+sentence said "≤5e-11 kcal/mol": it had taken the archived figure, which is in hartree, and
+put a kilocalorie unit on it, claiming the term was about 260 times less sensitive to the
+floor than the archive shows. Both figures are negligible against the 1e-4 kcal/mol scale of
+the quantities here, so the conclusion survives the error, but the number did not - corrected
+against `evidence/recompute/20260928T150222Z_step_d_floor.out`, whose header already records
+the units.
 
 ## 3. Software description
 
@@ -540,7 +552,7 @@ entries are archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`.
 | S1 | `RESEARCH-20260929-lit.md` §1, §6, §9 | the literature screen behind the statement-of-need comparison, together with that file's own measurement that open-index *subject* search recall is poor — which is why §1 calls the gap a screen and not an enumeration |
 | S2 | `evidence/recompute/20260929T010500Z_step1_geomfix.out`, `evidence/recompute/MANIFEST.sha256`, `nlcsplit/logs/step_h.json`, `nlcsplit/logs/step_h_l2cp.json`, `MAIN-skeleton.md` Table 2 (uncertainty decomposition), Table 3 (P_frz against the superposition difference) and Table 4b (the S22 subset) | the per-scheme block-sum residual - 1.73e-18 to 6.94e-18 Ha, printed for five partitions and two repeated schemes of the level-1 water dimer at lines 6-14 of the first artefact - the only measured additivity residual for a real system in this repository. The partition-free referee reports its own block-additivity residual on a two-Gaussian model density (worst 1.735e-18 Ha, row S21), which is a different object and not interchangeable with this one. Earlier versions of this row cited the two json logs for the residual: they carry the per-system tables and no additivity field at all |
 | S3 | `nlcsplit/step_f_dispersion.py` | that `β∫ρ = βN` cancels identically from a superposition difference, so the inter-fragment term needs no local-density convention — and the denominator rule that refuses to quote a share when the sum cancels |
-| S5 | `nlcsplit/step_e_kernel.py` | the definition-sensitivity control as a generator rather than as a record: the script that compares same-centre with cross pairing on one grid and one density and prints the per-variant totals. The 0.138 (water), 0.418 (argon) and 0.914 (benzene) kcal/mol of §2 are its level-1 output; the stdout that recorded them lived in nlcsplit/logs, which is gitignored, and was never archived into `evidence/` - so this row points at a re-measurement, not at a stored result, and closing it means a run whose output lands in a manifest-ed evidence directory |
+| S5 | `nlcsplit/step_e_kernel.py`, `evidence/recompute/20261001T083716Z_step_e_pairing_control.out`, `evidence/recompute/MANIFEST.sha256` | the definition-sensitivity control as both generator and record: the script compares same-centre with cross pairing on one grid and one density and prints the per-variant totals, and the archived stdout now carries the +0.1379/+0.4182/+0.1346 (level 1) and +0.9057 (benzene, level 0) kcal/mol of §2. Until 2026-10-01 this row pointed at a re-measurement only, because the stdout that recorded them lived in nlcsplit/logs, which is gitignored - and the unarchived benzene figure in this paper (0.914) did not match the archived one in the companion text (0.906); the run resolved it in favour of 0.906 |
 | S7 | `nlcsplit/step_d_floor.py`, `evidence/recompute/20260928T150222Z_step_d_floor.out` | the `rho_floor = 1e-12` far-field cut, and the reported cost of it (10.7–22.6% of points dropped, carrying ≤ 2.3e-6 electrons) |
 | S9 | `nlcsplit/step_i_gridrepr.py`, `evidence/recompute/20260929T_step_i_gridrepr.out` | agreement of the explicit pair sum with PySCF's native VV10 kernel on a fixed grid, and the grid-representation residual quoted in §1 and §2 |
 | S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out` | the level-2 counterpoise numbers, computed on the cluster and archived with their stdout |

@@ -22,7 +22,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const argv = process.argv.slice(2);
 const filesFlag = (argv.find(a => a.startsWith('--files=')) || '').slice(8);
-const DOCS = (filesFlag || 'paper/main.md,paper/p2.md,paper/software.md,README.md,MAIN-skeleton.md')
+const DOCS = (filesFlag || 'paper/main.md,paper/p2.md,paper/software.md,paper/joss/paper.md,README.md,MAIN-skeleton.md')
   .split(',').map(s => s.trim()).filter(Boolean);
 const SHARE_WORDS = /占比|份额|占\s*|share|proportion|of\s*d?E_xc|of\s*ΔE_xc|of\s*the\s*exchange-correlation/i;
 

@@ -207,8 +207,9 @@ g = w0(r_i) R² + κ(r_i),  g′ = w0(r_j) R² + κ(r_j),  Φ = −3 / (2 g g′
 with (b, C) = (6.0, 0.01) for ωB97X-V, and E_NLC = E_NL + β∫ρ,
 β = (1/32)(3/b²)^{3/4}. The pairing of ω and κ in g and g′ is a genuine choice,
 and the cross pairing g = w0(r_j) R² + κ(r_i) — which an earlier implementation
-of ours used — is wrong: at grid level 0 it raises monomer energies by +0.138 kcal/mol for
-water, +0.418 for argon and +0.906 for benzene, and the offset is itself
+of ours used — is wrong: it raises monomer energies by +0.1379 kcal/mol for water,
++0.4182 for argon and +0.1346 for methane at grid level 1, and +0.9057 for benzene at
+level 0, and the offset is itself
 grid-dependent, so it cannot be subtracted as a constant [S1, S5]. The
 same-centre pairing above reproduces PySCF's native kernel to 5.7×10⁻⁶ kcal/mol on
 the water monomer, and agrees with an independently written script that evaluates the
