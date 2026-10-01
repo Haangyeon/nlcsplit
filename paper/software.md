@@ -258,6 +258,17 @@ geometry download, which need an unloaded machine), derives the repository root 
 location instead of a hard-coded working path, and refuses to run the argument-taking ones
 rather than silently running them at their defaults.
 
+That repair left no guard behind, and the omission came back the only way such a thing comes
+back: a fourteenth script. `step_m_ccsdt.py`, the producer of the coupled-cluster anchor, was
+added to the package on 2026-09-30 and never reached `run_all.sh`, so for two days the
+published tree again held a table-producing script that no entry point could run. It was found
+on 2026-10-01 by enumerating the shipped `step_*.py` files against the driver's command table,
+and that comparison is now an export gate of its own (`gateX_runner_coverage`) with the
+self-test the earlier repair lacked: truncating the command table to the four entries of the
+original bug must make it report ten missing scripts, and a table completed by construction
+must make it silent. It is evaluated against the export tree rather than against this
+repository, because the copy that has to be runnable is the reader's.
+
 The suite collects 69 tests in the working repository - 49 under `-m "not slow"` and 20
 under `-m slow`, a partition of the same collection and not two numbers to be added. All 69
 have been executed: 69 passed with nothing skipped in 380.52 s, on the tree that carries the
@@ -338,7 +349,7 @@ not cited as evidence. Including a naive triple-loop versus BLAS
 comparison of the kernel, per-scheme additivity checks, and geometry guards that
 assert bond lengths and angles at construction time.
 
-Thirteen export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
+Fourteen export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
 ships in the published tree). They are
 not all of equal standing, and the difference matters: some exist because they caught a real
 defect, others only because we could not otherwise show the earlier ones were not vacuous.
@@ -360,6 +371,7 @@ fires on a fault we put in deliberately to prove it would.
 | U | every module a shipped file imports from `nlcsplit` (absolute, dotted or package-relative) is itself in the shipped tree; the gate also self-tests against a planted missing sibling, and a build where that self-test does not fire does not ship | real defect: it was written for `fastpair.py`, which gate E could not see because an intra-package import is not a declared dependency |
 | V | every Python module inside a packaged directory is either in the export whitelist or named, with a reason, as an unreleased internal module - this is the set `pip install .` actually puts in `site-packages`, which the whitelist does not constrain; self-tests fire on a planted stray and stay silent on the named ones | real defect: found by the shipped licence scanner, which walked 45 installed files from a source-directory install and found the peer implementation among them |
 | W | no manuscript or README quotes a *share* for a system whose denominator cancels, i.e. where `|dE_NLC/dE_xc| > 2` - the same rule `step_f_dispersion.py` applies to its own output, extended to the prose | real defect: three of them on the day it was written (the companion text's conclusion, this paper's section 4, and a line the author had just added to this README), all quoting a share equivalent to a ratio above 2 that section 3.2 of the same paper argues against - and the gate caught its own author reintroducing the number while documenting the gate |
+| X | every `step_*.py` in the export tree appears in `run_all.sh`'s command table, so each table in the text has an entry point a reader can actually invoke | real defect: `step_m_ccsdt.py` reached the release on 2026-09-30 without ever being registered, which is the same omission the driver had been rewritten to fix - that rewrite left no guard, and this gate is the guard it lacked. The self-test truncates the command table to the four entries of the original bug and must then report ten missing scripts, and must go silent on a table completed by construction |
 
 Gate D exists because the first three could only fail in one direction. A, B, C
 catch material that should not be present; what actually went wrong repeatedly was

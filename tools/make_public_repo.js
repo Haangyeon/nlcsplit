@@ -1096,6 +1096,45 @@ function importClosure(treeFiles, readFn) {
   }
   return [...new Set(out)];
 }
+
+// 闸门 X：每一个随包发布的 step_*.py 必须出现在复现驱动 run_all.sh 的 CMD 表里。
+// 这个缺陷发生过一次：旧 run_all.sh 只认四个脚本，而母仓有十三个，于是"每个表映射一个
+// 脚本"这句话对拿发布物的读者不成立。修好之后**没有留下任何守卫**，所以第 14 个 step
+// 脚本（step_m_ccsdt.py）一进来就重演了同一件事——本闸门就是那条当时没写的守卫。
+function coverageOf(steps, runnerText) {
+  // run_all.sh 的 CMD 表长这样：  [step_h]="nlcsplit/step_h_s22.py"
+  const reg = new Set([...runnerText.matchAll(/\]="nlcsplit\/([^"]+\.py)"/g)].map(m => m[1]));
+  return steps.filter(s => !reg.has(s.split("/").pop()));
+}
+
+const RUNNER_REL = 'nlcsplit/run_all.sh';
+const gateXsteps = tree.filter(p => /^nlcsplit\/step[^/]*\.py$/.test(p));
+const gateXRaw = fs.existsSync(path.join(OUT, RUNNER_REL))
+  ? coverageOf(gateXsteps, read(path.join(OUT, RUNNER_REL)))
+  : null;
+const gateX = gateXRaw === null
+  ? [RUNNER_REL + ' 不在导出树里，覆盖率无从核对']
+  : gateXRaw.map(s => s + ' 不在 run_all.sh 的 CMD 表里：读者按发布物的一键入口跑不出它');
+const gateXSelftest = (() => {
+  if (gateXRaw === null) return { fired: false, clean_input_silent: false };
+  const full = read(path.join(OUT, RUNNER_REL));
+  // 反证一：把 CMD 表截成"当年那四个"，判据必须响。
+  const four = full.replace(/(declare -A CMD=\(\n)([\s\S]*?)(\n\))/g, (m, a, body, c) => a
+    + body.split("\n").filter(l => /\[step1\]|\[step2\]|\[step_b\]|\[step_c\]/.test(l)).join("\n") + c);
+  const missingOnTruncated = coverageOf(gateXsteps, four);
+  // 反证二：喂一份"按构造补全"的表，判据必须闭嘴。补的是合成行，
+  // 所以这一半与真实缺陷是否已修无关——否则闸门没修好时自检永远红，
+  // 就分不清"守卫坏了"和"还有活没干"。
+  const completed = full + '\n' + gateXsteps.map((s, i) => '  [x_' + i + ']="' + s + '"').join('\n');
+  const missingOnComplete = coverageOf(gateXsteps, completed);
+  return {
+    step_scripts: gateXsteps.length,
+    fired: missingOnTruncated.length > 0,
+    truncated_reports: missingOnTruncated.length,
+    clean_input_silent: missingOnComplete.length === 0,
+    real_tree_missing: gateXRaw.length,
+  };
+})();
 const gateU = importClosure(tree, rel => read(path.join(OUT, rel)));
 
 // ---------------------------------------------------------------- 闸门 V：源码树里"装了但不该发"的模块
@@ -1175,6 +1214,8 @@ const report = {
   gateR_tree_residue: gr,
   gateT_not_in_export_manifest: notInManifest,
   gateU_import_closure: gateU,
+  gateX_runner_coverage: gateX,
+  gateX_selftest: gateXSelftest,
   gateU_selftest: gateUSelftest,
   gateV_install_vs_release: gateV,
  gateW_share_rule_in_docs: gateW.findings, note_gateW_selftest: gateW.selftest,
@@ -1199,6 +1240,7 @@ const bad = ga.length + gb.length + gc.length + gc2.length + gateD.absent.length
   // 只验"会响"的自检会让误伤回来时没人拦住（本日就是误伤先撞上的）。
   + (gateESelftest.fired && gateESelftest.sibling_and_stdlib_silent ? 0 : 1)
   + gateW.findings.length + (gateW.selftest.fired && gateW.selftest.silent_on_valid ? 0 : 1)
+  + gateX.length  + (gateXSelftest.fired && gateXSelftest.clean_input_silent ? 0 : 1)
   + (gateVSelftest.fired && gateVSelftest.silent_on_named && gateVSelftest.clean_input_silent ? 0 : 1)
   // 同理：具名豁免如果一笔都没记上，说明检测器根本没扫到自己 —— 那"豁免规则"是装饰。
   + (selfScanOk ? 0 : 1)
