@@ -180,9 +180,9 @@ Two limits are stated here rather than in a closing section, because both
 bound what the numbers may be used for. First, this is not an energy
 decomposition analysis: we do not separate electrostatics, exchange-repulsion,
 polarization or charge transfer. Counterpoise-corrected interaction energies are
-reported for six of the eight systems (§3.2), so basis-set superposition error is
+reported for seven of the eight systems (§3.2), so basis-set superposition error is
 measured rather than assumed away, but the correction is not carried through the
-remaining two benzene-dimer geometries. Second, the explicit
+second benzene-dimer geometry. Second, the explicit
 sum is not more accurate than the production kernels it is compared against —
 the interpolation residual of PySCF's native kernel is of order 4×10⁻⁶
 kcal/mol, far below any chemical interest, and the ≈0.1–0.9 kcal/mol offsets
@@ -691,7 +691,7 @@ nonlocal term and everything else, and we resolve the nonlocal term into
 fragment pairs. We do not separate electrostatics, exchange-repulsion,
 polarisation or charge transfer, and the resulting components are therefore not
 comparable term-by-term with ALMO-EDA or SAPT(DFT) output. Counterpoise-corrected
-interaction energies are reported in section 3.2 for six of the eight systems,
+interaction energies are reported in section 3.2 for seven of the eight systems,
 but dE_NLC itself needs no such correction: it is evaluated at fixed
 (non-self-consistent) superposed density, so basis-set flexisation does not enter
 it, which is precisely why it converges a grid level earlier than dE_int does

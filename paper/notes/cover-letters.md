@@ -40,7 +40,7 @@ from measuring it rather than defining it:
 Because the claim is about a decomposition, we spent as much effort on making the parts
 checkable as on the decomposition itself: the same quantity computed by ORCA 6.0.1 on all
 eight systems, a partition-free exact reference for the attribution step, and a
-CCSD(T)/6-31G* counterpoise anchor for the binding energies of six of the eight complexes,
+CCSD(T)/6-31G* counterpoise anchor for the binding energies of seven of the eight complexes,
 computed in both PySCF and ORCA and agreeing to three decimal places in kcal/mol. The anchor
 is what forces the paper's central caution: at a fixed basis the functional's deviation from
 frozen-core CCSD(T) spans +0.780 to −0.288 kcal/mol with no single sign, while changing only
