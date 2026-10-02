@@ -508,7 +508,7 @@ evidence. This is the third reason the section judges dE_NLC and not the functio
 ![The correlated reference ladder per system against this work's value, and the two cross-program checks](figs/fig4_anchor_crosschecks.png)
 
 **Figure 3.** Left three panels: the MP2/CCSD/CCSD(T) counterpoise ladder for the three
-hydrogen-bonded systems the anchor covers at two bases, at 6-31G\* (solid) and aug-cc-pVDZ
+hydrogen-bonded systems of this section, at 6-31G\* (solid) and aug-cc-pVDZ
 (dashed), with this work's
 omegaB97X-V/6-31G\* level-2 counterpoise value as the dotted rule. The point is a comparison
 of two spans, and `nlcsplit/figures.py` refuses to draw the figure unless the comparison
