@@ -547,9 +547,10 @@ the 0.001 kcal/mol bar [S24].
 `inter[(A,B)]`, summed over the retained grid points, is directly comparable to
 the superposition difference d_sup computed from the unrelaxed monomer densities,
 because both hold the density fixed. Their ratio falls in 0.92-1.08 across the six
-systems that carry a counterpoise reference at level 2 [S8]. The two benzene-dimer
-geometries are not in that set: they were run at level 1, and the ratio printed for
-them there has a different denominator. On the coarser level-0 grid the same ratio
+systems for which the level-2 sidecar carries a counterpoise reference [S8]. The two
+benzene-dimer geometries are not in that set: no level-2 value of this ratio was computed for
+them, and the level-1 ratio printed for them has a different denominator (their
+counterpoise-corrected binding energies, which are a different quantity, are in §3.2). On the coarser level-0 grid the same ratio
 is 1.017 for the water dimer at the official S22 geometry and 1.025 at the
 omegaB97X-V-optimised one, while the benzene sandwich falls below the band at 0.915
 [S19] - the level-2 value of 1.01 for the official water geometry sitting between
