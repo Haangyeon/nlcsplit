@@ -320,7 +320,13 @@ therefore run locally before the remote exists, which is the point of the dry-ru
 prediction it falsified was ours: no `nlc_coeff` or `get_partition` API drift between the two
 versions showed up at all (`evidence/release_qa/`).
 `pytest --pyargs nlcsplit` against the built wheel, run from a directory that is not the
-source tree, exercises only the published tests. Every figure below is quoted at the
+source tree, exercises only the published tests. The current wheel was re-measured this way on
+2026-10-02, in a distribution installed outside the tree with `pip install --no-deps --target`
+and the tests started from a different directory: 48 passed and one skipped in 361.28 s, exit
+status 0, with the wheel hash recorded in the archive
+(`evidence/release_qa/20261002T0815Z_wheel_install_pytest_out_of_tree.txt`). That number
+supersedes the older, smaller-wheel figures below only for the question "what does today's
+install pass"; the older logs stay because each is quoted at its own collection size. Every figure below is quoted at the
 collection size of the log it is taken from, and none of them is a sum of the others: the
 43-test wheel is on record at 42 passed and one skipped, twice, at 580.82 s and at 406.75 s,
 and its `-m "not slow"` subset at 24 passed and one skipped and 18 deselected in 4.63 s. The
