@@ -514,6 +514,49 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     return f
 
 
+
+def toc_graphic(pi_ladders, pi_dft, hb_ladders, hb_dft):
+    """ACS 投稿要的 TOC/abstract graphic：3.25 x 1.75 in，一张图讲一句话。
+
+    数据走 fig5 的同一条路（现读被引归档 + 同一句可证伪的话），只是换版面：
+    在这个尺寸里能读的只有散点——横轴泛函偏差、纵轴基组跨度、对角线以上即本文主张。
+    """
+    rows = []
+    for cn in SYSTEMS:
+        span = abs(hb_ladders[1][1][cn]["frozen"]["CCSD(T)"]
+                   - hb_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        dev = abs(hb_dft[cn] - hb_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        rows.append((SYS_EN[cn], span, dev))
+    for cn in PI_SYS:
+        span = abs(pi_ladders[1][1][cn]["frozen"]["CCSD(T)"]
+                   - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        dev = abs(pi_dft[cn] - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        rows.append((PI_EN[cn], span, dev))
+    for nm, span, dev in rows:
+        if not span > dev:
+            raise SystemExit("toc: %s 上 span %.3f 不大于 dev %.3f，图与正文主张不符" % (nm, span, dev))
+    fig = plt.figure(figsize=(3.25, 1.75))
+    ax = fig.add_axes([0.15, 0.185, 0.82, 0.645])
+    lim = 2.15
+    ax.plot([0, lim], [0, lim], "--", color="0.55", lw=0.8)
+    ax.text(0.575, 0.60, "the basis moves\nmore than the\nfunctional", fontsize=5.4, color="0.4")
+    for nm, span, dev in rows:
+        ax.plot(dev, span, "o", ms=4.2, color="#2b6cb0")
+    for nm, span, dev in rows:
+        if nm in ("benzene-ammonia", "benzene-methane", "water", "methane"):
+            ax.annotate(nm, (dev, span), fontsize=5.4, color="0.25",
+                        xytext=(3, -1), textcoords="offset points")
+    ax.set_xlim(0, 0.95); ax.set_ylim(0, lim)
+    ax.set_xlabel("functional deviation at 6-31G* (kcal/mol)", fontsize=6.0)
+    ax.set_ylabel("reference move, 1 basis (kcal/mol)", fontsize=6.0)
+    ax.tick_params(labelsize=5.8)
+    ax.set_title("VV10 pair attribution: the basis moves the reference more than the\n"
+                 "functional deviates - so fixed-basis binding verdicts are unearned",
+                 fontsize=6.0)
+    f = os.path.join(OUT, "toc_graphic.png")
+    fig.savefig(f, dpi=300)
+    return f
+
 if __name__ == "__main__":
     h = load("step_h.json")
     if not h or not h["rows"]:
@@ -549,3 +592,4 @@ if __name__ == "__main__":
         raise SystemExit("fig4: level-2 反泊松的 DFT 对照只取到 %d 个体系（应为 3）" % len(dft))
     print("出图：", fig4(ladders, parse_xcheck(XCHECK), parse_nlc(NLCTAB), dft))
     print("出图：", fig5(parse_pi_ladder(), parse_pi_dft(), ladders, dft))
+    print("出图：", toc_graphic(parse_pi_ladder(), parse_pi_dft(), ladders, dft))
