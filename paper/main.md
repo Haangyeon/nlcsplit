@@ -482,6 +482,18 @@ without now holds for six systems rather than three: across all six, the smalles
 basis move to functional deviation is 1.4. This is the same reading as on the hydrogen-bonded
 set, and it says what the deviations themselves cannot: at 6-31G\*, which has no diffuse
 functions, a comparison of this kind is mostly measuring the basis.
+![The same span comparison on all six complexes: the pi-complex ladders, and the move each basis change makes against the deviation it is used to judge](figs/fig5_six_system_spans.png)
+
+**Figure 4.** The span comparison of Figure 3 extended to all six complexes. Top row: the three
+pi complexes of the paragraph above, counterpoise ladder at 6-31G* (solid) and aug-cc-pVDZ
+(dashed), with this work omegaB97X-V/6-31G* level-2 counterpoise value as the dotted rule. Bottom:
+for every complex, the correlated reference move between the two bases (blue) against the
+functional deviation from it at the smaller basis (orange), with the ratio between them. The
+figure refuses to draw unless every ratio exceeds one - the guarded statement this paper makes -
+and the smallest here is 1.4 (ammonia dimer, whose two magnitudes are closest) against a largest
+of 28.5 (benzene-ammonia). Both the ladders and the six ratios are read from the archived runs,
+not transcribed [S26, S27].
+
 
 The same runs exposed a second nuisance parameter of comparable size. Raising only the
 integration grid from level 1 to level 2, with the reference untouched, moves the
@@ -503,9 +515,9 @@ of two spans, and `nlcsplit/figures.py` refuses to draw the figure unless the co
 holds: per system, the correlated value's move between the two bases (1.608 / 1.125 / 0.769
 kcal/mol for water / ammonia / methane) exceeds the functional's deviation from the
 frozen-core CCSD(T) at the smaller basis (0.727 / 0.780 / 0.288). Both numbers are read from
-the archived runs, not transcribed. The three π complexes of the paragraph above are not drawn
-in any panel here: the same span comparison is run for them in the text and holds, and drawing
-it needs three more panels [S26, S27]. Right two panels: the same
+the archived runs, not transcribed. The three π complexes of the paragraph above are drawn in
+Figure 4 rather than here, so that this figure keeps one comparison per panel [S26, S27]. Right
+two panels: the same
 quantity computed by two programs - (b) the nonlocal term for all eight systems, as a
 percentage of the term, against
 the 1% guide (§4.2), and (c) the anchor of the left panels recomputed in ORCA 6.0.1, against

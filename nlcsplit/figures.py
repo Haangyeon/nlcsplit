@@ -338,6 +338,182 @@ def fig4(ladders, xc, nlc, dft):
 
 
 
+# ---------------------------------------------------------------------------
+# 图 5：六个体系上"基组跨度 > 泛函偏差"。图 4 的同一句话，从三个氢键体系扩到六个。
+# 纪律与 fig4 相同且更硬一点：点值只从被论文点名的归档里现取（归档抬头是手写的，
+# 不当数据源），并且脚本自己先核这句话——任一体系不成立就拒绝出图。
+# ---------------------------------------------------------------------------
+PI_LADDER = [("6-31G*", "evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out"),
+             ("aug-cc-pVDZ", "evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out")]
+PI_DFT_L2 = ["evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out",
+             "evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out"]
+PI_SYS = ("苯-水", "苯-氨", "苯-甲烷")
+PI_EN = {"苯-水": "benzene-water", "苯-氨": "benzene-ammonia", "苯-甲烷": "benzene-methane"}
+PI_COL = {"苯-水": "#2b6cb0", "苯-氨": "#2f855a", "苯-甲烷": "#b7791f"}
+
+
+def _verbatim(rel):
+    """归档抬头里那些手写数字不当数据源：只读 `--- verbatim output follows ---` 之后。"""
+    parts = _read(rel).split("--- verbatim output follows ---")
+    if len(parts) < 2:
+        raise SystemExit("fig5: %s 里没有 verbatim 分隔行，拒绝把抬头当数据" % rel)
+    return parts[-1]
+
+
+def _detail_rows(txt):
+    """按块跟踪 (体系, 约定)；块分隔行一律重置上下文。
+
+    这条重置是必须的：SNNU 那批归档的 runner stdout 里也打印同形状的五行
+    （方法、两个能量、差值、秒数），不重置就会把绝对能量当差值读进来。
+    """
+    name = conv = None
+    rows = {}
+    for line in txt.splitlines():
+        if re.match(r"^\s*(#####|=====)", line) or line.startswith("== Step M"):
+            name, conv = None, None
+        m = re.match(r"== Step M . (\S+?) CCSD", line)
+        if m:
+            name, conv = m.group(1), None
+            continue
+        m = re.match(r"\s*--- (frozen\(cores\)|all-electron)", line)
+        if m:
+            conv = "frozen" if m.group(1).startswith("frozen") else "all"
+            continue
+        m = re.match(r"\s+(MP2|CCSD|CCSD\(T\))\s+-?\d+\.\d+\s+-?\d+\.\d+\s+(-?\d+\.\d+)\s+\d", line)
+        if m and name and conv:
+            rows.setdefault(name, {}).setdefault(conv, {})[m.group(1)] = float(m.group(2))
+    return rows
+
+
+def parse_pi_ladder():
+    out = []
+    for basis, rel in PI_LADDER:
+        txt = _read(rel)
+        rows = _detail_rows(_verbatim(rel))
+        missing = ["%s/%s/%s" % (s, c, m) for s in PI_SYS for c in ("frozen", "all")
+                   for m in ("MP2", "CCSD", "CCSD(T)")
+                   if rows.get(s, {}).get(c, {}).get(m) is None]
+        if missing:
+            raise SystemExit("fig5: %s 明细缺 %s" % (rel, ", ".join(missing)))
+        # 第二表示交叉核对：只认 runner stdout 那一段（明细块之前的行）。
+        # 两者必须切开，否则"交叉核对"读的其实就是明细块本身——那是自证，不是核对。
+        body = txt.split("--- verbatim output follows ---")[-1]
+        mk = re.search(r"^\s*(?:#####|=====)", body, re.M)
+        stdout_part = body[:mk.start()] if mk else ""
+        vals = [float(x) for x in re.findall(
+            r"CCSD\(T\)\s+-?\d+\.\d+\s+-?\d+\.\d+\s+(-?\d+\.\d+)\s+\d", stdout_part)]
+        want = []
+        for s in PI_SYS:
+            want += [rows[s]["frozen"]["CCSD(T)"], rows[s]["all"]["CCSD(T)"]]
+        if vals:
+            if len(vals) != len(want) or any(abs(a - b) > 5e-4 for a, b in zip(vals, want)):
+                raise SystemExit("fig5: %s 的 stdout 行与明细块不合 -> %s vs %s"
+                                 % (rel, vals, want))
+            print("  fig5 交叉核对 %-11s stdout 与明细块一致（%d 个数）" % (basis, len(vals)))
+        else:
+            print("  fig5 提示：%s 的 stdout 段没有值行，本档只用明细块（不静默）" % rel)
+        out.append((basis, rows))
+    return out
+
+
+def parse_pi_dft():
+    got = {}
+    for rel in PI_DFT_L2:
+        lvl = None
+        for line in _verbatim(rel).splitlines():
+            m = re.match(r"== .*LEVEL=(\d)", line)
+            if m:
+                lvl = int(m.group(1))
+                continue
+            m = re.match(r"LEVEL=(\d)\s+(\S+)\s+nao=\s*\d+\s+DFT=\s*([+-]?\d+\.\d+)", line)
+            if m:
+                lvl, name, val = int(m.group(1)), m.group(2), float(m.group(3))
+                if lvl == 2 and name in PI_SYS:
+                    got[name] = val
+                continue
+            m = re.match(r"\s*(\S+)\s+nao=\s*\d+\s+DFT=\s*([+-]?\d+\.\d+)", line)
+            if m and lvl == 2 and m.group(1) in PI_SYS:
+                got[m.group(1)] = float(m.group(2))
+    missing = [s for s in PI_SYS if s not in got]
+    if missing:
+        raise SystemExit("fig5: DFT level-2 缺 %s" % ", ".join(missing))
+    return got
+
+
+def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
+    from matplotlib.lines import Line2D
+    # 一、先核这句话本身，六个体系全过才画。
+    rows6 = []
+    for cn in SYSTEMS:
+        span = abs(hb_ladders[1][1][cn]["frozen"]["CCSD(T)"]
+                   - hb_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        dev = abs(hb_dft[cn] - hb_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        rows6.append((SYS_EN[cn], span, dev))
+    for cn in PI_SYS:
+        span = abs(pi_ladders[1][1][cn]["frozen"]["CCSD(T)"]
+                   - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        dev = abs(pi_dft[cn] - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
+        rows6.append((PI_EN[cn], span, dev))
+    for nm, span, dev in rows6:
+        if not span > dev:
+            raise SystemExit("fig5: %s 上基组跨度 %.3f 不大于泛函偏差 %.3f，主张不成立"
+                             % (nm, span, dev))
+        print("  fig5 核验 %-15s span %.3f > dev %.3f (x%.1f)" % (nm, span, dev, span / dev))
+
+    fig = plt.figure(figsize=(6.9, 6.4))
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.05, 1.0], hspace=0.62, wspace=0.42,
+                          left=0.185, right=0.97, top=0.86, bottom=0.13)
+    xs = list(range(len(RUNGS)))
+    for si, cn in enumerate(PI_SYS):
+        ax = fig.add_subplot(gs[0, si])
+        for bi, (basis, rows) in enumerate(pi_ladders):
+            ys = []
+            for meth, conv in RUNGS:
+                nm2 = cn
+                ys.append(rows[nm2][conv][meth])
+            ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=PI_COL[cn], ms=3.6, lw=1.2)
+        ax.axhline(pi_dft[cn], color="#c05621", ls=":", lw=1.2)
+        ax.annotate("DFT %.3f" % pi_dft[cn], (0.0, pi_dft[cn]), fontsize=6.0,
+                    color="#c05621", xytext=(2, 4), textcoords="offset points")
+        ax.axhline(0, color="k", lw=0.6)
+        ax.set_xticks(xs)
+        ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=6.2)
+        ax.set_title(PI_EN[cn], fontsize=8)
+        if si == 0:
+            ax.set_ylabel("$\\Delta E_{\\rm CP}$ (kcal/mol)", fontsize=8)
+            ax.legend([Line2D([], [], color="0.35", marker="o", ls="-"),
+                       Line2D([], [], color="0.35", marker="s", ls="--")],
+                      ["6-31G*", "aug-cc-pVDZ"], loc="upper center", fontsize=6.2,
+                      frameon=False)
+        ax.tick_params(axis="y", labelsize=6.8)
+
+    axb = fig.add_subplot(gs[1, :])
+    lab = [nm for nm, _, _ in rows6]
+    span = [s for _, s, _ in rows6]
+    dev = [d for _, _, d in rows6]
+    y = range(len(lab))
+    h = 0.36
+    axb.barh([i + h / 2 for i in y], span, height=h, color="#2b6cb0",
+             label="correlated reference: 6-31G* $\\to$ aug-cc-pVDZ")
+    axb.barh([i - h / 2 for i in y], dev, height=h, color="#c05621",
+             label="functional vs that reference, at 6-31G*")
+    for i, (s, d) in enumerate(zip(span, dev)):
+        axb.text(s + 0.03, i + h / 2, "%.2f" % s, va="center", fontsize=6.2, color="#2b6cb0")
+        axb.text(d + 0.03, i - h / 2, "%.2f" % d, va="center", fontsize=6.2, color="#c05621")
+        axb.text(max(s, d) + 0.24, i, "x%.1f" % (s / d), va="center", fontsize=6.4, color="0.25")
+    axb.set_yticks(list(y))
+    axb.set_yticklabels(lab, fontsize=7)
+    axb.set_xlim(0, 2.75)
+    axb.set_xlabel("kcal/mol", fontsize=7.5)
+    axb.legend(loc="lower center", bbox_to_anchor=(0.5, 1.005), ncol=2, fontsize=6.6, frameon=False)
+    fig.suptitle("On all six complexes the correlated reference moves more with the basis\n"
+                 "than the functional deviates from it - so a fixed-basis comparison of this\n"
+                 "kind is measuring the basis", fontsize=8.5, y=0.965)
+    f = os.path.join(OUT, "fig5_six_system_spans.png")
+    fig.savefig(f, dpi=200)
+    return f
+
+
 if __name__ == "__main__":
     h = load("step_h.json")
     if not h or not h["rows"]:
@@ -372,3 +548,4 @@ if __name__ == "__main__":
     if len(dft) != 3:
         raise SystemExit("fig4: level-2 反泊松的 DFT 对照只取到 %d 个体系（应为 3）" % len(dft))
     print("出图：", fig4(ladders, parse_xcheck(XCHECK), parse_nlc(NLCTAB), dft))
+    print("出图：", fig5(parse_pi_ladder(), parse_pi_dft(), ladders, dft))
