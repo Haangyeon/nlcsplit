@@ -180,9 +180,8 @@ Two limits are stated here rather than in a closing section, because both
 bound what the numbers may be used for. First, this is not an energy
 decomposition analysis: we do not separate electrostatics, exchange-repulsion,
 polarization or charge transfer. Counterpoise-corrected interaction energies are
-reported for seven of the eight systems (§3.2), so basis-set superposition error is
-measured rather than assumed away, but the correction is not carried through the
-second benzene-dimer geometry. Second, the explicit
+reported for all eight systems (§3.2), so basis-set superposition error is
+measured rather than assumed away, and no system in the set carries an uncorrected one. Second, the explicit
 sum is not more accurate than the production kernels it is compared against —
 the interpolation residual of PySCF's native kernel is of order 4×10⁻⁶
 kcal/mol, far below any chemical interest, and the ≈0.1–0.9 kcal/mol offsets
@@ -470,10 +469,14 @@ as the -6.129, -3.675 and -0.466 above, so six deviations can be set side by sid
 dispersion-specific verdict had its best chance. A seventh joins them - the benzene sandwich
 itself, 192 AO, the largest and most dispersion-bound complex in the set - where CCSD(T) gives
 -1.4999 and the omegaB97X-V/6-31G\* level-2 counterpoise value is -1.9403, a deviation of
--0.440 kcal/mol [S28]. It is negative too, and the three negative cases are now the three most
-dispersion-bound complexes in the set: both methane-containing ones and the pi-stacked
-sandwich. That is the regime whose reference the previous paragraph refused to trust at this
-basis, so the pattern still points at the reference rather than at the functional.
+-0.440 kcal/mol [S28]. It is negative too. The eighth and last complex closes the set: the
+parallel-displaced benzene dimer, also 192 AO, gives CCSD(T) -2.5506 against -2.4297, a
+deviation of +0.121 [S29]. Eight complexes, same basis, same grid level, same frozen-core
+convention, same counterpoise definition: five deviations of one sign and three of the other,
+with no pattern except that the three negative cases are the three most dispersion-bound
+complexes in the set - both methane-containing ones and the sandwich. That is the regime whose
+reference the previous paragraph refused to trust at this basis, so the pattern still points
+at the reference rather than at the functional.
 
 **The second basis closes the comparison the figure makes.** Re-running the same three π
 complexes in aug-cc-pVDZ, with only the basis changed, deepens the correlated reference by
@@ -510,7 +513,12 @@ from +0.777 to -0.440 kcal/mol, 1.217 kcal/mol in the wrong direction for any st
 functional is right, and larger than every deviation in the set [S28]. The grid effect is
 neither proportional to system size nor monotone in it - benzene-methane's 0.0017 against the
 sandwich's 1.217 is a factor of 700 - and the level-2 value is not claimed to be converged,
-only to be the level this paper uses. A grid level is a knob a calculation turns
+only to be the level this paper uses. The eighth complex, the parallel-displaced benzene dimer,
+was measured the same way and moves 0.266 kcal/mol, also changing the sign of its deviation
+(+0.121 at level 2 against -0.145 at level 1) [S29]. Five of the eight systems now have both
+grid levels: the step is smallest on benzene-methane (0.0017) and largest on the sandwich
+(1.217), three of the five change the sign of the deviation, and none of that orders by system
+size. A grid level is a knob a calculation turns
 without anyone deciding anything, and it moves quantities of the size that was going to serve as
 evidence. This is the third reason the section judges dE_NLC and not the functional.
 
@@ -691,7 +699,7 @@ nonlocal term and everything else, and we resolve the nonlocal term into
 fragment pairs. We do not separate electrostatics, exchange-repulsion,
 polarisation or charge transfer, and the resulting components are therefore not
 comparable term-by-term with ALMO-EDA or SAPT(DFT) output. Counterpoise-corrected
-interaction energies are reported in section 3.2 for seven of the eight systems,
+interaction energies are reported in section 3.2 for all eight systems,
 but dE_NLC itself needs no such correction: it is evaluated at fixed
 (non-self-consistent) superposed density, so basis-set flexisation does not enter
 it, which is precisely why it converges a grid level earlier than dE_int does
@@ -1094,6 +1102,7 @@ element labels so the radii table's contribution is measured instead of assumed 
 | S25 | `nlcsplit/fastpair.py`, `nlcsplit/step_j_scaling.py`, `evidence/scaling/step_j.json`, `evidence/scaling/20260929T1340Z_step_j_scaling.out`, `evidence/scaling/step_j_rerun_20260930.json`, `evidence/scaling/step_j_rerun_20260930.txt`, `evidence/fastpair_ab/fastpair_ab_compare.json`, `evidence/fastpair_ab/fastpair_ide_validation.json`, `nlcsplit/tests/test_fastpair.py`, `evidence/scaling/MANIFEST.sha256` | the wall-clock and certificate numbers in §3.6, recomputed from these sidecars rather than transcribed into the prose: 33 screened/exact pairs over two windows, 1.08-10.28x (archived, 18 pairs) and 1.37-13.29x (re-run, 15 pairs), none faster than exact; the minimum block-pair certificate 197.96 Ha against the -8.34e-4 Ha quantity it would decide on, with n_pairs_bound_below_value = 0 and dropped_pairs = []. Two windows are kept because the second was measured on a different day and the two must not be merged into one interval. Each row carries two different error quantities and conflating them changes the headline: cert_err_ha is the guarantee the traversal can actually use, abs_dE_kcal is the measured deviation from the exact sum. Restricted to tau = 1e-12, exactly 8 of the 11 rows have abs_dE_kcal <= 1e-6 kcal/mol and those span 84.4-95.4% of far-field point pairs evaluated; only 4 rows have a *certificate* that small, and those span 93.7-95.4%. The 84.4% figure is therefore the usable-accuracy statement, not a mistake, and the looser certificate is precisely the result being reported. The monotone accept rule and the box separation are pinned by nlcsplit/tests/test_fastpair.py, which fails if a leaf pair is accepted out of order |
 | S27 | `evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out`, `evidence/ccsdt/snnu_benzene_avdz.sh`, `evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`, `evidence/ccsdt/MANIFEST.sha256` | the second basis for the three π complexes, i.e. the three spans quoted in §3.2, Slurm job 50946 (COMPLETED, ExitCode 0:0, 44 min 22 s, 16 CPUs on cpu1), same script and same call path as [S24] and [S26], with a first-stage guard that re-derives the archived water-dimer aug-cc-pVDZ value (-5.2478 against -5.248). Values are read from the archived detail blocks rather than transcribed: frozen-core counterpoise benzene-water -4.5172 / benzene-ammonia -3.7273 / benzene-methane -3.0093 and all-electron -4.7192 / -3.9240 / -3.2010, against the 6-31G* rows of [S26]; the three spans that enter the §3.2 comparison (0.864 / 1.454 / 1.951 kcal/mol) are differences of these rows, and the frozen/all-electron gap is itself basis-dependent, growing from 0.035-0.043 kcal/mol at 6-31G* to 0.192-0.202 here. The runner script is a byte- and hash-verified copy of the remote producer. No CBS claim: two basis points, no extrapolation |
 | S28 | `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`, `evidence/ccsdt/snnu_benzene_dimer.sh`, `evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out`, `evidence/ccsdt/snnu_dft_cp_dimer.py`, `evidence/ccsdt/MANIFEST.sha256` | the benzene sandwich, 192 AO, as the seventh anchored complex: the correlated side and the functional side under one basis and one convention. CCSD(T) is Slurm job 50945 (COMPLETED, ExitCode 0:0, 11 min 48 s, 32 CPUs), the DFT counterpoise values are job 50969 (COMPLETED, ExitCode 0:0, 38 min 07 s, 16 CPUs), and both runs first re-derived an archived value before spending the rest of their wall-clock - 50945 reproduced the water-dimer anchor to 0.0001 and the benzene-methane one to 0.0000 kcal/mol, 50969 reproduced benzene-methane at level 2 to 0.0000. Frozen-core counterpoise: CCSD(T) -1.4999, omegaB97X-V/6-31G* level 2 -1.9403 (deviation -0.440) and level 1 -0.7233 (deviation +0.777). The ladders also carry a result about correlation order that the deviation column cannot show: CCSD alone gives -0.6831 and the perturbative triples supply 0.817 of the -1.4999 total, while MP2 overbinds by a factor of two at -3.1059, so the two cheaper rungs err in opposite directions on the same system. Neither archive claims a CBS limit, a relaxed geometry, or that level 2 is grid-converged; the sandwich has no second basis, which is why it appears in the deviations but not in the span comparison of Figure 4 |
+| S29 | `evidence/ccsdt/20261002T1030Z_snnu_benzene_dimer_B.out`, `evidence/ccsdt/snnu_benzene_B.sh`, `evidence/ccsdt/snnu_dft_cp_dimer_B.py`, `evidence/ccsdt/MANIFEST.sha256` | the eighth and last complex, the parallel-displaced benzene dimer (S22_20, 192 AO), which closes the counterpoise coverage of §3.2 at all eight systems. One Slurm job (50980, COMPLETED, ExitCode 0:0, 1 h 02 min 23 s, 16 CPUs) ran both sides: CCSD(T)/6-31G* frozen-core -2.5506 and all-electron -2.6300, and omegaB97X-V/6-31G* counterpoise -2.4297 at level 2 (deviation +0.121) against -2.6953 at level 1 (deviation -0.145). Two guards ran first and are quoted in the archive: the water-dimer anchor to 0.0001 kcal/mol and the sandwich's own CCSD(T) value to 0.0000, the latter being another cross-job reproduction of `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`. The grid step on this complex is 0.266 kcal/mol and changes the sign of the deviation, which is why the grid paragraph counts three sign changes out of the five systems measured at both levels. No CBS limit, no relaxed geometry, and no claim that level 2 is grid-converged: the archive states all three as non-claims |
 | S26 | `evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`, `evidence/ccsdt/snnu_benzene_runner.sh`, `evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out`, `evidence/ccsdt/snnu_dft_cp_levels.py`, `evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out`, `evidence/ccsdt/snnu_dft_cp_methane_l2.py`, `evidence/ccsdt/MANIFEST.sha256` | the benzene-complex ladder behind §3.2's third and fourth paragraphs, computed on a second cluster after the first one saturated. The CCSD(T) side is `nlcsplit/step_m_ccsdt.py` unchanged, run under Slurm on partition `cpu` (job 50937, COMPLETED, ExitCode 0, 4 min 08 s) through the same call path as the water/ammonia/methane ladder of [S24], which is what makes the two comparable rather than merely similar; the producer script is archived verbatim beside the output. Before any benzene wall-clock was spent, the runner re-derives the already-archived water-dimer value from the same code and refuses to proceed otherwise (`guard: \|-6.8559 - (-6.856)\| = 0.0001 <= 0.0015 -> PASS`), and the archive records the two ways that guard first failed in ways that both looked like success: a 0-byte uploaded script that the scheduler reported as COMPLETED with exit 0 in one second, and a guard that parsed a summary table the script does not print for a single system. The DFT side deliberately imports the counterpoise routine of `nlcsplit/step_h_s22.py` instead of running that module, because its output path is hardcoded to `nlcsplit/logs/step_h.json`, the carrier of the main table - three numbers are not worth overwriting a published archive. The level-2 grid claim rests on three archives, not two: the first DFT run (job 50938) was cancelled by a 30-minute limit and declares itself partial in its own header, and the missing benzene-methane row came from job 50943, whose archive also records that its level-1 line reproduces the earlier job byte for byte. The producer scripts were copied only after their sha256 matched the remote originals. None of the three archives claims a CBS limit (one basis, no extrapolation) or relaxed geometries (official S22 initial structures, unrelaxed), and the benzene dimer at 192 AO is in none of them |
 
 Three absences are stated rather than hidden. `evidence/centos/...step_f_h2o2.out` predates the
