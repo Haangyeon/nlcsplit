@@ -2,11 +2,11 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 95538 chars, 1107 lines
+- source `paper/main.md`: 97864 chars, 1117 lines
 - output `paper/main.tex`: title from the level-1 heading, 9 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
-- tags cited in the body: 27
+- tags cited in the body: 28
 - figures pulled in: 4 -> tracked
 - inline backticked paths in the body text: 22 scanned -> tracked
 - appendix rows never cited in the body: none
@@ -42,3 +42,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S25 | `nlcsplit/fastpair.py`<br>`nlcsplit/step_j_scaling.py`<br>`evidence/scaling/step_j.json`<br>`evidence/scaling/20260929T1340Z_step_j_scaling.out`<br>`evidence/scaling/step_j_rerun_20260930.json`<br>`evidence/scaling/step_j_rerun_20260930.txt`<br>`evidence/fastpair_ab/fastpair_ab_compare.json`<br>`evidence/fastpair_ab/fastpair_ide_validation.json`<br>`nlcsplit/tests/test_fastpair.py`<br>`evidence/scaling/MANIFEST.sha256` | tracked; also §3.6 of the same file |
 | S26 | `evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`<br>`evidence/ccsdt/snnu_benzene_runner.sh`<br>`evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out`<br>`evidence/ccsdt/snnu_dft_cp_levels.py`<br>`evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out`<br>`evidence/ccsdt/snnu_dft_cp_methane_l2.py`<br>`evidence/ccsdt/MANIFEST.sha256`<br>`nlcsplit/step_m_ccsdt.py`<br>`nlcsplit/step_h_s22.py`<br>`nlcsplit/logs/step_h.json` | tracked; also §3.2 of the same file |
 | S27 | `evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out`<br>`evidence/ccsdt/snnu_benzene_avdz.sh`<br>`evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`<br>`evidence/ccsdt/MANIFEST.sha256` | tracked; also §3.2 of the same file |
+| S28 | `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`<br>`evidence/ccsdt/snnu_benzene_dimer.sh`<br>`evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out`<br>`evidence/ccsdt/snnu_dft_cp_dimer.py`<br>`evidence/ccsdt/MANIFEST.sha256` | tracked |
