@@ -387,10 +387,12 @@ geometries of the same 24-atom benzene dimer (97% vs 52%) show that the ratio
 is a property of the arrangement, not of the pair of molecules.
 
 For the six systems with at most 17 atoms we
-additionally re-ran at grid level 2 with a full counterpoise correction - six of
-the eight; only the two benzene-dimer geometries stay at level 1, and
+additionally re-ran the whole table at grid level 2 with a full counterpoise correction - six of
+the eight; the two benzene-dimer geometries have no level-2 *row of this table*, and
 benzene...methane needed a separate run after its first attempt was cut off by a
-four-hour wall-clock budget [S10]. Between levels 1 and 2 neither dE_NLC nor the
+four-hour wall-clock budget [S10]. What does exist for the two benzene dimers at level 2 is
+their counterpoise-corrected binding energy, computed for §3.2 [S28, S29]: a narrower quantity,
+which is why the two statements are kept apart here rather than merged into one coverage count. Between levels 1 and 2 neither dE_NLC nor the
 interfragment pair term moves by more than 1.0e-3 kcal/mol, but that number is a
 statement about storage precision, not a measurement. Every level-2 row in the sidecar is
 kept to three decimals, so no level-1 to level-2 difference below 5e-4 kcal/mol is
