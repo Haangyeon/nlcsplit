@@ -2,11 +2,11 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 92625 chars, 1083 lines
+- source `paper/main.md`: 94624 chars, 1095 lines
 - output `paper/main.tex`: title from the level-1 heading, 9 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
-- tags cited in the body: 26
+- tags cited in the body: 27
 - figures pulled in: 3 -> tracked
 - inline backticked paths in the body text: 22 scanned -> tracked
 - appendix rows never cited in the body: none
@@ -41,3 +41,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S24 | `nlcsplit/step_m_ccsdt.py`<br>`evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`<br>`evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`<br>`evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`<br>`evidence/ccsdt/20260930T212300Z_stepm_ladder.out`<br>`evidence/ccsdt/20261001T044833Z_orca_crosscheck.out`<br>`evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out`<br>`evidence/ccsdt/orca_crosscheck.py`<br>`evidence/ccsdt/README.md`<br>`evidence/ccsdt/MANIFEST.sha256`<br>`nlcsplit/tests/test_cc_convention.py`<br>`nlcsplit/tests/test_cc_convention.py`<br>`evidence/ccsdt/orca_crosscheck.py`<br>`evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out` | tracked |
 | S25 | `nlcsplit/fastpair.py`<br>`nlcsplit/step_j_scaling.py`<br>`evidence/scaling/step_j.json`<br>`evidence/scaling/20260929T1340Z_step_j_scaling.out`<br>`evidence/scaling/step_j_rerun_20260930.json`<br>`evidence/scaling/step_j_rerun_20260930.txt`<br>`evidence/fastpair_ab/fastpair_ab_compare.json`<br>`evidence/fastpair_ab/fastpair_ide_validation.json`<br>`nlcsplit/tests/test_fastpair.py`<br>`evidence/scaling/MANIFEST.sha256` | tracked; also §3.6 of the same file |
 | S26 | `evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`<br>`evidence/ccsdt/snnu_benzene_runner.sh`<br>`evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out`<br>`evidence/ccsdt/snnu_dft_cp_levels.py`<br>`evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out`<br>`evidence/ccsdt/snnu_dft_cp_methane_l2.py`<br>`evidence/ccsdt/MANIFEST.sha256`<br>`nlcsplit/step_m_ccsdt.py`<br>`nlcsplit/step_h_s22.py`<br>`nlcsplit/logs/step_h.json` | tracked; also §3.2 of the same file |
+| S27 | `evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out`<br>`evidence/ccsdt/snnu_benzene_avdz.sh`<br>`evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`<br>`evidence/ccsdt/MANIFEST.sha256` | tracked; also §3.2 of the same file |
