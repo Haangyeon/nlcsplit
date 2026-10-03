@@ -60,7 +60,7 @@
   `vydrov2009vv10`（PRL 103, 063004 (2009)，VV10 提出）、
   `vydrov2010simple`（JCP 133, 244103 (2010)，`(b,C)` 参数化出处）、
   `hyldgaard2014interp`。三条 DOI 均经 **Crossref 与 WoS 两个来源**交叉核对，
-  卷/期/文章号/年份/作者全一致（`scratch/bib_new3.js` → `scratch/bib_new3.json`）。
+  卷/期/文章号/年份/作者全一致（`evidence/bib_provenance/20260929T0519Z_bib_new3_crossref_check.js` → `evidence/bib_provenance/20260929T0520Z_bib_new3_crossref_result.json`）。
   一篇标题含 "VV10" 的文章不引 VV10 原文是会被直接退回的错误。
 - **卖点必须收窄（2026-09-29 定案）**：显式双重和的价值**只在于保住 (i,j) 成对结构**，
   不在于"比插值核更准"。实测：PySCF 原生核的插值离散误差只有 ~4e-6 kcal/mol
@@ -75,7 +75,12 @@
 1. **核与约定**：`w0=√(C|∇ρ|⁴/ρ⁴+4πρ/3)`，`κ=b(3π/2)(ρ/9π)^{1/6}`，
    `Φ=−3/(2gg'(g+g'))`，`g=w0(r_i)R²+κ(r_i)`（**同中心配对**）。
    交叉配对 `g=w0(r_j)R²+κ(r_i)` 偏高 +0.13(水)/+0.42(Ar)/+0.91(苯) kcal/mol，
-   是错的 [step_e_kernel.py；IDE 的 S3 合成箱独立复现：same-centre 与 PySCF 内核差 −2.8e−19 Ha]
+   是错的 [nlcsplit/step_e_kernel.py；随包的 `nlcsplit/tests/test_kernel.py::test_fast_matches_naive_bit_for_bit`
+   把"同中心快路径 = 朴素双重循环"钉在 rel 1e-13 上]
+   （**2026-10-04 更正**：这里原来写的是"IDE 的 S3 合成箱独立复现：same-centre 与 PySCF 内核差
+   −2.8e−19 Ha"。那个绝对差是另一台会话里现算的，stdout 从没入库（本仓只留下了一句转述），
+   所以它现在**不可核**——按本文件自己的规矩撤回，改引随包测试的判据。丢掉的信息是"绝对差小到
+   1e-19 Ha 量级"这一条，它并不支撑上面那个结论，故不补跑）
 2. **半份/整份约定**：`pair_energy(A,B)` 给半份，`inter[(A,B)]=2·blk`，
    故 `E_nl=Σintra+Σinter` 可加性严格成立（实测残差 **0.00e+00 至 6.94e−18 Ha**）
    [evidence/recompute/20260929T010500Z_step1_geomfix.out；CentOS step_c.out]
@@ -94,7 +99,7 @@
    "子网格重叠区重复计数"——拼接点表里没有重复坐标（`partition_factors` 返回的点表与 `atom_partition` 相同），
    真正是每个原子的径向网格都铺到整个分子、每个子网格把同一空间函数各积了一遍；而且倍率**不是常数**：
    水二聚体（构造几何 `geomlib.h2o_dimer()`）真实密度 ρ 上 `Σ base_w·ρ` 在 level 0/1/2/3 = **100.19 / 690.26 / 279.08 / 94.75**（ne=20，
-   隐含倍率 5.0 / 34.5 / 14.0 / 4.7，非单调、也不收敛到 natm=6）。钉住它的是 `tests/test_partition_factors.py`
+   隐含倍率 5.0 / 34.5 / 14.0 / 4.7，非单调、也不收敛到 natm=6）。钉住它的是 `nlcsplit/tests/test_partition_factors.py`
    两条：`test_soft_attribution_owner_masked_matches_analytic_gaussian`（光滑高斯锚，按 owner 掩膜复现 ∫h=π^{3/2}）
    与 `test_base_w_on_real_density_is_not_a_measure_at_all`（真实密度 ρ，证明倍率根本不是常数）。
 4. **归属方案**：Becke / Becke 半径修正 / Becke–Treutler / Stratmann + 最近原子硬分区，
@@ -108,8 +113,8 @@
 |---|---|---|
 | **同网格·算法离散差**：显式和 vs PySCF 原生核，同一张参照网格、同一份密度 | level 0/1/2 = **+1.54e−8 / +1.01e−8 / +8.49e−9 Ha**（即 9.7e−6 / 6.4e−6 / 5.3e−6 kcal/mol），**不随 level 变** ⇒ 这是核本身的离散，不是网格没收敛 | `step_i_gridrepr.py`，evidence/recompute/20260929T_step_i_gridrepr.out |
 | **换网格·表示差**：显式和被搬到 `gen_grid.get_partition` 的分区网格上，与上一行同一份密度 | level 0/1/2 = **−0.0282 / +0.0015 / +0.0001 kcal/mol**；同档 ∫ρ 的表示误差 = −1.61e−2 / +2.95e−4 / −6.56e−6 个电子，**两者同步塌缩** ⇒ 这一行量的是网格完备性，与我们的求和算法无关 | 同上 |
-| ~~本包 vs ORCA 6.0.1（水单体）6e−4~~ | **撤回（2026-09-29 11:20）**：`ref/h2o_wb97xv.out` 是普通单点输出，只有 `EX=-5.966547477 / EC=-0.409475923`（非局域项折在 EC 里、从未单列）；且 `ref/` 全树 grep 不到 26.76 开头的任何值，**这个数出处无法重建**。它被表格转手携带了好几轮而没人回读原文 | 见左 |
-| 本包 vs 项目内另一份独立脚本（水单体，6-31G\*，网格 7 档收敛） | 2.0e−3 kcal/mol：我们 lvl1 分区网格 26.765917，其收敛值 0.042650982 Ha = 26.763873。差在网格不在算法。**注意这是脚本独立、不是程序独立**（很可能同样基于 PySCF） | `ref/agentB/sweep_631gstar.txt` |
+| ~~本包 vs ORCA 6.0.1（水单体）6e−4~~ | **撤回（2026-09-29 11:20）**：`evidence/orca_control/h2o_wb97xv.out` 是普通单点输出，只有 `EX=-5.966547477 / EC=-0.409475923`（非局域项折在 EC 里、从未单列）；且 `ref/` 全树 grep 不到 26.76 开头的任何值，**这个数出处无法重建**。它被表格转手携带了好几轮而没人回读原文 | 见左 |
+| 本包 vs 项目内另一份独立脚本（水单体，6-31G\*；它那一份 sweep 走到 level 9） | 2.0e−3 kcal/mol：我们 lvl1 分区网格 26.765917，其 level 9 值 0.042650981 Ha = 26.763895。差在网格不在算法。**注意这是脚本独立、不是程序独立**（很可能同样基于 PySCF）。<br>**2026-10-04 更正**：这一格原先写"其收敛值 0.042650982 Ha = 26.763873"，那个 kcal 换算是错的（0.042650982 × 627.509474 = 26.763895，差 2.2e-5），而且"7 档收敛"也不确——它两份 sweep 各到 level 9，最后四档在 981/982/983 之间摆，"收敛"只到 1e-9 Ha。现在整行由 `evidence/orca_control/monomer_anchor_table.py` 生成（我们这边现算、对照值从两份归档解析），stdout 见 `evidence/orca_control/20261003T1919Z_monomer_anchor_table.out`；同一档还给出 lvl2 = 26.765435，即网格再进一档时我们相对 ORCA 的符号翻过去 | `evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt` |
 | 跨版本 2.12.1 vs 2.14.0 | 网格点数差 10%，能量分项**逐位一致** | step_f 两边输出 |
 ⇒ 两行**不能并排成一个数**：曾被引用的"−0.028 kcal/mol 与原生核不符"是 level 0 的
    **换网格表示差**，不是算法误差；同一张网格上重测是 **1.0e−8 Ha**（level 1）。
@@ -121,7 +126,7 @@
    2026-10-01 又加了归属那一层的裁判 —— **现状看本文件"独立裁判：跨程序已建立"与
    "归属也有一层裁判了"两条，别看这一行**。这里保留原文，是为了留下"我们曾经把
    一个无法重建的数当证据携带了好几轮"这件事的记录，不是留一个待办。
-   当年判"待重算"的理由仍然成立且已解决：`ref/h2o_wb97xv.out` 是**普通单点**输出
+   当年判"待重算"的理由仍然成立且已解决：`evidence/orca_control/h2o_wb97xv.out` 是**普通单点**输出
    （只有 EX/EC 合计），要拿 ORCA 的非局域项得认它打的 `NL Energy, E(C,NL)` 那一行，
    24 份 run 就是这么取的。
 
@@ -137,7 +142,7 @@ lvl2 = −0.5235，与今天在**当前代码+当前几何**上重算的结果�
 |---|---|---|---|
 | 网格 level 0→2 | sto-3g 0.0010；6-31g* **0.0081**（lvl1→2 仅 0.0002）；aug-cc-pVDZ 0.0067（该轮只跑到 lvl0→1） | 收敛，非问题；主要残差在 lvl0 | CentOS step2.out，**今日原地重算复核一致** |
 | 基组（五档阶梯，lvl1，构造几何） | P_frz(becke)：sto-3g −0.3857 → 6-31g\* −0.5237 → def2-SVP −0.5175 → def2-TZVP −0.5432 → aug-cc-pVDZ −0.5537；**最后两档 def2-SVP→def2-TZVP 漂移 0.0257** | **已趋 CBS**（<0.05），不需再加 cc-pVQZ | `evidence/recompute/20260929T003144Z_stepg-recompute.out` |
-| 归属方案（4 种） | **构造几何 lvl1**：水 0.0400 (7.6%)，且跨 def2-SVP/aug-cc-pVDZ/def2-TZVP/6-31G\* 稳在 **0.0382–0.0400**，而 P_frz 自身沿基组走 0.17 ⇒ **换基组消不掉**。<br>**官方 S22 几何 lvl1**：水 **0.043 (7.2%)**、氨 **0.029 (4.5%)**、甲烷 **0.004 (0.8%)** | 方法自身系统项 ⇒ 主误差条；两族几何都要标清楚 | stepg-recompute.out；`logs/step_h.json` |
+| 归属方案（4 种） | **构造几何 lvl1**：水 0.0400 (7.6%)，且跨 def2-SVP/aug-cc-pVDZ/def2-TZVP/6-31G\* 稳在 **0.0382–0.0400**，而 P_frz 自身沿基组走 0.17 ⇒ **换基组消不掉**。<br>**官方 S22 几何 lvl1**：水 **0.043 (7.2%)**、氨 **0.029 (4.5%)**、甲烷 **0.004 (0.8%)** | 方法自身系统项 ⇒ 主误差条；两族几何都要标清楚 | stepg-recompute.out；`nlcsplit/logs/step_h.json` |
 **两条新观察**：① 方案跨度绝对值 **0.004→0.247 kcal/mol，且不随体系大小单调**
 （24 原子的苯(A) 只有 0.032，比 6 原子的水 0.043 还小；15 原子的苯-水最大），相对值
 **0.8%–18.2% 且无体系类型规律**（均 level 1；苯 sandwich 0.8% vs 苯-水 18.2%——苯 sandwich 的 level 0 值是 1.8%）
@@ -374,15 +379,15 @@ lvl2 = −0.5235，与今天在**当前代码+当前几何**上重算的结果�
   因子时本包求和代码复现 `I_AB` 到最差 7.96e−7 Ha**，低于参照自身合成误差条
   U = 1.060e−5 Ha ⇒ 算术过了；**喂生产用 Becke/owner 指派时差 1.68e−8–1.26e−4 Ha**
   （0.00001–0.0788 kcal/mol），且换一套不相交节点偏差不变 ⇒ 差在归属规则不在网格。
-  分辨率写在 `outputs/summary.md`，**两条误差条分开报**：对确定性 U 是 12 构型里 5 个可分辨
+  分辨率写在 `evidence/attribution_referee/outputs/summary.md`，**两条误差条分开报**：对确定性 U 是 12 构型里 5 个可分辨
   （2/3/3/4/12 倍），其余 7 个比参照误差条还小，那部分**只能说分辨不出**，不写成"一致"；
-  另有一条独立、紧 5.8 倍的蒙特卡洛条（`mc_tighten.py`，4,000,000 抽样/构型，写
-  `outputs/mc_tight.json` 这个 sidecar，不动归档结果文件），对它是 **12/12**。
+  另有一条独立、紧 5.8 倍的蒙特卡洛条（`evidence/attribution_referee/mc_tighten.py`，4,000,000 抽样/构型，写
+  `evidence/attribution_referee/outputs/mc_tight.json` 这个 sidecar，不动归档结果文件），对它是 **12/12**。
   正对照在此只移动 0.0052 kcal/mol，与已分辨量同量级 ⇒ 分辨率有限的仪器，不是高分辨谱仪。
   两次整跑的表逐字节相同，差异只在计时字段（两份产物都在目录里，可比）。
 - **异核那一格已跑，而且否证了我先前写给它的边界理由（2026-10-01 晚）**：
-  `evidence/attribution_referee/hetero.py` → `outputs/hetero.json` +
-  `outputs/hetero_run_20261001.log`。§10 原写"异核要先选元素，选元素就是选被测的划分约定"，
+  `evidence/attribution_referee/hetero.py` → `evidence/attribution_referee/outputs/hetero.json` +
+  `evidence/attribution_referee/outputs/hetero_run_20261001.log`。§10 原写"异核要先选元素，选元素就是选被测的划分约定"，
   实测同一密度只换原子标签时偏移最多动 **0.24%**（(4,4) He/He vs Be/Be 差 7.4e-08 Ha、
   (2,4) 0.04%、(2,6) 0.03%、(4,6) 低于打印位），而三个参照量里两个不需要元素 ⇒ 理由不成立。
   row 0 是同核、按 `run.py` 的 He/He 打标，对归档 `results.json` 的 `I_AB` 与包交叉项差均为

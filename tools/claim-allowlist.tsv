@@ -1,12 +1,24 @@
-# claim-allowlist.tsv —— tools/claim_gate.js 的放行表。**每一行必须有理由列**，
-# 因为这文件本身就是审计对象：一条没有理由的放行等于给闸门挖洞（本仓 2026-10-01 的记录）。
-# 列：正则<TAB>理由
+# claim-allowlist.tsv —— tools/claim_gate.js 的放行表。三列：文件<TAB>数字正则<TAB>理由。
+# 少任何一列，闸门当场拒绝放行并把退出码设成 3（这条纪律由代码执行，不靠自觉）。
 #
-# 用法边界：只允许放"结构性数字"（阈值、字号、坐标轴范围、页数、代码里的常数）。
-# 化学量一律不许进来——那些必须有归档 stdout，去把它跑出来入库，而不是写进这张表。
-#
-# 下面这几条是本轮校准期间确认为"代码常数/排版参数"的，不是化学量：
-^0\.001$	跨程序比对的判据阈值，写在 nlcsplit/tests 与 evidence 脚本的语句里
-^2\.0$	共享规则 |dE_NLC/dE_xc|>2 的那个 2，是 step_f_dispersion.py 里的常数
-^0\.05$	figures.py 比值窗口的下界（两个数量级检验），代码常数
-^20\.0$	figures.py 比值窗口的上界，同上
+# 用法边界：只允许放两类——
+#   (a) 结构性数字（判据阈值、共享规则里的常数、代码里的常数），不是化学量；
+#   (b) 由**同一句里印出来的操作数**推出的换算/比值，且理由里写明那两个操作数与它们的归档位置。
+# 化学量本身一律不许进来：去把它跑出来入库。
+# 按文件绑定：写在一份稿名下的例外不能替另一份稿里的同名数字说话。
+
+paper/main.md	^0\.001$	跨程序比对的判据阈值，写在 nlcsplit/tests 与 evidence 脚本的语句里
+paper/main.md	^2\.0$	共享规则 |dE_NLC/dE_xc|>2 的那个 2，是 step_f_dispersion.py 里的常数
+paper/main.md	^0\.05$	figures.py 比值窗口的下界（两个数量级检验），代码常数
+paper/software.md	^2\.0$	同 paper/main.md 那条：step_f_dispersion.py 的共享规则常数
+paper/software.md	^0\.001$	同上：跨程序判据阈值
+paper/p2.md	^2\.0$	同上：step_f_dispersion.py 的共享规则常数
+paper/p2.md	^281\.1$	手工推导，正文同一句印出了操作数：sqrt(0.162/2.05e-6)（kappa_min 与 w0_min 都来自跟踪的模块语句）；文中明写这两个数不在任何 log 里
+paper/p2.md	^148\.7$	同一句的单位换算 281.1 × 0.529177，操作数就在句中
+MAIN-skeleton.md	^2\.0$	同上：step_f_dispersion.py 的共享规则常数
+MAIN-skeleton.md	^0\.05$	同上：figures.py 比值窗口下界
+MAIN-skeleton.md	^-1\.2501$	带日期更正块里引的**旧值**（已被 -1.2737 取代）；出处=本文件自己的 git 历史（该值出现在 1a1c98b 之前两版）
+MAIN-skeleton.md	^-0\.5394$	同上：旧值，出处=本文件 git 历史
+MAIN-skeleton.md	^0\.760$	同上：旧值（反泊松列当年跨版本拼出来的那一格），出处=本文件 git 历史
+MAIN-skeleton.md	^-2\.8e-19$	**被撤回的字面值**，出现在 2026-10-04 的更正句里（不是断言）。它的原始 stdout 从没入库，只在同行日志 PROGRESS-ide-S3.md 里被转述过——正因如此才撤。保留字面值是为了可追；该串在本文件最近 20 个版本里都在（用的是 U+2212 负号，ASCII grep 会误判成『没有』）
+

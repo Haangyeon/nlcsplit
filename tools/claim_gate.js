@@ -151,18 +151,36 @@ function claimsOf(text) {
 }
 function citedPaths(text) {
   const out = [];
-  for (const m of text.matchAll(/`([A-Za-z0-9_.\/-]+\/[A-Za-z0-9_.\/-]*\.(?:py|js|out|json|md|txt|sh|csv|png|tex|tsv))`/g)) {
-    // 省略号写法（`evidence/centos/...step_f.out`）是指代不是路径，交给 md2tex 那道全路径闸门管。
-    if (m[1].includes("...") || m[1].includes("…")) continue;
-    out.push(m[1]);
+  // 反引号**可以跨行折行**：一条真路径被排版劈成两半时，只按单行匹配会截出个假路径
+  // （`nlcsplit/logs/step_h.json` 就被报成 `logs/step_h.json 不存在`）。反向也一样：
+  // 跨行的假引用以前就这么混过去了。所以取整段反引号内容，折掉空白再判它像不像路径。
+  const PATHISH = /^[A-Za-z0-9_.\/-]+\/[A-Za-z0-9_.\/-]*\.(?:py|js|out|json|md|txt|sh|csv|png|tex|tsv|log)$/;
+  for (const m of text.matchAll(/`([^`]+)`/g)) {
+    const raw = m[1];
+    if (raw.includes("...") || raw.includes("…")) continue;   // 省略号写法是指代，交给 md2tex 那道全路径闸门
+    // 只认"斜杠后面断行"这一种折行。反引号里也可能是**命令**（`node tools/x.js`），
+    // 无条件抹空白会把 "node" 和路径粘成一个假路径——那是我自己给闸门添的第一类假报。
+    const p = raw.replace(/\/\s+/g, "/").trim();
+    if (PATHISH.test(p)) out.push(p);
   }
   return out;
 }
 function allowlist() {
   const p = path.join(__dirname, "claim-allowlist.tsv");
   if (!fs.existsSync(p)) return [];
-  return fs.readFileSync(p, "utf8").split("\n").filter((l) => l && !l.startsWith("#"))
-    .map((l) => { const [pat, why] = l.split("\t"); return { re: new RegExp(pat), why: why || "" }; });
+  const rows = [];
+  fs.readFileSync(p, "utf8").split("\n").forEach((l, i) => {
+    if (!l.trim() || l.startsWith("#")) return;
+    const parts = l.split("\t");
+    // 三列齐全才算一条放行：少一列就是给闸门挖洞（"每行必须有理由"这条纪律由代码执行，不靠自觉）。
+    if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) {
+      process.stderr.write(`claim-allowlist.tsv 第 ${i + 1} 行不是"文件<TAB>正则<TAB>理由"，本次不放行任何人：${l}\n`);
+      process.exitCode = 3;
+      return;
+    }
+    rows.push({ file: parts[0].trim(), re: new RegExp(parts[1]), why: parts[2].trim() });
+  });
+  return rows;
 }
 
 let _declared = null;
@@ -187,7 +205,8 @@ function checkText(idx, label, text) {
   const allow = allowlist();
   for (const c of claimsOf(text)) {
     if (c.int) continue;                       // 计数类需要人工判语境，先只拦小数
-    if (allow.some((a) => a.re.test(c.num))) continue;
+    // 放行按**文件**绑定：写在 p2.md 名下的例外不能替 main.md 里的同名数字说话。
+    if (allow.some((a) => a.file === label && a.re.test(c.num))) continue;
     if (!findSource(idx, c.num)) bad.push({ kind: "number", where: `${label}:${c.line}`, detail: c.num + "  |  " + c.text });
   }
   const tracked = new Set(trackedFiles());
@@ -283,6 +302,10 @@ function selftest() {
   if (!decl.size) { console.log("SELFTEST FAILED: 声明集为空 -> 包内路径这条规则在空转"); process.exit(1); }
   probe("包内路径(已声明)不拦", "ships as `docs/tables_and_provenance.md`", false);
   probe("包内路径(未声明)拦", "ships as `docs/nobody_builds_this_zz.md`", true);
+  // 折行的反引号路径：真路径劈成两半必须认得出，假路径劈成两半也必须拦得住。
+  probe("折行的真路径不拦", "see `evidence/l2cp/\n20261003T0907Z_wsl2121-cp_levels.out` here", false);
+  probe("折行的假路径拦", "see `evidence/l2cp/\nno_such_zz_level.out` here", true);
+  probe("反引号里的命令不当路径", "rebuild with `node tools/make_public_repo.js`, which", false);
   // 作用域本身也要测：放宽一处就淹没台账，收紧一处就放过正文。两个方向都得有声音。
   const scope = [
     ["paper/main.md", true], ["paper/software.md", true], ["paper/p2.md", true],

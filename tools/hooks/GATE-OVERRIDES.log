@@ -1,0 +1,5 @@
+2026-10-03T19:05:22.029Z precommit-bypass 理由: 提交的是闸门层自身；剩余 21 条是本层上线前就存在的 #40 欠账，与本提交的改动无关，已记入 tools/hooks/GATE-OVERRIDES.log 与 PROGRESS-nlcsplit.md
+  问题:
+  正文数字出处：11 个数在跟踪的证据工件里找不到（MAIN-skeleton.md:16, paper/p2.md:5）
+      办法：补归档 stdout，或让脚本把它算出来入库；不许塞 allowlist
+  引用路径：10 条不存在或未 git add（分布 MAIN-skeleton.md:16, paper/p2.md:5）

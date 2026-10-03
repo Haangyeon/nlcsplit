@@ -325,7 +325,9 @@ def test_ball_control_drops_nothing(h2o2_lvl1):
     与距离无关的常数。将来谁把默认判据换回球，这条会告诉他为什么不行。
 
     原来最后那条写的是 `assert tot_box < tot_ball`（盒界总量必须严格小于球界总量），
-    实测两个数**逐位相等**：21723.206496881914 == 21723.206496881914 kcal/mol。这不是
+    实测两个数**逐位相等**：21723.206496881914 == 21723.206496881914 Ha（这里原先写的是
+    kcal/mol——单位错了，同一个量在 evidence/fastpair_ab/fastpair_ab_compare.json 里的字段名
+    是 `sum_atomblock_root_bound_ha`，两份数只差 4.8e-13，所以它们必然是同一个单位）。这不是
     巧合，也不是算法错 —— 两个界函数在根上取的是同一个 D：原子块的包围盒就是那团
     密度尾巴的包络，任意两个这样的盒必然相交，于是 box_sep = ball_sep = 0，
     `node_bound` 和 `ball_bound` 一起退到 D=0 分支；又因为树根就是由同一个 `_node`
