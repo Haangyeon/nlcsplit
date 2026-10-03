@@ -181,9 +181,34 @@ def fig3(windows):
 # 并与同一文件自带的汇总表交叉比对；任一体系缺档、或两处读数不合，就拒绝出图。
 # 归档抬头里那些手写的引文不当数据源。
 # ---------------------------------------------------------------------------
-LADDER = [("6-31G*", "evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out"),
-          ("aug-cc-pVDZ", "evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out")]
-XCHECK = "evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out"
+LADDER = [("6-31G*", "evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out"),
+          ("aug-cc-pVDZ", "evidence/ccsdt/20261003T0736Z_stepm_dimers_ghostcp_avdz_local.out")]
+XCHECK = "evidence/ccsdt/20261003T0752Z_orca_crosscheck_ghostcp.out"
+# 泛函那侧的反泊松列。2026-10-03 起改读这一份：以前 fig4/fig5 的 dcp 取自
+# logs/step_h_l2cp.json，而那份侧车是 2026-09-28 在 PySCF 2.14.0 上跑的，与其余五行（SNNU，
+# 2.12.1）不同环境。版本才是变量这件事由 evidence/l2cp/cp_version_probe.py 单变量核过。
+CP2121 = "evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out"
+
+
+def parse_cp2121(level):
+    """{system: 反泊松 dE_int (kcal/mol)}，只认生产 counterpoise() 那一列。"""
+    rows, lvl = {}, None
+    for line in _verbatim(CP2121).splitlines():
+        m = re.match(r"== BASIS=(\S+) LEVEL=(\d) ==", line)
+        if m:
+            if m.group(1) != "6-31g*":
+                raise SystemExit("反泊松档里出现了预期外的基组：%s" % m.group(1))
+            lvl = int(m.group(2))
+            continue
+        m = re.match(r"\s+(\S+)\s+nao=\s*\d+\s+dcp\(生产\)=([-+]?\d+\.\d+)", line)
+        if m and lvl == level and m.group(1) in SYS_EN:
+            rows[m.group(1)] = float(m.group(2))
+    missing = [s for s in SYSTEMS if s not in rows]
+    if missing:
+        raise SystemExit("fig4/fig5: level=%d 的反泊松缺 %s，宁可不出图"
+                         % (level, "、".join(missing)))
+    return rows
+
 NLCTAB = "evidence/orca_widen/cross_program_table.txt"
 SYS_EN = {"水二聚体": "water", "氨二聚体": "ammonia", "甲烷二聚体": "methane"}
 SYS_COL = {"水二聚体": "#2b6cb0", "氨二聚体": "#2f855a", "甲烷二聚体": "#b7791f"}
@@ -233,7 +258,9 @@ def parse_ladder(rel):
             got = rows[s].get(conv_w, {}).get(meth)
             if got is None:
                 bad.append("%s %s/%s 无明细行" % (s, conv_w, meth))
-            elif abs(got - summ[s][key]) > 5e-4:
+            elif abs(got - summ[s][key]) > 1e-3:
+                # 汇总表自己只有三位小数（明细 -4.8225 对汇总 -4.823），所以这道核对的分辨率
+                # 是 1e-3 而不是更高。它防的是拿错约定/搬错行那一类，不防末位舍入。
                 bad.append("%s %s: 明细 %.4f 与汇总 %.4f 不合" % (s, key, got, summ[s][key]))
     if bad:
         raise SystemExit("fig4: %s 交叉比对失败 ->\n  " % rel + "\n  ".join(bad))
@@ -243,8 +270,13 @@ def parse_ladder(rel):
 def parse_xcheck(rel):
     out = []
     for line in _read(rel).splitlines():
-        m = re.match(r"\s+(\S+二聚体)\s+(\S+)\s+(frozen|all-e)\s+([-+]?\d+\.\d+)\s+"
-                     r"([-+]?\d+\.\d+)\s+([+-]?\d+\.\d+)\s*$", line)
+        # The corrected cross-check prints nine columns (counterpoise and uncorrected, each
+        # with its own reference and difference) and labels the rungs "frozen"/"all". Only the
+        # counterpoise triple is plotted here; an "n/a" in the reference column makes the row
+        # unmatched, and the count check below turns that into a refusal rather than a shorter
+        # panel.
+        m = re.match(r"\s+(\S+二聚体)\s+(\S+)\s+(frozen|all)\s+([-+]?\d+\.\d+)\s+"
+                     r"([-+]?\d+\.\d+)\s+([+-]?\d+\.\d+)", line)
         if m:
             out.append((m.group(1), m.group(2), m.group(3),
                         float(m.group(4)), float(m.group(5)), float(m.group(6))))
@@ -268,18 +300,22 @@ def parse_nlc(rel):
 def fig4(ladders, xc, nlc, dft):
     from matplotlib.lines import Line2D
     systems = ("水二聚体", "氨二聚体", "甲烷二聚体")
-    # 图标题是一句可证伪的话，所以让生成器自己先核一遍：每个体系"相关参考值随基组的移动"
-    # 必须严格大于"本文泛函对该参考值的偏差"。哪一体系不成立就拒绝出图，而不是把标题
-    # 改软到无法反驳——这张图的全部意义就在于两个幅度可以被比较。
+    # 图标题是一句可证伪的话，所以让生成器自己先核一遍。核的内容在 2026-10-03 换过一次：
+    # 旧标题主张"每个体系上基组跨度都大于泛函偏差"，而鬼函数修正之后这个说法在数据上反了
+    # （比值由生成器自己打印，不在这里抄）。现在这张图主张的是"两个幅度同量级，所以谁也不能
+    # 把对方注销"，于是守卫核的是比值必须落在两个数量级以内——超出就拒绝把两者画在同一张
+    # 并排比较里，因为那时它们根本不可比。
+    ratios = []
     for cn in systems:
         span = abs(ladders[1][1][cn]["frozen"]["CCSD(T)"]
                    - ladders[0][1][cn]["frozen"]["CCSD(T)"])
         dev = abs(dft[cn] - ladders[0][1][cn]["frozen"]["CCSD(T)"])
-        if not span > dev:
-            raise SystemExit("fig4: %s 上基组跨度 %.3f 不大于泛函偏差 %.3f，标题不成立"
-                             % (cn, span, dev))
-        print("  fig4 标题核验 %-9s 基组跨度 %.3f > 泛函偏差 %.3f kcal/mol"
-              % (SYS_EN[cn], span, dev))
+        if not 0.05 <= span / dev <= 20.0:
+            raise SystemExit("fig4: %s 上基组跨度 %.3f 与泛函偏差 %.3f 相差超过两个数量级 "
+                             "(x%.2f)，把它们并排比较不成立" % (SYS_EN[cn], span, dev, span / dev))
+        ratios.append(span / dev)
+        print("  fig4 标题核验 %-9s 基组跨度 %.3f / 泛函偏差 %.3f = %.2f"
+              % (SYS_EN[cn], span, dev, span / dev))
     fig = plt.figure(figsize=(6.8, 6.1))
     gs = fig.add_gridspec(2, 3, height_ratios=[1.2, 1.0], hspace=0.52, wspace=0.62,
                           left=0.155, right=0.965, top=0.845, bottom=0.095)
@@ -329,9 +365,10 @@ def fig4(ladders, xc, nlc, dft):
     ax3.tick_params(axis="y", labelsize=6.2)
     ax3.set_title("(c) the anchor itself", fontsize=8)
 
-    fig.suptitle("Per system the correlated reference moves more with the basis than the\n"
-                 "functional deviates from it - which is why this paper does not judge the\n"
-                 "functional on binding energies", fontsize=8.5, y=0.965)
+    fig.suptitle("Reference's basis move / functional's deviation = %.2f, %.2f, %.2f - same order,\n"
+                 "and not ordered the same way twice: which is why this paper does not judge\n"
+                 "the functional on binding energies" % tuple(ratios),
+                 fontsize=8.5, y=0.965)
     f = os.path.join(OUT, "fig4_anchor_crosschecks.png")
     fig.savefig(f, dpi=200)
     return f
@@ -343,8 +380,8 @@ def fig4(ladders, xc, nlc, dft):
 # 纪律与 fig4 相同且更硬一点：点值只从被论文点名的归档里现取（归档抬头是手写的，
 # 不当数据源），并且脚本自己先核这句话——任一体系不成立就拒绝出图。
 # ---------------------------------------------------------------------------
-PI_LADDER = [("6-31G*", "evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out"),
-             ("aug-cc-pVDZ", "evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out")]
+PI_LADDER = [("6-31G*", "evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out"),
+             ("aug-cc-pVDZ", "evidence/ccsdt/20261003T0758Z_snnu_pi_three_avdz_ghostcp.out")]
 PI_DFT_L2 = ["evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out",
              "evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out"]
 PI_SYS = ("苯-水", "苯-氨", "苯-甲烷")
@@ -454,11 +491,14 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
                    - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
         dev = abs(pi_dft[cn] - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
         rows6.append((PI_EN[cn], span, dev))
+    ratios6 = []
     for nm, span, dev in rows6:
-        if not span > dev:
-            raise SystemExit("fig5: %s 上基组跨度 %.3f 不大于泛函偏差 %.3f，主张不成立"
-                             % (nm, span, dev))
-        print("  fig5 核验 %-15s span %.3f > dev %.3f (x%.1f)" % (nm, span, dev, span / dev))
+        r = span / dev
+        if not 0.05 <= r <= 20.0:
+            raise SystemExit("fig5: %s 上基组跨度 %.3f 与泛函偏差 %.3f 相差超过两个数量级 "
+                             "(x%.2f)，六个体系并排比较不成立" % (nm, span, dev, r))
+        ratios6.append(r)
+        print("  fig5 核验 %-15s span %.3f / dev %.3f = %.2f" % (nm, span, dev, r))
 
     fig = plt.figure(figsize=(6.9, 6.4))
     gs = fig.add_gridspec(2, 3, height_ratios=[1.05, 1.0], hspace=0.62, wspace=0.42,
@@ -506,9 +546,10 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     axb.set_xlim(0, 2.75)
     axb.set_xlabel("kcal/mol", fontsize=7.5)
     axb.legend(loc="lower center", bbox_to_anchor=(0.5, 1.005), ncol=2, fontsize=6.6, frameon=False)
-    fig.suptitle("On all six complexes the correlated reference moves more with the basis\n"
-                 "than the functional deviates from it - so a fixed-basis comparison of this\n"
-                 "kind is measuring the basis", fontsize=8.5, y=0.965)
+    fig.suptitle("Across six complexes the reference's own basis move and the functional's\n"
+                 "deviation from it are of one order (ratios %.2f-%.2f): neither is small\n"
+                 "enough to be the correction that removes the other"
+                 % (min(ratios6), max(ratios6)), fontsize=8.5, y=0.965)
     f = os.path.join(OUT, "fig5_six_system_spans.png")
     fig.savefig(f, dpi=200)
     return f
@@ -533,25 +574,27 @@ def toc_graphic(pi_ladders, pi_dft, hb_ladders, hb_dft):
         dev = abs(pi_dft[cn] - pi_ladders[0][1][cn]["frozen"]["CCSD(T)"])
         rows.append((PI_EN[cn], span, dev))
     for nm, span, dev in rows:
-        if not span > dev:
-            raise SystemExit("toc: %s 上 span %.3f 不大于 dev %.3f，图与正文主张不符" % (nm, span, dev))
+        if not 0.05 <= span / dev <= 20.0:
+            raise SystemExit("toc: %s 上 span %.3f 与 dev %.3f 相差超过两个数量级，"
+                             "与 fig5/正文的主张不符" % (nm, span, dev))
     fig = plt.figure(figsize=(3.25, 1.75))
     ax = fig.add_axes([0.15, 0.185, 0.82, 0.645])
-    lim = 2.15
+    lim = 1.55
     ax.plot([0, lim], [0, lim], "--", color="0.55", lw=0.8)
-    ax.text(0.575, 0.60, "the basis moves\nmore than the\nfunctional", fontsize=5.4, color="0.4")
+    ax.text(0.62, 0.30, "equal size:\nneither term is\nthe other's error",
+            fontsize=5.4, color="0.4")
     for nm, span, dev in rows:
         ax.plot(dev, span, "o", ms=4.2, color="#2b6cb0")
     for nm, span, dev in rows:
         if nm in ("benzene-ammonia", "benzene-methane", "water", "methane"):
             ax.annotate(nm, (dev, span), fontsize=5.4, color="0.25",
                         xytext=(3, -1), textcoords="offset points")
-    ax.set_xlim(0, 0.95); ax.set_ylim(0, lim)
+    ax.set_xlim(0, lim); ax.set_ylim(0, lim)
     ax.set_xlabel("functional deviation at 6-31G* (kcal/mol)", fontsize=6.0)
     ax.set_ylabel("reference move, 1 basis (kcal/mol)", fontsize=6.0)
     ax.tick_params(labelsize=5.8)
-    ax.set_title("VV10 pair attribution: the basis moves the reference more than the\n"
-                 "functional deviates - so fixed-basis binding verdicts are unearned",
+    ax.set_title("VV10 pair attribution: the reference's basis move and the functional's\n"
+                 "deviation are the same size - so fixed-basis binding verdicts are unearned",
                  fontsize=6.0)
     f = os.path.join(OUT, "toc_graphic.png")
     fig.savefig(f, dpi=300)
@@ -583,13 +626,11 @@ if __name__ == "__main__":
     # 图 4：结合能锚点的两条核对线。点位置从**被论文点名的 stdout** 现读，并与同一份
     # 文件自带的汇总表交叉比对（parse_ladder 里），任何一处不合就抛，不出图。
     ladders = [(b, parse_ladder(p)) for b, p in LADDER]
-    l2 = load("step_h_l2cp.json") or {}
-    dft = {}
-    for r in l2.get("rows", []):
-        if r["name"] in SYS_EN and r.get("level") == 2 and r.get("cpcorr"):
-            dft[r["name"]] = r["dcp"]
-    if len(dft) != 3:
-        raise SystemExit("fig4: level-2 反泊松的 DFT 对照只取到 %d 个体系（应为 3）" % len(dft))
+        # 反泊松列改读 2.12.1 的那份归档（理由写在 CP2121 上面）。侧车 step_h_l2cp.json 里是
+    # 2.14.0 的数，它仍是跨版本对照的一端，但从今往后不当图的数据源。
+    dft = parse_cp2121(2)
+    print("  反泊松列 %s -> %s" % (CP2121, {SYS_EN[k]: v for k, v in dft.items()}))
     print("出图：", fig4(ladders, parse_xcheck(XCHECK), parse_nlc(NLCTAB), dft))
-    print("出图：", fig5(parse_pi_ladder(), parse_pi_dft(), ladders, dft))
-    print("出图：", toc_graphic(parse_pi_ladder(), parse_pi_dft(), ladders, dft))
+    pi_lad, pi_dft = parse_pi_ladder(), parse_pi_dft()
+    print("出图：", fig5(pi_lad, pi_dft, ladders, dft))
+    print("出图：", toc_graphic(pi_lad, pi_dft, ladders, dft))

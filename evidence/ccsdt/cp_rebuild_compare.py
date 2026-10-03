@@ -45,6 +45,7 @@ OLD = [
 NEW = [
     os.path.join(HERE, "20261003T0605Z_stepm_dimers_ghostcp_local.out"),
     os.path.join(HERE, "20261003T0652Z_snnu_cp_rebuild_631.out"),
+    os.path.join(HERE, "20261003T0758Z_snnu_pi_three_avdz_ghostcp.out"),
 ]
 
 E_TOL_HA = 1e-7      # cross-machine: 16 vs 32 threads, two BLAS builds, one code path
@@ -53,8 +54,17 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 # The functional side of §3.2. These archives always used ghost functions, which is exactly
 # why the old comparison was a convention mismatch rather than a disagreement: the DFT column
 # was counterpoise and the correlated column was not.
+#
+# 2026-10-03, second mismatch found by a guard: every file below is PySCF 2.12.1, and the
+# three small dimers used to be read from the 2026-09-28 CentOS batch, which ran 2.14.0. The
+# two versions differ only on the counterpoise quantity, because they disagree on how many
+# integration points an atom with basis functions but no nuclear charge should receive
+# (34864 against 43904 for a water monomer in the dimer's basis at level 2). The single
+# variable experiment is archived next to its own copy of the values, and the superseded
+# batch stays out of this list on purpose: mixing versions in one column is what is being
+# corrected here, so the table can only read one.
 DFT_CP_FILES = [
-    "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out",
+    "evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out",
     "evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out",
     "evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out",
     "evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out",
@@ -62,10 +72,11 @@ DFT_CP_FILES = [
 ]
 DFT_ORDER = ("水二聚体", "氨二聚体", "甲烷二聚体", "苯-水", "苯-氨", "苯-甲烷",
              "苯二聚体(A)", "苯二聚体(B)")
-# Only these have a level-1 *counterpoise* run archived: the small dimers were run at
-# level 1 uncorrected only, so asking for their level-1 CP row must not be silently satisfied
-# by the level-2 table.
-LEVEL1_ORDER = ("苯-水", "苯-氨", "苯-甲烷", "苯二聚体(A)", "苯二聚体(B)")
+# Every eight system now has a level-1 *and* a level-2 counterpoise run at PySCF 2.12.1: the
+# three small dimers' level-1 rows arrived with 20261003T0907Z. Asking for a level-1 row must
+# still not be silently satisfied by the level-2 table, which is why this is a list and not
+# "whatever parsed".
+LEVEL1_ORDER = DFT_ORDER
 
 
 def parse_dft_cp(level=2):
@@ -98,6 +109,16 @@ def parse_dft_cp(level=2):
                 # table is a level-2 run, so a level-1 request finds nothing here by design.
                 m = re.match(r"\s+(\S+二聚体)\s+原子\s+\d+.*ΔE_int\(反泊松\)\s+([-+]\d+\.\d+)",
                              ln)
+            if not m:
+                # Form 4: the 20261003 recompute, which prints the production counterpoise and
+                # its own re-derivation on one row. Only the production column is taken; the
+                # second one is the run's internal agreement check, and reading it here would
+                # make this script a witness to its own arithmetic.
+                m = re.match(r"\s+(\S+)\s+nao=\s*\d+\s+dcp\(生产\)=([-+]\d+\.\d+)", ln)
+                if m and lvl_seen != level:
+                    m = None
+                elif m and m.group(1) not in DFT_ORDER:
+                    m = None
             if m:
                 name, val = m.group(1), float(m.group(2))
                 if name in got and abs(got[name] - val) > 5e-4:
@@ -118,6 +139,46 @@ def level_row(lvl_seen, level, ln):
         return None
     m = re.match(r"\s+(\S+)\s+nao=\s*\d+\s+DFT=\s*([-+]\d+\.\d+)", ln)
     return m if m and m.group(1) in DFT_ORDER else None
+
+
+EN = {"水二聚体": "water", "氨二聚体": "ammonia", "甲烷二聚体": "methane",
+      "苯-水": "benzene-water", "苯-氨": "benzene-ammonia", "苯-甲烷": "benzene-methane",
+      "苯二聚体(A)": "benzene dimer (sandwich)",
+      "苯二聚体(B)": "benzene dimer (parallel-displaced)"}
+
+
+def deviation_table(old, new, dft2):
+    """The four columns §3.2 tabulates, emitted here so the paper table is generated.
+
+    Until now main.md said this table was "read from the archives by cp_rebuild_compare.py",
+    but the script only printed the identity check and the grid step - so the DFT column and
+    the deviations were transcribed by hand, and one of those transcriptions had quietly kept
+    three rows on PySCF 2.14.0 while the other five were on 2.12.1. Putting the block in the
+    script is what makes that class of mistake visible without reading the prose.
+    """
+    key = lambda s: (s, "6-31g*", "frozen")
+    print("== the §3.2 deviation table (6-31g*, frozen core, counterpoise, DFT at level 2) ==")
+    print("  %-30s %10s %10s %10s %10s" % ("system", "CC dE_CP", "DFT dE_CP",
+                                           "deviation", "corr. BSSE"))
+    signs = []
+    for name in DFT_ORDER:
+        k = key(name)
+        if k not in new:
+            raise SystemExit("deviation table: no corrected CC row for %s - the column would"
+                              " be a hole, not a number" % name)
+        if name not in dft2:
+            raise SystemExit("deviation table: no level-2 counterpoise DFT row for %s" % name)
+        cc, d = new[k]["de_kcal"], dft2[name]
+        o = old.get(k)
+        bsse = abs(o["de_kcal"] - cc) if o else float("nan")
+        signs.append(d - cc)
+        print("  %-30s %+10.4f %+10.4f %+10.4f %10.4f"
+              % (EN[name], cc, d, d - cc, bsse))
+    neg = sum(1 for s in signs if s < 0)
+    print("  eight deviations, %d negative, %d positive (the sign of DFT minus CC)"
+          % (neg, len(signs) - neg))
+    print("  DFT column is one environment: PySCF 2.12.1 for all eight rows"
+          " (the 2.14.0 batch is excluded above and compared in evidence/l2cp/)")
 
 
 def grid_rows(dft2, dft1, new):
@@ -184,7 +245,10 @@ def main():
     for k in sorted(pending):
         print("      %-12s %-13s %s" % (k[0], k[1], k[2]))
     print()
-    grid_rows(parse_dft_cp(2), parse_dft_cp(1), new)
+    dft2 = parse_dft_cp(2)
+    deviation_table(old, new, dft2)
+    print()
+    grid_rows(dft2, parse_dft_cp(1), new)
     print()
     if bad_identity:
         print("  VERDICT: REFUSED - the complex energy itself moved on %d rows (largest %.2e"
