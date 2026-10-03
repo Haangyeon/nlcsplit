@@ -181,6 +181,78 @@ def deviation_table(old, new, dft2):
           " (the 2.14.0 batch is excluded above and compared in evidence/l2cp/)")
 
 
+# 泛函侧的未校正 ΔE_int，两个本地 2.12.1 归档（三个小二聚体在反泊松那份里顺带印出，
+# 五个芳香体系在 20261003T1025Z 那份里）。正文 §3.1 的 BSSE 八个数 = 反泊松减这个。
+DTOT_FILES = ["evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out",
+              "evidence/l2cp/20261003T1025Z_wsl2121-dtot_aromatic.out"]
+
+
+def parse_dtot(level=2):
+    """未校正 ΔE_int。两种排版：小体系那份的名字在上一行，芳香体系那份的在同一行。"""
+    got = {}
+    for rel in DTOT_FILES:
+        p = os.path.join(ROOT, rel)
+        if not os.path.exists(p):
+            raise SystemExit("ΔE_int archive missing: %s" % rel)
+        lvl, pending = None, None
+        for ln in open(p, encoding="utf-8", errors="replace"):
+            h = re.match(r"== BASIS=(\S+) LEVEL=(\d) ==", ln)
+            if h:
+                lvl, pending = int(h.group(2)), None
+                continue
+            m = re.match(r"\s+(\S+)\s+nao=\s*\d+\s+dcp\(生产\)=", ln)
+            if m:
+                pending = m.group(1)
+                continue
+            m = re.search(r"未校正ΔE_int=([-+]?\d+\.\d+)", ln)
+            if m and pending is not None and lvl == level:
+                got[pending] = float(m.group(1))
+                pending = None
+                continue
+            m = re.match(r"\s+(\S+)\s+nao=\s*\d+.*ΔE_int\(level (\d), 未校正\)=([-+]?\d+\.\d+)", ln)
+            if m and int(m.group(2)) == level:
+                got[m.group(1)] = float(m.group(3))
+    missing = [s for s in DFT_ORDER if s not in got]
+    if missing:
+        raise SystemExit("no uncorrected ΔE_int for %s -> BSSE 表不能只画剩下的格子"
+                         % ", ".join(missing))
+    return got
+
+
+def derived_tables(new, dft2):
+    """§3.2 的跨基组幅度与比值、§3.1 的 BSSE 八个数：都由这里生成，正文不再手抄。"""
+    print("== 锚自己的跨基组幅度，以及它相对偏差的比值 (6-31g* -> aug-cc-pVDZ, frozen) ==")
+    print("  %-30s %9s %9s %9s %7s" % ("system", "dE_CP 631", "dE_CP aug", "span", "span/dev"))
+    dev_by = {}
+    for name in DFT_ORDER:
+        k6, ka = (name, "6-31g*", "frozen"), (name, "aug-cc-pvdz", "frozen")
+        if k6 not in new:
+            raise SystemExit("no corrected 6-31g* row for %s" % name)
+        cc6 = new[k6]["de_kcal"]
+        dev = dft2[name] - cc6
+        dev_by[name] = dev
+        if ka not in new:
+            print("  %-30s %+9.4f %9s %9s %7s   (aug 档未归档，不印比值)"
+                  % (EN[name], cc6, "-", "-", "-"))
+            continue
+        span = abs(new[ka]["de_kcal"] - cc6)
+        print("  %-30s %+9.4f %+9.4f %9.4f %7.2f"
+              % (EN[name], cc6, new[ka]["de_kcal"], span, span / abs(dev)))
+    print("  比值 <1 的体系：%d；>1 的：%d —— 两个幅度同量级，谁也不是对方的误差"
+          % (sum(1 for n in DFT_ORDER if n in dev_by and (n, "aug-cc-pvdz", "frozen") in new
+                  and abs(new[(n, "aug-cc-pvdz", "frozen")]["de_kcal"]
+                           - new[(n, "6-31g*", "frozen")]["de_kcal"]) < abs(dev_by[n])),
+             sum(1 for n in DFT_ORDER if n in dev_by and (n, "aug-cc-pvdz", "frozen") in new
+                  and abs(new[(n, "aug-cc-pvdz", "frozen")]["de_kcal"]
+                           - new[(n, "6-31g*", "frozen")]["de_kcal"]) >= abs(dev_by[n]))))
+    print()
+    print("== 泛函那一侧的 BSSE = dE_CP - ΔE_int(未校正)，两端同环境同档位 (level 2) ==")
+    dtot = parse_dtot(2)
+    for name in DFT_ORDER:
+        print("  %-30s dE_CP %+9.4f   ΔE_int %+9.4f   BSSE %7.4f"
+              % (EN[name], dft2[name], dtot[name], dft2[name] - dtot[name]))
+
+
 def grid_rows(dft2, dft1, new):
     """Deviation at both archived grid levels, on the corrected anchor.
 
@@ -247,6 +319,8 @@ def main():
     print()
     dft2 = parse_dft_cp(2)
     deviation_table(old, new, dft2)
+    print()
+    derived_tables(new, dft2)
     print()
     grid_rows(dft2, parse_dft_cp(1), new)
     print()

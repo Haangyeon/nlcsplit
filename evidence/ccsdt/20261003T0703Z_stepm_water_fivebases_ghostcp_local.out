@@ -1,0 +1,103 @@
+== ARCHIVE: 水二聚体五基组 CCSD(T) 反泊松阶梯（6-31g\* 与四个相关一致基组，本机 WSL）==
+
+这一份此前只在 `scratch/` 里活着，正文却引用了它的四个数（cc-pVDZ −3.7035、aug-cc-pVDZ −4.3316、
+cc-pVTZ −4.3474、aug-cc-pVTZ −4.7287 kcal/mol，冻核反泊松）。`tools/claim_gate.js` 在第一次全量
+扫描时把这四个数报成"正文里有、仓内没有原件"——它说得对，原件就在 scratch，而 scratch 不入库。
+现在补进来。
+
+跑法与条件：WSL python 3.10.12 / PySCF 2.12.1，`OMP_NUM_THREADS=8`，官方 S22 S22_02.xyz 初始几何
+（未弛豫，片间最短 1.9516 Å），`nlcsplit/step_m_ccsdt.py` 的鬼函数修正版（复合物冻 2、单体冻
+[1,1]，冻核与全电子各一档；每个片段都把对方原子以 `ghost-` 前缀放进去）。产出时刻
+2026-10-03T15:03 本地（= 07:03Z）。
+
+这份档案**不主张**的东西：不是 CBS 极限（五个有限基组，没有外推格式）；不是弛豫几何；
+它也不替代 `20261003T0652Z_snnu_cp_rebuild_631.out`——6-31g\* 与 aug-cc-pVDZ 两档在两处都有，
+本节把它们当同环境对照读，两处的水二聚体冻核反泊松值一致（−4.8789 与 −4.8789）。
+另外两个更大基组（cc-pVTZ / aug-cc-pVTZ）只有这一份原件，正文引用只能指到这里。
+
+--- verbatim output follows ---
+
+== Step M · 水二聚体 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_02.xyz（初始几何，未弛豫），原子 6，片间最短距离 1.9516 A
+  片段 : [[0, 2, 3], [1, 4, 5]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*, cc-pvdz, aug-cc-pvdz, cc-pvtz, aug-cc-pvtz
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=8   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -7.816，反泊松 -6.129 kcal/mol
+
+### basis = 6-31g*
+  复合物 nao=36 nbas=20 nelec=20；单体 nao=36/36；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.3989543401    -152.3905915710            -5.2477          0.2
+    CCSD         -152.4166629333    -152.4089777208            -4.8225          6.7
+    CCSD(T)      -152.4204261343    -152.4126511478            -4.8789          0.2
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 20 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4022441820    -152.3938760215            -5.2511          0.1
+    CCSD         -152.4195201360    -152.4118299706            -4.8257          6.0
+    CCSD(T)      -152.4233210927    -152.4155409428            -4.8821          0.7
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 24 s
+
+### basis = cc-pvdz
+  复合物 nao=48 nbas=22 nelec=20；单体 nao=48/48；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4687118901    -152.4624403120            -3.9355          0.2
+    CCSD         -152.4870134495    -152.4812291413            -3.6297          6.0
+    CCSD(T)      -152.4934470783    -152.4875529934            -3.6986          1.8
+    RHF 参考=   -152.0625362239  收敛 RHF=True CCSD=True MP2=None   本档合计 26 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4734315316    -152.4671513017            -3.9409          0.2
+    CCSD         -152.4912439730    -152.4854517423            -3.6347          7.8
+    CCSD(T)      -152.4977225305    -152.4918205730            -3.7035          0.4
+    RHF 参考=   -152.0625362239  收敛 RHF=True CCSD=True MP2=None   本档合计 23 s
+
+### basis = aug-cc-pvdz
+  复合物 nao=82 nbas=36 nelec=20；单体 nao=82/82；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.5299473715    -152.5229900431            -4.3658          0.1
+    CCSD         -152.5450704380    -152.5384522068            -4.1530          9.4
+    CCSD(T)      -152.5559707371    -152.5490679156            -4.3316          2.1
+    RHF 参考=   -152.0885993170  收敛 RHF=True CCSD=True MP2=None   本档合计 43 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.5350534790    -152.5280877907            -4.3710          1.4
+    CCSD         -152.5496640917    -152.5430388221            -4.1574         15.6
+    CCSD(T)      -152.5606181173    -152.5537081760            -4.3361          3.1
+    RHF 参考=   -152.0885993170  收敛 RHF=True CCSD=True MP2=None   本档合计 44 s
+
+### basis = cc-pvtz
+  复合物 nao=116 nbas=42 nelec=20；单体 nao=116/116；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6469816838    -152.6399154602            -4.4341          0.6
+    CCSD         -152.6580369036    -152.6513692193            -4.1840         15.5
+    CCSD(T)      -152.6738219466    -152.6668939540            -4.3474          8.3
+    RHF 参考=   -152.1209551538  收敛 RHF=True CCSD=True MP2=None   本档合计 81 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6745002884    -152.6673997952            -4.4556          1.5
+    CCSD         -152.6852380549    -152.6785403420            -4.2029         17.7
+    CCSD(T)      -152.7012785570    -152.6943211863            -4.3658         10.0
+    RHF 参考=   -152.1209551538  收敛 RHF=True CCSD=True MP2=None   本档合计 79 s
+
+### basis = aug-cc-pvtz
+  复合物 nao=184 nbas=62 nelec=20；单体 nao=184/184；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6661700519    -152.6586999915            -4.6875          2.1
+    CCSD         -152.6751869052    -152.6680217098            -4.4962        129.8
+    CCSD(T)      -152.6929039231    -152.6853682500            -4.7287         56.1
+    RHF 参考=   -152.1266174978  收敛 RHF=True CCSD=True MP2=None   本档合计 559 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.6972425820    -152.6897360781            -4.7104          4.4
+    CCSD         -152.7061187570    -152.6989228994            -4.5155        103.6
+    CCSD(T)      -152.7241142627    -152.7165484756            -4.7476         58.5
+    RHF 参考=   -152.1266174978  收敛 RHF=True CCSD=True MP2=None   本档合计 447 s
+
+FIVEBASE_EXIT=0
