@@ -46,6 +46,7 @@ NEW = [
     os.path.join(HERE, "20261003T0605Z_stepm_dimers_ghostcp_local.out"),
     os.path.join(HERE, "20261003T0652Z_snnu_cp_rebuild_631.out"),
     os.path.join(HERE, "20261003T0758Z_snnu_pi_three_avdz_ghostcp.out"),
+    os.path.join(HERE, "20261003T1212Z_snnu_sandwich_avdz_ghostcp.out"),
 ]
 
 E_TOL_HA = 1e-7      # cross-machine: 16 vs 32 threads, two BLAS builds, one code path
