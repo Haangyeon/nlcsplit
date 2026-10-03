@@ -411,20 +411,22 @@ can stop at level 1.
 **Is -6.129 the right answer?** Not a question about the nonlocal term, but it is a
 question the paper invited, and it now has a measurement instead of a caveat. At the same
 official S22 geometry, the same 6-31g\* basis and the same counterpoise convention,
-coupled cluster gives dE_int = -6.856 kcal/mol at CCSD(T) with frozen oxygen 1s
-(-6.887 all-electron, so the frozen-core choice is worth 0.031 here), and -7.085, -5.248,
--5.932 and -5.203 at cc-pVDZ, aug-cc-pVDZ, cc-pVTZ and aug-cc-pVTZ respectively [S24].
-Two things follow, and they are not in conflict. At fixed basis our functional binds
-0.73 kcal/mol *less* strongly than correlation does in the same basis. As the correlated
-calculation approaches the basis limit it becomes -5.20, at which point the density
-functional result is 0.93 kcal/mol too deep - and that near-limit value is externally
-consistent, because an open-access coupled-cluster study quotes the equilibrium-geometry
-CCSD(T)/CBS water-dimer dissociation energy as -5.01 kcal/mol [[altun2018dlpno]]. The
-correlated ladder moves 1.9 kcal/mol across five bases while the functional's deviation
-from it is about 1. So a verdict of the form "the functional overbinds" obtained by
-comparing one small-basis density-functional number with one CBS reference is not
-supportable: it folds a basis-set effect twice the size of the quantity being judged into
-the judgement. That is a caution about the total binding energy, not about dE_NLC, which is
+coupled cluster gives dE_int = -4.8789 kcal/mol at CCSD(T) with frozen oxygen 1s
+(-4.8821 all-electron, so the frozen-core choice is worth 0.003 here), and -3.7035, -4.3316,
+-4.3474 and -4.7287 at cc-pVDZ, aug-cc-pVDZ, cc-pVTZ and aug-cc-pVTZ respectively [S24, S30].
+Three things follow. At fixed basis our functional binds 1.25 kcal/mol *more* strongly than
+correlation does in the same basis - not less, which is what an earlier version of this
+paragraph said, and the reason it said so is the subject of the next paragraph. As the
+correlated calculation moves up its own basis ladder it becomes -4.73 at aug-cc-pVTZ, still
+short of the -5.01 equilibrium-geometry CCSD(T)/CBS dissociation energy quoted by an
+open-access coupled-cluster study [[altun2018dlpno]] (different geometry, and we have not read
+the primary reference behind it), so the residual basis error of the anchor is of the order of
+0.3 kcal/mol and the functional-vs-anchor gap of 1.25 is larger than it. And the ladder itself
+now spans 1.18 kcal/mol from cc-pVDZ to aug-cc-pVTZ, which is comparable to - not twice the
+size of - the deviation being judged: a verdict of the form "the functional overbinds" obtained
+by comparing one small-basis density-functional number with one CBS reference remains
+unsupportable, but for a different reason than this draft originally gave. That is a caution
+about the total binding energy, not about dE_NLC, which is
 what every claim in this paper is made of, and which is grid-converged a level earlier
 (above) and agrees with a second program to 0.0004 kcal/mol on this same complex
 [S18]. A related definitional point, learned from a retraction: the S22 tables report
@@ -433,96 +435,121 @@ basis-set-consistent keeps doing exactly that [[takatani2010s22]], so no
 "CCSD(T) dispersion energy" can be read out of them, and an earlier version of this draft
 quoted one.
 
-**The same anchor on ammonia and methane is what makes it usable.** The single-system
-version above would read as "the functional is 0.7 kcal/mol too shallow", and that reading
-does not survive being repeated. At 6-31g\*, with every other setting identical, the three
-systems give correlated values of -6.856, -4.455 and -0.178 kcal/mol against our function's
--6.129, -3.675 and -0.466 [S24]: shallower by 0.73 and 0.78 on the two hydrogen-bonded
-systems, *deeper* by 0.29 on the methane dimer, which at that point looks like the sign of
-the discrepancy is system-dependent. It is not, and the way it fails is worth recording
-because an earlier draft of this paragraph said the opposite. Re-running the correlated side
-in aug-cc-pVDZ moves the methane value by a factor of five (-0.178 to -0.947) and inverts
-that comparison - the methane dimer is dispersion-bound and 6-31g\* has no diffuse
-functions, so its small-basis number was a basis artefact and the companion archive had
-flagged it as such before the second basis was run. What the three systems establish is
-therefore narrower and firmer than a sign: at a fixed basis the deviation is 0.3-0.8
-kcal/mol with no single sign, and the correlated reference itself moves 0.18 to 0.95
-(methane), 4.46 to 3.33 (ammonia) and 6.86 to 5.25 (water) when only the basis changes. Two
-effects of the same size cannot separate each other, which is why this section judges the
-functional nowhere and judges dE_NLC instead. The correlated numbers are also not a
-one-program artefact: across three systems, two bases and both frozen-core conventions, the
-same counterpoise energies recomputed in ORCA 6.0.1 agree with PySCF's to 0.0002 kcal/mol,
-and ORCA's printed AO dimension equals the PySCF nao for every one of the 24 single points,
-so the two numbers being compared come from the same one-particle basis rather than from two
-bases that happen to give close energies - which is the distinction that matters here,
-because a d-shell convention difference is worth 0.01-0.1 kcal/mol, one order of magnitude
-above the largest disagreement measured [S24].
+**How this section was wrong before, and what the error is worth.** The paragraph immediately
+above previously reported -6.856 for the 6-31g\* anchor and read the functional as 0.73
+kcal/mol *too shallow*. Both numbers were computed in this repository; neither was a
+counterpoise number. The coupled-cluster script built each monomer from that fragment's own
+atoms, so the monomers were evaluated in a smaller one-particle basis than the complex, which
+is the one thing a Boys-Bernardi correction must not do; the column heading said dE_CP and the
+quantity underneath it was the uncorrected difference. The functional column it was being
+subtracted from had always used ghost functions, so every deviation in this section was the
+difference of two conventions. The size of that mismatch is now measured rather than assumed,
+as the basis-set superposition error of the correlated ladder itself: 1.977 kcal/mol on the
+water dimer at 6-31g\*, and 0.252 to 2.971 across the eight complexes [S30]. Two properties of
+that error are why it survived: it is always of the sign that makes the complex look more
+strongly bound, so it inflated the anchor instead of deflating it, and both sides of the
+subtraction are individually plausible energies - only the difference is impossible. The
+structural check that should have caught it on the day it was written (the monomer must have
+the complex's basis dimension) had been in the density-functional script from the start and was
+simply absent from the coupled-cluster one; it is now, together with the electron-count check,
+and `nlcsplit/tests/test_cc_convention.py` pins the invariant across all four convention rungs
+and rebuilds the broken pairing deliberately, so the guard is shown to be capable of failing
+[S24]. The corrected ladder and the row-by-row proof that nothing else moved are
+`evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out` and
+`evidence/ccsdt/20261003T0700Z_snnu_cp_rebuild_compare.out` [S30].
 
-**Repeating it on three π complexes removes the last excuse for a sign.** The three systems
-above are hydrogen-bonded, so "the functional is wrong on dispersion-bound complexes" remains
-available as a reading. It is not, and testing it required a second cluster: the same ladder
-was run for benzene-water, benzene-ammonia and benzene-methane (114-118 AO, official S22
-geometries, 6-31g\*, counterpoise, frozen core) after the host that had been queueing them
-saturated at 36/36 slots. CCSD(T) gives -3.6536, -2.2737 and -1.0583 kcal/mol, and the
-omegaB97X-V/6-31G\* level-2 counterpoise values -3.2671, -2.2227 and -1.3406 deviate by +0.386,
-+0.051 and -0.282 [S26]. Those are at the same grid level and the same frozen-core convention
-as the -6.129, -3.675 and -0.466 above, so six deviations can be set side by side: +0.727,
-+0.780, -0.288, +0.386, +0.051, -0.282. Still no single sign, on the systems where a
-dispersion-specific verdict had its best chance. A seventh joins them - the benzene sandwich
-itself, 192 AO, the largest and most dispersion-bound complex in the set - where CCSD(T) gives
--1.4999 and the omegaB97X-V/6-31G\* level-2 counterpoise value is -1.9403, a deviation of
--0.440 kcal/mol [S28]. It is negative too. The eighth and last complex closes the set: the
-parallel-displaced benzene dimer, also 192 AO, gives CCSD(T) -2.5506 against -2.4297, a
-deviation of +0.121 [S29]. Eight complexes, same basis, same grid level, same frozen-core
-convention, same counterpoise definition: five deviations of one sign and three of the other,
-with no pattern except that the three negative cases are the three most dispersion-bound
-complexes in the set - both methane-containing ones and the sandwich. That is the regime whose
-reference the previous paragraph refused to trust at this basis, so the pattern still points
-at the reference rather than at the functional.
+**Repeating it on the other seven complexes gives one sign, and a magnitude that ranks.** The
+three hydrogen-bonded dimers above are not the whole set, and testing the rest required a second
+cluster: the same ladder was run for benzene-water, benzene-ammonia and benzene-methane
+(114-118 AO), for the benzene sandwich (192 AO) and for the parallel-displaced benzene dimer
+(192 AO), all at official S22 geometries, 6-31g\*, counterpoise, frozen core [S26, S28, S29, S30].
+Set against the omegaB97X-V/6-31G\* level-2 counterpoise values, which are at the same grid level
+and the same convention, the eight deviations are:
 
-**The second basis closes the comparison the figure makes.** Re-running the same three π
-complexes in aug-cc-pVDZ, with only the basis changed, deepens the correlated reference by
-0.864, 1.454 and 1.951 kcal/mol - benzene-methane, the most dispersion-bound of the three,
-moves the most - while the functional's deviations at the smaller basis are +0.386, +0.051 and
--0.282 [S27]. The reference's own move exceeds the deviation it is being used to judge in all
-three, by factors of 2.2, 28 and 6.9, so the span comparison that Figure 3 refuses to draw
-without now holds for six systems rather than three: across all six, the smallest ratio of
-basis move to functional deviation is 1.4. This is the same reading as on the hydrogen-bonded
-set, and it says what the deviations themselves cannot: at 6-31G\*, which has no diffuse
-functions, a comparison of this kind is mostly measuring the basis.
-![The same span comparison on all six complexes: the pi-complex ladders, and the move each basis change makes against the deviation it is used to judge](figs/fig5_six_system_spans.png)
+| complex | CCSD(T) dE_CP | omegaB97X-V dE_CP | deviation | correlated BSSE |
+|---|---|---|---|---|
+| water | -4.8789 | -6.1290 | -1.2501 | 1.9771 |
+| ammonia | -2.5380 | -3.6750 | -1.1370 | 1.9174 |
+| methane | +0.0734 | -0.4660 | -0.5394 | 0.2518 |
+| benzene-water | -1.9724 | -3.2671 | -1.2947 | 1.6812 |
+| benzene-ammonia | -0.8882 | -2.2227 | -1.3345 | 1.3855 |
+| benzene-methane | +0.0816 | -1.3406 | -1.4222 | 1.1399 |
+| benzene dimer (sandwich) | +1.4712 | -1.9403 | -3.4115 | 2.9711 |
+| benzene dimer (parallel-displaced) | -0.5748 | -2.4297 | -1.8549 | 1.9758 |
 
-**Figure 4.** The span comparison of Figure 3 extended to all six complexes. Top row: the three
-pi complexes of the paragraph above, counterpoise ladder at 6-31G* (solid) and aug-cc-pVDZ
-(dashed), with this work omegaB97X-V/6-31G* level-2 counterpoise value as the dotted rule. Bottom:
-for every complex, the correlated reference move between the two bases (blue) against the
-functional deviation from it at the smaller basis (orange), with the ratio between them. The
-figure refuses to draw unless every ratio exceeds one - the guarded statement this paper makes -
-and the smallest here is 1.4 (ammonia dimer, whose two magnitudes are closest) against a largest
-of 28.5 (benzene-ammonia). Both the ladders and the six ratios are read from the archived runs,
-not transcribed [S26, S27].
+kcal/mol, read from the archives by `evidence/ccsdt/cp_rebuild_compare.py` rather than
+transcribed [S30]. Every one of the eight is negative: at this basis the functional binds more
+strongly than the correlated anchor on every complex in the set, with no exception and no
+sign flip - which is the opposite of what this section reported before the convention was fixed,
+and the reason for the difference is the mismatch described above rather than a new calculation
+scheme. The magnitudes rank roughly with size and dispersion content, from 0.54 on the methane
+dimer to 3.41 on the sandwich. Two entries are worth reading twice because they are not small
+numbers of the same kind: on the methane dimer and on benzene-methane the counterpoise
+CCSD(T)/6-31g\* interaction is *positive* (+0.0734 and +0.0816, i.e. unbound at this geometry and
+basis) while omegaB97X-V binds them by 0.47 and 1.34. That is the regime in which the previous
+version of this paragraph found "deeper by 0.29", and it is the reason a small-basis anchor of
+this kind cannot carry a verdict about a dispersion functional by itself.
+
+**The anchor is not a one-program number, and the check now runs on the corrected quantity.**
+Across the water dimer at both bases and both frozen-core conventions, the counterpoise energies
+recomputed in ORCA 6.0.1 agree with PySCF's to 0.0001-0.0003 kcal/mol, on the ghost-function
+construction as well as on the uncorrected one, and ORCA's printed AO dimension equals the PySCF
+nao for every part of every run - 36 against 36 for a monomer whose partner is present as basis
+functions with no nuclear charge, 18 against 18 for the same monomer without them
+[S24, S30]. The uncorrected construction is recomputed in the same execution as the corrected one
+precisely so that the new numbers remain comparable to the archived record they replace: ORCA
+reproduces -6.8560 against PySCF's -6.8559, which is the quantity the earlier version of this
+paragraph subtracted from a counterpoise value. A d-shell convention difference between the two
+programs would be worth 0.01-0.1 kcal/mol, one to two orders of magnitude above the largest
+disagreement measured, and the basis-identity check is what excludes it [S30].
+
+**What the second basis does to the comparison.** Re-running the correlated side in
+aug-cc-pVDZ, with only the basis changed, moves the counterpoise anchor by 0.5473, 0.0808 and
+0.4987 kcal/mol on water, ammonia and methane [S24, S30]. Against the deviations those anchors
+are used to judge - 1.2501, 1.1370 and 0.5394 - the ratios are 0.44, 0.07 and 0.93: the basis
+move is *smaller* than the deviation on all three, not larger. That is the opposite of what this
+paragraph reported before the convention was fixed, when the same comparison gave ratios of 1.4
+to 28 and the section could say the discrepancy was mostly the basis. It was not, and the reason
+the old reading looked that way is measurable in the same tables: the correlated BSSE itself
+changes with the basis (1.9771 kcal/mol on water at 6-31g\*, 0.9162 at aug-cc-pVDZ), so an
+uncorrected two-point ladder was comparing two different amounts of the same error, and calling
+the difference a basis effect. Two things still cannot be concluded from these three ratios.
+Part of each deviation may be the anchor not being converged rather than the functional being
+wrong - 6-31g\* has no diffuse functions - and on the corrected ladder the direction of that
+deficiency is not even consistent: going from 6-31g\* to aug-cc-pVDZ makes the water anchor
+0.5473 kcal/mol *less* bound while it makes the ammonia and methane anchors 0.0808 and 0.4987
+more bound, so the three small dimers do not share a common basis bias whose size could be
+subtracted. And the same comparison on the three
+pi complexes and the two benzene
+dimers is not in this paper: their aug-cc-pVDZ anchors and the functional's own aug-cc-pVDZ
+counterpoise values were being recomputed when this version was assembled, and until those
+archives land no ratio is quoted for them and the figure that displayed the six old ratios is
+withdrawn. What the six corrected ratios will support is stated when they exist, not before.
 
 
 The same runs exposed a second nuisance parameter of comparable size. Raising only the
 integration grid from level 1 to level 2, with the reference untouched, moves the
-benzene-water deviation from +0.259 to +0.386 and the benzene-ammonia one from -0.052 to +0.051,
-which changes that system's sign, while benzene-methane moves from -0.281 to -0.282 [S26]. In
+benzene-water deviation from -1.4220 to -1.2947 and the benzene-ammonia one from -1.4373 to
+-1.3345, while benzene-methane moves from -1.4205 to -1.4222 [S26, S30]. In
 terms of the computed value rather than the difference, the grid step shifts the three complexes
 by 0.127, 0.103 and 0.0017 kcal/mol - a 75-fold spread from one complex to the next, on the same
 functional, the same basis and the same geometry. The seventh system makes the point without
 needing an argument: on the benzene sandwich the same one-step grid change moves the deviation
-from +0.777 to -0.440 kcal/mol, 1.217 kcal/mol in the wrong direction for any story about which
-functional is right, and larger than every deviation in the set [S28]. The grid effect is
+from -2.1945 to -3.4115 kcal/mol, a step of 1.217 that is larger than every deviation in the set
+except the sandwich's own [S28]. The grid effect is
 neither proportional to system size nor monotone in it - benzene-methane's 0.0017 against the
 sandwich's 1.217 is a factor of 700 - and the level-2 value is not claimed to be converged,
 only to be the level this paper uses. The eighth complex, the parallel-displaced benzene dimer,
-was measured the same way and moves 0.266 kcal/mol, also changing the sign of its deviation
-(+0.121 at level 2 against -0.145 at level 1) [S29]. Five of the eight systems now have both
+was measured the same way and moves 0.266 kcal/mol [S29]. Five of the eight systems now have both
 grid levels: the step is smallest on benzene-methane (0.0017) and largest on the sandwich
-(1.217), three of the five change the sign of the deviation, and none of that orders by system
-size. A grid level is a knob a calculation turns
-without anyone deciding anything, and it moves quantities of the size that was going to serve as
-evidence. This is the third reason the section judges dE_NLC and not the functional.
+(1.217), and none of that orders by system size. One claim in this paragraph is a casualty of the
+convention fix and is worth keeping anyway: before it, three of those five grid steps changed the
+*sign* of the deviation, which is how the paragraph used to make its point. On the corrected
+anchor every deviation is negative at both grid levels and no step flips a sign - the sign flips
+were the mismatch, not the grid. What the grid still does is move quantities of the size that was
+going to serve as evidence, by up to 1.217 kcal/mol against deviations of 0.54 to 3.41, without
+anyone deciding anything. This is the third reason the section judges dE_NLC and not the
+functional.
 
 ![The correlated reference ladder per system against this work's value, and the two cross-program checks](figs/fig4_anchor_crosschecks.png)
 
@@ -1101,7 +1128,9 @@ the three unequal-centre rows. It skips the referee's own disjoint half-box node
 that construction assumes two congruent boxes, and it runs each density under two different
 element labels so the radii table's contribution is measured instead of assumed |
 | S23 | `evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out`, `evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out`, `nlcsplit/step_k_population.py`, `evidence/population/MANIFEST.sha256` | the soft-vs-hard reading of the local term, per partition scheme, on both water-dimer geometries at grid level 3: hard populations credit a point to its owner only, soft populations spread it over the fragment factors at that point, and both are computed on PySCF's own partition weights so the measure is the converged one. The two files give the largest soft-hard population difference (1.527e-06 electrons official, 8.686e-07 constructed) and its conversion through beta into kcal/mol. Before these runs existed, this sentence quoted 8.7e-7 electrons on the strength of a working log only - the number was real but its geometry was not the published one, which is why the scope is now stated in the sentence |
-| S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`, `evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`, `evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/20261001T044833Z_orca_crosscheck.out`, `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out`, `evidence/ccsdt/orca_crosscheck.py`, `evidence/ccsdt/README.md`, `evidence/ccsdt/MANIFEST.sha256`, `nlcsplit/tests/test_cc_convention.py` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only. Two runs are kept because the second one exists to prove the first is still valid: after the frozen-core selection was refactored into a single call feeding both sides of the difference, the ladder was re-run with the script as it now ships, and stripped of wall-clock columns the two files differ in five lines, all of them one print statement whose wording changed - no energy moved. `nlcsplit/tests/test_cc_convention.py` pins that invariant, and one of its four tests rebuilds the broken pairing on purpose to show the guard can fail. `evidence/ccsdt/orca_crosscheck.py` is the third-program check on the same quantity: ORCA 6.0.1, same geometries, same basis, same counterpoise convention, on three systems and both conventions (eight rows, 24 single points), worst difference 0.0002 kcal/mol on the interaction energy and 1.2e-07 Ha between executions on the absolute energies. `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out` is the one to cite for it; it also carries the correction of an earlier claim in this directory, which is why the basis check is stated the way it is. The first version of that check read ORCA's `Number of basis functions` field against PySCF's orbital count and reported agreement at 18 for a water monomer in 6-31G\* - true, but not a criterion: for the same monomer in aug-cc-pVDZ the field prints 47 while ORCA's own SCF and coupled-cluster sections print `Basis Dimension Dim .... 41` and `Number of AO's ... 41`, which is PySCF's number. So the script now reads back the AO dimension per part and compares it with the PySCF nao for the same geometry and basis (24/24 equal), and its verdict refuses to print "agree" unless the energy test and the basis test hold at the same time. The 47 itself is recorded as unexplained rather than rationalised: 25 shells with maximum angular momentum 2 admits no s/p/d/sp bookkeeping that yields both 47 and 41. The frozen-core convention of each ORCA run is likewise read from its own output (`chemical core (4 el)` on a dimer, `(2 el)` on a monomer, `NO frozen core` on the all-electron rungs) rather than assumed from the input keyword |
+| S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`, `evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`, `evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/20261001T044833Z_orca_crosscheck.out`, `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out`, `evidence/ccsdt/orca_crosscheck.py`, `evidence/ccsdt/README.md`, `evidence/ccsdt/MANIFEST.sha256`, `nlcsplit/tests/test_cc_convention.py` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only. Two runs are kept because the second one exists to prove the first is still valid: after the frozen-core selection was refactored into a single call feeding both sides of the difference, the ladder was re-run with the script as it now ships, and stripped of wall-clock columns the two files differ in five lines, all of them one print statement whose wording changed - no energy moved. `nlcsplit/tests/test_cc_convention.py` pins that invariant, and one of its four tests rebuilds the broken pairing on purpose to show the guard can fail. `evidence/ccsdt/orca_crosscheck.py` is the third-program check on the same quantity: ORCA 6.0.1, same geometries, same basis, same counterpoise convention, on three systems and both conventions (eight rows, 24 single points), worst difference 0.0002 kcal/mol on the interaction energy and 1.2e-07 Ha between executions on the absolute energies. `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out` is the one to cite for it; it also carries the correction of an earlier claim in this directory, which is why the basis check is stated the way it is. The first version of that check read ORCA's `Number of basis functions` field against PySCF's orbital count and reported agreement at 18 for a water monomer in 6-31G\* - true, but not a criterion: for the same monomer in aug-cc-pVDZ the field prints 47 while ORCA's own SCF and coupled-cluster sections print `Basis Dimension Dim .... 41` and `Number of AO's ... 41`, which is PySCF's number. So the script now reads back the AO dimension per part and compares it with the PySCF nao for the same geometry and basis (24/24 equal), and its verdict refuses to print "agree" unless the energy test and the basis test hold at the same time. The 47 itself is recorded as unexplained rather than rationalised: 25 shells with maximum angular momentum 2 admits no s/p/d/sp bookkeeping that yields both 47 and 41. The frozen-core convention of each ORCA run is likewise read from its own output (`chemical core (4 el)` on a dimer, `(2 el)` on a monomer, `NO frozen core` on the all-electron rungs) rather than assumed from the input keyword. **Dated correction, 2026-10-03:** the column headed `dE_CP` in the four ladder archives named above is *not* a counterpoise value - the monomers were built in their own basis, so the partner's functions were absent. [S30] gives the corrected ladders, the row-by-row proof that only the monomer side moved between the two sets of archives, and the size of what the mismatch was worth (0.2518-2.9711 kcal/mol per complex). The row is kept because it is the record of what those runs computed, and because the correction is the point of §3.2's second paragraph |
+| S30 | `nlcsplit/step_m_ccsdt.py`, `nlcsplit/tests/test_cc_convention.py`, `evidence/ccsdt/README.md`, `evidence/ccsdt/20261002T1230Z_cp_defect_diagnosis.out`, `evidence/ccsdt/snnu_cp_defect_diagnosis.py`, `evidence/ccsdt/20261003T0616Z_orca_ghost_probe.out`, `evidence/ccsdt/orca_ghost_probe.py`, `evidence/ccsdt/20261003T0620Z_orca_vs_pyscf_ghost_cp.out`, `evidence/ccsdt/orca_ghost_cc_probe.py`, `evidence/ccsdt/20261003T0605Z_stepm_dimers_ghostcp_local.out`, `evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out`, `evidence/ccsdt/snnu_cp_rebuild_631.sh`, `evidence/ccsdt/20261003T0700Z_snnu_cp_rebuild_compare.out`, `evidence/ccsdt/cp_rebuild_compare.py`, `evidence/ccsdt/ladder_parse.py`, `evidence/ccsdt/ladder_parse_selftest.py`, `evidence/ccsdt/20261003T0653Z_ghost_monomer_scf_check.out`, `evidence/ccsdt/ghost_monomer_scf_check.py`, `evidence/ccsdt/MANIFEST.sha256` | the counterpoise correction itself, and the evidence chain that holds it up. `20261002T1230Z` is the 10-second diagnosis that found it (a water monomer at 18 basis functions against the complex's 36, -6.8559 against -4.8789). `20261003T0616Z` decides ORCA's ghost-atom spelling by the basis dimension rather than by the manual, and keeps two rejected spellings plus the dropped-partner case as negative controls, because without them "the colon form gives Dim=36" would not be evidence of anything. `20261003T0620Z` computes the corrected anchor in two programs and reports 0.0001 kcal/mol on the counterpoise difference and on the uncorrected one at both conventions, with the ghost construction carried into the correlation space (Dim 36 on every part) and the frozen-core field read back as `chemical core (2 el)` on a monomer whose second oxygen has basis functions but no charge. `20261003T0652Z` is the corrected ladder for all eight complexes at 6-31G*, Slurm job 51023 (COMPLETED, ExitCode 0:0, 42 min 30 s, 16 CPUs on cpu1), whose two pre-run guards compare the *complex's* RHF reference - the side the fix does not touch - against the archived values (4.31e-11 and 1.14e-11 Ha). `evidence/ccsdt/cp_rebuild_compare.py` then reads the old and new archives side by side and refuses to print a table unless every complex CCSD(T) energy is identical to 1e-7 Ha: 22 of 22 comparable rows agree to 0.0e+00, so the whole change in the `dE_CP` column is attributable to the monomer construction and not to the machine, the thread count or the geometry parse. The same script emits the eight deviations quoted in §3.2 and the two-grid-level table, reading both sides from archives rather than from this row. `20261003T0653Z` closes the remaining way a ghost monomer could be wrong without being noticed: every ghost and bare SCF converged, and every ghost energy lies *below* its bare counterpart, which is the variational direction a counterpoise construction must have - a check independent of the convergence flag itself. `evidence/ccsdt/ladder_parse.py` is the single parser both consumers use, and
+`evidence/ccsdt/ladder_parse_selftest.py` is its eight-case self-test; four of those cases are fed deliberately broken rows, and the one that matters here is a positive interaction energy, which an earlier version of the parser dropped silently because its regex spelled the sign as `-?` |
 | S25 | `nlcsplit/fastpair.py`, `nlcsplit/step_j_scaling.py`, `evidence/scaling/step_j.json`, `evidence/scaling/20260929T1340Z_step_j_scaling.out`, `evidence/scaling/step_j_rerun_20260930.json`, `evidence/scaling/step_j_rerun_20260930.txt`, `evidence/fastpair_ab/fastpair_ab_compare.json`, `evidence/fastpair_ab/fastpair_ide_validation.json`, `nlcsplit/tests/test_fastpair.py`, `evidence/scaling/MANIFEST.sha256` | the wall-clock and certificate numbers in §3.6, recomputed from these sidecars rather than transcribed into the prose: 33 screened/exact pairs over two windows, 1.08-10.28x (archived, 18 pairs) and 1.37-13.29x (re-run, 15 pairs), none faster than exact; the minimum block-pair certificate 197.96 Ha against the -8.34e-4 Ha quantity it would decide on, with n_pairs_bound_below_value = 0 and dropped_pairs = []. Two windows are kept because the second was measured on a different day and the two must not be merged into one interval. Each row carries two different error quantities and conflating them changes the headline: cert_err_ha is the guarantee the traversal can actually use, abs_dE_kcal is the measured deviation from the exact sum. Restricted to tau = 1e-12, exactly 8 of the 11 rows have abs_dE_kcal <= 1e-6 kcal/mol and those span 84.4-95.4% of far-field point pairs evaluated; only 4 rows have a *certificate* that small, and those span 93.7-95.4%. The 84.4% figure is therefore the usable-accuracy statement, not a mistake, and the looser certificate is precisely the result being reported. The monotone accept rule and the box separation are pinned by nlcsplit/tests/test_fastpair.py, which fails if a leaf pair is accepted out of order |
 | S27 | `evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out`, `evidence/ccsdt/snnu_benzene_avdz.sh`, `evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`, `evidence/ccsdt/MANIFEST.sha256` | the second basis for the three π complexes, i.e. the three spans quoted in §3.2, Slurm job 50946 (COMPLETED, ExitCode 0:0, 44 min 22 s, 16 CPUs on cpu1), same script and same call path as [S24] and [S26], with a first-stage guard that re-derives the archived water-dimer aug-cc-pVDZ value (-5.2478 against -5.248). Values are read from the archived detail blocks rather than transcribed: frozen-core counterpoise benzene-water -4.5172 / benzene-ammonia -3.7273 / benzene-methane -3.0093 and all-electron -4.7192 / -3.9240 / -3.2010, against the 6-31G* rows of [S26]; the three spans that enter the §3.2 comparison (0.864 / 1.454 / 1.951 kcal/mol) are differences of these rows, and the frozen/all-electron gap is itself basis-dependent, growing from 0.035-0.043 kcal/mol at 6-31G* to 0.192-0.202 here. The runner script is a byte- and hash-verified copy of the remote producer. No CBS claim: two basis points, no extrapolation |
 | S28 | `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`, `evidence/ccsdt/snnu_benzene_dimer.sh`, `evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out`, `evidence/ccsdt/snnu_dft_cp_dimer.py`, `evidence/ccsdt/MANIFEST.sha256` | the benzene sandwich, 192 AO, as the seventh anchored complex: the correlated side and the functional side under one basis and one convention. CCSD(T) is Slurm job 50945 (COMPLETED, ExitCode 0:0, 11 min 48 s, 32 CPUs), the DFT counterpoise values are job 50969 (COMPLETED, ExitCode 0:0, 38 min 07 s, 16 CPUs), and both runs first re-derived an archived value before spending the rest of their wall-clock - 50945 reproduced the water-dimer anchor to 0.0001 and the benzene-methane one to 0.0000 kcal/mol, 50969 reproduced benzene-methane at level 2 to 0.0000. Frozen-core counterpoise: CCSD(T) -1.4999, omegaB97X-V/6-31G* level 2 -1.9403 (deviation -0.440) and level 1 -0.7233 (deviation +0.777). The ladders also carry a result about correlation order that the deviation column cannot show: CCSD alone gives -0.6831 and the perturbative triples supply 0.817 of the -1.4999 total, while MP2 overbinds by a factor of two at -3.1059, so the two cheaper rungs err in opposite directions on the same system. Neither archive claims a CBS limit, a relaxed geometry, or that level 2 is grid-converged; the sandwich has no second basis, which is why it appears in the deviations but not in the span comparison of Figure 4 |

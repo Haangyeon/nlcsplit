@@ -106,6 +106,25 @@ def freeze_plan(sym_lists, all_electron=False):
     return [freeze_count(s) for s in sym_lists]
 
 
+def cp_frag_specs(symbols, coords, frags):
+    """One (symbols, coords) pair per fragment, in the **complex's** basis.
+
+    The partner's atoms stay in the list with a `ghost-` prefix: they contribute basis
+    functions and no nuclei or electrons. That is the whole content of a Boys-Bernardi
+    correction, and it is the thing the first version of this script left out - it passed
+    only the fragment's own atoms, which yields the uncorrected interaction energy while
+    the column header said `dE_CP`. Kept as a separate pure function so the invariant can
+    be tested without an SCF.
+    """
+    specs = []
+    for f in frags:
+        fs = set(f)
+        syms = ["ghost-" + symbols[i] if i not in fs else symbols[i]
+                for i in range(len(symbols))]
+        specs.append((syms, list(coords)))
+    return specs
+
+
 def correlated(mol, frozen):
     """一次 RHF，出 MP2 / CCSD / CCSD(T) 三个**总**能量（Ha），并带回各自用时。
 
@@ -195,8 +214,15 @@ def ladder(name):
     for basis in BASES:
         print("### basis = %s" % basis)
         dim = build(symbols, coords, basis)
-        mono_cp = [build([symbols[i] for i in f], [coords[i] for i in f], basis)
-                   for f in frags]
+        # Boys-Bernardi 要求单体在**复合物的完整基组**下算，所以对方原子必须以鬼函数
+        # 身份进入。2026-10-02 的第一版只取本片段原子，那算出来的是未校正的相互作用能，
+        # 而栏目标题写的是 dE_CP —— 水二聚体上两者差 1.98 kcal/mol，足以把泛函"偏深"
+        # 读成"偏浅"。下面两条断言是从 nlcsplit/step_h_s22.py 的 counterpoise() 抄来的，
+        # DFT 那一侧一直有，缺的是这一侧；它们就是那个本该当天报红的不变量。
+        mono_cp = [build(s, c, basis) for s, c in cp_frag_specs(symbols, coords, frags)]
+        for m in mono_cp:
+            assert m.nao_nr() == dim.nao_nr(), "ghost 单体基组维数与复合物不一致"
+            assert m.nelectron < dim.nelectron, "ghost 单体电子数没减少，划分可能错了"
         frag_syms = [[symbols[i] for i in f] for f in frags]
         coreO = freeze_plan(frag_syms)
         print("  复合物 nao=%d nbas=%d nelec=%d；单体 nao=%d/%d；每片段冻核 %s，合计 %d"

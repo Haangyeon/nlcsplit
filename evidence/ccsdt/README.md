@@ -1,9 +1,58 @@
 # evidence/ccsdt — the coupled-cluster anchor for the water-dimer binding energy
 
-Three water-dimer runs of the same five-basis ladder, all counterpoise-corrected, all on the
-official S22 entry-2 geometry (`scratch/lit/s22/S22_02.xyz`, O...O = 2.9104 A, the initial
-unrelaxed complex geometry). Producer: `nlcsplit/step_m_ccsdt.py`. Cited by
-`paper/main.md` §3.2 as **[S24]**, and summarised in `MAIN-skeleton.md` table 3b.
+Three water-dimer runs of the same five-basis ladder, on the official S22 entry-2 geometry
+(`scratch/lit/s22/S22_02.xyz`, O...O = 2.9104 A, the initial unrelaxed complex geometry).
+**They are not counterpoise-corrected, whatever the column heading in those files says** - see
+the dated correction immediately below before using any number here. Producer:
+`nlcsplit/step_m_ccsdt.py`. Cited by `paper/main.md` §3.2 as **[S24]**, and summarised in
+`MAIN-skeleton.md` table 3b.
+
+## Dated correction, 2026-10-03 - read this before using any number below
+
+**The line above this section said "all counterpoise-corrected". It was not true, and neither
+was the `dE_CP` column heading in every run in this directory made before this date.**
+`nlcsplit/step_m_ccsdt.py` built each monomer from that fragment's **own** atoms, so the
+monomers were computed in a smaller basis than the complex and the printed difference is the
+*uncorrected* interaction energy. Boys-Bernardi requires the partner's functions to stay in the
+monomer as basis functions carrying no nuclear charge.
+
+What that is worth, measured rather than estimated, on the water dimer at 6-31g\*:
+
+| quantity | value (kcal/mol) |
+|---|---|
+| what this directory printed as `dE_CP` | -6.8559 |
+| the actual counterpoise value | **-4.8789** |
+| the basis-set superposition error that was in between | 1.9771 |
+
+The functional column it was being compared against (`-6.129`) **is** a real counterpoise
+number - `nlcsplit/step_h_s22.py` has always ghosted the partner and asserts the dimensions
+match; those two asserts are what the coupled-cluster side was missing. So every deviation in
+§3.2 subtracted a counterpoise DFT value from an uncorrected correlated value. On water that
+reverses the sign of the comparison: the old pairing reads "the functional is 0.73 kcal/mol too
+shallow", the corrected one reads "1.25 kcal/mol too deep".
+
+How it was found: the benzene sandwich's counterpoise value moved 4.56 kcal/mol between
+6-31g\* and aug-cc-pVDZ, which is not a number a basis swap should produce on a 192-AO complex.
+`20261002T1230Z_cp_defect_diagnosis.out` is the 10-second water-dimer computation that turned
+the suspicion into a measurement (18 vs 36 basis functions on the monomer, -6.8559 vs -4.8789).
+
+Three things now carry the corrected quantity, and one is still in progress:
+
+| file | what it establishes |
+|---|---|
+| `20261003T0616Z_orca_ghost_probe.out` | which token spelling of a ghost atom this ORCA 6.0.1 accepts, decided by the basis dimension rather than by the manual, with the rejected spellings and the dropped-partner case kept as negative controls |
+| `20261003T0620Z_orca_vs_pyscf_ghost_cp.out` | the corrected counterpoise anchor computed twice over, in PySCF and in ORCA, agreeing to 0.0001 kcal/mol on **both** the counterpoise and the uncorrected difference at both conventions |
+| `20261003T0605Z_stepm_dimers_ghostcp_local.out` | the corrected ladder for water + ammonia + methane at 6-31g\* and aug-cc-pVDZ, this machine |
+| SNNU job 51023 (`snnu_cp_rebuild_631.sh`) | the corrected ladder for all eight complexes at 6-31g\* - **running when this section was written**, so the benzene rows below are still the uncorrected ones until its archives land |
+
+Not yet re-run at the time of writing, and stated so it cannot be mistaken for done: the three
+benzene complexes and both benzene dimers at aug-cc-pVDZ, and the sandwich's aug-cc-pVDZ rung.
+Until those exist, no sentence in the paper may compare a counterpoise DFT value with a
+correlated value at aug-cc-pVDZ on a benzene complex.
+
+The rows and tables below are left exactly as they were written. They are the record of what
+those runs computed - uncorrected interaction energies, mislabelled - and the labels are what
+the correction is about, so rewriting them would destroy the evidence.
 
 | file | what it is | cite this one |
 |---|---|---|

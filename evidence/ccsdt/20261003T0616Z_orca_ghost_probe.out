@@ -1,0 +1,48 @@
+== ARCHIVE: which ghost-atom token spelling this ORCA 6.0.1 accepts, decided by the basis dimension ==
+
+为什么要有这份档案。§3.2 的耦合簇锚点要用鬼函数才能叫反泊松，而 ORCA 的鬼原子写法不能靠
+记忆——本机这一份是 6.0.1，而 6.0 系列里被讨论过的形式不止一种。答案来自安装自带的一个脚本
+（`~/orca6/CompoundScripts/BSSE/BSSECorrection.cmp`，NOTE 4："Ghost atom (':' after the symbol
+of the element)"），但**文档里写过的拼法仍然只是关于这个二进制的一条主张**，直到它被这个二进制
+接受为止。所以这里把候选拼法逐个送进去跑。
+
+判据不是能量。一个"接受 token 但把对方原子丢掉"的解析器照样会给出一个像样的单体能量，只是
+基组维数是错的。所以这里读的是 ORCA 自己打印的 `Basis Dimension Dim`：真正的鬼函数构造必须
+落在复合物的 36 上，被丢掉的对方原子落在裸单体的 18 上。PySCF 一侧同一几何同一基组的
+nao 也印在同一份输出里（complex=36, bare=18），两个程序各自独立地报这两个数。
+
+三条负控制是有意留在同一次运行里的：两种被拒的拼法说明解析器不是把任何 token 都当成原子
+硬造一个构造；"丢掉对方"那一行说明**错的那一侧长什么样**（Dim=18，能量却完全像样）。
+没有这三条，"冒号形式给出 Dim=36"本身不构成证据。
+
+顺带一个自洽检查：`complex_all_real` 那一行没有鬼原子，它复合物能量
+-152.02726622 与本目录 `20260930T212300Z_stepm_ladder.out` 的 RHF 参考一致，
+即这份探针的几何读取路径与阶梯用的是同一份官方 S22 文件。
+
+机器与条件：本机 WSL，ORCA 6.0.1（`~/orca6/orca`），`! RHF 6-31G* TightSCF`，
+%pal nprocs 2，%maxcore 1000 MB，官方 S22 水二聚体几何（S22_02.xyz）。
+本档案只到 RHF 这一层，也就是只问"解析器认哪种拼法、鬼函数进没进基组空间"；芯层计数的读回
+（带鬼的单体上 ORCA 打印 `chemical core (2 el)`，即一个氧 1s，因为鬼原子不带电子）是在
+相关层做的，记在 `20261003T0620Z_orca_vs_pyscf_ghost_cp.out` 里，不在这里主张。
+生产者脚本 `orca_ghost_probe.py` 随本目录发布。
+
+--- verbatim output follows ---
+
+== ORCA 6.0.1 ghost-atom token spelling, decided by running it ==
+  basis 6-31G*   PySCF nao: complex=36  bare monomer=18
+  the acceptance test is the basis dimension, because a construction that silently
+  drops the partner still prints a plausible energy at the bare dimension.
+
+  colon_ghost            rc=0   normal=True  Dim=36    E=-76.00951739   ghost functions ARE in the space (dim == complex)
+  bare_monomer_dropped   rc=0   normal=True  Dim=18    E=-76.00895342   partner dropped on purpose (dim == bare); this is what the broken construction looked like from the inside - a plausible energy reported at the wrong dimension
+  complex_all_real       rc=0   normal=True  Dim=36    E=-152.02726622  reference: the complex itself, no ghosts
+  word_Ghost_prefix      rc=9   normal=False Dim=None  E=-              rejected by the parser
+        parser said: [file orca_main/main_input_geom_basis.cpp, line 251]: Element name/number, dummy atom or point charge expected in COORDS ATOM-NO 2
+  word_Ghost_nospace     rc=9   normal=False Dim=None  E=-              rejected by the parser
+        parser said: [file orca_main/main_input_geom_basis.cpp, line 251]: Element name/number, dummy atom or point charge expected in COORDS ATOM-NO 2
+  colon_ghost_frozen     rc=0   normal=True  Dim=36    E=-76.00951739   ghost functions ARE in the space (dim == complex)
+
+  Three negative controls are in this run on purpose: the two rejected spellings
+  show the parser is not silently inventing a construction from anything, and the
+  dropped-partner case shows what the WRONG construction returns (dim 18, an energy
+  that looks fine). Without them, dim==36 for the colon form would not be evidence.

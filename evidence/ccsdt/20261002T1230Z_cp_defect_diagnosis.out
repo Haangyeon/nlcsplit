@@ -1,0 +1,10 @@
+CCSD(T) correction = -0.00376320096558718
+CCSD(T) correction = -0.00174721425030641
+CCSD(T) correction = -0.0017394408730963
+CCSD(T) correction = -0.00178286223656598
+CCSD(T) correction = -0.00189056482282438
+nao: dimer=36  单体(自己基组)=18/18  单体(带鬼)=36/36
+dE 未校正          = -6.8559 kcal/mol
+dE 真反泊松(带鬼)  = -4.8789 kcal/mol
+BSSE               = -1.9771 kcal/mol
+归档里 step_m 那一栏 = -6.8560   （对照：正文 DFT 反泊松 -6.129）

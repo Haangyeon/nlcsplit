@@ -211,13 +211,13 @@ def parse_ladder(rel):
         if m:
             conv = "frozen" if m.group(1).startswith("frozen") else "all"
             continue
-        m = re.match(r"\s+(MP2|CCSD|CCSD\(T\))\s+-?\d+\.\d+\s+-?\d+\.\d+\s+(-?\d+\.\d+)", line)
+        m = re.match(r"\s+(MP2|CCSD|CCSD\(T\))\s+[-+]?\d+\.\d+\s+[-+]?\d+\.\d+\s+([-+]?\d+\.\d+)", line)
         if m and name and conv:
             rows.setdefault(name, {}).setdefault(conv, {})[m.group(1)] = float(m.group(2))
     summ = {}
     for line in txt.splitlines():
-        m = re.match(r"\s+(水二聚体|氨二聚体|甲烷二聚体)\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)"
-                     r"\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)", line)
+        m = re.match(r"\s+(水二聚体|氨二聚体|甲烷二聚体)\s+([-+]?\d+\.\d+)\s+([-+]?\d+\.\d+)"
+                     r"\s+([-+]?\d+\.\d+)\s+([-+]?\d+\.\d+)", line)
         if m:
             summ[m.group(1)] = dict(zip(("MP2", "CCSD", "CCSD(T)", "all"),
                                         (float(x) for x in m.groups()[1:])))
@@ -243,8 +243,8 @@ def parse_ladder(rel):
 def parse_xcheck(rel):
     out = []
     for line in _read(rel).splitlines():
-        m = re.match(r"\s+(\S+二聚体)\s+(\S+)\s+(frozen|all-e)\s+(-?\d+\.\d+)\s+"
-                     r"(-?\d+\.\d+)\s+([+-]?\d+\.\d+)\s*$", line)
+        m = re.match(r"\s+(\S+二聚体)\s+(\S+)\s+(frozen|all-e)\s+([-+]?\d+\.\d+)\s+"
+                     r"([-+]?\d+\.\d+)\s+([+-]?\d+\.\d+)\s*$", line)
         if m:
             out.append((m.group(1), m.group(2), m.group(3),
                         float(m.group(4)), float(m.group(5)), float(m.group(6))))
@@ -256,7 +256,7 @@ def parse_xcheck(rel):
 def parse_nlc(rel):
     out = []
     for line in _read(rel).splitlines():
-        m = re.match(r"^(\S.*?)\s+(\d+)\s+(\d+)\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)\s+(\d+\.\d+)\s+"
+        m = re.match(r"^(\S.*?)\s+(\d+)\s+(\d+)\s+([-+]?\d+\.\d+)\s+([-+]?\d+\.\d+)\s+(\d+\.\d+)\s+"
                      r"(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)\s*$", line)
         if m:
             out.append((m.group(1).strip(), float(m.group(7))))
@@ -379,7 +379,7 @@ def _detail_rows(txt):
         if m:
             conv = "frozen" if m.group(1).startswith("frozen") else "all"
             continue
-        m = re.match(r"\s+(MP2|CCSD|CCSD\(T\))\s+-?\d+\.\d+\s+-?\d+\.\d+\s+(-?\d+\.\d+)\s+\d", line)
+        m = re.match(r"\s+(MP2|CCSD|CCSD\(T\))\s+[-+]?\d+\.\d+\s+[-+]?\d+\.\d+\s+([-+]?\d+\.\d+)\s+\d", line)
         if m and name and conv:
             rows.setdefault(name, {}).setdefault(conv, {})[m.group(1)] = float(m.group(2))
     return rows
@@ -401,7 +401,7 @@ def parse_pi_ladder():
         mk = re.search(r"^\s*(?:#####|=====)", body, re.M)
         stdout_part = body[:mk.start()] if mk else ""
         vals = [float(x) for x in re.findall(
-            r"CCSD\(T\)\s+-?\d+\.\d+\s+-?\d+\.\d+\s+(-?\d+\.\d+)\s+\d", stdout_part)]
+            r"CCSD\(T\)\s+[-+]?\d+\.\d+\s+[-+]?\d+\.\d+\s+([-+]?\d+\.\d+)\s+\d", stdout_part)]
         want = []
         for s in PI_SYS:
             want += [rows[s]["frozen"]["CCSD(T)"], rows[s]["all"]["CCSD(T)"]]
