@@ -2,13 +2,13 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 106409 chars, 1158 lines
+- source `paper/main.md`: 114613 chars, 1227 lines
 - output `paper/main.tex`: title from the level-1 heading, 9 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
-- tags cited in the body: 30
-- figures pulled in: 3 -> tracked
-- inline backticked paths in the body text: 26 scanned -> tracked
+- tags cited in the body: 31
+- figures pulled in: 4 -> tracked
+- inline backticked paths in the body text: 28 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
 - bib entries cited: 24 of 24
@@ -45,3 +45,4 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 | S28 | `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`<br>`evidence/ccsdt/snnu_benzene_dimer.sh`<br>`evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out`<br>`evidence/ccsdt/snnu_dft_cp_dimer.py`<br>`evidence/ccsdt/MANIFEST.sha256` | tracked |
 | S29 | `evidence/ccsdt/20261002T1030Z_snnu_benzene_dimer_B.out`<br>`evidence/ccsdt/snnu_benzene_B.sh`<br>`evidence/ccsdt/snnu_dft_cp_dimer_B.py`<br>`evidence/ccsdt/MANIFEST.sha256`<br>`evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out` | tracked; also §3.2 of the same file |
 | S30 | `nlcsplit/step_m_ccsdt.py`<br>`nlcsplit/tests/test_cc_convention.py`<br>`evidence/ccsdt/README.md`<br>`evidence/ccsdt/20261002T1230Z_cp_defect_diagnosis.out`<br>`evidence/ccsdt/snnu_cp_defect_diagnosis.py`<br>`evidence/ccsdt/20261003T0616Z_orca_ghost_probe.out`<br>`evidence/ccsdt/orca_ghost_probe.py`<br>`evidence/ccsdt/20261003T0620Z_orca_vs_pyscf_ghost_cp.out`<br>`evidence/ccsdt/orca_ghost_cc_probe.py`<br>`evidence/ccsdt/20261003T0605Z_stepm_dimers_ghostcp_local.out`<br>`evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out`<br>`evidence/ccsdt/snnu_cp_rebuild_631.sh`<br>`evidence/ccsdt/20261003T0700Z_snnu_cp_rebuild_compare.out`<br>`evidence/ccsdt/cp_rebuild_compare.py`<br>`evidence/ccsdt/ladder_parse.py`<br>`evidence/ccsdt/ladder_parse_selftest.py`<br>`evidence/ccsdt/20261003T0653Z_ghost_monomer_scf_check.out`<br>`evidence/ccsdt/ghost_monomer_scf_check.py`<br>`evidence/ccsdt/MANIFEST.sha256`<br>`evidence/ccsdt/cp_rebuild_compare.py`<br>`evidence/ccsdt/ladder_parse.py` | tracked; also §3.2 of the same file |
+| S31 | `evidence/l2cp/cp_version_runner.py`<br>`evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out`<br>`evidence/l2cp/20261003T0911Z_wsl2140-cp_levels.out`<br>`evidence/l2cp/20261003T0804Z_snnu51028-guard_FAIL.out`<br>`evidence/l2cp/cp_version_probe.py`<br>`evidence/l2cp/20261003T0928Z_cp_version_probe.out`<br>`evidence/ccsdt/20261003T0925Z_cp_rebuild_compare_2121.out`<br>`evidence/l2cp/cp_version_runner.py`<br>`evidence/l2cp/cp_version_probe.py` | tracked |
