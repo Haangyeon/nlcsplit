@@ -72,15 +72,20 @@ def counterpoise(mol, frags, level):
     单体在**复合物的完整基组**下算：把对方原子写成 ghost-，只带基函数不带核与电子。
     实测本机 PySCF 2.12.1：ghost 片段的 nao 与复合物一致(34)，nelectron 只算自己(10)。
     不做的近似：不对 DM 做 superposition 猜测，直接重解每个片段的 SCF。
+
+    基组跟着传进来的 mol 走，不读模块默认值。这一条是 2026-10-03 用一次作业失败换来的：
+    调用方在 aug-cc-pvdz 上建复合物、而本函数仍按 NCBAS 的 6-31g* 搭鬼单体，
+    下面那句维数断言当场把作业打死——它拦住的是一个看起来完全正常的错误数字。
     """
     C = mol.atom_coords() / 1.8897261254
     sym = [mol.atom_symbol(i) for i in range(mol.natm)]
+    basis = mol.basis if isinstance(mol.basis, str) and mol.basis else BASIS
 
     def frag_mol(idxs, ghost_idx):
         lines = [f"{sym[i]} {C[i][0]:.10f} {C[i][1]:.10f} {C[i][2]:.10f}" for i in idxs]
         lines += [f"ghost-{sym[i]} {C[i][0]:.10f} {C[i][1]:.10f} {C[i][2]:.10f}"
                   for i in ghost_idx]
-        return gto.M(atom="\n".join(lines), basis=BASIS, verbose=0, unit="Angstrom")
+        return gto.M(atom="\n".join(lines), basis=basis, verbose=0, unit="Angstrom")
 
     e_dim = terms(mol, level, "复合物(反泊松参照)")["e_tot"]
     tot = 0.0

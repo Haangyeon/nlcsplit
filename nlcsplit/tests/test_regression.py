@@ -70,3 +70,44 @@ def test_pair_terms_regression(dimer):
     assert vals["becke"] == pytest.approx(-0.5316, abs=0.02)
     span = max(vals.values()) - min(vals.values())
     assert 0.01 < span < 0.10, f"方案跨度 {span:.4f} 出界，归属敏感性需重新评估"
+
+
+def test_counterpoise_honours_the_callers_basis(monkeypatch):
+    """反泊松的鬼单体必须建在**传进来的那个复合物**的基组上。
+
+    2026-10-03 的真实失败：调用方用 aug-cc-pvdz 建复合物，`counterpoise()` 却按模块默认
+    BASIS(=NCBAS=6-31g*) 搭鬼单体，函数自己那句维数断言当场把 SNNU 作业打死。这里复合物
+    故意用比模块默认更大的基组：修复前它抛 AssertionError，修复后走通且基组确实传下去了。
+    """
+    from pyscf import gto
+    from nlcsplit import step_h_s22 as H
+
+    monkeypatch.setattr(H, "BASIS", "6-31g*")            # 模块默认，与复合物故意不同
+    atom = ("O 0 0 0.66; H 0 0.77 -0.16; H 0 -0.77 -0.16; "
+            "O 0 2.98 0.0; H 0 3.3 0.89; H 0.94 3.3 -0.4")
+    mol = gto.M(atom=atom, basis="aug-cc-pvdz", unit="Angstrom", verbose=0)
+
+    asked = []
+    real_M = gto.M
+
+    def spy(*a, **kw):
+        asked.append(kw.get("basis"))
+        return real_M(*a, **kw)
+
+    class FakeMF:
+        class _G:
+            level = 0
+
+        def __init__(self, sub):
+            self.sub, self.converged, self.e_tot, self.xc = sub, True, -76.4, ""
+            self.grids = self._G()
+
+        def kernel(self):
+            return self.e_tot
+
+    monkeypatch.setattr(H.gto, "M", spy)
+    monkeypatch.setattr(H.dft, "RKS", FakeMF)
+    monkeypatch.setattr(H, "terms", lambda m, lv, tag: {"e_tot": -152.9})
+    H.counterpoise(mol, [[0, 1, 2], [3, 4, 5]], 0)
+    assert mol.nao_nr() == 82, "前提变了：aug-cc-pVDZ 的水二聚体不再是 82 AO"
+    assert set(asked) == {"aug-cc-pvdz"}, f"鬼单体拿到基组 {set(asked)}，复合物基组没传下去"

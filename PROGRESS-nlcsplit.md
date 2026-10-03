@@ -3648,3 +3648,31 @@ PostToolUse 测试编辑都没有反馈。已有 `ask-chatgpt-before-user.js` �
   测试应该**追加**一行，不是替换一行；已恢复，`git diff MAIN-skeleton.md` 现在为空。
 · 内联 `node -e` 里的 `\n` 与反斜杠又被壳层吃掉一次（第三次踩同一坑，规矩是：改脚本内容一律
   走 Edit/Write，不用内联脚本打补丁）。
+
+## 2026-10-04：泛函侧 aug 作业被自己的断言打死，查出一个跨基组的真 bug
+
+51024 于 12:12:57Z `ALL_DONE`：苯二聚体(A) 在 aug-cc-pVDZ 的反泊松 CCSD(T) 冻核 −2.0253、
+全电子 −2.0344（nao=384，本档 10533 s）。**八个体系的 CC 侧到此齐了。**
+
+51025（泛函侧 aug-cc-pVDZ，六体系 level 2）跑了：两道环境守卫先 PASS（水 −6.1526、苯-甲烷
+−1.3406，都是 2.12.1 该有值），随后死在 `step_h_s22.counterpoise()` 自己的
+`assert sub.nao_nr() == mol.nao_nr()`。原因不是集群、不是版本、不是几何：**这个函数一直按模块
+默认 `BASIS`（=NCBAS，6-31g\*）搭鬼单体**，只有当复合物恰好也用同一基组时才碰巧正确。
+6-31g\* 那一整批之所以对，是因为调用方与它同默认值；换成 aug 的复合物，鬼单体就小了 46 个 AO。
+改法：鬼单体跟传入的 `mol.basis` 走（`nlcsplit/step_h_s22.py`）。
+
+测试 `test_counterpoise_honours_the_callers_basis` 故意用比模块默认更大的基组装复合物，
+并把 `frag_mol` 拿到的 basis 截下来断言。**负控制当场验过**：把那一行退回旧写法，测试立刻
+`AssertionError`（step_h_s22.py:95）——不是"加了个永真断言"。全套 73 passed / 330 s（认文件不认通知）。
+
+同一件事的第二处线索：这条 assert 与 2026-10-03 那次"CC 单体少了对方基函数"是同一类错的两端——
+反泊松的正确性全靠"单体建在复合物基组里"这一条，而它此前只在默认基组下被隐含满足过。
+
+**卡住的部分（如实）**：`ssh snnu` 现在开始拒 `kex_exchange_identification: Connection closed by
+remote host`（101.132.159.118:51758 那端）。两份日志取不回来：sandwich 的 aug 全档、51025 的失败档。
+**没有**用终端回显拼归档——那正是这个仓最忌讳的动作。等恢复后 `cat` 原文 + 比 sha256
+（远端 sha 已记：dimer_A_avdz 1520284673202ae7…，dft_cp_avdz.log 6197a97800bc0a67…，
+.publish 里的 step_h_s22 仍是旧版 006293e602abb4ca…，修复还没部署上去）。
+
+任务：#38 归档这两份并把 compare 的 awaiting 清零；#39 部署修复+重投 aug 泛函作业；
+#40 关掉 claim-gate 抓到的 14 个无出处数字（这步不依赖集群，先干）。
