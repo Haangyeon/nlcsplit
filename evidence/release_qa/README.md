@@ -72,3 +72,18 @@ wheel 的 4e9efb8e… 同时出现在 `20260929T170302Z_wheelclean_pyargs.out` �
 `pip install --target` 而不是 `python -m venv`：本机 WSL 没装 `python3.10-venv`，
 `python3 -m venv` 直接失败（"apt install python3.10-venv"）。target 目录 + `PYTHONPATH`
 达到同样效果，且日志里打印了 `nlcsplit.__file__` 与非源树 cwd 来证明"不在源树里跑"。
+
+
+## 归档文件名的时间戳：两种口径共存，不可当作可排序量
+
+2026-10-04 起新档一律用真 UTC（`date -u`，如本目录
+`20261003T1901Z_quickstart_readme_example.out`）。**此前**的档名里那个 `Z` 其实是本机本地时
+（UTC+8）：例如 `evidence/l2cp/20261004T0100Z_cross_version_pair_benzmeth.out` 的字节的 mtime
+是 20261003T16:58Z。核对方式就是上面那条 mtime 对照，不是推测。
+
+为什么不批量改名：这些档名被正文与骨架逐字引用（`paper/main.md`、`MAIN-skeleton.md`、若干 notes），
+改名会牵动 md2tex 的路径闸门与 MANIFEST，换来的只是把一处时钟口径问题变成一次全仓引用重排。
+代价与收益不合。
+
+因此本目录/`evidence/l2cp`/`evidence/ccsdt` 里**同一目录可能混着两种口径**。由此得出的任何
+"谁先谁后""隔了几小时"的读法都不成立；要判先后请取文件的 git 提交时刻或 mtime，不要取档名。

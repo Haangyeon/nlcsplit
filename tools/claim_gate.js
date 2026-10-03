@@ -21,7 +21,12 @@ const fs = require("fs");
 const path = require("path");
 const cp = require("child_process");
 
-const CARRIERS = [/^paper\/.*\.md$/, /^MAIN-skeleton\.md$/, /^README\.md$/, /^docs\/.*\.md$/];
+// 拦只拦**会发出去的**载体。paper/notes/ 与 paper/software_notes/ 是台账：那地方本来就是攒
+// "还没找到原件的数"的队列，拿正文的标准拦它，等于逼着把台账塞进 allowlist 或者写 gate-bypass——
+// 一个只会大叫的闸门，下次就没人信它的红了（本仓 2026-10-02 的教训）。
+// 台账里的数想查，用 `--dump 文件名` 单独点它。
+const SHIPPED = new Set(["paper/main.md", "paper/software.md", "paper/p2.md",
+                         "MAIN-skeleton.md", "README.md"]);
 // RESEARCH-*.md 是文献台账：正文引的外部比较值（-3.34 / 10.26434 那一类）出处在那里，
 // 不把它算进证据索引，闸门就会把"文献里的数"误报成"我编的数"。
 const EVIDENCE = [/^evidence\//, /^nlcsplit\//, /^dist\/nlcsplit\//, /^figs\//, /^RESEARCH-.*\.md$/];
@@ -86,18 +91,14 @@ function re_skip(f) {
   return /\.(png|jpg|pdf|zip|whl|gz|lock)$/.test(f) || /MANIFEST\.sha256$/.test(f);
 }
 function loadIndex(force) {
-  if (!force && fs.existsSync(IDX)) {
-    try {
-      const j = JSON.parse(fs.readFileSync(IDX, "utf8"));
-      if (j.fmt === FMT && j.head === git("rev-parse HEAD")) {
-        j.exact = new Set(j.exact);
-        return j;
-      }
-    } catch (e) { /* rebuild */ }
-  }
+  // 缓存以前按 (格式版本, HEAD) 复用。这个键**看不见 `git add`**：新归档还没提交时，
+  // 闸门会拿旧索引判它"无原件"，或者反过来放过一个已被改过内容的档案。省的是 0.6 秒，
+  // 买到的是两类静默错判——不值。现在每次重扫（全量 0.7 s）。force 参数保留只是为了调用点不改。
   const idx = buildIndex();
-  fs.mkdirSync(path.dirname(IDX), { recursive: true });
-  fs.writeFileSync(IDX, JSON.stringify({ ...idx, exact: [...idx.exact] }));
+  try {
+    fs.mkdirSync(path.dirname(IDX), { recursive: true });
+    fs.writeFileSync(IDX, JSON.stringify({ ...idx, exact: [...idx.exact] }));
+  } catch (e) { /* 索引只是调试副本，写不下不影响判定 */ }
   idx.exact = new Set(idx.exact);
   return idx;
 }
@@ -164,6 +165,23 @@ function allowlist() {
     .map((l) => { const [pat, why] = l.split("\t"); return { re: new RegExp(pat), why: why || "" }; });
 }
 
+let _declared = null;
+/** 包里才有、仓里没有的路径（`docs/tables_and_provenance.md` 这类）算不算幻觉？
+ *  只有当**被跟踪的构建脚本自己声明了这个名字**时才算有出处：那是"它会产出的文件"的一手记录。
+ *  不这么放行就得把 dist/ 的存在当判据，而 dist/ 在全新克隆上根本不存在——那样闸门会天天假报。 */
+function declaredPaths() {
+  if (_declared) return _declared;
+  const set = new Set();
+  const re = /['"]([A-Za-z0-9_.\/-]+\/[A-Za-z0-9_.\/-]*\.(?:md|py|js|yml|yaml|json|txt|sh|csv|tsv|tex|out|png))['"]/g;
+  for (const f of trackedFiles()) {
+    if (!/^(tools\/|\.github\/|setup\.py$|pyproject\.toml$|MANIFEST\.in$)/.test(f)) continue;
+    let t; try { t = fs.readFileSync(f, "utf8"); } catch (e) { continue; }
+    for (const m of t.matchAll(re)) set.add(m[1]);
+  }
+  _declared = set;
+  return set;
+}
+
 function checkText(idx, label, text) {
   const bad = [];
   const allow = allowlist();
@@ -174,14 +192,17 @@ function checkText(idx, label, text) {
   }
   const tracked = new Set(trackedFiles());
   for (const pth of citedPaths(text)) {
-    if (!fs.existsSync(pth)) bad.push({ kind: "path", where: label, detail: pth + " 不存在" });
-    else if (!tracked.has(pth)) bad.push({ kind: "path", where: label, detail: pth + " 存在但未 git add" });
+    if (fs.existsSync(pth)) {
+      if (!tracked.has(pth)) bad.push({ kind: "path", where: label, detail: pth + " 存在但未 git add" });
+    } else if (!declaredPaths().has(pth)) {
+      bad.push({ kind: "path", where: label, detail: pth + " 不存在（也不是任何跟踪构建脚本声明的产出名）" });
+    }
   }
   return bad;
 }
 
 /* ---------- 入口 ---------- */
-function isCarrier(f) { return CARRIERS.some((re) => re.test(f)); }
+function isCarrier(f) { return SHIPPED.has(f); }
 // 这个闸门是按 GAMESS 这棵树的证据结构写的。全局 hooks 目录会每个项目都叫到一次，
 // 所以先认作用域：不在本项目、或本项目没装 settings.json 的，一律放行且不吱声。
 function inScope(cwd) {
@@ -256,12 +277,48 @@ function selftest() {
   probe("假整数语境不拦(语境未建模)", "there are 424242 rows", false);
   probe("不存在的路径拦", "read `evidence/nope/does_not_exist_zz.out`", true);
   probe("未跟踪路径拦", "produced by `scratch/hdr_2121.txt`", true);
+  // 包内路径：由跟踪的构建脚本声明的才放行；分母必须打印，否则"0 条违规"和"0 条被解析"长得一样。
+  const decl = declaredPaths();
+  console.log(`  ---- 跟踪构建脚本声明的产出名：${decl.size} 个`);
+  if (!decl.size) { console.log("SELFTEST FAILED: 声明集为空 -> 包内路径这条规则在空转"); process.exit(1); }
+  probe("包内路径(已声明)不拦", "ships as `docs/tables_and_provenance.md`", false);
+  probe("包内路径(未声明)拦", "ships as `docs/nobody_builds_this_zz.md`", true);
+  // 作用域本身也要测：放宽一处就淹没台账，收紧一处就放过正文。两个方向都得有声音。
+  const scope = [
+    ["paper/main.md", true], ["paper/software.md", true], ["paper/p2.md", true],
+    ["MAIN-skeleton.md", true], ["README.md", true],
+    ["paper/notes/number_audit.md", false], ["paper/software_notes/claims_audit.md", false],
+    ["paper/references.bib", false],
+  ];
+  for (const [f, want] of scope) {
+    const got = isCarrier(f);
+    const ok = got === want;
+    console.log(`  ${ok ? "OK  " : "FAIL"} 作用域 ${f} -> ${got}（期望 ${want}）`);
+    if (!ok) fails.push("scope:" + f);
+  }
   if (fails.length) { console.log("SELFTEST FAILED: " + fails.join(", ")); process.exit(1); }
   console.log("SELFTEST PASS (indexed " + idx.n + " artifacts, " + idx.exact.size + " numbers)");
   process.exit(0);
 }
 
 if (process.argv.includes("--selftest")) selftest();
+else if (process.argv.includes("--stop-count")) {
+  // 给别的钩子用的机器可读计数：不打印细节，只报每类几条 + 按载体的分布。
+  const idx = loadIndex(true);   // 强制重建：刚 git add 的档案必须算进出处池
+  const files = {};
+  let num = 0, pth = 0;
+  const list = git("ls-files").split("\n").filter(isCarrier)
+    .concat(git("status --porcelain").split("\n").filter(Boolean)
+      .map((l) => l.slice(3).trim().replace(/\\/g, "/")).filter((f) => isCarrier(f) && fs.existsSync(f)));
+  for (const f of [...new Set(list)]) {
+    const bad = checkText(idx, f, fs.readFileSync(f, "utf8"));
+    files[f] = bad.length;
+    num += bad.filter((b) => b.kind === "number").length;
+    pth += bad.filter((b) => b.kind === "path").length;
+  }
+  console.log(JSON.stringify({ number: num, path: pth, files, head: idx.head }));
+  process.exit(0);
+}
 else if (process.argv.includes("--dump")) {
   // 全量清单模式：不被 15 条截断，用来给一次审计列工作队列
   const f = process.argv[process.argv.indexOf("--dump") + 1];

@@ -166,7 +166,8 @@ Dependencies: NumPy and PySCF. `partition.py` reaches into
 rather than circular.
 
 Representative output, produced by `nlcsplit/examples/quickstart.py` (ωB97X-V/6-31G*,
-water dimer, grid level 1, kcal/mol):
+water dimer, grid level 1, kcal/mol; archived verbatim with its interpreter and module
+fingerprints as `evidence/release_qa/20261003T1901Z_quickstart_readme_example.out`):
 
     inter[(0,1)] = -0.5237
     intra        = -3.5457 -3.7437
@@ -548,8 +549,8 @@ attempt at a certified screening was built and measured, and rejected - not on t
 weak version of the argument we first wrote here. The earlier sentence claimed the bound
 prunes nothing "at the tolerance the companion text needs (1e-8 Ha absolute)"; that
 mis-states both sides. `1e-8 Ha` is a per-node-pair acceptance constant, and the companion
-text needs 1e-6 kcal/mol on a fragment-pair term, which is 1.6e-9 Ha - so the constant and
-the requirement were never the same kind of quantity. Measured properly, three things hold:
+text needs 1e-6 kcal/mol on a fragment-pair term, i.e. 1e-6/627.509474 Ha in the same unit -
+so the constant and the requirement were never the same kind of quantity. Measured properly, three things hold:
 at atom-block granularity the *smallest* block-pair bound in a real water dimer is 197.96 Ha
 against a quantity of -8.3e-4 Ha, so nothing is prunable at that granularity whatever the
 tolerance (0 of 21 pairs, and 0 of 300 on the 24-atom sandwich); refining below the atom

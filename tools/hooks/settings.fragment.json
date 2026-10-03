@@ -1,0 +1,82 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/session_brief.js\"",
+            "name": "session-brief",
+            "statusMessage": "读一遍真实状态再开工",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/session_brief.js\"",
+            "name": "session-brief-precompact",
+            "statusMessage": "压缩前把状态钉回上下文",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "sequential": true,
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/claim_gate.js\"",
+            "name": "claim-gate-write",
+            "statusMessage": "核数字出处与引用路径",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/comment_sentinel.js\"",
+            "name": "comment-sentinel",
+            "statusMessage": "拦注释里的测量味数字",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/precommit_gate.js\"",
+            "if": "Bash(git commit*)",
+            "name": "precommit-gate",
+            "statusMessage": "提交前三关：清单新鲜 / 数字有原件 / 路径已入库",
+            "timeout": 180
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/stop_gate.js\"",
+            "name": "stop-gate",
+            "asyncRewake": true,
+            "rewakeMessage": "[stop-gate] 收工前这些还没了结：",
+            "rewakeSummary": "会话收尾闸门：有未提交/清单陈旧/数字无原件",
+            "timeout": 180
+          }
+        ]
+      }
+    ]
+  }
+}

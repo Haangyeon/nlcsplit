@@ -53,7 +53,8 @@ res = nlc.fragment_decomposition(coords, weights, rho[0], sigma,
 ```
 
 Output (ωB97X-V/6-31G\*, water dimer, grid level 1, kcal/mol) - the same numbers
-`nlcsplit/examples/quickstart.py` prints:
+`nlcsplit/examples/quickstart.py` prints, re-run verbatim from the source tree and archived
+as `evidence/release_qa/20261003T1901Z_quickstart_readme_example.out`:
 
 ```
 inter[(0,1)] = -0.5237      intra = -3.5457  -3.7437

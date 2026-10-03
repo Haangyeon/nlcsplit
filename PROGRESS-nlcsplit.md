@@ -3676,3 +3676,65 @@ remote host`（101.132.159.118:51758 那端）。两份日志取不回来：sand
 
 任务：#38 归档这两份并把 compare 的 awaiting 清零；#39 部署修复+重投 aug 泛函作业；
 #40 关掉 claim-gate 抓到的 14 个无出处数字（这步不依赖集群，先干）。
+
+## 2026-10-04（第五次交接）：闸门层落盘 —— 以及它自己被自己的第一次运行抓到四处
+
+### 为什么要这一层
+
+他这次的要求是"把防我幻觉的东西做成钩子，我害怕你把自己搞混"。口头纪律已被证明无效（同一周
+内同类错四次），所以只加**装在我外面的机械检查**：五个钩子 + 一份注册 + 每个钩子的双向自检。
+文件都在 `tools/hooks/`，用法与边界写在 `tools/hooks/README.md`。
+
+| 钩子 | 事件 | 判据 |
+|---|---|---|
+| `tools/claim_gate.js` | PostToolUse / PreToolUse(`git commit`) / Stop | 已发稿件里每个小数必须在**被 git 跟踪的证据工件**里出现；每个反引号路径必须存在且已跟踪 |
+| `comment_sentinel.js` | PostToolUse | 代码注释里 ≥4 位小数或带单位的数（注释不是测量） |
+| `precommit_gate.js` | PreToolUse | MANIFEST 新鲜 + 数字出处 + 路径入库，否则拦提交 |
+| `stop_gate.js` | Stop(`asyncRewake`) | 未提交的实质改动 / 清单陈旧 / 数字无原件 → 叫醒我 |
+| `session_brief.js` | SessionStart / PreCompact | 注入 HEAD、脏文件、清单状态、注册状态、闸门计数 |
+
+### 第一次真实运行抓到的四个缺陷，全是我自己写的
+
+1. **简报把闸门的原始 JSON 打进了上下文**（`{"number":59,"path":99,...}`）。注入给我读的东西
+   还我一台需要自己解析的机器 = 新错源。现在渲染成一行：计数 + 只有非零的文件名。
+   自检里加了负向断言：简报中若再出现 `{"number":` 就 FAIL。
+2. **`--stop-count` 扫的是 `paper/**/*.md` 全部**，于是台账把闸门淹了：`paper/notes/number_audit.md`
+   33 条、`software_notes/claims_audit.md` 54 条、`gaps_and_figures.md` 19 条——那些地方本来就是
+   攒"还没找到原件的数"的队列。一个只会大叫的闸门，下次就没人信它的红了。作用域改成**只拦会发出去的
+   5 份稿**（main / software / p2 / MAIN-skeleton / README），台账改用 `--dump 文件` 单点查。
+   作用域本身进了自检，四个方向都有断言（含 `references.bib`、两份台账必须为 false）。
+3. **`precommit_gate --selftest` 的算术是我自己写错的**：它把"问题类数"当"问题条数"比
+   （20 数字 + 11 路径 + 0 清单 期望 31，实际 check() 最多返回 3 类）。跑一次就红。
+   现在按类数算，并且补了两条反向验证：临时造一个"清单被改过一字节 + 没有 claim_gate.js"的坏仓，
+   `check()` 必须拦（≥2 类）；再证明 `[gate-bypass]` 真能放行**且留下日志**。
+4. **逃生口的日志本来落在 `evidence/release_qa/`** ——而 `evidence/` 下每个目录都被 `MANIFEST.sha256`
+   锁着。也就是说：绕过一次闸门 → 生成一个未登记文件 → 清单核对从此一直红 → 逃生口自己制造下一条
+   违规。日志移到 `tools/hooks/GATE-OVERRIDES.log`（在版本库里、只增、可审）。
+   顺带把两处各自实现的 `sha256sum` 外呼改成 node crypto：那条 shell 路在 Windows 侧取决于 cmd 的
+   PATH，取不到值时比较的就不是字节。
+5. **`.qoder/` 在 .gitignore 里 ⇒ 注册本身根本不在版本库**。换机器 / 换客户端（本仓还有国际版那份）
+   / 谁清一次本地设置，五个闸门全部静默失效，而 `tools/hooks/*.js` 照样躺着看着像有防线——
+   这正是记忆里"别把写了脚本当闸门在跑"那个坑的下一层。修法：注册以 `tools/hooks/settings.fragment.json`
+   入库，`install.js --check` 回答"当前注册 == 入库那份吗"，`session_brief` 每次开场把结果打进简报。
+
+自检现状（全绿才算在跑）：claim_gate 13 项、lib 清单 4 项、install 5 项、comment_sentinel 4 项、
+precommit 3 项（含反向）、stop_gate 报告式。`node tools/claim_gate.js --stop-count` 当前
+**数字 20 / 路径 11**，分布 `MAIN-skeleton.md=16, README.md=5, paper/p2.md=5, paper/software.md=5`，
+**`paper/main.md=0`**。这 31 条是本层上线前就存在的欠账（=任务 #40），所以**这次提交本身用了
+`[gate-bypass: ...]` 留痕放行**——第一次使用就是它该用的样子：写清理由、留下当时的完整问题清单。
+
+### 泛函侧 aug（那个"B 玩意"）的真实状态，别记成已完成
+
+- 51052 的 π 三体系 aug-cc-pVDZ level-2 反泊松**已算完并被我在日志里读到**：苯-水 −3.3184、
+  苯-氨 −2.3353、苯-甲烷 −1.5556（nao 233/…）。**但还没归档进 `evidence/`**，所以正文一个字都不许引它。
+- 小体系那一档（水/氨/甲烷二聚体）落在**被污染的路径** `out_dftavdz/`（51051 与 51050 抢同一个 log），
+  `.sh` 已改成 `LOGD=$ROOT/out_dftavdz_${DFT_SET:-all}` 并哈希核对上传（c2a32c0d…）。
+  那一档**必须重跑取新文件**，旧 log 不许 salvage。
+- 平行位移苯二聚体（parallel-displaced B）在 aug-cc-pVDZ **连 CCSD(T) 锚都没有**，从来没跑过。
+  要补就是约 3–4 小时机时（按 sandwich 的 10533 s 推）。判定：不补也不影响 §3.2 的主张，
+  它只是让"八体系"变成"九体系"，不是缺口。
+- SSH 仍在间歇拒（`kex_exchange_identification` 打到 101.132.159.118:51758）。按 snnu-hpc-safety
+  只做单次尝试 + 单次重试，不 hammer。取回必须 scp + 比远端 sha256，禁止用终端回显拼档案。
+
+任务：#39 归档 π 三档 + 重跑小体系档；#40 关掉这 31 条（README/software.md 那 4 个数是"跑一遍示例
+并归档 stdout"就能清的，属于本地活）；#29 三份稿的文体改写仍未动。
