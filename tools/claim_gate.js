@@ -1,0 +1,275 @@
+#!/usr/bin/env node
+/*
+ claim_gate.js -- 数字与路径的出处闸门（Qoder PostToolUse / Stop hook）。
+
+ 它防的是哪一类幻觉：不是"编造一个不存在的函数"那种（那种靠编译器就死了），而是本仓一周内
+ 反复出现的四种——
+   1. 把记忆里上一个版本的数搬进正文（-6.129 搬进新表，而它属于另一个 PySCF）；
+   2. 把"计数"当测量值报（"12/12 未收敛"其实是我判据写错）；
+   3. 引用一个不存在或没入库的路径；
+   4. 把注释里的数当出处。
+
+ 所以它只做**机械可判**的事：正文里出现的每个小数，必须能在被 git 跟踪的证据工件里找到同一个
+ 数（或它按四舍五入到该位数的原形）；每个反引号里的仓内路径，必须存在且已跟踪。
+ 它**不判**语义——"这个数字是不是在说错的事"它看不见，那仍然是人的活。
+
+ 双向自检是硬要求：`--selftest` 会用真数、假数、假路径、截断副本各喂一遍，任一条不符预期就
+ 非零退出。闸门自己不证明自己能失败，它就等于没守卫（本仓 2026-10-01 的记录）。
+*/
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const cp = require("child_process");
+
+const CARRIERS = [/^paper\/.*\.md$/, /^MAIN-skeleton\.md$/, /^README\.md$/, /^docs\/.*\.md$/];
+// RESEARCH-*.md 是文献台账：正文引的外部比较值（-3.34 / 10.26434 那一类）出处在那里，
+// 不把它算进证据索引，闸门就会把"文献里的数"误报成"我编的数"。
+const EVIDENCE = [/^evidence\//, /^nlcsplit\//, /^dist\/nlcsplit\//, /^figs\//, /^RESEARCH-.*\.md$/];
+// 代码里的数只有出现在**语句**里才算出处；注释里的数不算——本仓有一次正文引用的数字
+// 就是从我自己写的注释里来的（95,481 那一例）。所以 .py 入索引前先剥 # 注释。
+function stripPyComments(txt) {
+  return txt.split("\n").map((l) => {
+    const i = l.indexOf("#");
+    return i >= 0 ? l.slice(0, i) : l;
+  }).join("\n");
+}
+const IDX = path.join(__dirname, "..", ".qoder", "claim-index.json");
+const FMT = 6;   // 索引格式版本：改了抽取规则就 +1，否则缓存会让新规则装作没生效
+
+function git(args) {
+  try {
+    return cp.execSync("git " + args, { encoding: "utf8", maxBuffer: 1 << 28 }).trim();
+  } catch (e) {
+    return "";
+  }
+}
+function trackedFiles() {
+  return git("ls-files").split("\n").filter(Boolean);
+}
+
+/* ---------- 证据索引：所有被跟踪工件里的小数 ---------- */
+function buildIndex() {
+  const files = trackedFiles().filter((f) => EVIDENCE.some((re) => re.test(f)) && !re_skip(f));
+  const byInt = {};          // 整数部分 -> [值]
+  const exact = new Set();   // 原样字符串
+  for (const f of files) {
+    let txt;
+    try { txt = fs.readFileSync(f, "utf8"); } catch (e) { continue; }
+    // 中文排版里的减号是 U+2212，不是 ASCII '-'。不统一的话"归档里有这个数"会被判成没有。
+    txt = txt.replace(/−/g, "-");
+    if (/\.py$/.test(f)) txt = stripPyComments(txt);
+    for (const m of txt.matchAll(/[+-]?\d+\.\d+(?:[eE][-+]?\d+)?/g)) {
+      const s = m[0].replace(/^\+/, "");
+      exact.add(s);
+      exact.add(s.replace(/^-/, ""));   // 正文常取绝对值报幅度，符号不该成为失踪理由
+      // 正文常把 -1.242e-04 写成 -1.242×10⁻⁴，取出来的只是尾数 -1.242。
+      // 所以带指数的原样串要同时以尾数入索引，否则这一类真数会被当成没出处。
+      const em = s.match(/^([+-]?\d+\.\d+)[eE][-+]?\d+$/);
+      if (em) {
+        exact.add(em[1]);
+        exact.add(em[1].replace(/^-/, ""));
+        // 尾数也要进"按整数部分分桶"的表，否则正文写 -1.056×10⁻³（取出来是 -1.056）
+        // 而归档写 -1.0563e-03 时，四舍五入那条路走不到。
+        const mv = parseFloat(em[1]);
+        if (isFinite(mv)) (byInt[Math.trunc(mv)] || (byInt[Math.trunc(mv)] = [])).push(mv);
+      }
+      const v = parseFloat(s);
+      if (!isFinite(v)) continue;
+      const ip = Math.trunc(v);
+      (byInt[ip] || (byInt[ip] = [])).push(v);
+    }
+  }
+  for (const k of Object.keys(byInt)) byInt[k].sort((a, b) => a - b);
+  return { fmt: FMT, head: git("rev-parse HEAD"), n: files.length, exact, byInt };
+}
+function re_skip(f) {
+  return /\.(png|jpg|pdf|zip|whl|gz|lock)$/.test(f) || /MANIFEST\.sha256$/.test(f);
+}
+function loadIndex(force) {
+  if (!force && fs.existsSync(IDX)) {
+    try {
+      const j = JSON.parse(fs.readFileSync(IDX, "utf8"));
+      if (j.fmt === FMT && j.head === git("rev-parse HEAD")) {
+        j.exact = new Set(j.exact);
+        return j;
+      }
+    } catch (e) { /* rebuild */ }
+  }
+  const idx = buildIndex();
+  fs.mkdirSync(path.dirname(IDX), { recursive: true });
+  fs.writeFileSync(IDX, JSON.stringify({ ...idx, exact: [...idx.exact] }));
+  idx.exact = new Set(idx.exact);
+  return idx;
+}
+
+/* 正文里的数 c 是否由某个证据值舍入而来。
+   写成数值比较而不是字符串比较，因为两类写法都会撞到同一个数：
+     · 正文 1.274（绝对值、三位）对归档 -1.2737（负、四位）——符号和位数同时变；
+     · 正文 -8.34e-4 对归档 -0.000834——同一个数两种字面，字符串永远对不上。
+   容差取"该数最后那一位的一半"，所以它只放行同值的另一种写法，不放行差一根末位的数。 */
+function findSource(idx, c) {
+  const s = c.replace(/^\+/, "");
+  if (idx.exact.has(s)) return s;
+  const m = s.match(/^([+-]?\d+)\.(\d+)(?:[eE]([-+]?\d+))?$/);
+  if (!m) return null;
+  const d = m[2].length;
+  const exp = m[3] ? parseInt(m[3], 10) : 0;
+  const val = parseFloat(s);
+  const tol = 0.5 * Math.pow(10, exp - d);
+  const buckets = new Set([Math.trunc(val), Math.trunc(Math.abs(val)), Math.trunc(-Math.abs(val))]);
+  for (const b of buckets) {
+    for (const v of (idx.byInt[b] || [])) {
+      if (Math.abs(v - val) <= tol) return String(v);
+      if (Math.abs(-v - val) <= tol) return String(v);   // 正文取的是绝对值
+    }
+  }
+  return null;
+}
+
+/* ---------- 待检文本里的断言 ---------- */
+function claimsOf(text) {
+  const out = [];
+  const lines = text.split("\n");
+  lines.forEach((ln0, i) => {
+    const ln = ln0.replace(/−/g, "-");
+    // 反引号里的路径/命令先抹掉；§3.2 这类节号与 2.12.1 这类版本串也不是化学量。
+    const stripped = ln.replace(/`[^`]*`/g, "``")
+      .replace(/§\s?\d+(?:\.\d+)*/g, "SEC")
+      .replace(/\d+\.\d+\.\d+(?:\.\d+)*/g, "VER");
+    for (const m of stripped.matchAll(/(?<![\w.\/])[+-]?\d+\.\d+(?:[eE][-+]?\d+)?/g)) {
+      const num = m[0].replace(/^\+/, "");
+      // arXiv id（2306.12345）与 DOI 前缀（10.xxxx）不是量。
+      if (/^\d{4}\.\d{4,5}$/.test(num) || /^10\.\d{4,5}$/.test(num)) continue;
+      out.push({ num, line: i + 1, text: ln.trim().slice(0, 110) });
+    }
+    for (const m of stripped.matchAll(/(?<![\w.])\d+(?=个|格|行|条|页|对|体系|格全|passed)/g)) {
+      out.push({ num: m[0], int: true, line: i + 1, text: ln.trim().slice(0, 110) });
+    }
+  });
+  return out;
+}
+function citedPaths(text) {
+  const out = [];
+  for (const m of text.matchAll(/`([A-Za-z0-9_.\/-]+\/[A-Za-z0-9_.\/-]*\.(?:py|js|out|json|md|txt|sh|csv|png|tex|tsv))`/g)) {
+    // 省略号写法（`evidence/centos/...step_f.out`）是指代不是路径，交给 md2tex 那道全路径闸门管。
+    if (m[1].includes("...") || m[1].includes("…")) continue;
+    out.push(m[1]);
+  }
+  return out;
+}
+function allowlist() {
+  const p = path.join(__dirname, "claim-allowlist.tsv");
+  if (!fs.existsSync(p)) return [];
+  return fs.readFileSync(p, "utf8").split("\n").filter((l) => l && !l.startsWith("#"))
+    .map((l) => { const [pat, why] = l.split("\t"); return { re: new RegExp(pat), why: why || "" }; });
+}
+
+function checkText(idx, label, text) {
+  const bad = [];
+  const allow = allowlist();
+  for (const c of claimsOf(text)) {
+    if (c.int) continue;                       // 计数类需要人工判语境，先只拦小数
+    if (allow.some((a) => a.re.test(c.num))) continue;
+    if (!findSource(idx, c.num)) bad.push({ kind: "number", where: `${label}:${c.line}`, detail: c.num + "  |  " + c.text });
+  }
+  const tracked = new Set(trackedFiles());
+  for (const pth of citedPaths(text)) {
+    if (!fs.existsSync(pth)) bad.push({ kind: "path", where: label, detail: pth + " 不存在" });
+    else if (!tracked.has(pth)) bad.push({ kind: "path", where: label, detail: pth + " 存在但未 git add" });
+  }
+  return bad;
+}
+
+/* ---------- 入口 ---------- */
+function isCarrier(f) { return CARRIERS.some((re) => re.test(f)); }
+// 这个闸门是按 GAMESS 这棵树的证据结构写的。全局 hooks 目录会每个项目都叫到一次，
+// 所以先认作用域：不在本项目、或本项目没装 settings.json 的，一律放行且不吱声。
+function inScope(cwd) {
+  const c = (cwd || "").replace(/\\/g, "/");
+  return /\/GAMESS$/i.test(c) || fs.existsSync(path.join(cwd, ".qoder", "settings.json"));
+}
+
+function runHook() {
+  let raw = "";
+  process.stdin.on("data", (d) => (raw += d));
+  process.stdin.on("end", () => {
+    let ev = {};
+    try { ev = JSON.parse(raw || "{}"); } catch (e) { process.exit(0); }
+    const cwd = ev.cwd || process.cwd();
+    process.chdir(cwd);
+    if (!inScope(cwd)) process.exit(0);
+    const fp = (ev.tool_input && ev.tool_input.file_path) || "";
+    const rel = path.relative(cwd, fp).replace(/\\/g, "/");
+    if (process.argv.includes("--stop")) return runStop(ev, cwd);
+    if (!isCarrier(rel)) process.exit(0);
+    const text = (ev.tool_input.new_string || ev.tool_input.content || ev.tool_input.replacement || "");
+    if (!text) process.exit(0);
+    const idx = loadIndex(false);
+    const bad = checkText(idx, rel, text);
+    if (!bad.length) process.exit(0);
+    report(bad, rel, idx);
+  });
+}
+
+function runStop(ev, cwd) {
+  const idx = loadIndex(true);
+  const changed = git("status --porcelain").split("\n").filter(Boolean)
+    .map((l) => l.slice(3).trim().replace(/\\/g, "/"))
+    .filter((f) => isCarrier(f) && fs.existsSync(f));
+  let bad = [];
+  for (const f of changed) bad = bad.concat(checkText(idx, f, fs.readFileSync(f, "utf8")));
+  if (!bad.length) { process.stderr.write("claim-gate: clean (" + changed.length + " carriers, " + idx.exact.size + " indexed numbers)\n"); process.exit(0); }
+  report(bad, "工作树", idx);
+}
+
+function report(bad, label, idx) {
+  const msg = [
+    `claim-gate 拦下 ${bad.length} 条（${label}；证据索引 ${idx.n} 个工件 / ${idx.exact.size} 个数）。`,
+    ...bad.slice(0, 15).map((b) => `  [${b.kind}] ${b.where}: ${b.detail}`),
+    ...(bad.length > 15 ? [`  ...另 ${bad.length - 15} 条`] : []),
+    "",
+    "怎么办（按顺序试，别直接放行）：",
+    "  1) 这个数是不是上一版/另一环境的？回到产出它的脚本或归档重读一遍，改正文；",
+    "  2) 是你新算的？先把产生它的 stdout 入库（evidence/…）并 git add，再重跑；",
+    "  3) 是路径没入库？git add；",
+    "  4) 确实是结构性数字（阈值、页数、字号、坐标轴范围）而不是化学量？写进 tools/claim-allowlist.tsv，**必须带理由列**，那文件是审得出来的。",
+  ].join("\n");
+  process.stderr.write(msg + "\n");
+  process.exit(2);
+}
+
+/* ---------- 自检：闸门必须证明自己能失败 ---------- */
+function selftest() {
+  const cwd = process.cwd();
+  const idx = loadIndex(true);
+  const fails = [];
+  const probe = (name, text, expectBad) => {
+    const got = checkText(idx, "selftest", text).length;
+    const ok = expectBad ? got > 0 : got === 0;
+    console.log(`  ${ok ? "OK  " : "FAIL"} ${name} -> ${got} 条违规`);
+    if (!ok) fails.push(name);
+  };
+  // 取一个索引里真存在的数当"有出处"的正样本
+  const real = [...idx.exact].find((s) => /\d+\.\d{4}/.test(s)) || "-6.152597";
+  probe("真数不拦", `the value is ${real} kcal/mol`, false);
+  probe("假小数拦", "the deviation is -1.234567 kcal/mol", true);
+  probe("假整数语境不拦(语境未建模)", "there are 424242 rows", false);
+  probe("不存在的路径拦", "read `evidence/nope/does_not_exist_zz.out`", true);
+  probe("未跟踪路径拦", "produced by `scratch/hdr_2121.txt`", true);
+  if (fails.length) { console.log("SELFTEST FAILED: " + fails.join(", ")); process.exit(1); }
+  console.log("SELFTEST PASS (indexed " + idx.n + " artifacts, " + idx.exact.size + " numbers)");
+  process.exit(0);
+}
+
+if (process.argv.includes("--selftest")) selftest();
+else if (process.argv.includes("--dump")) {
+  // 全量清单模式：不被 15 条截断，用来给一次审计列工作队列
+  const f = process.argv[process.argv.indexOf("--dump") + 1];
+  const idx = loadIndex(true);
+  for (const b of checkText(idx, f, fs.readFileSync(f, "utf8"))) {
+    console.log(`${b.kind}\t${b.where}\t${b.detail}`);
+  }
+  process.exit(0);
+}
+else if (process.argv.includes("--stop")) { runStop({}, process.cwd()); }
+else runHook();
