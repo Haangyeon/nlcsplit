@@ -49,8 +49,14 @@ its own basis, so the column it labelled counterpoise held the uncorrected diffe
 the density-functional column beside it had always been corrected. Fixing that changed the
 arithmetic of the whole comparison, and we can show the change is attributable to the fix
 alone - every complex energy in the re-run matches the archived one to 0.0e+00 Ha across two
-machines, so only the monomer side moved. On the corrected anchor the functional's deviation
-from frozen-core CCSD(T) is negative on all eight complexes, -0.539 to -3.412 kcal/mol, and
+machines, so only the monomer side moved. A second mismatch of the same kind was found by the
+same kind of device: a job that has to reproduce an archived value before it may spend cluster
+time refused, because three cells of the density-functional column had been computed in PySCF
+2.14.0 while the other five were in 2.12.1. Re-running one script on one machine with the release
+as the only variable reproduces both sets and attributes the entire difference to how many
+integration points a given release attaches to atoms that carry basis functions but no nuclear
+charge. On the corrected anchor, and in one environment, the functional's deviation
+from frozen-core CCSD(T) is negative on all eight complexes, -0.450 to -3.412 kcal/mol, and
 the two things that stop it being read as a verdict are measured rather than asserted:
 changing only the integration grid moves a deviation by up to 1.217 kcal/mol, and changing
 only the basis moves the anchor by 0.081-0.547 kcal/mol, in directions that are not even

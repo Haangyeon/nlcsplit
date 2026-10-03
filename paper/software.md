@@ -324,7 +324,11 @@ source tree, exercises only the published tests. The current wheel was re-measur
 2026-10-02, in a distribution installed outside the tree with `pip install --no-deps --target`
 and the tests started from a different directory: 48 passed and one skipped in 361.28 s, exit
 status 0, with the wheel hash recorded in the archive
-(`evidence/release_qa/20261002T0815Z_wheel_install_pytest_out_of_tree.txt`). That number
+(`evidence/release_qa/20261002T0815Z_wheel_install_pytest_out_of_tree.txt`). It was re-measured
+again on 2026-10-03, after the convention tests had grown: 50 passed and two skipped in 308.95 s,
+exit 0, and both skips are the official-geometry tests, which cannot run in an install that does
+not carry the downloaded geometries - they skip rather than pass silently, and the reason is
+printed (`evidence/release_qa/20261003T0955Z_wheel_and_repo_pytest.txt`). That number
 supersedes the older, smaller-wheel figures below only for the question "what does today's
 install pass"; the older logs stay because each is quoted at its own collection size. Every figure below is quoted at the
 collection size of the log it is taken from, and none of them is a sum of the others: the
@@ -488,7 +492,11 @@ steps that can hold on a published tree. The archived observation is
 as the API returns them, plus the pytest summary lines verbatim, because a step reported
 `success` with no count is the same void as the 404 we had mistaken for one. On both arms the
 fast lane reads 30 passed, 1 skipped, 18 deselected, and the full and out-of-tree runs each
-read 48 passed, 1 skipped. That is 49 items, not the 69 the working repository collects:
+read 48 passed, 1 skipped - those are the CI arms' own collection sizes and cannot be re-measured
+without a push. What was re-measured locally on 2026-10-03 is the working repository: its fast
+lane collects 50 passed and 22 deselected in 26.5 s, its full run 72 passed in 350 s, and the
+installed wheel 50 passed and 2 skipped. That is 52 items, not the 72 the working repository
+collects:
 `test_fastpair_ide.py` is not distributed, because the control module it imports is not
 distributed either.
 
