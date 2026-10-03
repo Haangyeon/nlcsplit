@@ -233,7 +233,12 @@ def main():
     for tag, label, ao_orca, ao_ps, nbas in bad:
         print("    MISMATCH %-28s %-8s ORCA=%s PySCF=%s (header field %s)"
               % (tag, label, ao_orca, ao_ps, nbas))
-    expected = 5 * len(PLAN)      # complex + 2 ghost monomers + 2 bare monomers, two rungs
+    # 5 parts (complex, 2 ghost monomers, 2 bare monomers) x 2 rungs per (system, basis).
+    # The comment said "two rungs" while the expression omitted the factor, so the guard could
+    # never pass: it printed NOT ESTABLISHED over a measurement that was inside the bar. A
+    # check that cannot succeed is as useless as one that cannot fail; this one at least failed
+    # safe, and the execution that exposed it is archived with that verdict line intact.
+    expected = 2 * 5 * len(PLAN)
     same_basis = not bad and len(AOCHK) == expected
     ok = (worst_cp < 0.001 and worst_unc < 0.001 and same_basis and not missing
           and len(rows) == 2 * len(PLAN))

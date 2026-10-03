@@ -40,14 +40,21 @@ from measuring it rather than defining it:
 Because the claim is about a decomposition, we spent as much effort on making the parts
 checkable as on the decomposition itself: the same quantity computed by ORCA 6.0.1 on all
 eight systems, a partition-free exact reference for the attribution step, and a
-CCSD(T)/6-31G* counterpoise anchor for the binding energies of seven of the eight complexes,
-computed in both PySCF and ORCA and agreeing to three decimal places in kcal/mol. The anchor
-is what forces the paper's central caution: at a fixed basis the functional's deviation from
-frozen-core CCSD(T) spans +0.780 to −0.288 kcal/mol with no single sign, while changing only
-the basis set moves the reference by up to 1.6 kcal/mol and changing only the integration grid
-moves it by up to 0.127 - and on one complex the grid step alone flips the sign of the
-deviation. Two effects of the same size cannot separate each other, which is why the manuscript
-judges the functional nowhere. Where a check failed we say so in the text; the manuscript
+CCSD(T)/6-31G* counterpoise anchor for the binding energies of all eight complexes,
+computed in both PySCF and ORCA and agreeing to three decimal places in kcal/mol, with the
+ghost-function construction itself checked part by part against the basis dimension each
+program reports. The anchor also carried a correction we would rather you read here than
+find in a review: an earlier version of the coupled-cluster script evaluated each monomer in
+its own basis, so the column it labelled counterpoise held the uncorrected difference, while
+the density-functional column beside it had always been corrected. Fixing that changed the
+arithmetic of the whole comparison, and we can show the change is attributable to the fix
+alone - every complex energy in the re-run matches the archived one to 0.0e+00 Ha across two
+machines, so only the monomer side moved. On the corrected anchor the functional's deviation
+from frozen-core CCSD(T) is negative on all eight complexes, -0.539 to -3.412 kcal/mol, and
+the two things that stop it being read as a verdict are measured rather than asserted:
+changing only the integration grid moves a deviation by up to 1.217 kcal/mol, and changing
+only the basis moves the anchor by 0.081-0.547 kcal/mol, in directions that are not even
+consistent from one complex to the next. Where a check failed we say so in the text; the manuscript
 carries an appendix that maps every quoted number to an archived standard output in the
 repository, and fifteen release gates re-verify that mapping on every rebuild.
 
