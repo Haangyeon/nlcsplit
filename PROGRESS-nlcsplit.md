@@ -3805,3 +3805,20 @@ precommit 3 项（含反向）、stop_gate 报告式。`node tools/claim_gate.js
 
 闸门这边：本轮 4 次真实 Edit 全被 claim-gate 判过（一次拦下"只 cp 未 git add"的归档，其余放行），
 两次 `git commit` 都在**无 gate-bypass** 的情况下通过 precommit。数字/路径计数仍 0/0。
+
+### 2026-10-04 补（收工前）：51083 的档还在集群上，取回是**一条命令**
+
+本机 → frp 隧道 `101.132.159.118:51758` 持续 `kex_exchange_identification: Connection closed`，
+今晚 7 次尝试只成功 1 次（那次刚好用来投 51083 与读守卫）。按 snnu-hpc-safety 停手，不再 hammer。
+
+**下一次接手**：`bash tools/harvest_snnu_51083.sh`（已入库、`bash -n` 通过，三道守卫已用 fixture 反向验过：
+还在跑→exit 6；缺 `DONE DFT_SET=small`→exit 7；哈希不一致→exit 9；档名保留 UTC 的 `Z`）。
+它做四件事：问远端 `sha256sum` + `date -u -r` → scp → 本地比哈希 → `git add` 进 `evidence/l2cp/`。
+
+脚本跑成功后还剩三步（都要人工/被闸门管着，故意没自动做）：
+1. `evidence/l2cp/MANIFEST.sha256` **最后**重生成（顺序反了 gate C2 会抓到你自己）；
+2. `paper/main.md` §3.2 末段把"三格待重投"改成实测，S31 行补新档名；
+3. `node tools/claim_gate.js --stop-count`（必须仍 0/0）+ `node tools/md2tex.js main` + 提交。
+
+工作树此刻干净：`fdbaa31` 之后无未提交改动，claim-gate 0 数 0 路径，MANIFEST 全新鲜，
+导出闸门全绿。集群上 51083 的结果文件在 `~/nlcc-snnu/out_dftavdz_small/`，Slurm 侧不受本机关机影响。
