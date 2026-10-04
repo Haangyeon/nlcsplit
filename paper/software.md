@@ -250,8 +250,13 @@ on either side (`evidence/release_qa/publish_record_20260930.txt`). Two further 
 found while re-checking this section on
 2026-09-29, and both were of the kind a source-tree reading cannot see. The first: an
 earlier build was reported fixed and still shipped two script-style `test_*.py` modules at
-package top level; the wheel now has 36 members and none of them is a script-style test - it grew again when
-`step_l_sweep_compare.py` was added to the whitelist, see below.
+package top level; the wheel then had 36 members and none of them was a script-style test - it
+grew again when `step_l_sweep_compare.py` was added to the whitelist, see below. That count is
+a dated reading, not a current one: the census now run by `evidence/release_qa/wheel_census.py`
+reports 38 members - 7 test modules, the 2 non-test files that live under `nlcsplit/tests/`, and 29
+others - with the same verdict that no script-style test is shipped
+[`evidence/release_qa/20261004T0317Z_wheel_census.out`], and it prints the four categories
+alongside their sum so a silently dropped category cannot pass as a member count.
 The second is worse and was found only by looking at the artefact: **`fastpair.py` was not in
 the package at all**, while the shipped `step_j_scaling.py` imports it - so a reader
 installing the wheel could not run a single number from the companion algorithm paper, and
@@ -302,8 +307,12 @@ establishes the floor for the code as it then stood and says nothing about what 
 ships. The
 out-of-tree material below belongs to objects smaller
 than the working tree. The published wheel ships seven test modules plus `__init__.py` and
-`conftest.py`; those seven collect 49 in today's tree, and the 20 that stay behind are exactly
-`test_fastpair_ide.py`'s - the peer's frozen control module, whose `fastpair_ide.py` is
+`conftest.py`; those seven collect 53 in today's tree, and the 20 that stay behind are exactly
+`test_fastpair_ide.py`'s (both counts come from `evidence/release_qa/test_count_census.py`,
+which groups the modules by the wheel's own member list rather than a remembered whitelist, and
+refuses to print unless the two groups sum to the collected total
+[`evidence/release_qa/20261004T0320Z_test_count_census.out`]) - the peer's frozen control
+module, whose `fastpair_ide.py` is
 deliberately not distributed, since shipping the test without the module would be a
 collection-time ImportError. Two different objects must not be quoted as one: `pip install .`
 from the source directory in a clean environment collected 63 in the archived logs quoted
