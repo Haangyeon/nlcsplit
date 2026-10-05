@@ -365,9 +365,11 @@ def fig4(ladders, xc, nlc, dft):
     ax3.tick_params(axis="y", labelsize=6.2)
     ax3.set_title("(c) the anchor itself", fontsize=8)
 
-    fig.suptitle("Reference's basis move / functional's deviation = %.2f, %.2f, %.2f - same order,\n"
-                 "and not ordered the same way twice: which is why this paper does not judge\n"
-                 "the functional on binding energies" % tuple(ratios),
+    worst = max(max(ratios), 1.0 / min(ratios))
+    fig.suptitle("Reference's basis move / functional's deviation = %.2f, %.2f, %.2f - within a\n"
+                 "factor of 2.4 on two of the three, %.1fx apart on the third, and never ordered\n"
+                 "the same way twice: which is why this paper does not judge\n"
+                 "the functional on binding energies" % (tuple(ratios) + (worst,)),
                  fontsize=8.5, y=0.965)
     f = os.path.join(OUT, "fig4_anchor_crosschecks.png")
     fig.savefig(f, dpi=200)
@@ -376,7 +378,8 @@ def fig4(ladders, xc, nlc, dft):
 
 
 # ---------------------------------------------------------------------------
-# 图 5：六个体系上"基组跨度 > 泛函偏差"。图 4 的同一句话，从三个氢键体系扩到六个。
+# 图 5：六个体系上"基组跨度 vs 泛函偏差"两列并置与它们的比值。图 4 的那句话，从三个
+# 氢键体系扩到六个。
 # 纪律与 fig4 相同且更硬一点：点值只从被论文点名的归档里现取（归档抬头是手写的，
 # 不当数据源），并且脚本自己先核这句话——任一体系不成立就拒绝出图。
 # ---------------------------------------------------------------------------
@@ -546,10 +549,11 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     axb.set_xlim(0, 2.75)
     axb.set_xlabel("kcal/mol", fontsize=7.5)
     axb.legend(loc="lower center", bbox_to_anchor=(0.5, 1.005), ncol=2, fontsize=6.6, frameon=False)
+    worst6 = max(max(ratios6), 1.0 / min(ratios6))
     fig.suptitle("Across six complexes the reference's own basis move and the functional's\n"
-                 "deviation from it are of one order (ratios %.2f-%.2f): neither is small\n"
-                 "enough to be the correction that removes the other"
-                 % (min(ratios6), max(ratios6)), fontsize=8.5, y=0.965)
+                 "deviation from it stay within %.1fx of each other (ratios %.2f-%.2f): neither is\n"
+                 "small enough to be the correction that removes the other"
+                 % (worst6, min(ratios6), max(ratios6)), fontsize=8.5, y=0.965)
     f = os.path.join(OUT, "fig5_six_system_spans.png")
     fig.savefig(f, dpi=200)
     return f
@@ -593,8 +597,11 @@ def toc_graphic(pi_ladders, pi_dft, hb_ladders, hb_dft):
     ax.set_xlabel("functional deviation at 6-31G* (kcal/mol)", fontsize=6.0)
     ax.set_ylabel("reference move, 1 basis (kcal/mol)", fontsize=6.0)
     ax.tick_params(labelsize=5.8)
+    worst_toc = max(max(s / d for _, s, d in rows),
+                    1.0 / min(s / d for _, s, d in rows))
     ax.set_title("VV10 pair attribution: the reference's basis move and the functional's\n"
-                 "deviation are the same size - so fixed-basis binding verdicts are unearned",
+                 "deviation stay within %.0fx - so fixed-basis binding verdicts are unearned"
+                 % worst_toc,
                  fontsize=6.0)
     f = os.path.join(OUT, "toc_graphic.png")
     fig.savefig(f, dpi=300)

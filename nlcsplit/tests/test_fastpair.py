@@ -326,8 +326,11 @@ def test_ball_control_drops_nothing(h2o2_lvl1):
 
     原来最后那条写的是 `assert tot_box < tot_ball`（盒界总量必须严格小于球界总量），
     实测两个数**逐位相等**：21723.206496881914 == 21723.206496881914 Ha（这里原先写的是
-    kcal/mol——单位错了，同一个量在 evidence/fastpair_ab/fastpair_ab_compare.json 里的字段名
-    是 `sum_atomblock_root_bound_ha`，两份数只差 4.8e-13，所以它们必然是同一个单位）。这不是
+    kcal/mol——单位错了；同一句里"两份数只差"的那个量级也错过，写成 4.8e-13，实际是
+    4.7658e-10 Ha / 相对 2.1939e-14，见 evidence/fastpair_ab/20261005T0354Z_fastpair_ab_agreement.out）。
+    单位之所以能定死：同一个量在 evidence/fastpair_ab/fastpair_ab_compare.json 里的字段名
+    是 `sum_atomblock_root_bound_ha`，而断言里的两个操作数都没乘 KCAL，所以是 Ha，两份数
+    只差在末几位，落在累加噪声的相对量级上。这不是
     巧合，也不是算法错 —— 两个界函数在根上取的是同一个 D：原子块的包围盒就是那团
     密度尾巴的包络，任意两个这样的盒必然相交，于是 box_sep = ball_sep = 0，
     `node_bound` 和 `ball_bound` 一起退到 D=0 分支；又因为树根就是由同一个 `_node`

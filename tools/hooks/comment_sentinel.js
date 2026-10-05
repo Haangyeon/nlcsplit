@@ -26,16 +26,43 @@ function addedText(ev) {
   return edits.map((e) => e.new_string || "").join("\n");
 }
 
+function tailComment(ln) {
+  /** 引号感知地找行尾注释。前一版用正则找 `#` / `//`，于是本文件自己测试夹具里那条
+   *  以双斜杠开头的字符串字面量被误判成注释——那是一串字符串，不是注释。
+   *  闸门叫到自己头上是好事，但假阳性叫多了，人就学会无视这条红，所以必须修准。 */
+  let q = null;
+  for (let i = 0; i < ln.length; i++) {
+    const c = ln[i];
+    if (q) {
+      if (c === "\\") i++;
+      else if (c === q) q = null;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") { q = c; continue; }
+    if (c === "#" && !/[#]/.test(ln[i - 1] || "")) return ln.slice(i + 1);
+    if (c === "/" && ln[i + 1] === "/") return ln.slice(i + 2);
+  }
+  return "";
+}
+
+function commentPart(ln) {
+  const lead = ln.match(/^\s*(#|\/\/|\*)\s?(.*)$/);          // 整行注释
+  if (lead) return lead[2];
+  const doc = ln.match(/^\s*("""|''')(.*)$/);                 // docstring 行（含首尾）
+  if (doc) return doc[2];
+  return tailComment(ln);
+}
+
 function commentHits(text) {
   const out = [];
   text.split("\n").forEach((ln, i) => {
-    const inComment = /^\s*(#|\/\/|\*|"""|''')/.test(ln) || /#\s/.test(ln) || /\/\/\s/.test(ln);
-    if (!inComment) return;
-    for (const m of ln.matchAll(NUM)) {
+    const c = commentPart(ln);
+    if (!c) return;
+    for (const m of c.matchAll(NUM)) {
       out.push({ line: i + 1, num: m[1], why: "小数位 >= 4" });
     }
-    const mu = ln.match(/(\d+\.\d+)\s*(kcal\/mol|Ha|Å)/);
-    if (mu && !out.some((o) => ln.includes(o.num))) {
+    const mu = c.match(/(\d+\.\d+)\s*(kcal\/mol|Ha|Å)/);
+    if (mu && !out.some((o) => c.includes(o.num))) {
       out.push({ line: 0, num: mu[1], why: "数字旁边带单位（像在报测量值）" });
     }
   });
@@ -49,6 +76,11 @@ async function main() {
       ["# 复合物冻 2，单体冻 [1, 1]", false],
       ["tol = 1e-8    # 判据", false],
       ["// level-2 归档只存到 -0.5930 的三位", true],
+      // 假阳性反向验证：代码里的常量 + 尾巴上一句注释，不该报（本仓第一版就是在这里叫错）
+      ["KCAL = 627.50947400            # 与 tests 同一常数", false],
+      ["BOHR2A = 0.529177   # 正文那一句用的换算", false],
+      ['    """实测 -6.1290 kcal/mol，与归档同。"""', true],
+      ["x = 2.0    # 共享规则的 2", false],
     ];
     let bad = 0;
     for (const [txt, want] of cases) {

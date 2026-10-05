@@ -26,11 +26,14 @@ included, linked or required.
 
 ```bash
 pip install .                                   # needs numpy and pyscf>=2.12
-python -m pytest -q -m "not slow"               # 49 fast tests, ~30 s
-python -m pytest -q                             # all 69, incl. SCF-based regression tests
+python -m pytest -q -m "not slow"               # the non-slow subset (53 today)
+python -m pytest -q                             # everything (74 today), incl. SCF-based tests
 ```
 
-The suite collects 69 tests in the source tree. The published wheel carries 49 of them; the
+Those two counts are not typed here from memory: `evidence/release_qa/test_count_census.py`
+re-collects the suite and archives its printout, with per-module rows that must sum to the
+total (`evidence/release_qa/20261005T0404Z_test_count_census.out`: 74 collected, 53 non-slow
+plus 21 slow). The published wheel carries 54 of them; the
 20 that stay behind test a frozen reference implementation (`fastpair_ide.py`) that is
 deliberately not distributed.
 

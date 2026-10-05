@@ -13,8 +13,6 @@ paper/main.md	^0\.05$	figures.py 比值窗口的下界（两个数量级检验�
 paper/software.md	^2\.0$	同 paper/main.md 那条：step_f_dispersion.py 的共享规则常数
 paper/software.md	^0\.001$	同上：跨程序判据阈值
 paper/p2.md	^2\.0$	同上：step_f_dispersion.py 的共享规则常数
-paper/p2.md	^281\.1$	手工推导，正文同一句印出了操作数：sqrt(0.162/2.05e-6)（kappa_min 与 w0_min 都来自跟踪的模块语句）；文中明写这两个数不在任何 log 里
-paper/p2.md	^148\.7$	同一句的单位换算 281.1 × 0.529177，操作数就在句中
 MAIN-skeleton.md	^2\.0$	同上：step_f_dispersion.py 的共享规则常数
 MAIN-skeleton.md	^0\.05$	同上：figures.py 比值窗口下界
 MAIN-skeleton.md	^-1\.2501$	带日期更正块里引的**旧值**（已被 -1.2737 取代）；出处=本文件自己的 git 历史（该值出现在 1a1c98b 之前两版）

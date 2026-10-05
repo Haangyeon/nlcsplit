@@ -123,10 +123,16 @@ def main():
                      f"{r['attribution_span_kcal_mol']:8.4f} {r['residual_over_span']:9.3f}")
     rel = [r["relative_diff_percent"] for r in rows]
     under = sum(1 for r in rows if r["residual_over_span"] < 1.0)
+    # 正文要写"残差比归属跨度小多少倍"，这个倍数是跨度/残差 = 1/(res/span)。
+    # 以前那句是手算的（写成"8 到 100 倍"，实测区间是 4.1 到 111 倍），所以由这里生成。
+    inv = sorted(1.0 / r["residual_over_span"] for r in rows if r["residual_over_span"] < 1.0)
     lines += ["", f"n = {len(rows)} 个体系；相对差区间 {min(rel):.3f}% – {max(rel):.3f}%",
               f"绝对差最大 {max(abs(r['difference_kcal_mol']) for r in rows):.4f} kcal/mol",
               f"跨程序残差小于同行归属跨度的：{under} / {len(rows)} 个体系"
               "（比值 > 1 的那个体系见上表 res/span 列）",
+              f"那 {under} 个体系上 跨度/残差 的区间 = {min(inv):.1f} 到 {max(inv):.1f} 倍"
+              f"（最小者 {min((r for r in rows if r['residual_over_span'] < 1.0), key=lambda r: 1.0 / r['residual_over_span'])['system_en']}，"
+              f"最大者 {max((r for r in rows if r['residual_over_span'] < 1.0), key=lambda r: 1.0 / r['residual_over_span'])['system_en']}）",
               "定义与口径由本脚本从三个工件现读现算；任一字段不一致即拒绝出表。",
               f"输入：{widen_rel}, {anchor_rel}, {steph_rel}"]
     txt = "\n".join(lines) + "\n"

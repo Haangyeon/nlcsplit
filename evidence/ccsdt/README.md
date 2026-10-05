@@ -182,3 +182,29 @@ instead of trusting the input keyword. The two forms in these logs are
 on each monomer for the frozen rungs - 4 = two oxygens, 2 = one - and
 `Frozen core treatment ... NO frozen core` for the all-electron ones, where the parser records
 zero and the run is compared against PySCF's all-electron column.
+
+## Dated correction, 2026-10-05 - the two benzene geometries were mislabelled in this directory
+
+Archives here from 2026-10-02 through 2026-10-04 use the word `sandwich` (in file names and in
+the Chinese headers) for S22_11, and call S22_20 "parallel-displaced". Both are the wrong word for
+the geometry that was actually run. Measured from the coordinates those runs used -
+`benzene_dimer_label_measure.py` ->
+`20261005T0340Z_benzene_dimer_label_measure.out`:
+
+| entry | interplanar angle | in-plane slip | layer separation | centroid distance | kind |
+|---|---|---|---|---|---|
+| S22_11 (called 苯二聚体(A) here) | 0.0 deg | 1.698 A | 3.361 A | 3.765 A | parallel-displaced |
+| S22_20 (called 苯二聚体(B) here) | 90.0 deg | 4.909 A | 0.000 A | 4.909 A | T-shaped |
+| `geomlib.benzene_sandwich` | 0.0 deg | 0.000 A | 3.810 A | 3.810 A | constructed sandwich - not an S22 entry |
+
+The archived stdout is **not** edited. Its sha256 is registered in `MANIFEST.sha256`, and
+rewriting a run record to fix a caption is exactly how a repository loses its evidential value.
+What was fixed is the producer: the `EN` display map in `cp_rebuild_compare.py`, which would
+otherwise re-print the wrong words into every new table. The corrected output is
+`20261005T0414Z_cp_rebuild_compare_labels_fixed.out`; its number columns are identical to
+`20261004T0135Z_cp_rebuild_compare_derived7.out` - the check was a line-by-line diff after
+normalizing the two label strings, and what remained was one blank line and column padding.
+`nlcsplit/tests/test_geometry.py::test_benzene_dimer_geometries_are_the_two_named_kinds` now
+pins the three geometries apart, with a negative control that fails if A is read as T-shaped or
+B as parallel-displaced. The paper-side statements are rows [S28], [S29] and [S31] of
+`paper/main.md` section "Provenance".

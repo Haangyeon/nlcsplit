@@ -144,8 +144,14 @@ def level_row(lvl_seen, level, ln):
 
 EN = {"水二聚体": "water", "氨二聚体": "ammonia", "甲烷二聚体": "methane",
       "苯-水": "benzene-water", "苯-氨": "benzene-ammonia", "苯-甲烷": "benzene-methane",
-      "苯二聚体(A)": "benzene dimer (sandwich)",
-      "苯二聚体(B)": "benzene dimer (parallel-displaced)"}
+      # 2026-10-05：这两个英文名是照几何分类手写的，写反过。判据现在由坐标给：
+      # S22_11 面内滑移 1.698 A、环面夹角 0.0 度 => parallel-displaced；
+      # S22_20 夹角 90.0 度 => T-shaped。归档 stdout 里 10-02..10-04 那几份仍写旧词，
+      # 它们的哈希被 MANIFEST 登记，不改；这里的映射与 README 的日期注记是更正处。
+      # 见 evidence/recompute/20261005T0340Z_benzene_dimer_label_measure.out 与
+      # nlcsplit/tests/test_geometry.py。
+      "苯二聚体(A)": "benzene dimer (parallel-displaced, S22_11)",
+      "苯二聚体(B)": "benzene dimer (T-shaped, S22_20)"}
 
 
 def deviation_table(old, new, dft2):

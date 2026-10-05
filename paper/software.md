@@ -287,11 +287,16 @@ original bug must make it report ten missing scripts, and a table completed by c
 must make it silent. It is evaluated against the export tree rather than against this
 repository, because the copy that has to be runnable is the reader's.
 
-The suite collects 69 tests in the working repository - 49 under `-m "not slow"` and 20
-under `-m slow`, a partition of the same collection and not two numbers to be added. All 69
-have been executed: 69 passed with nothing skipped in 380.52 s, on the tree that carries the
-convention guard added last
-(`evidence/release_qa/20260930T233800Z_suite69_full.out`) [S19]. An earlier run of the first
+The suite collects 74 tests in the working repository - 53 under `-m "not slow"` and 21
+under `-m slow`, a partition of the same collection and not two numbers to be added
+(`evidence/release_qa/20261005T0404Z_test_count_census.out`, whose per-module rows must sum to
+the collected total). All 74 have been executed on the tree those counts describe: 74 passed
+with nothing skipped and nothing deselected in 328.87 s, on the working tree of 2026-10-05, whose
+uncommitted files the archive itself lists rather than asserting a clean tree
+(`evidence/release_qa/20261005T0512Z_suite74_after_figure_fixes.out`, which supersedes a run of
+the same size taken 43 minutes earlier on an intermediate tree) [S19]. The previous full run, on the
+69-test tree that carried the convention guard added last, was 69 passed with nothing skipped in
+380.52 s (`evidence/release_qa/20260930T233800Z_suite69_full.out`). An earlier run of the first
 65 of them - 65 passed, nothing skipped, 710.73 s, with the three collection counts and the
 Python, PySCF, NumPy and SciPy versions in its own archived log
 (`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) - is kept beside it, and
@@ -307,11 +312,11 @@ establishes the floor for the code as it then stood and says nothing about what 
 ships. The
 out-of-tree material below belongs to objects smaller
 than the working tree. The published wheel ships seven test modules plus `__init__.py` and
-`conftest.py`; those seven collect 53 in today's tree, and the 20 that stay behind are exactly
+`conftest.py`; those seven collect 54 in today's tree, and the 20 that stay behind are exactly
 `test_fastpair_ide.py`'s (both counts come from `evidence/release_qa/test_count_census.py`,
 which groups the modules by the wheel's own member list rather than a remembered whitelist, and
 refuses to print unless the two groups sum to the collected total
-[`evidence/release_qa/20261004T0320Z_test_count_census.out`]) - the peer's frozen control
+[`evidence/release_qa/20261005T0404Z_test_count_census.out`]) - the peer's frozen control
 module, whose `fastpair_ide.py` is
 deliberately not distributed, since shipping the test without the module would be a
 collection-time ImportError. Two different objects must not be quoted as one: `pip install .`
@@ -338,8 +343,15 @@ status 0, with the wheel hash recorded in the archive
 again on 2026-10-03, after the convention tests had grown: 50 passed and two skipped in 308.95 s,
 exit 0, and both skips are the official-geometry tests, which cannot run in an install that does
 not carry the downloaded geometries - they skip rather than pass silently, and the reason is
-printed (`evidence/release_qa/20261003T0955Z_wheel_and_repo_pytest.txt`). That number
-supersedes the older, smaller-wheel figures below only for the question "what does today's
+printed (`evidence/release_qa/20261003T0955Z_wheel_and_repo_pytest.txt`). And twice on 2026-10-05, against the wheels rebuilt during and after the re-audit: 51 passed and
+three skipped in 306.16 s against `9ecfc5ee...`
+(`evidence/release_qa/20261005T0446Z_wheel_out_of_tree.out`), then the same 51 + 3 in 304.19 s
+against the build of ten minutes later, `ac354030...`
+(`evidence/release_qa/20261005T0506Z_wheel_out_of_tree_current.out`). Neither is "the wheel this
+paper ships" - the export that publishes this text rebuilds it once more, and the paragraph below
+says why that moves the hash and not the software. The third skip in both is
+the new geometry-label test, for the same reason as the other two; and the The 2026-10-05
+number supersedes the older, smaller-wheel figures below only for the question "what does today's
 install pass"; the older logs stay because each is quoted at its own collection size. Every figure below is quoted at the
 collection size of the log it is taken from, and none of them is a sum of the others: the
 43-test wheel is on record at 42 passed and one skipped, twice, at 580.82 s and at 406.75 s,
@@ -414,6 +426,7 @@ fires on a fault we put in deliberately to prove it would.
 | V | every Python module inside a packaged directory is either in the export whitelist or named, with a reason, as an unreleased internal module - this is the set `pip install .` actually puts in `site-packages`, which the whitelist does not constrain; self-tests fire on a planted stray and stay silent on the named ones | real defect: found by the shipped licence scanner, which walked 45 installed files from a source-directory install and found the peer implementation among them |
 | W | no manuscript or README quotes a *share* for a system whose denominator cancels, i.e. where `|dE_NLC/dE_xc| > 2` - the same rule `step_f_dispersion.py` applies to its own output, extended to the prose | real defect: three of them on the day it was written (the companion text's conclusion, this paper's section 4, and a line the author had just added to this README), all quoting a share equivalent to a ratio above 2 that section 3.2 of the same paper argues against - and the gate caught its own author reintroducing the number while documenting the gate |
 | X | every `step_*.py` in the export tree appears in `run_all.sh`'s command table, so each table in the text has an entry point a reader can actually invoke | real defect: `step_m_ccsdt.py` reached the release on 2026-09-30 without ever being registered, which is the same omission the driver had been rewritten to fix - that rewrite left no guard, and this gate is the guard it lacked. The self-test truncates the command table to the four entries of the original bug and must then report ten missing scripts, and must go silent on a table completed by construction |
+| Y | every image and link target in `paper/joss/paper.md` resolves to a file the export actually carries — the gate walks the copied-file set, not the filesystem, so a figure that exists on the working machine but was never listed is a broken citation for the reader | planted only: it has not fired on real input, its two-directional self-test must fire on exactly the planted target and stay silent on a valid one, and it goes quiet when `paper/joss/` is absent from the tree |
 
 Gate D exists because the first three could only fail in one direction. A, B, C
 catch material that should not be present; what actually went wrong repeatedly was
