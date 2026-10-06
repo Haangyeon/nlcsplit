@@ -3,3 +3,37 @@
   正文数字出处：11 个数在跟踪的证据工件里找不到（MAIN-skeleton.md:16, paper/p2.md:5）
       办法：补归档 stdout，或让脚本把它算出来入库；不许塞 allowlist
   引用路径：10 条不存在或未 git add（分布 MAIN-skeleton.md:16, paper/p2.md:5）
+2026-10-06T06:55:24.779Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 2 个（列前 8 个）：
+      ?? evidence/nlc_cp/
+      ?? paper/notes/review_panel_20261006/
+2026-10-06T07:09:19.605Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 8 个（列前 8 个）：
+      M nlcsplit/nlc.py
+      M nlcsplit/step_d_floor.py
+      M nlcsplit/step_h_s22.py
+      M nlcsplit/tests/test_regression.py
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/nlc_cp/
+      ?? nlcsplit/tests/test_nlc_closure.py
+      ?? paper/notes/review_panel_20261006/
+2026-10-06T07:13:24.703Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 8 个（列前 8 个）：
+      M nlcsplit/nlc.py
+      M nlcsplit/step_d_floor.py
+      M nlcsplit/step_h_s22.py
+      M nlcsplit/tests/test_regression.py
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/nlc_cp/
+      ?? nlcsplit/tests/test_nlc_closure.py
+      ?? paper/notes/review_panel_20261006/
+2026-10-06T07:17:08.900Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 8 个（列前 8 个）：
+      M nlcsplit/nlc.py
+      M nlcsplit/step_d_floor.py
+      M nlcsplit/step_h_s22.py
+      M nlcsplit/tests/test_regression.py
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/nlc_cp/
+      ?? nlcsplit/tests/test_nlc_closure.py
+      ?? paper/notes/review_panel_20261006/

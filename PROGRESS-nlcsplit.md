@@ -3881,3 +3881,53 @@ PDF main 34 页 / p2 11 页 / software 14 页，latex errors 0；15 道导出闸
 全套 74 passed；MANIFEST 陈旧列表为空。
 
 下一步：#29（三份稿从仓库日志体改成论文体）仍是最大的缺口；GitHub 那边发布 wheel 还是旧的，要新 PAT。
+
+## 2026-10-06（第十次交接）：外部评审组抓到第十处——"ΔE_NLC 不需要反泊松"是句没测过的假话
+
+他嫌我学术审美不可信，让我装外部技能当裁判。装上 `academic-paper-reviewer`（5 席评审组）后，
+拿 main.md 全文跑 4 席**盲审**（各席简报里明令禁读 PROGRESS-*.md 与任何 audit/review 文件，
+否则会锚定我上一轮自查的九处，这次外部复核就白做）。两席已回，其中魔鬼代言席的 C1 成立，
+是我九处之外漏掉的第十处。
+
+**核实链（逐字节，不是听它说）**：
+- 正文 `paper/main.md:883-886`：`dE_NLC itself needs no such correction: it is evaluated at fixed
+  (non-self-consistent) superposed density, so basis-set flexisation does not enter it`，
+  并且拿它当"比 ΔE_int 早一档收敛"的因。
+- 产 Table 1 的构造 `nlcsplit/step_h_s22.py:one()`：`dnlc = (d["e_nlc"] - m["e_nlc"])*KCAL`，
+  而 `m` 累加的是 `terms(geomlib_sub(mol, f), LEVEL, "单体")`——各单体是**自己基组里收敛的自洽密度**，
+  无鬼函数。同文件 `counterpoise()` 只 `tot += mf.e_tot`，**从未取出鬼单体的 E_NLC**，
+  所以"这句话豁免掉的东西"全仓没有任何原件。
+- 三处自相矛盾：`step_f_dispersion.py` 文件头自己写"（superposition，未做 BSSE 校正）"；
+  `main.md:378` 图注写 "the superposition difference at grid level 1 and **uncorrected** density"；
+  `main.md:184` 又写 "no system in the set carries an uncorrected one"。
+
+**没有只改句子，去测**：`evidence/nlc_cp/nlc_bsse_measure.py` 同基组同档位把 ΔE_NLC 算两遍
+（无鬼 / 对方原子写 ghost- 且带 `nao_nr()==mol.nao_nr()`、`nelectron<mol.nelectron` 两条断言，
+与 `counterpoise()` 同一反泊松约定）。护栏=无鬼侧必须复现 `step_h.json` 归档 dnlc，门 1e-3 kcal/mol，
+复现不上就非零退出、不出表。首个体系：
+
+| 水二聚体 官方 S22 几何 6-31G\* level 1 | kcal/mol |
+|---|---|
+| ΔE_NLC 无鬼（=Table 1） | −0.5935（与归档复现差 **8.660e-15**） |
+| ΔE_NLC 反泊松 | −0.5861 |
+| 该项 BSSE | **−0.0074** |
+| 本体系归属跨度 / BSSE 占比 | 0.0435 / **0.17** |
+
+对稿子的后果分两层：句子必须改（"does not enter it" 与"早一档收敛因此而来"都是假的）；
+但量级只有我自己那条归属不确定度的 1/6，**不动任何结论**。真话是另一套：β∫ρ 在 superposition 里
+精确抵消（这条有原件，代码打印 ΔE_loc≈1e-4 量级）、片间块 `inter[(A,B)]` 本身不是两个 SCF 之差
+因而**它**不引入 BSFE——被豁免的应该是块，不是 Table 1 的 ΔE_NLC。
+
+**对它其余主张的裁决**：C1 的另一半（§3.3 说单体密度 "unrelaxed"）**驳回**——那是 EDA 的标准用法
+（不在对方场中弛豫），不是错。C2（把自己归属跨度代进 §3.3 的比值后 6 个里 5 个与 1.00 不可分辨）
+与 M1（"四种归属方案"其实是同一个 Becke 互享公式换半径表）**待我逐条开文件验**，未采信前不进正文。
+期刊适配席两条 Critical 我核过原文：摘要把只审过 PySCF 写成 "production implementations" 的普适断言
+（正文 L61 明说没审过 libxc/ORCA/Psi4/Gaussian）；§1 L128 "it is narrower than the title suggests"
+是自己宣布标题超卖——这条我不接受"删掉老实话"的修法，该改的是标题。
+
+**未完（下一次接手先看这里）**：① 氨/甲烷两格还在本机跑（水 86 s/体系，进程 pid 893 活着，
+输出文件当前叫 `_nlc_bsse_three_small_dimers.out`——TS 变量在 WSL 侧展开成空，**定稿前要按本仓
+`YYYYMMDDThhmmZ_*.out` 改名再登记**）；② §4.1/§1:184/§3.3 三处改写与 `inter[(A,B)]` 的区分，
+等 methodology/domain 两席回来再动 main.md（它们正在读这个文件，中途改会让引用行号漂）；
+③ MANIFEST 在所有证据编辑定稿后最后重生成；④ `paper/notes/review_panel_20261006/` 与
+`evidence/nlc_cp/` 两目录尚未提交。

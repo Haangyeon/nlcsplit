@@ -57,8 +57,10 @@ def pair_terms(mol, frags, mf):
         sig = rho[1] ** 2 + rho[2] ** 2 + rho[3] ** 2
         res = nlc.fragment_decomposition(X, W, rho[0], sig, frags,
                                                    b=b, C=C, owner=owner)
-        assert abs(res["E_nl"] - sum(res["intra"].values())
-                   - sum(res["inter"].values())) < 1e-10, f"{scheme}: 可加性破了"
+        # 这里原先有一条"可加性"断言，拿 E_nl 与它自己的定义式相比，恒真、永不触发。
+        # 真正的闭包检查在 tests/test_nlc_closure.py（含必须失败的负控）与
+        # tests/test_regression.py 里跑；本文件的扫描开 closure_check 会把非局域项
+        # 的求和翻倍，苯二聚体 level 2 那一档付不起，所以生产通路里不放。
         out[scheme] = res["inter"][(0, 1)] * KCAL
     return out
 

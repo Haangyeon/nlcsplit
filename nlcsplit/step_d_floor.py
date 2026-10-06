@@ -210,7 +210,8 @@ def main():
         if r["floor"] != REF_FLOOR:
             continue
         recon = r["intra"][0] + r["intra"][1] + r["P_frz"]
-        print(f"  level {r['level']} floor 1e-12: 可加性 |E_nl-(intraA+intraB+P_frz)| = "
+        print(f"  level {r['level']} floor 1e-12: [恒等式，非检查] "
+              f"|E_nl-(intraA+intraB+P_frz)| = "
               f"{abs(recon-r['E_nl']):.2e} Ha   "
               f"(intraA={r['intra'][0]*KCAL:+.4f} intraB={r['intra'][1]*KCAL:+.4f} "
               f"P_frz={r['P_frz']*KCAL:+.4f})")

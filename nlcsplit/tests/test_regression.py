@@ -63,10 +63,11 @@ def test_pair_terms_regression(dimer):
         r = mf._numint.eval_rho(dimer, ao, mf.make_rdm1(), xctype="GGA")
         s = r[1] ** 2 + r[2] ** 2 + r[3] ** 2
         res = nlc.fragment_decomposition(co, we, r[0], s, geomlib.FRAGS["(H2O)2"],
-                                         b=b, C=C, owner=owner)
+                                         b=b, C=C, owner=owner, closure_check=True)
         vals[scheme] = res["inter"][(0, 1)] * KCAL
-        assert abs(res["intra"][0] + res["intra"][1] + res["inter"][(0, 1)]
-                   - res["E_nl"]) < 1e-10          # 可加性
+        # 这里的参照是"同一批保留点不切片段一次算完"，不是分块和的别名：
+        # 早先那条断言拿 E_nl 比它自己的定义式，恒真、永不触发。
+        assert res["E_nl"] == pytest.approx(res["E_nl_ref"], rel=1e-12, abs=0.0)
     assert vals["becke"] == pytest.approx(-0.5316, abs=0.02)
     span = max(vals.values()) - min(vals.values())
     assert 0.01 < span < 0.10, f"方案跨度 {span:.4f} 出界，归属敏感性需重新评估"

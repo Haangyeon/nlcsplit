@@ -92,7 +92,8 @@ def pair_energy(coords, wr, w0, kap, iA, iB, block=256, wB=None, pairing="same-c
 
 
 def fragment_decomposition(coords, weights, rho, sigma, fragments,
-                           b=6.0, C=0.01, owner=None, soft=None, rho_floor=RHO_FLOOR):
+                           b=6.0, C=0.01, owner=None, soft=None, rho_floor=RHO_FLOOR,
+                           closure_check=False, closure_rtol=1e-9):
     """按片段归属给出 E_NLC 的分块分解。
 
     参数
@@ -137,6 +138,17 @@ def fragment_decomposition(coords, weights, rho, sigma, fragments,
             out["inter"][(A, B)] = 2.0 * blk(A, B)
     out["E_nl"] = sum(out["intra"].values()) + sum(out["inter"].values())
     out["E_total"] = out["E_loc"] + out["E_nl"]
+    if closure_check:
+        # E_nl 按定义就是那些块的和，所以"块和 == E_nl"这种断言恒真、永不触发。
+        # 这里另走一条不切片段的路径：同一批保留点上一次算完，拿它当独立参照。
+        allkept = np.where(keep)[0]
+        e_ref = float(pair_energy(coords, wr, w0, kap, allkept, allkept))
+        out["E_nl_ref"] = e_ref
+        dev = abs(out["E_nl"] - e_ref)
+        if dev > closure_rtol * max(abs(e_ref), 1e-300):
+            raise AssertionError(
+                f"分块和 {out['E_nl']!r} 与一次算完 {e_ref!r} 差 {dev:.3e} Ha，"
+                f"超过容差 {closure_rtol:g}——片段索引或因子 2 的记账有问题")
     return out
 
 
