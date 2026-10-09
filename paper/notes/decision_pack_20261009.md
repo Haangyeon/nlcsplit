@@ -36,7 +36,11 @@
 
 ## 2. 只有他能做的（我不能替，也不该猜）
 
-1. 新 classic PAT → `push_manual` → 仓库转 public → 换掉 release 里过期的 wheel。
+1. 新 classic PAT → **最后再跑一次 `node tools/make_public_repo.js`** → `push_manual` → 仓库转 public
+   → 换掉 release 里过期的 wheel。顺序理由（今天实测到）：导出会把 `evidence/**` 连同各目录的
+   `MANIFEST.sha256` 一起复制进发布树——今天 12:04 之后落地的两份比对档案就让导出**拒绝出货**
+   （`gateC2_scrub_digit_invariance` 报"母仓有清单但这份文件没登记进去"，`"shipped": false`，
+   exit 1，旧产物原样保留）。所以清单必须在导出之前定稿。
 2. 第二作者（Changwei Wang）的 ORCID、邮箱、是否通讯；作者顺序与单位行是否照 `main.md:5-11`。
 3. 审稿人提名（JCTC/JCC 都要），以及 COI、 funding 两段的实际内容（现在是写给编辑看的指示句）。
 4. Zenodo DOI（如果要）；ScholarOne 的登录与 **Save 之后由他点 Submit**——我停在 Save。
@@ -44,6 +48,12 @@
 
 ## 3. 还压着的两件小事
 
-- **测试套件**：全套 79 passed / 355 s（2026-10-06 的档）。集群默认 python 里**没有 pytest**
-  （今天实测 `ModuleNotFoundError`），装它要动他账号环境，我没动；这 6 分钟只能留在 WSL 跑。
+- **测试套件**：全套 **79 passed / 504.41 s**（`evidence/release_qa/20261009T094106Z_full_suite_79passed.log`，
+  退出码另存同目录 `.log.rc`；software.md 引的就是这份，10-09 那次限 4 线程）。
+  原先这里写的"79 passed / 355 s（2026-10-06 的档）"**用词错过一次**：全仓 grep `355.09` 只命中
+  `nlcsplit/logs/full_suite_after_closure.log`（4 行、无环境头、gitignore 的工作日志，宿主时钟
+  mtime 2026-10-06T15:13），按 software.md 自己定的规矩它**不是**归档；更正已追加进上面那份
+  10-09 档案的末尾（原文第 4 行不动）。没有把它升级成归档：它没有来历可写。
+  集群默认 python 里**没有 pytest**（实测 `ModuleNotFoundError`），装它要动他账号环境，我没动；
+  这 6–8 分钟只能留在 WSL 跑。
 - **图**：§3.6 该拿的 `figs/fig3_screening_cost.png` 席位提到了，属编辑级，做 A 时一并处理。

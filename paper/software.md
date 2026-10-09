@@ -368,12 +368,21 @@ printed (`evidence/release_qa/20261003T0955Z_wheel_and_repo_pytest.txt`). And tw
 three skipped in 306.16 s against `9ecfc5ee...`
 (`evidence/release_qa/20261005T0446Z_wheel_out_of_tree.out`), then the same 51 + 3 in 304.19 s
 against the build of ten minutes later, `ac354030...`
-(`evidence/release_qa/20261005T0506Z_wheel_out_of_tree_current.out`). Neither was the wheel this
-paper ships: the export that publishes this text rebuilds it, and the build that ships was measured
-the same way today - 56 passed and 3 skipped in 404.44 s, exit 0, against `7bdcb6f6...`, whose hash,
-size and the git commit it was built from are in that log's own header
+(`evidence/release_qa/20261005T0506Z_wheel_out_of_tree_current.out`). Neither was a wheel this paper
+ships, because the export rebuilds it; the build measured today is `7bdcb6f6...` - 56 passed and 3
+skipped in 404.44 s, exit 0, with its hash, its size and the git commit it was built from recorded in
+that log's own header
 (`evidence/release_qa/20261009T113900Z_wheel_out_of_tree.out`, the exit code in
-`evidence/release_qa/20261009T113900Z_wheel_out_of_tree.out.rc`). The isolation claim here is weaker
+`evidence/release_qa/20261009T113900Z_wheel_out_of_tree.out.rc`). Measuring a container that the next
+export replaces is only worth printing if the content is pinned, and here the pinning is a comparison
+rather than a sentence: against the build produced by the next run of the export,
+`evidence/release_qa/20261009T120455Z_wheel_member_diff.out` diffs the per-member digests of the
+measured build - 39 members each, 37 digests agreeing, all 34 Python modules under the
+package directory byte-identical, the two exceptions being METADATA and the RECORD that lists
+METADATA's own digest. METADATA moves for a reason worth stating plainly: pyproject.toml embeds
+README.md into it, so any wheel hash written inside the README is necessarily the hash of a build made
+before that sentence was written. The paragraph on the 2026-09-30 rebuilds further down gives the other
+mechanism by which container hashes move even when no packaged byte does. The isolation claim here is weaker
 than the 2026-10-05 one and the archive says so instead of glossing it: `python3 -m venv` now fails on
 this machine for want of `ensurepip`, its error printed verbatim in the same file, so the tests ran
 from `/tmp` with `PYTHONPATH` pointing only at a `pip install --target` directory. That establishes

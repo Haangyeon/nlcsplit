@@ -42,7 +42,15 @@ is a stated exclusion rather than a silence. Installed out of tree, the wheel's 
 56 passed and 3 skipped in 404.44 s, exit 0
 (`evidence/release_qa/20261009T113900Z_wheel_out_of_tree.out`, whose header carries that same
 `7bdcb6f6...` hash, and whose exit code is kept in a file of its own beside it); the three skips
-want the official S22 geometries, which are not in the wheel. Until today the shipped test list had also dropped
+want the official S22 geometries, which are not in the wheel. Those two archives name one build,
+`7bdcb6f6...`, and it is deliberately not promised as the wheel that will carry this sentence:
+pyproject.toml sets readme = "README.md", so the bytes of this file go into the wheel's METADATA and
+any hash written here necessarily describes a build made from an earlier draft of it. What is stable
+is content, and that is checked rather than claimed - `evidence/release_qa/20261009T120455Z_wheel_member_diff.out`
+compares the measured build against the build produced by the next run of the export: both have 39 members, 37 of
+their per-member digests agree, all 34 Python modules under nlcsplit/ (tests included) are
+byte-identical, and the two that differ are METADATA and the RECORD that lists METADATA's own digest.
+Until today the shipped test list had also dropped
 `nlcsplit/tests/test_nlc_closure.py` - the closure guard and the two regroupings that must make
 it fail - and the export gate said so in terms ("pip install . would install it, the wheel has no
 reason not to"), so it ships now and its five tests are among the 56.

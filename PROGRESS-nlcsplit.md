@@ -4105,3 +4105,33 @@ README 与 software.md 原先引的是**上一次构建** `9d32aa55…` 的 394.
 `dist/archive-263d766d-provenance-unknown-nlcsplit-…whl`（不删，它仍是"已重打"的反证），
 脚本那行改成从 `$OLDHASH` 自己派生名字。写死日期＝又一种"记录会说谎"的路径，
 跟 09-30 那次"共享退出码标记被后一次运行覆盖"同源：**标识符必须由被标识的对象生成**。
+
+### README 里的 wheel 哈希是一道自指，不是笔误（12:04 UTC 实测）
+
+`pyproject.toml:9` 写的是 `readme = "README.md"` ⇒ README 的字节进 wheel 的 `METADATA`。
+于是"正文里印出来的哈希"和"装着这段正文的那个容器"永远不是同一个构建：任何一次导出之后，
+README 里印的哈希就落后一版。今天实测到第三层：`7bdcb6f6`（11:38 那次导出）→ 我改 README →
+`97f710c3`（12:03 那次导出，size 124682，比前者多 76 B——正是新写的那段话）。
+
+救法不是删哈希，是把"内容同一份"从断言变成实测。新脚本
+`evidence/release_qa/wheel_member_diff.py`（逐成员 sha256 比对，白名单只放 METADATA/RECORD，
+其余任何差异即 REFUSED 且 exit 1）：
+
+- 负控先做（守卫必须能失败）：拿 `7bdcb6f6` 与 `263d766d` 两个真不同的 wheel 比 → `REFUSED`，
+  并把变了的成员逐一点名 `nlcsplit/nlc.py`、`step_d_floor.py`、`step_h_s22.py`、
+  `tests/test_regression.py`，另加"只在 A 侧"的 `tests/test_nlc_closure.py`。
+- 同一文件自比 → OK（34 个 `.py` 成员全同）。
+- 正式读数 `20261009T120455Z_wheel_member_diff.out`（退出码档案=0）：两边各 39 成员、
+  **37 个逐成员摘要相同**、`nlcsplit/` 下 34 个 Python 模块逐字节相同，唯二不同的是
+  `METADATA` 与记录 `METADATA` 摘要的 `RECORD`。
+
+正文落点：README 与 software.md 各写一句"这个哈希标识被量的那次构建，不承诺是你手里那个容器"，
+内容一致性交给上面那份比对；software.md 另指回它本来就有的 09-30 段落（zip 条目带秒级构建时间
+⇒ 打包字节不动也能给出三个不同哈希，`RECORD` 才是内容的标识）。`software.pdf` 因此 14 页变
+15 页（0 条 LaTeX 错误、`failed checks: 0`）；五份随包载体 grep 过，正文里没有"14 页"这类
+现在时断言，历史日志里那是过去时。
+
+**由此得出一条比"MANIFEST 最后生成"更高一层的规矩**：导出会把 `evidence/**` 连同各目录清单
+一起复制进发布树，所以它必须排在**所有证据定稿之后**。今天这一次又跑在了 `120455` 两份档案
+落地之前 ⇒ 发布树里 `release_qa` 的清单只到它复制过去的那些行，母仓清单之后补上也不会跟着长。
+他侧出货序列要写明：**给 PAT → 重跑一次导出 → 立即 push**，中间不再动 `evidence/`。
