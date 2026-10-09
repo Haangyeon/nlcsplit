@@ -287,14 +287,26 @@ original bug must make it report ten missing scripts, and a table completed by c
 must make it silent. It is evaluated against the export tree rather than against this
 repository, because the copy that has to be runnable is the reader's.
 
-The suite collects 74 tests in the working repository - 53 under `-m "not slow"` and 21
+The suite collects 79 tests in the working repository - 58 under `-m "not slow"` and 21
 under `-m slow`, a partition of the same collection and not two numbers to be added
-(`evidence/release_qa/20261005T0404Z_test_count_census.out`, whose per-module rows must sum to
-the collected total). All 74 have been executed on the tree those counts describe: 74 passed
-with nothing skipped and nothing deselected in 328.87 s, on the working tree of 2026-10-05, whose
+(`evidence/release_qa/20261009T105424Z_test_count_census.out`, whose per-module rows must sum to
+the collected total and which also groups them by what the wheel actually carries). All 79 have
+been executed on the tree those counts describe: 79 passed with nothing skipped and nothing
+deselected in 504.41 s, with the run's exit code kept in a file of its own beside the log
+(`evidence/release_qa/20261009T094106Z_full_suite_79passed.log`,
+`evidence/release_qa/20261009T094106Z_full_suite_79passed.log.rc`) [S19]. The five
+tests added since the previous census are `nlcsplit/tests/test_nlc_closure.py` - the closure
+guard that used to be an identity, its monolithic reference, and the two regroupings that must
+make it fail - and they are in the repository collection but **not** in the wheel's grouping,
+which is stated here rather than smoothed over: a reader who installs the wheel does not get
+them. That run used `OMP_NUM_THREADS=4` where the run it replaces used the machine default, so
+its wall clock is the longer of the two and the comparison worth drawing is the count, not the
+timing. The superseded run is kept beside it: 74 passed with nothing skipped in 328.87 s on the
+working tree of 2026-10-05, whose
 uncommitted files the archive itself lists rather than asserting a clean tree
 (`evidence/release_qa/20261005T0512Z_suite74_after_figure_fixes.out`, which supersedes a run of
-the same size taken 43 minutes earlier on an intermediate tree) [S19]. The previous full run, on the
+the same size taken 43 minutes earlier on an intermediate tree; its census is
+`evidence/release_qa/20261005T0404Z_test_count_census.out`). The previous full run, on the
 69-test tree that carried the convention guard added last, was 69 passed with nothing skipped in
 380.52 s (`evidence/release_qa/20260930T233800Z_suite69_full.out`). An earlier run of the first
 65 of them - 65 passed, nothing skipped, 710.73 s, with the three collection counts and the
