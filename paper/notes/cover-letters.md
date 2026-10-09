@@ -10,8 +10,9 @@
 
 Dear Editor,
 
-We would like to submit our manuscript, **"Fragment-Resolved Nonlocal Correlation:
-Pair Attribution of the VV10 Term"**, for consideration as an Article in the Journal of
+We would like to submit our manuscript, **"Pair Attribution of the VV10
+Nonlocal-Correlation Term, and the Grid-Partition Dependence It Inherits"**, for
+consideration as an Article in the Journal of
 Chemical Theory and Computation.
 
 The VV10 nonlocal-correlation term is evaluated by production codes as a folded

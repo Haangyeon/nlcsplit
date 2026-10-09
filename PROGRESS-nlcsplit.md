@@ -3984,3 +3984,36 @@ JCP 102 346 (1995) 真实存在，但**键必须过 Crossref 才准进 .bib**（
 0.004–0.247 拆成"归属 / 求积"两列并披露 level 0 的 0.072/0.310 出界；④ 标题与 §1:127（期刊适配席
 C2：改标题而不是删老实话）；⑤ P3 闸门链：md2tex ×3 → build_pdf → 测试普查（现在 79 passed，
 旧的 74 全部作废）→ wheel 重打 → 15 导出闸门 → **MANIFEST 最后**；⑥ P4 决策包。
+
+### 同日续（§2.3 / 标题 / §3.3），并纠正我自己计划里的一条"已核实事实"
+
+**F7 是我自己写错的。** `PLAN-round10.md` 把"Becke 在**全部 8 个体系**里都是 |P| 的极值成员；
+Becke↔Stratmann ≤0.006，半径调整那一对被拉开 0.02–0.22"记成"每条都开了原件"的 F 级事实。
+今天真开 `nlcsplit/logs/step_h.json`：只有**三个**体系的 `pint` 里存了四种方案
+（苯二聚体 A/B、水二聚体），其余五个体系只存 `becke` 一个值（2.14.0 那批写的是缩略记录），
+所以"八个体系"当初不可能从这个文件读出来。按四个方案都在档的格重算：
+|becke−stratmann| 在三个体系里 0.0012/0.0057/0.0021，|becke-rad−treutler| 0.0043/0.0671/0.0170；
+而 S33 的六个 level-1 格（四方案齐全）里，甲烷二聚体是唯一**贝克特不是极值**的格
+（|becke|=0.4746，|becke-rad|=0.4771 更大）。⇒ 正文只写得住"六格里五格 Becke 是极值成员、
+Becke 与 Stratmann 的差 ≤0.0021 kcal/mol、真正拉开数的是半径表"，且**只能用档里逐字印出的
+四个 E_AB**，不写我手算的差。这条纠正比原断言弱，但原断言是我自己的。
+
+§2.3 落地：补 `treutler1995` 键（Crossref 实测：O. Treutler & R. Ahlrichs, *Efficient molecular
+numerical integration schemes*, JCP **102**, 346–354, 1995, DOI 10.1063/1.469408——注意题名
+**不是**"Accurate determination of integrals on molecular grids"，我按记忆猜的题名是错的，
+是查 API 才拿对的）；写明两个开关各是代码里哪个 `radii_adjust`；用 S33 苯-水那一格的四个
+E_AB（-1.3598/-1.1129/-1.1962/-1.3595）与四行相同的 E_NL 总量（-31.4256）说清
+"固定网格上归属只能在块之间重新分配，动不了总量；Table 1 里总量随方案变，那是求积那一半"。
+
+标题按期刊适配席 C2 改了（不是删老实话）：新标题 *Pair Attribution of the VV10
+Nonlocal-Correlation Term, and the Grid-Partition Dependence It Inherits*。
+载体同步：`paper/main.md:1`、`MAIN-skeleton.md`（保留两条旧工作标题并注明不再用）、
+`paper/notes/cover-letters.md` JCTC 段；`dist/` 与 `.publish/` 留待 P3 重导覆盖；
+`paper/notes/review_panel_20261006/*` 与 `scratch/audit/repo*` 是席位阅读记录/审计快照，**不改**。
+
+§3.3 加了 level-0 三格的限定：同一档案自己印 ∫ρ=19.992853/20 与 84.038083/84 ⇒ 最粗网格不数电子数，
+但 SC 与 SUP 两个密度彼此agree到三位小数，所以比值内部不受影响、跨网格档之间会；
+并写明这些比值的分母是同档同基组的**无鬼**超位置差，不是 §3.2 的反泊松量。
+
+**未完**：51279 已跑 50 分钟仍未 flush（本机核速外推 49 min/格 ⇒ 集群单核比本机慢，
+两格预计 2.5 h 内，限时 4 h 有余）；P2 只剩 §3.4 把 0.004–0.247 拆"归属/求积"两列（等那两格）。

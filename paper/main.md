@@ -1,4 +1,4 @@
-# Fragment-Resolved Nonlocal Correlation: Pair Attribution of the VV10 Term
+# Pair Attribution of the VV10 Nonlocal-Correlation Term, and the Grid-Partition Dependence It Inherits
 
 Angran Xia\* and Changwei Wang
 
@@ -127,8 +127,10 @@ cross-system comparison. In the methane dimer the nonlocal term exceeds the
 whole of ΔE_xc (ΔE_NLC = −0.517 against ΔE_xc = −0.232), i.e. the rest of the
 exchange-correlation is net repulsive there.
 
-Our positioning relative to the closest prior work is deliberate, and it is narrower than
-the title suggests. Dasgupta and Paesani [[dasgupta2023]] decompose interaction
+Our positioning relative to the closest prior work is specific, and the title is
+written to be specific rather than to sound broader: this is one already-parameterised VV10
+double sum, in one implementation, asked where its own grid says the pieces belong.
+Dasgupta and Paesani [[dasgupta2023]] decompose interaction
 energies of dispersion-corrected functionals with second-generation ALMO-EDA
 (E_Int = E_Pol + E_Frz + E_CT + E_Disp) and obtain E_Disp as a difference against a
 dispersion-free reference: they treat the VV10 correction as one undivided block and ask
@@ -270,9 +272,22 @@ this system size.
 
 Grid points are assigned to atoms by PySCF's own partition machinery
 (`gen_grid.get_partition` with `radi.BRAGG_RADII`), in four variants — Becke
-[[becke1988]], Becke with the radius adjustment, Becke–Treutler, Stratmann
-[[stratmann1996]] — plus a nearest-
-atom hard partition on the common grid as a control. Points with ρ below
+[[becke1988]] with the bare interatomic-distance exchange function, the same function with
+Becke's own radial adjustment (`radi.becke_atomic_radii_adjust`), the same function with the
+radial adjustment of Treutler and Ahlrichs (`radi.treutler_atomic_radii_adjust`)
+[[treutler1995]], and Stratmann's variant [[stratmann1996]] — plus a nearest-atom hard
+partition on the common grid as a control. Naming four variants makes this sound like four
+independent schemes, and it is not: three of the four are one product formula of Becke's
+with a different radius table, so the sweep turns two switches (which radial mapping, which
+partition kernel), and only the second of them is a different published method. What that
+costs in diversity is visible in the side-by-side run of §3.4: on one grid, one weight set
+and one density, the four variants give E_AB = -1.3598, -1.1129, -1.1962 and -1.3595
+kcal/mol on benzene...water, and the whole term is -31.4256 kcal/mol in every one of those
+four rows [S33]. The last part is the structural point rather than a coincidence: on a fixed
+grid an ownership choice redistributes the double sum between blocks, it cannot move the
+total. The totals that §2.5's Table 1 varies between schemes move because each scheme is
+also regenerating its own grid - which is the second of the two switches, and the reason the
+published spread is now reported as attribution and quadrature separately (§3.4). Points with ρ below
 `rho_floor` (default 10⁻¹²) are excluded from the double sum; across the sweep this
 drops 10.7–22.6% of the points, and the points it drops carry at most 2.3×10⁻⁶
 electrons. Over the floor interval the sweep accepts (10⁻¹⁰ to 10⁻¹⁴) E_AB moves by
@@ -757,7 +772,20 @@ is 1.017 for the water dimer at the official S22 geometry and 1.025 at the
 omegaB97X-V-optimised one, while the constructed benzene sandwich - the benzene_sandwich() constructor of `nlcsplit/geomlib.py`,
 the zero-slip geometry, not either S22 entry - falls below the band at 0.915
 [S19] - the level-2 value of 1.01 for the official water geometry sitting between
-those two [S8]. The ratio being able to exceed unity matters: relaxation is a small
+those two [S8]. Those three level-0 readings are not the same measurement as the level-2
+value they are set beside, and the archive says why: on the coarsest grid the electron number
+is not integrated exactly - 19.992853 against 20 for the water dimer, 84.038083 against 84
+for the sandwich - so each energy carries a discretisation offset in the local term beta*int_rho
+before any physics is subtracted. That offset does not corrupt a ratio between two densities on
+the *same* grid (the same archive prints 84.038083 and 84.038271 for the sandwich's
+self-consistent and superposed densities, which agree to three decimals, so the local term is
+common to both sides), but it does not cancel between grid *levels*, which is why the level-0
+numbers are quoted here as the coarse-grid behaviour of this ratio and not as three further
+measurements of relaxation. In every one of these ratios the denominator is the superposition
+difference evaluated on the same grid at the same level, with the monomers in their own basis -
+uncorrected for basis-set superposition. The counterpoise-corrected quantities are §3.2's and
+are a different number; they are not what this ratio divides by.
+The ratio being able to exceed unity matters: relaxation is a small
 correction of *either* sign on top of the frozen-density interfragment term, not
 an orthogonal contribution that adds to it. Physically this says that in these
 complexes essentially all of the nonlocal correlation that changes on association

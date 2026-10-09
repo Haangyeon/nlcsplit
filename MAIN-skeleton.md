@@ -1,6 +1,8 @@
 # 主篇骨架（A 案）— 每个数字都带出处，"待补"即真空洞
 
 工作标题（二选一）：
+- **（2026-10-09 定稿，上面两条都不再用）** Pair Attribution of the VV10
+  Nonlocal-Correlation Term, and the Grid-Partition Dependence It Inherits
 - **Fragment-Resolved Nonlocal Correlation: Pair Attribution of the VV10 Term and Its
   Different Roles in Hydrogen-Bonded and Dispersion-Bound Complexes**
 - Is the Nonlocal Correlation Term the Dispersion? A Pair-Resolved Decomposition of VV10
