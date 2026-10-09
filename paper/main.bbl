@@ -43,12 +43,12 @@ Susi Lehtola, Conrad Steigemann, Micael J.~T. Oliveira, and Miguel A.~L.
 \newblock \emph{SoftwareX}, 7:\penalty0 1--5, 2018.
 \newblock \doi{10.1016/j.softx.2017.11.002}.
 
-\bibitem[Dasgupta et~al.(2023)Dasgupta, Palos, Pan, and Paesani]{dasgupta2023}
+\bibitem[Dasgupta et~al.(2024)Dasgupta, Palos, Pan, and Paesani]{dasgupta2023}
 Saswata Dasgupta, Etienne Palos, Yuanhui Pan, and Francesco Paesani.
 \newblock Balance between physical interpretability and energetic
   predictability in widely used dispersion-corrected density functionals.
 \newblock \emph{Journal of Chemical Theory and Computation}, 20:\penalty0
-  49--67, 2023.
+  49--67, 2024.
 \newblock \doi{10.1021/acs.jctc.3c00903}.
 
 \bibitem[He{\ss}elmann(2013)]{hesselmann2013nldft}
@@ -75,13 +75,13 @@ Per Hyldgaard, Kristian Berland, and Elsebeth Schr{\"o}der.
 \newblock \emph{Physical Review B}, 90:\penalty0 075148, 2014.
 \newblock \doi{10.1103/PhysRevB.90.075148}.
 
-\bibitem[Kruse et~al.(2018)Kruse, Ban\'{a}\v{s}, and \v{S}poner]{kruse2019dna}
+\bibitem[Kruse et~al.(2019)Kruse, Ban\'{a}\v{s}, and \v{S}poner]{kruse2019dna}
 Holger Kruse, Pavel Ban\'{a}\v{s}, and Ji\v{r}\'{\i} \v{S}poner.
 \newblock Investigations of stacked dna base-pair steps: Highly accurate
   stacking interaction energies, energy decomposition, and many-body stacking
   effects.
 \newblock \emph{Journal of Chemical Theory and Computation}, 15:\penalty0
-  95--115, 2018.
+  95--115, 2019.
 \newblock \doi{10.1021/acs.jctc.8b00643}.
 
 \bibitem[Hujo and Grimme(2011)]{hujo2011hbond}

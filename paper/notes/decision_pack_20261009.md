@@ -22,6 +22,14 @@
   numerical integration schemes*, JCP **102**, 346–354, 1995, DOI 10.1063/1.469408）。
   席位列的其余缺引（Horn/Mao/Head-Gordon、IQA/QTAIM、partition-DFT、Hirshfeld-I、
   vdW-DF 线性标度、原子分辨 MBD）**仍未进**，因为每条都要先过 Crossref 再决定引不引。
+- **U3（今天新增，已清）**：全部 25 条 `@article` 的**年份口径**清点做完了，判据是 Crossref 的
+  `published-print`（纸质卷期年），不是首次上线年。抓到两条内部不自洽并改掉：`kruse2019dna`
+  2018→**2019**（JCTC 15, 95–115）、`dasgupta2023` 2023→**2024**（JCTC 20, 49–67）——
+  原先 `volume/pages` 是纸质卷期而 `year` 是上线年，读者按"卷 15 (2018)"检索会查不到。
+  原件：`evidence/bib_provenance/20261009T124519Z_bib_all25_issue_year_check.out`（改前，
+  MATCH 23 / DEVIATION 2，`.rc`=1）与 `...124738Z..._after_fix.out`（改后 25/25，`.rc`=0，
+  同一次运行里负控仍抓住被改成 1901 的那条）。键名没改（`dasgupta2023` 现指 2024 那期），
+  因为改名要动两处正文引用而不透明标签本身不是主张；正文没有散文年份跟着改（三处载体 grep 过）。
 
 ## 1. 三条路线的报价
 
