@@ -1,0 +1,7 @@
+# out-of-tree 验证 20261009T105958Z：wheel 装进新建 venv（--system-site-packages 复用 numpy/pyscf），
+# 从 /tmp 里跑 pytest --pyargs nlcsplit.tests，不在仓库目录下、无 PYTHONPATH。
+# git HEAD 2802b66fdc15b330128668a18c692d0a7fa37dfc  wheel sha256=4863e46f5e4697055482b940243c260f6e0441d9d8589f3f655adcbff8887677  pip_rc=1
+--- verbatim pip ---
+/tmp/qa_20261009T105958Z/bin/python: No module named pip
+--- verbatim pytest ---
+/tmp/qa_20261009T105958Z/bin/python: No module named pytest

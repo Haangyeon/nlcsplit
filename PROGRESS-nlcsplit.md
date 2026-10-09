@@ -4055,3 +4055,28 @@ Nonlocal-Correlation Term, and the Grid-Partition Dependence It Inherits*。
 **正确计数是第十三处**（1–9 自查、10 §4.1 假豁免、11 S27、12 §2.5、13 本条）。
 PROGRESS 与决策包用的都是十三。提交已入库、不改动历史，所以勘误只写在这里——
 读 commit message 的人请以本节为准。
+
+## 2026-10-09（P3 出货链）：公开仓缺件两处，都是闸门抓的、不是我自查的
+
+1. `tools/make_public_repo.js` 的 `EVIDENCE_DIRS` 是**硬编码白名单**。10-06 新建的
+   `evidence/nlc_cp/`、`evidence/common_grid/` 从来没进过它 ⇒ 公开仓里**没有** [S32] 与 [S33]
+   点的任何一份原件：读者拿到的是"正文引用了一个不存在的出处"。闸门 D 判 22 条命中、拒绝出货
+   （`shipped:false`，dist 里旧 wheel/sdist 原样保留）。已把两目录加进白名单，并把"必须在正文
+   引用落地的同一次提交里进白名单"这条（本来就写在文件第 125 行）标成我 10-06 违反了它。
+2. 导出器的测试清单 `TESTS` 漏 `nlcsplit/tests/test_nlc_closure.py` ⇒ 出货 wheel 里没有闭包守卫
+   与它的两条必须失败负控，而 §2.2 现在正拿这个守卫当"我们知道它抓不到什么"的凭据。闸门 V
+   报的原文是"pip install . 会装它、wheel 里没有、又没在 INTERNAL_ONLY_MODULES 里具名给理由"。
+   已加入（它只 import 随包模块；`test_fastpair_ide.py` 继续故意不发，它 import 的冻结参照不在
+   包里，发出去就是一道收集期 ImportError——这条理由原本就写在白名单注释里）。
+
+**我自己制造的两次误判，都记下来：**
+- 我拿仓库根的 `python -m build` 建了个 wheel 当交付物去验证（45 成员、含 fastpair_ide 的 20 条，
+  树外 76 passed/3 skipped）。**出货口是 `make_public_repo.js` 从发布树 `dist/nlcsplit/` 建的**
+  （文件第 472 行），那个才是交付物：39 成员 / 8 个测试模块 / `sha256=9d32aa55…`。
+  所以 76 passed 这个数字不能当出货 wheel 的证据用，正对交付物重跑。
+- 后台任务的"exit code 0"是**管道的尾巴**（`node … | tail -30` 退 0），脚本自己打的是
+  `GATE FAILED: 22 条命中，不出货（exit 1）`。"认文件不认通知"这条今天以新的形态又中一次：
+  通知里的退出码可以是被包装命令的，不是被测程序的。以后跑闸门类命令一律
+  `> 文件 2>&1; echo rc=$?`，不接管道。
+- `gateD` 那条 `step_z.py: 引用 nlcsplit.notshipped` 是**闸门 U 自己的负控读数**（源码 1252 行
+  造的假 import），不是真缺陷。对完数组名才确认，没有拿它当待修项去乱改。

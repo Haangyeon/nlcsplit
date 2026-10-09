@@ -297,9 +297,11 @@ deselected in 504.41 s, with the run's exit code kept in a file of its own besid
 `evidence/release_qa/20261009T094106Z_full_suite_79passed.log.rc`) [S19]. The five
 tests added since the previous census are `nlcsplit/tests/test_nlc_closure.py` - the closure
 guard that used to be an identity, its monolithic reference, and the two regroupings that must
-make it fail - and they are in the repository collection but **not** in the wheel's grouping,
-which is stated here rather than smoothed over: a reader who installs the wheel does not get
-them. That run used `OMP_NUM_THREADS=4` where the run it replaces used the machine default, so
+make it fail. They ship in the wheel; until today they did not, and what changed is the export
+gate's own complaint rather than a decision by us (`pip install .` would install the file, the
+wheel had no stated reason to omit it, and it was not named in the list of deliberate
+exclusions). That is recorded here because a guard a reviewer cannot run from the installed
+package is not evidence of anything to that reviewer. That run used `OMP_NUM_THREADS=4` where the run it replaces used the machine default, so
 its wall clock is the longer of the two and the comparison worth drawing is the count, not the
 timing. The superseded run is kept beside it: 74 passed with nothing skipped in 328.87 s on the
 working tree of 2026-10-05, whose
@@ -323,15 +325,22 @@ log's own header prints `git status` - the 65-test one listed uncommitted change
 establishes the floor for the code as it then stood and says nothing about what an install
 ships. The
 out-of-tree material below belongs to objects smaller
-than the working tree. The published wheel ships seven test modules plus `__init__.py` and
-`conftest.py`; those seven collect 54 in today's tree, and the 20 that stay behind are exactly
+than the working tree. The published wheel ships eight test modules plus `__init__.py` and
+`conftest.py`; those eight collect 59 in today's tree, and the 20 that stay behind are exactly
 `test_fastpair_ide.py`'s (both counts come from `evidence/release_qa/test_count_census.py`,
-which groups the modules by the wheel's own member list rather than a remembered whitelist, and
+which groups the modules by the wheel's own member list and
 refuses to print unless the two groups sum to the collected total
-[`evidence/release_qa/20261005T0404Z_test_count_census.out`]) - the peer's frozen control
+[`evidence/release_qa/20261009T113507Z_test_count_census.out`]) - the peer's frozen control
 module, whose `fastpair_ide.py` is
 deliberately not distributed, since shipping the test without the module would be a
-collection-time ImportError. Two different objects must not be quoted as one: `pip install .`
+collection-time ImportError. One printout taken twelve minutes before that one
+(`evidence/release_qa/20261009T113331Z_test_count_census.out`) says seven modules and 54, and it
+is kept as the record of a mistake rather than deleted: the script had been choosing its wheel with
+`sorted(os.listdir("dist"))[0]`, and minutes earlier I renamed the previous build to a name
+prefixed `archive-` inside dist/ precisely so it would survive as evidence that a rebuild had happened - "a"
+sorts before "n", so the census quietly counted the old wheel's members and returned numbers that
+looked entirely plausible because they had been true on 2026-10-05. It now insists on the
+canonical filename and exits if that file is absent. Two different objects must not be quoted as one: `pip install .`
 from the source directory in a clean environment collected 63 in the archived logs quoted
 below, because that install pulls in
 the whole tree including the control module, and its archived full run is 62 passed and one

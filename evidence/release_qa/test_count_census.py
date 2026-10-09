@@ -58,16 +58,23 @@ if sum(per.values()) != tot:
 # 正文真正要说的不是"树里有多少条"，而是"装进 wheel 的那几个模块收多少条、留在仓里的那几个多少条"。
 # 所以这里直接读 wheel 的成员清单来分组，而不是靠人记白名单。
 import zipfile
-wheels = sorted(f for f in os.listdir(os.path.join(ROOT, "dist")) if f.endswith(".whl"))
-if not wheels:
-    sys.exit("dist/ 里没有 wheel：先跑 node tools/make_public_repo.js 再来清点")
-names = zipfile.ZipFile(os.path.join(ROOT, "dist", wheels[0])).namelist()
+DIST = os.path.join(ROOT, "dist")
+CANON = "nlcsplit-0.1.0-py3-none-any.whl"
+wheels = sorted(f for f in os.listdir(DIST) if f.endswith(".whl"))
+# 只认出货口写的那个规范名。这里原来是 sorted(wheels)[0]：2026-10-09 我把上一版 wheel 改名成
+# dist/archive-20261005T0506Z-...whl 留着当"能证伪『已重打』"的证据之后，'a' 排在 'n' 前面，
+# 这份清点就静悄悄去数三周前那个 wheel 的成员了——一个自称"读 wheel 不靠记忆"的生成器，
+# 被我自己新加的归档命名规则毒掉，而且它给的数看起来完全合理（54/7 正是那天的真值）。
+if CANON not in wheels:
+    sys.exit("dist/ 里没有规范名 %s（现有 %s）：先跑 node tools/make_public_repo.js 再清点"
+             % (CANON, wheels))
+names = zipfile.ZipFile(os.path.join(DIST, CANON)).namelist()
 shipped = {os.path.basename(n) for n in names if re.match(r"^[^/]+/tests/test_.*\.py$", n)}
 in_ship = sorted(m for m in per if m in shipped)
 out_ship = sorted(m for m in per if m not in shipped)
 s_in = sum(per[m] for m in in_ship)
 s_out = sum(per[m] for m in out_ship)
-print("# 分组（按 wheel 实际成员，不是按记忆）: shipped wheel = %s" % wheels[0])
+print("# 分组（按出货 wheel 的实际成员；只认规范名，见上面 2026-10-09 的教训）: shipped wheel = %s" % CANON)
 print("#   随包发布 %d 个模块，共收 %d 条：%s" % (len(in_ship), s_in, ", ".join(in_ship)))
 print("#   不随包    %d 个模块，共收 %d 条：%s" % (len(out_ship), s_out, ", ".join(out_ship)))
 print("#   两组合计 %d，与总数 %d %s" % (s_in + s_out, tot,

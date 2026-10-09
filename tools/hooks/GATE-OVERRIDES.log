@@ -54,3 +54,9 @@
       ?? evidence/common_grid/20261009T082953Z_ownership_vs_quadrature_l1_benzA.out
   证据清单陈旧 1 条：
       common_grid/20261009T082953Z_ownership_vs_quadrature_l1_benzA.out 未登记进 MANIFEST.sha256
+2026-10-09T10:57:03.301Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 4 个（列前 8 个）：
+      M paper/p2.pdf
+      M paper/software.pdf
+      M paper/software.tex
+      M paper/tex_audit-software.md

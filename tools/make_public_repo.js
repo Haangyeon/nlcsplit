@@ -79,7 +79,12 @@ const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py
   // step_m_ccsdt.py 进包了（§3.2 那栏 CCSD(T) 的生产者），它的冻核约定守卫也得进——
   // 否则读者拿到一个没有任何东西钉住"反泊松两侧必须同一约定"这条不变式的脚本，
   // 而这条不变式一旦破了，水二聚体会安静地印出 -23.16 kcal/mol 而不是报错。
-  'test_cc_convention.py'];
+  'test_cc_convention.py',
+  // 2026-10-09：闭包守卫与它的两条"必须失败"负控（test_nlc_closure.py）。外部评审抓到
+  // "可加性检查拿 E_nl 比它自己的定义式"之后，这条守卫就是正文 [S33] 与 §2.2 那句
+  // "抓不到什么"的唯一实测凭据；只 import nlcsplit.nlc / .partition（都随包），
+  // 所以它能进包，不像 test_fastpair_ide 那样会撞收集期 ImportError。
+  'test_nlc_closure.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
 // CITATION.cff 也在根清单里：JOSS/SoftwareX 的审稿人按这份文件核署名与授权，
 // 它不在包里就等于让读者去 git clone 才能拿到引用信息。
@@ -131,7 +136,12 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
   'attribution_referee',
   // 2026-10-01：Step M 的 CCSD(T) 阶梯。§4 那条"分不清是泛函还是我们算错"的开放项
   // 现在靠它变成实测比较，同一个目录里还有它自己的清单。
-  'ccsdt'];
+  'ccsdt',
+  // 2026-10-09：外部盲审改出来的两条实测——[S32] ΔE_NLC 自己的基组叠加误差（三体系），
+  // [S33] 公共网格上"归属效应 vs 求积效应"的八格拆分（含闭包守卫的负控测试）。
+  // 正文这两个键今天落地，所以白名单也必须在同一次改动里进——上一次就是没进，
+  // 闸门 D 判"读者拿不到的出处"，22 条命中直接不出货。
+  'nlc_cp', 'common_grid'];
 
 // 有些证据目录天然带一层子目录（裁判代码 + 它的机器可读输出）。白名单是逐目录
 // 显式的，这里也显式列出要跟着发布的那一层，不做递归全盘扫描。

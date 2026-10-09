@@ -1,0 +1,171 @@
+# wheel rebuild 20261009T105958Z
+# git HEAD 2802b66fdc15b330128668a18c692d0a7fa37dfc
+# python Python 3.10.12
+# 旧 wheel（改名保留）sha256=263d766d9001099d185f1188617aea2ce05a46432aa63f9604492f0209e215be
+# 新 wheel sha256=4863e46f5e4697055482b940243c260f6e0441d9d8589f3f655adcbff8887677
+--- verbatim: python3 -m build --wheel --outdir /tmp/wb ---
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=64
+* Getting build dependencies for wheel...
+running egg_info
+writing nlcsplit.egg-info/PKG-INFO
+writing dependency_links to nlcsplit.egg-info/dependency_links.txt
+writing requirements to nlcsplit.egg-info/requires.txt
+writing top-level names to nlcsplit.egg-info/top_level.txt
+reading manifest file 'nlcsplit.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'nlcsplit.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.0.0
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+copying nlcsplit/fastpair.py -> build/lib/nlcsplit
+copying nlcsplit/fastpair_ide.py -> build/lib/nlcsplit
+copying nlcsplit/figures.py -> build/lib/nlcsplit
+copying nlcsplit/geomlib.py -> build/lib/nlcsplit
+copying nlcsplit/nlc.py -> build/lib/nlcsplit
+copying nlcsplit/partition.py -> build/lib/nlcsplit
+copying nlcsplit/step1_validate.py -> build/lib/nlcsplit
+copying nlcsplit/step2_convergence.py -> build/lib/nlcsplit
+copying nlcsplit/step_b_scan.py -> build/lib/nlcsplit
+copying nlcsplit/step_c_relaxation.py -> build/lib/nlcsplit
+copying nlcsplit/step_d_floor.py -> build/lib/nlcsplit
+copying nlcsplit/step_e_kernel.py -> build/lib/nlcsplit
+copying nlcsplit/step_f_dispersion.py -> build/lib/nlcsplit
+copying nlcsplit/step_g_basis.py -> build/lib/nlcsplit
+copying nlcsplit/step_h_s22.py -> build/lib/nlcsplit
+copying nlcsplit/step_i_gridrepr.py -> build/lib/nlcsplit
+copying nlcsplit/step_j_scaling.py -> build/lib/nlcsplit
+copying nlcsplit/step_k_population.py -> build/lib/nlcsplit
+copying nlcsplit/step_l_sweep_compare.py -> build/lib/nlcsplit
+copying nlcsplit/step_m_ccsdt.py -> build/lib/nlcsplit
+copying nlcsplit/__init__.py -> build/lib/nlcsplit
+copying nlcsplit/tests/conftest.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_cc_convention.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_fastpair.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_fastpair_ide.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_geometry.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_kernel.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_nlc_closure.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_partition_factors.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_regression.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_tolerance_probe.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/__init__.py -> build/lib/nlcsplit/tests
+copying nlcsplit/examples/check_fast_pair.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/check_screen_bound_ide.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/check_soft_partition.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/coretail_bound.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/hybrid_nearfield.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/probe_bound_forms.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/quickstart.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/__init__.py -> build/lib/nlcsplit/examples
+running egg_info
+writing nlcsplit.egg-info/PKG-INFO
+writing dependency_links to nlcsplit.egg-info/dependency_links.txt
+writing requirements to nlcsplit.egg-info/requires.txt
+writing top-level names to nlcsplit.egg-info/top_level.txt
+reading manifest file 'nlcsplit.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'nlcsplit.egg-info/SOURCES.txt'
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/nlcsplit
+creating build/bdist.linux-x86_64/wheel/nlcsplit/examples
+copying build/lib/nlcsplit/examples/check_fast_pair.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/check_screen_bound_ide.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/check_soft_partition.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/coretail_bound.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/hybrid_nearfield.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/probe_bound_forms.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/quickstart.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/__init__.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/fastpair.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/fastpair_ide.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/figures.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/geomlib.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/nlc.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/partition.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step1_validate.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step2_convergence.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_b_scan.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_c_relaxation.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_d_floor.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_e_kernel.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_f_dispersion.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_g_basis.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_h_s22.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_i_gridrepr.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_j_scaling.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_k_population.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_l_sweep_compare.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_m_ccsdt.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+creating build/bdist.linux-x86_64/wheel/nlcsplit/tests
+copying build/lib/nlcsplit/tests/conftest.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_cc_convention.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_fastpair.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_fastpair_ide.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_geometry.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_kernel.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_nlc_closure.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_partition_factors.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_regression.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_tolerance_probe.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/__init__.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/__init__.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+running install_egg_info
+Copying nlcsplit.egg-info to build/bdist.linux-x86_64/wheel/./nlcsplit-0.1.0-py3.10.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/nlcsplit-0.1.0.dist-info/WHEEL
+creating '/tmp/wb/.tmp-o8aj8v0w/nlcsplit-0.1.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'nlcsplit/__init__.py'
+adding 'nlcsplit/fastpair.py'
+adding 'nlcsplit/fastpair_ide.py'
+adding 'nlcsplit/figures.py'
+adding 'nlcsplit/geomlib.py'
+adding 'nlcsplit/nlc.py'
+adding 'nlcsplit/partition.py'
+adding 'nlcsplit/step1_validate.py'
+adding 'nlcsplit/step2_convergence.py'
+adding 'nlcsplit/step_b_scan.py'
+adding 'nlcsplit/step_c_relaxation.py'
+adding 'nlcsplit/step_d_floor.py'
+adding 'nlcsplit/step_e_kernel.py'
+adding 'nlcsplit/step_f_dispersion.py'
+adding 'nlcsplit/step_g_basis.py'
+adding 'nlcsplit/step_h_s22.py'
+adding 'nlcsplit/step_i_gridrepr.py'
+adding 'nlcsplit/step_j_scaling.py'
+adding 'nlcsplit/step_k_population.py'
+adding 'nlcsplit/step_l_sweep_compare.py'
+adding 'nlcsplit/step_m_ccsdt.py'
+adding 'nlcsplit/examples/__init__.py'
+adding 'nlcsplit/examples/check_fast_pair.py'
+adding 'nlcsplit/examples/check_screen_bound_ide.py'
+adding 'nlcsplit/examples/check_soft_partition.py'
+adding 'nlcsplit/examples/coretail_bound.py'
+adding 'nlcsplit/examples/hybrid_nearfield.py'
+adding 'nlcsplit/examples/probe_bound_forms.py'
+adding 'nlcsplit/examples/quickstart.py'
+adding 'nlcsplit/tests/__init__.py'
+adding 'nlcsplit/tests/conftest.py'
+adding 'nlcsplit/tests/test_cc_convention.py'
+adding 'nlcsplit/tests/test_fastpair.py'
+adding 'nlcsplit/tests/test_fastpair_ide.py'
+adding 'nlcsplit/tests/test_geometry.py'
+adding 'nlcsplit/tests/test_kernel.py'
+adding 'nlcsplit/tests/test_nlc_closure.py'
+adding 'nlcsplit/tests/test_partition_factors.py'
+adding 'nlcsplit/tests/test_regression.py'
+adding 'nlcsplit/tests/test_tolerance_probe.py'
+adding 'nlcsplit-0.1.0.dist-info/licenses/LICENSE'
+adding 'nlcsplit-0.1.0.dist-info/METADATA'
+adding 'nlcsplit-0.1.0.dist-info/WHEEL'
+adding 'nlcsplit-0.1.0.dist-info/top_level.txt'
+adding 'nlcsplit-0.1.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+Successfully built nlcsplit-0.1.0-py3-none-any.whl

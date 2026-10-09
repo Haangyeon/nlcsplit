@@ -33,12 +33,17 @@ python -m pytest -q                             # everything (79 today), incl. S
 Those two counts are not typed here from memory: `evidence/release_qa/test_count_census.py`
 re-collects the suite and archives its printout, with per-module rows that must sum to the
 total (`evidence/release_qa/20261009T105424Z_test_count_census.out`: 79 collected, 58 non-slow
-plus 21 slow). The published wheel carries 54 of them; 25 stay behind, in two different
-reasons. Twenty test a frozen reference implementation (`fastpair_ide.py`) that is
-deliberately not distributed. The other five are `nlcsplit/tests/test_nlc_closure.py`, the
-closure guard and the two regroupings that must make it fail — they run from a clone of the
-repository, and they are not in the wheel, which is said here rather than left for the reader
-to discover.
+plus 21 slow). The published wheel carries 59 of those 79 - 39 members, eight test modules
+(`evidence/release_qa/20261009T112333Z_shipping_wheel_census.out`). Twenty stay out: they are the
+tests of `nlcsplit/fastpair_ide.py`, a peer's frozen reference implementation that is deliberately
+not distributed, and that reason is named in the export tool's `INTERNAL_ONLY_MODULES` so the gap
+is a stated exclusion rather than a silence. Installed out of tree, the wheel's own suite is
+56 passed and 3 skipped in 394.19 s
+(`evidence/release_qa/20261009T112500Z_wheel_out_of_tree.out`); the three skips want the official
+S22 geometries, which are not in the wheel. Until today the shipped test list had also dropped
+`nlcsplit/tests/test_nlc_closure.py` - the closure guard and the two regroupings that must make
+it fail - and the export gate said so in terms ("pip install . would install it, the wheel has no
+reason not to"), so it ships now and its five tests are among the 56.
 
 ## Quickstart
 
