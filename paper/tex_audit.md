@@ -2,13 +2,13 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 143538 chars, 1421 lines
+- source `paper/main.md`: 144992 chars, 1437 lines
 - output `paper/main.tex`: title from the level-1 heading, 9 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
 - tags cited in the body: 33
-- figures pulled in: 4 -> tracked
-- inline backticked paths in the body text: 46 scanned -> tracked
+- figures pulled in: 5 -> tracked
+- inline backticked paths in the body text: 48 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
 - bib entries cited: 25 of 25

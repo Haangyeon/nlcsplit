@@ -921,11 +921,27 @@ optimisation every quadratic kernel eventually tries is the obvious one: bound e
 discard the blocks whose bound cannot matter at the requested accuracy, and hope the arithmetic
 saved outweighs the deciding. We built that path - box separation of the point sets, a leaf-pair
 traversal with a monotone accept rule, and a per-block certificate - and timed it against the
-exact sum twice, with the node contention-gated rather than called unloaded - the load was
-sampled before and after each rung, and no window enters the analysis unless the node carried no
-external runnable task, so a contended window cannot be read as a measurement. It is slower everywhere. Of 33 timed
+exact sum twice on a node under a contention gate: the load was sampled before and after each
+rung, and no window enters the analysis unless the node carried no external runnable task, so a
+contended window cannot be read as a measurement. It is slower everywhere. Of 33 timed
 screened/exact pairs, none ran faster: the ratio spans 1.08-10.28x in the archived window and
-1.37-13.29x in the re-run window [S25].
+1.37-13.29x in the re-run window [S25]. Both windows are drawn in Figure 5, so the
+slower-everywhere statement can be read off one panel rather than taken on trust.
+
+![Provable block screening timed against the exact double sum: wall clock versus the number of far-field point pairs actually evaluated, and the retained-pair fraction versus the achieved error, for both contention-gated windows](figs/fig3_screening_cost.png)
+
+**Figure 5.** The cost of keeping the (i, j) index, and why the provable bound does not pay for
+it. Left: for each system and grid level, the wall clock of the screened path is plotted against
+the number of far-field point pairs it actually evaluated, paired by connector with the exact
+double sum on the same system - every connector goes from less work to more time, which is the
+statement "none of the 33 pairs ran faster" in picture form. Right: the fraction of far-field
+pairs retained against the achieved error, with the accuracy the paper needs drawn as a band; the
+retained share stays high precisely where the tolerance has to be tight. Hollow markers are the
+archived window, filled markers the 2026-09-30 re-run, so a single figure carries both windows
+rather than the favourable one. Drawn by `nlcsplit/figures.py` from
+`evidence/scaling/step_j.json` and `evidence/scaling/step_j_rerun_20260930.json`, which are the
+same two artefacts [S25] quotes; the script prints the per-window contention-gate tally
+before drawing, and refuses to draw at all when fewer than two samples pass.
 
 The culprit is the bound rather than the traversal. At atom-pair granularity the smallest
 block-pair certificate we found for a real dimer is 197.96 Ha, against the quantity it would
