@@ -285,7 +285,7 @@ and one density, the four variants give E_AB = -1.3598, -1.1129, -1.1962 and -1.
 kcal/mol on benzene...water, and the whole term is -31.4256 kcal/mol in every one of those
 four rows [S33]. The last part is the structural point rather than a coincidence: on a fixed
 grid an ownership choice redistributes the double sum between blocks, it cannot move the
-total. The totals that §2.5's Table 1 varies between schemes move because each scheme is
+total. The totals Table 1 varies between schemes move because each scheme is
 also regenerating its own grid - which is the second of the two switches, and the reason the
 published spread is now reported as attribution and quadrature separately (§3.4). Points with ρ below
 `rho_floor` (default 10⁻¹²) are excluded from the double sum; across the sweep this
