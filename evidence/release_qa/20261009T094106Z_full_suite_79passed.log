@@ -1,0 +1,8 @@
+# 全套 pytest：evidence/release_qa/20261009T094106Z_full_suite_79passed.log 由 nlcsplit/logs/full_suite_20261009.log 原样入库
+# git HEAD 2ac6e2e  run_utc(host clock)=20261009T094106Z
+# 命令：OMP_NUM_THREADS=4 python3 -m pytest nlcsplit/tests -q   （集群默认 python 无 pytest，未擅自装）
+# 上一份全套归档是 79 passed / 355.09 s（2026-10-06，默认线程）；本次限 4 线程 ⇒ 504.09 s 级别耗时属预期
+--- verbatim pytest output follows ---
+........................................................................ [ 91%]
+.......                                                                  [100%]
+79 passed in 504.41s (0:08:24)
