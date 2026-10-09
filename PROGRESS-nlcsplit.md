@@ -4312,3 +4312,20 @@ task"；software.md 那处把驱动前置条件的转述从 "which need an unloa
 main 39 页 / 33 个标签 / `failed checks: 0` / `latex errors: 0` / claim_gate rc=0。
 另记：**项目记忆里"摘要一段 265 词"是 10-02 的量法**，今天实测 301（P2 那轮改写把它加长了）。
 历史陈述不改，但今后任何现时态的句子不要再写"265 词"。
+
+### #29 第二轮（引言）：121 词的分号链拆成八句
+
+量出来的事实：§1 共 1,676 词 / 10 段，**最长一句 121 词**（六个先行工作用分号串成一串），
+次长 70 词（Hyldgaard 那句）。这两句就是"仓库日志腔"最集中的地方。处理只动句界，不动主张：
+
+- 六先行工作那段改成一句一个工作（Kruse / Hujo / Sinha / Hamada / Vydrov 各一句），
+  两份 33 条结果清单单独成两句："Every title in those two lists was read, and none applies an
+  atomic partition to the VV10 double sum." —— 原来那个"读遍每条标题"的限定语挂在 121 词句尾，
+  读者最容易漏；现在它是独立句子。
+- Hyldgaard 那句 70 → 三句，最后一句保留对照用的分号（"They interpret the kernel and the holes;
+  we take an already-evaluated E_NLC and *bookkeep* it…"）。
+
+回验用的是**与 HEAD 的差**而不是我的印象：§1 的 14 个 `[[key]]` **集合不变**，
+词数 1,676 → 1,681（只多了连接词），最长句 121 → 94（剩下的 94 词那句是 libxc/ORCA/Psi4
+那条限制说明，属内容承重、下轮再动）。`build_pdf main` 39 页 / `failed checks: 0` /
+`latex errors: 0`，claim_gate rc=0。

@@ -141,11 +141,11 @@ JuNoLo [[lazic2010junolo]] [S14] evaluates the nonlocal double sum explicitly, a
 N² cost, but post-processes a converged density into an improved *total* energy, and
 recommends itself for bonded systems "where one cannot tell apart fragments", directing
 separable cases elsewhere. Hyldgaard, Berland and Schröder [[hyldgaard2014interp]] read the
-same quantity as a coupling of zero-point energies of semilocal exchange-correlation holes:
-a real-space *interpretation*, and the strongest available objection to calling the term
-unanalyzable, so we keep the distinction explicit - they interpret the kernel and the holes,
-we take an already-evaluated E_NLC and *bookkeep* it against named fragments and atom pairs,
-then report how much the bookkeeping itself moves the answer.
+same quantity as a coupling of zero-point energies of semilocal exchange-correlation holes.
+That is a real-space *interpretation*, and it is the strongest available objection to calling
+the term unanalyzable, so we keep the distinction explicit. They interpret the kernel and the
+holes; we take an already-evaluated E_NLC and *bookkeep* it against named fragments and atom
+pairs, then report how much the bookkeeping itself moves the answer.
 
 What survives that comparison is specific: taking an existing, already-parameterised VV10
 double sum on a numerical integration grid, resolving it into named fragment and atom pairs
@@ -156,16 +156,16 @@ strings written closest to our own claim both return zero records, and the non-z
 were enumerated in full through the database's own record endpoint, so every returned record
 was read rather than the top one. The nearest neighbours are each attributable in one
 clause. Kruse, Banáš and Sponer [[kruse2019dna]] benchmark VV10 among 29 functionals and
-decompose the *total* interaction energy by SAPT; Hujo and Grimme [[hujo2011hbond]]
-benchmark VV10 for hydrogen bonds; Sinha and Pavanello [[sinha2015fdevdw]] construct a
-*new* subsystem-based nonlocal functional rather than resolving an existing one; Hamada and
-Tsukada [[hamada2011c60au]] attribute an *adsorption energy* to the term, the opposite
-direction; Vydrov and Van Voorhis [[vydrov2010simple]] re-derive the nonlocal construction
-itself; and two further result lists of 33 records each - one spanning the whole "van der
-Waals density functional" [[dion2004]] x "nonlocal correlation" topic, one crossing
-"nonlocal correlation" with the partition schemes themselves (Becke, Hirshfeld, Mulliken,
-atoms-in-molecules) - contain, on reading every title, no application of an atomic partition
-to the VV10 double sum.
+decompose the *total* interaction energy by SAPT. Hujo and Grimme [[hujo2011hbond]] benchmark
+VV10 for hydrogen bonds. Sinha and Pavanello [[sinha2015fdevdw]] construct a *new*
+subsystem-based nonlocal functional rather than resolving an existing one. Hamada and Tsukada
+[[hamada2011c60au]] attribute an *adsorption energy* to the term, the opposite direction.
+Vydrov and Van Voorhis [[vydrov2010simple]] re-derive the nonlocal construction itself.
+Two further result lists of 33 records each remain: one spans the whole "van der Waals density
+functional" [[dion2004]] x "nonlocal correlation" topic, the other crosses "nonlocal
+correlation" with the partition schemes themselves (Becke, Hirshfeld, Mulliken,
+atoms-in-molecules). Every title in those two lists was read, and none applies an atomic
+partition to the VV10 double sum.
 
 Two cautions about that instrument belong with the claim, because a reader who does not know
 them will over-read the zeros. A keyword-shaped novelty query is narrower than the claim it
