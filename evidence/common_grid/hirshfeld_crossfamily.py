@@ -79,7 +79,13 @@ def free_atom_soft(mol, X0, basis="6-31g*"):
         if not mf.converged:
             sys.exit("%s: 自由原子 UHF 未收敛" % sym)
         dm = mf.make_rdm1()
-        ao = ni.eval_ao(atm, X0, deriv=1)
+        # 关键：自由原子必须落在**它自己的位置**上——把网格搬到以该原子为原点再取值。
+        # 2026-10-09 第一版把六个自由原子都放在原点算密度 ⇒ 六条径向函数几乎重合 ⇒
+        # 权重≈均匀(1/natm) ⇒ 片间块恰好等于总量的一半（三条体系全都如此），
+        # 那是构造错的指纹，不是物理结果；那条错读数留档在
+        # evidence/common_grid/20261009T152500Z_hirshfeld_crossfamily_l1_small.out
+        rel = X0 - mol.atom_coord(a, unit="Angstrom")
+        ao = ni.eval_ao(atm, rel, deriv=1)
         rho = ni.eval_rho(atm, ao, dm, xctype="GGA")
         dens.append(np.asarray(rho[0], dtype=float))   # 只要密度分量；整块 append 会把梯度也塞进来
     W = np.vstack(dens)
@@ -178,6 +184,12 @@ for name in NAMES:
     S_vor = voronoi_soft(mol, X0)
     e_vor, tot_vor = row_from_soft(mol, X0, W0, rho0, sig0, frags, S_vor)
 
+    # 对照（不计入预登记的跨度判据）：全原子等权 1/natm。
+    # 它的作用是当"构造"与"权重近乎均匀"分离：若某构造的读数与这一行几乎相同，
+    # 那个构造在网格上就没有真正区分原子，读数不能算它的性质。
+    S_uni = np.full((mol.natm, len(X0)), 1.0 / mol.natm)
+    e_uni, tot_uni = row_from_soft(mol, X0, W0, rho0, sig0, frags, S_uni)
+
     e_all = e_fam + [e_hir, e_vor]
     span_all = max(e_all) - min(e_all)
 
@@ -185,6 +197,8 @@ for name in NAMES:
         print("   家族内 %-16s E_AB = %+9.4f  E_NL = %+10.4f" % (s, fam[s][0], fam[s][1]))
     print("   Voronoi(最近原子硬指派)  E_AB = %+9.4f  E_NL = %+10.4f" % (e_vor, tot_vor))
     print("   Hirshfeld(自由原子库存化) E_AB = %+9.4f  E_NL = %+10.4f" % (e_hir, tot_hir))
+    print("   （对照，不计入判据）等权 1/natm E_AB = %+9.4f  E_NL = %+10.4f"
+          % (e_uni, tot_uni))
     print("   → 家族内跨度 = %.4f kcal/mol（四方案，同一网格同一权重）" % span_fam)
     print("   → 含两个家族外构造的总跨度 = %.4f kcal/mol" % span_all)
     ratio = span_all / span_fam if span_fam > 0 else float("inf")
