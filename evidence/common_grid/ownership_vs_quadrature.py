@@ -178,5 +178,9 @@ if bad:
     print("护栏未过：%s —— 上面的表不许拿出去用" % bad)
     raise SystemExit(1)
 print("全部体系护栏通过。判决规则见文件头预登记：归属/求积 ≈ 1 以上 → 结局 A；≈ 0 → 结局 B 停下先报。")
-print("host=%s  run_utc=%s" % (socket.gethostname(),
-                               time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())))
+# 时间戳优先用宿主传入的 RUN_TS：本机 WSL 的钟曾慢三天，产物名与 run_utc 因此说谎一次
+# （见同目录 NOTE-clock-skew.md）。两个钟并排打出来，偏差当场可见。
+print("run_utc=%s (host-provided)  wsl_clock=%s  host=%s"
+      % (os.environ.get("RUN_TS", "NOT-SET"),
+         time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         socket.gethostname()))
