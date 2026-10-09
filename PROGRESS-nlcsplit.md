@@ -4048,3 +4048,10 @@ Nonlocal-Correlation Term, and the Grid-Partition Dependence It Inherits*。
 **未完**：P3 闸门链（测试普查 79 → software.md/README 计数 74→79 → wheel 重打 + 树外跑 →
 15 道导出闸门 → **MANIFEST 最后**）；席位的结构性 Major（M1 §3.2 取证段搬 SI、M2 写"EDA 用户
 该怎么用"、M4 八/22 子集的理由）属改动稿件形状，等他点头；#29、#31 仍在。
+
+### 编号勘误（自己造的）
+
+提交 `05de98d` 的 message 把 §6 "does not shrink with a finer grid" 那条写成"第十四处"，
+**正确计数是第十三处**（1–9 自查、10 §4.1 假豁免、11 S27、12 §2.5、13 本条）。
+PROGRESS 与决策包用的都是十三。提交已入库、不改动历史，所以勘误只写在这里——
+读 commit message 的人请以本节为准。
