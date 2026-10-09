@@ -51,7 +51,15 @@ const OUT_JSON = path.join(OUTDIR, TS + '_bib_all25_crossref_result.json');
 // mailto 取自仓内既有通讯邮箱（paper/main.md 第 8 行、paper/p2.md 第 15 行、
 // paper/software.md front matter、evidence/claims_audit/D_p2_bib_mapping.md 第 15 行同 UA）。
 // 不使用/不臆造其它邮箱。
-const MAILTO = 'haangyeon@snnu.edu.cn';
+// 2026-10-09 由调用方改：原来这一行把地址硬编码成字面量，于是这份代码里烙着登录名，
+// 导出闸门 B 判"账号串"拒绝出货（同一条规矩 09-30 就为"讲脱敏的证据文件自己没过脱敏"立过）。
+// 改成运行时从 main.md 取，读不到就硬失败——这样任何读者重放这份脚本用的是他自己的地址，
+// 而公开副本里不再出现账号。实际发出去的 UA 值见本目录那两份读数档案的抬头（已同样改为来源指针）。
+const fs0 = require('fs');
+const mainTxt = fs0.readFileSync(require('path').join(__dirname, '..', '..', 'paper', 'main.md'), 'utf8');
+const MAILTO_HIT = mainTxt.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/);
+if (!MAILTO_HIT) { console.error('paper/main.md 里没读到通讯邮箱：不臆造一个顶上'); process.exit(3); }
+const MAILTO = MAILTO_HIT[0];
 const UA = 'refcheck/1.0 (mailto:' + MAILTO + ')';
 const DELAY_MS = 250;              // skill 规定的礼貌间隔
 const ROWS = 3;                    // skill 规定 rows=3

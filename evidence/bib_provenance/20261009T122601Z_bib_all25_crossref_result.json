@@ -5,7 +5,7 @@
   "host_clock_note": "文件名时间戳由宿主 Git Bash `date -u +%Y%m%dT%H%M%SZ` 计算；未采用 WSL 时钟（本机 WSL 钟被观测到会慢几天）",
   "generated_from": "paper/references.bib（只读，本脚本不写 paper/ 下任何文件）",
   "method": "skill reference-metadata-crossref-check：/works?query.bibliographic&rows=3 主题检索 -> 题名归一化字符 4-gram Jaccard ≥0.80 匹配 -> 只比 年/卷/页 硬字段；页码缩写还原；期刊名缩写感知（仅证据列）。另对每条**存储 DOI 独立回查**作对象级交叉核验，两者同入候选池，同对象优先。",
-  "user_agent": "refcheck/1.0 (mailto:haangyeon@snnu.edu.cn)",
+  "user_agent": "refcheck/1.0 (mailto:<通讯作者机构地址，来源 paper/main.md 第 8 行；2026-10-09 由调用方从字面量改为来源指针，因导出闸门 B 不许公开副本出现登录名>)",
   "rows": 3,
   "threshold": 0.8,
   "delay_ms": 250,

@@ -1,5 +1,5 @@
 Crossref 外部元数据核验 —— paper/references.bib 全 25 条   (rev2)
-stamp 20261009T122601Z (UTC, 宿主 Git Bash 时钟) | UA refcheck/1.0 (mailto:haangyeon@snnu.edu.cn) | rows=3 | 阈值 0.8 | API 调用 51 次
+stamp 20261009T122601Z (UTC, 宿主 Git Bash 时钟) | UA refcheck/1.0 (mailto:<通讯作者机构地址，来源 paper/main.md 第 8 行；2026-10-09 由调用方把字面量换成来源指针，导出闸门 B 不许公开副本出现登录名>) | rows=3 | 阈值 0.8 | API 调用 51 次
 
 ====================================================================================================
 A. 字段解析率（先自证，再看结论 —— skill 核心纪律）
