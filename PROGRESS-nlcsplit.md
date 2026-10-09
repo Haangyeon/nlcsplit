@@ -4219,3 +4219,19 @@ bib 清点落地后再跑导出：**`shipped:false`、exit 1、GATE FAILED 3 条
 ⇒ 规矩补一句：**派子代理写"要随包发布"的证据文件，任务书里必须写明"登录名/IP/绝对路径不许
 进文件，需要就运行时读来源"**。这次是我在任务书里给了它一个带 mailto 的例子，所以根因在我这边，
 不在它那边。
+
+### 第三次导出：shipped:true（20:58），出货链这一轮的闭环
+
+`export_rc=0`、`"shipped": [`、`GATE FAILED` 命中 0 次。新容器 `72e61ab5…`（124998 B）。
+**只读工作核对**（刻意不再入档，理由见上面那条"证据定稿先于导出"）：
+`wheel_member_diff.py` 拿 `measured-7bdcb6f6` 与 `72e61ab5` 比 → `VERDICT OK`，两边各 39 成员、
+**37 个逐成员摘要相同**、34 个 `nlcsplit/**.py` 逐字节相同、唯二差异仍是 METADATA/RECORD。
+发布树自查：`dist/nlcsplit/evidence/bib_provenance/MANIFEST.sha256`（14 行）与
+`release_qa/MANIFEST.sha256`（67 行）各自 `sha256sum -c` 退出码 0 —— 也就是说公开仓那份清单
+与它自己目录里的字节是对得上的，这是闸门 C 在母仓与发布树两头都验过的事。
+
+今天这一天在出货链上跑通的顺序（记成模板）：
+**改代码/证据 → 归档（.out + .out.rc）→ `git add` → 各目录 MANIFEST 最后重生成 → `git commit`
+→ `node tools/make_public_repo.js` 读到 shipped:true → 只读核对（不再产新档案）**。
+中间两次 `shipped:false` 都是这条顺序被我走反时闸门自己拦的：一次是清单没登记 12:04 的新档案，
+一次是子代理档案里带登录名。两次都不是我自己查出来的。
