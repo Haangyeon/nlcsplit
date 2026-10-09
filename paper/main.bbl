@@ -1,4 +1,4 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{25}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -124,6 +124,12 @@ A.~D. Becke.
 \newblock \emph{The Journal of Chemical Physics}, 88:\penalty0 2547--2553,
   1988.
 \newblock \doi{10.1063/1.454033}.
+
+\bibitem[Treutler and Ahlrichs(1995)]{treutler1995}
+Oliver Treutler and Reinhart Ahlrichs.
+\newblock Efficient molecular numerical integration schemes.
+\newblock \emph{The Journal of Chemical Physics}, 102:\penalty0 346--354, 1995.
+\newblock \doi{10.1063/1.469408}.
 
 \bibitem[Stratmann et~al.(1996)Stratmann, Scuseria, and Frisch]{stratmann1996}
 R.Eric Stratmann, Gustavo~E. Scuseria, and Michael~J. Frisch.
