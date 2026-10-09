@@ -272,7 +272,9 @@ altogether. That script is the only producer of the "agrees to 2e-3 kcal/mol wit
 independently written script" sentence in section 2.1, so until now the published tree
 contained neither that script nor any artefact carrying the comparison column. The driver
 now lists all thirteen with each one's precondition (which need an argument, which need a
-geometry download, which need an unloaded machine), derives the repository root from its own
+geometry download, which need the node contention-gated - the timing script counts external
+runnable tasks and marks a dirty sample unusable rather than trusting the wall clock), derives
+the repository root from its own
 location instead of a hard-coded working path, and refuses to run the argument-taking ones
 rather than silently running them at their defaults.
 

@@ -4235,3 +4235,33 @@ bib 清点落地后再跑导出：**`shipped:false`、exit 1、GATE FAILED 3 条
 → `node tools/make_public_repo.js` 读到 shipped:true → 只读核对（不再产新档案）**。
 中间两次 `shipped:false` 都是这条顺序被我走反时闸门自己拦的：一次是清单没登记 12:04 的新档案，
 一次是子代理档案里带登录名。两次都不是我自己查出来的。
+
+## 2026-10-09（第十四处实质差错）：撤回过的"空载机器"活在摘要与 §6 里，而**图早就改完了**
+
+复查 #29（图）时撞上的。`nlcsplit/figures.py:146` 的 (a) 面板标题写的是
+"contention gate: external runnable tasks = 0 at each sampling instant … **not an idle-box claim**"，
+并且 09-30 那次已经把这句同步进了 §6 的机制说明；可是：
+
+- 摘要第 46 行仍然写 "on an **unloaded machine**"（无 Qualifier）；
+- §6 第 924 行也还写 "on an unloaded machine"，后面才跟机制；
+- 而原件根本不支持"空载"这个词：`evidence/scaling/step_j.json`（6 行）与
+  `step_j_rerun_20260930.json`（5 行）合起来 **11 行 / 44 个 run**，`load_after.other_runnable`
+  **44 个全为 0**、`valid_timing` 44/44，可 `load1` 的实测区间是 **0.99–4.24**。
+  也就是说当时成立的是"没有别的外部可运行任务"，不是"机器空着"。
+  （我先只看见 0.99 与 1.07 两个打印值就写"0.99–1.07"——**这正是"多行测量的头几行不许当区间
+  说出口"那条老规矩**；取极值要用取极值的命令，上面的 min/max 就是 sort 出来的。）
+
+⇒ 已改成与原件同话：摘要 "on a contention-gated node (no external runnable task)"；
+§6 "with the node contention-gated rather than called unloaded - the load was sampled before and
+after each rung, and no window enters the analysis unless the node carried no external runnable
+task"；software.md 那处把驱动前置条件的转述从 "which need an unloaded machine" 改成
+"which need the node contention-gated（计时脚本自己数外部可运行任务，脏样本标成不可用，而不是信墙钟）"。
+没有新增任何数字（判据句无数字，claim-gate rc=0；main 38 页、software 15 页、`failed checks: 0`）。
+
+**这一处为什么是我自己抓到的而不是闸门**：撤回扫描的老规矩（[[retraction-scan-all-carriers]]）
+这次是我主动按"图与正文口径是否同源"去 grep 才命中的——闸门只核数字与路径，
+**"同一件事在两个载体里说法不同"这一类没有任何机器判据**。
+
+**留下的一件（要再导出，所以排在出货前那一次里）**：`nlcsplit/run_all.sh:57` 给 step_j 的前置条件
+仍写"必须**空载**"，虽然它同一行就解释了机制是数 R 态外部任务。它在发布包里 ⇒ 改它要走
+"清单最后→再导出"，今夜不再产证据、不再导，登记为出货前那一次导出的顺带项。

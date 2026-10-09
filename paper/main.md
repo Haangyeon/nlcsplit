@@ -43,7 +43,7 @@ fixed ratio. The attribution choice does not collapse either: 0.004-0.247
 kcal/mol absolute at grid level 1, with no pattern by interaction type, so a fragment-resolved nonlocal
 energy needs a per-system error bar. We found no published
 implementation that resolves this term into fragment pairs, and the index is not free: of
-33 timed screened/exact pairs on an unloaded machine none beat the exact sum, because the
+33 timed screened/exact pairs on a contention-gated node (no external runnable task) none beat the exact sum, because the
 tightest provable block bound found in a real dimer is loose by a factor of 2.4e5
 [S25].
 
@@ -921,8 +921,9 @@ optimisation every quadratic kernel eventually tries is the obvious one: bound e
 discard the blocks whose bound cannot matter at the requested accuracy, and hope the arithmetic
 saved outweighs the deciding. We built that path - box separation of the point sets, a leaf-pair
 traversal with a monotone accept rule, and a per-block certificate - and timed it against the
-exact sum twice, on an unloaded machine, with the load sampled before and after each rung so a
-contended window cannot be read as a measurement. It is slower everywhere. Of 33 timed
+exact sum twice, with the node contention-gated rather than called unloaded - the load was
+sampled before and after each rung, and no window enters the analysis unless the node carried no
+external runnable task, so a contended window cannot be read as a measurement. It is slower everywhere. Of 33 timed
 screened/exact pairs, none ran faster: the ratio spans 1.08-10.28x in the archived window and
 1.37-13.29x in the re-run window [S25].
 
