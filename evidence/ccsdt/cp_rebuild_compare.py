@@ -226,7 +226,7 @@ def parse_dtot(level=2):
     return got
 
 
-def derived_tables(new, dft2):
+def derived_tables(new, dft2, old):
     """§3.2 的跨基组幅度与比值、§3.1 的 BSSE 八个数：都由这里生成，正文不再手抄。"""
     print("== 锚自己的跨基组幅度，以及它相对偏差的比值 (6-31g* -> aug-cc-pVDZ, frozen) ==")
     print("  %-30s %9s %9s %9s %7s" % ("system", "dE_CP 631", "dE_CP aug", "span", "span/dev"))
@@ -258,6 +258,24 @@ def derived_tables(new, dft2):
     for name in DFT_ORDER:
         print("  %-30s dE_CP %+9.4f   ΔE_int %+9.4f   BSSE %7.4f"
               % (EN[name], dft2[name], dtot[name], dft2[name] - dtot[name]))
+    print()
+    print("== frozen-core vs all-electron on one (system, basis), measured two ways ==")
+    print("   left: monomers built in their own basis (the construction this paper no longer")
+    print("   uses); right: ghost monomers. A gap that only shows up in the left column was")
+    print("   never a frozen-core effect - it is BSSE changing size with the basis.")
+    print("  %-30s %-13s %15s %11s" % ("system", "basis", "gap own-basis", "gap ghost"))
+    for name in DFT_ORDER:
+        for basis in ("6-31g*", "aug-cc-pvdz"):
+            k_f, k_a = (name, basis, "frozen"), (name, basis, "all")
+            if k_f not in new or k_a not in new:
+                continue
+            gap_ghost = abs(new[k_f]["de_kcal"] - new[k_a]["de_kcal"])
+            if k_f in old and k_a in old:
+                print("  %-30s %-13s %15.4f %11.4f"
+                      % (EN[name], basis,
+                         abs(old[k_f]["de_kcal"] - old[k_a]["de_kcal"]), gap_ghost))
+            else:
+                print("  %-30s %-13s %15s %11.4f" % (EN[name], basis, "-", gap_ghost))
 
 
 def grid_rows(dft2, dft1, new):
@@ -327,7 +345,7 @@ def main():
     dft2 = parse_dft_cp(2)
     deviation_table(old, new, dft2)
     print()
-    derived_tables(new, dft2)
+    derived_tables(new, dft2, old)
     print()
     grid_rows(dft2, parse_dft_cp(1), new)
     print()
