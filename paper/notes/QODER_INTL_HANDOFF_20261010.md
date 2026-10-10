@@ -15,11 +15,16 @@
    我从 CN 侧复制进来的记忆快照入口（含优先级表与 `SHA256SUMS.txt` 自证方法）。
    最关键两篇：`project-nlc-decomposition-line.md`（科学线与全部读数，**看最后一节"补记 2026-10-10 午后"**）、
    `project-publishability-constraint.md`（投稿与出货，同样看最后一节）
-2. `E:\Project\GAMESS\PROGRESS-nlcsplit.md` — 追加式工作日志，最后三节是本轮（B 路线开工→苯两格→八格补齐并撤回一句过头话）
-3. `E:\Project\GAMESS\AGENTS.md` — 本仓硬规矩与闸门语义
+2. `E:\Project\GAMESS\tools\hooks\README.md` — 闸门层说明（五个闸门、判据、失败动作）。
+   三条硬规矩（认文件不认通知 / MANIFEST 最后重生成 / 集群日志 cat+sha256）由
+   `tools\hooks\session_brief.js` 在每次开场打印。
+   **本仓没有 `AGENTS.md`**（我核过：`find . -maxdepth 2 -iname AGENTS.md` 为空），别去找它。
+3. `E:\Project\GAMESS\PROGRESS-nlcsplit.md` — 追加式工作日志；最后四节是本轮
+   （B 路线开工 → 苯两格 → 八格补齐并撤回一句过头话 → 本次交接）
 4. `E:\Project\GAMESS\paper\main.md` — 主篇（21,979 词 / 5 图 / 附录 33 行，下一行号 **S34**）
 5. `E:\Project\GAMESS\paper\notes\decision_pack_20261009.md` — 投稿路线报价与"只有他能做"的清单
-6. 你**不要**信你自己那份旧记忆：`memory\project-gamess-blw-wb97xv.md` 停在 2026-09-28，
+6. 你**不要**信你自己那份旧记忆：
+   `C:\Users\Administrator\.qoder\projects\E--Project-GAMESS\memory\project-gamess-blw-wb97xv.md` 停在 2026-09-28，
    里面"无 git 仓库"已经错（现在是 git 仓，分支 `master`，实测 `git rev-list --count HEAD` = **220** 个提交），
    而且它完全不知道 NLC 分解这条线是当前主线。
    GAMESS-BLW/ωB97X-V 那条 Fortran 线的结论是**已作废**（`rhfuhf.src` 改动让多中心 RHF 收敛到错误解，全树能量不能用）。
@@ -33,7 +38,7 @@
 | 家族外分区（Voronoi + Hirshfeld，自由原子基态多重度/UHF/不球平均） | 完成，八格 | `20261009T155508Z*`（三小体系）、`20261009T193232Z*`（苯二聚体两格）、`20261010T061455Z*`（苯-水/氨/甲烷） |
 | 14 处实质差错 | 全部落地 | `PROGRESS-nlcsplit.md` 各节 + `decision_pack` |
 | 出货链（发布树 56+3 文件、wheel 39 成员、树外 56 passed + 3 skipped、rc=0） | 关账 | `evidence/release_qa/` |
-| 参考文献年份口径（判据 = Crossref published-print） | 25/25 | `evidence/bib_provenance/20261009T124738Z*_after_fix.out` |
+| 参考文献年份口径（判据 = Crossref published-print） | 25/25 | `evidence/bib_provenance/20261009T124738Z_bib_all25_issue_year_check_after_fix.out`（+.rc） |
 | claim gate（正文数字出处，5 份稿） | 干净，`node tools/claim_gate.js` rc=0 | 本轮实测 |
 | `evidence/common_grid/MANIFEST.sha256` | 19 行，`sha256sum -c` 全 OK | 本轮实测 |
 
