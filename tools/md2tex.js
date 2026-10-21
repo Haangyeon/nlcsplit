@@ -204,7 +204,7 @@ function isTable(lines, i) {
 function splitRow(l) {
   return l.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split(/(?<!\\)\|/).map(c => c.trim());
 }
-function table(block) {
+function table(block, cap) {
   const head = splitRow(block[0]);
   const body = block.slice(2).map(splitRow);
   const cols = head.length;
@@ -224,13 +224,38 @@ function table(block) {
     while (cells.length < cols) cells.push('');
     lines.push(cells.map(c => inline(c)).join(' & ') + ' \\\\');
   }
-  lines.push('\\bottomrule', '\\end{' + env + '}', '\\end{table}');
+  lines.push('\\bottomrule', '\\end{' + env + '}');
+  // A float with no caption has no number, and a paper whose tables cannot be numbered is a
+  // paper where "Table 1" means whatever the reader guesses. The caption text comes from a
+  // `**Table N.** ...` paragraph placed directly after the table, mirroring the existing
+  // `**Figure N.**` convention, and the number in that marker becomes the LaTeX label so
+  // \ref{tab:N} and the running text cannot drift apart. With no marker the table still
+  // builds, but TABLES_WITHOUT_CAPTION counts it and the audit says so out loud.
+  if (cap) {
+    const m = cap.match(/^\*\*Table\s+(\d+)\.\*\*/);
+    if (!m) {
+      block('E-TABLE-CAPTION-UNNUMBERED',
+        SRC + ' 有一张表的题注行没有以 `**Table N.**` 开头：' + cap.slice(0, 70) + '…',
+        '题注必须自带编号，否则 \\\\label 只能靠出现顺序猜，而正文里的 "Table 3" 就是手数的。');
+    } else if (Number(m[1]) !== tblSeq) {
+      block('E-TABLE-NUMBER-ORDER',
+        SRC + ' 第 ' + tblSeq + ' 张表的题注写着 Table ' + m[1]
+        + '，但它在文档里不是这个序号。',
+        '按文档出现顺序重编题注号，并同步正文里的引用；表号与顺序不一致时 LaTeX 生成的编号'
+        + '和读者看到的编号会是两套。');
+    } else {
+      lines.push('\\caption{' + inline(cap.replace(/^\*\*Table\s*\d+\.\*\*\s*/, '')) + '}',
+        '\\label{tab:' + m[1] + '}');
+    }
+  }
+  lines.push('\\end{table}');
   return lines.filter(x => x !== '').join('\n');
 }
 
 const out = [];
 const seenH = [];
 let figNo = 1;
+let tblSeq = 0, tablesTotal = 0, tablesNumbered = 0;
 const FIGS = [];
 let TITLE = null;
 let i = 0;
@@ -262,7 +287,21 @@ while (i < lines.length) {
   if (isTable(lines, i)) {
     const blk = [];
     while (i < lines.length && lines[i].includes('|') && lines[i].trim()) blk.push(lines[i++]);
-    out.push(table(blk));
+    tblSeq++; tablesTotal++;
+    // An optional `**Table N.** ...` paragraph directly after the table is its caption, consumed
+    // out of the prose so the float gets a number and a \label. Absent it, the table still builds
+    // but the audit reports the shortfall instead of pretending every float is citable.
+    let j = i;
+    let cap = null;
+    while (j < lines.length && !lines[j].trim()) j++;
+    if (j < lines.length && /^\*\*Table\s+\d+\.\*\*/.test(lines[j])) {
+      const cp = [];
+      while (j < lines.length && lines[j].trim() && !/^#/.test(lines[j]) && !isTable(lines, j)) cp.push(lines[j++]);
+      cap = cp.join(' ');
+      i = j;
+      tablesNumbered++;
+    }
+    out.push(table(blk, cap));
     continue;
   }
   if (!l.trim()) { i++; continue; }
@@ -315,6 +354,50 @@ if (!TITLE) {
       : '（') + '本脚本有意不拿它当标题：那是元数据，不是稿件的正文标题。）');
 }
 const body = out.join('\n\n');
+
+// Row-count gate for the provenance appendix.  Found by accident on 2026-10-21: eleven appendix
+// rows (S23-S33) are present in main.md and simply absent from main.tex, because a row's long
+// annotation was written as a separate paragraph and that terminates the markdown table -- the
+// converter then treats the surviving rows as prose and they never reach the float.  The existing
+// audit line ("appendix rows never cited in the body: none") was green throughout, because it
+// checks the *markdown* rows against the body text and never asks whether they made it into the
+// output.  A gate that reads the wrong artefact is worse than no gate: it certifies the loss.
+// So compare source rows against emitted rows by tag, and name what vanished.
+{
+  const mdRows = [...md.matchAll(/^\|\s*(S\d+)\s*\|/gm)].map(m => m[1]);
+  // Key both sides the same way. Capturing `^S(\d+) &` yields bare digits while the source side
+  // yields "S1", so every comparison misses and the gate reports the whole appendix as lost --
+  // it did exactly that on its first run, and had I believed it I would have "repaired" a
+  // perfectly emitted table. Capture the tag, not the number.
+  const emitted = new Set([...body.matchAll(/^(S\d+) &/gm)].map(m => m[1]));
+  const lost = mdRows.filter(t => !emitted.has(t));
+  if (mdRows.length && lost.length) {
+    block('E-APPENDIX-ROWS-LOST',
+      SRC + ' 的出处附表有 ' + mdRows.length + ' 行，排出的 ' + OUT + ' 里只有 '
+      + (mdRows.length - lost.length) + ' 行；丢的标签：' + lost.join(', ') + '。',
+      '通常是某一行的备注被写成独立段落、把 markdown 表格截断了。把备注放回该行的最后一个单元格里；'
+      + '正文里引用了 [S#] 而附表没有那一行，读者点到的就是一个查无此条的标签。');
+  }
+}
+
+// Running-text references must point at a float that exists. Before today no table in this
+// document had a number at all, so every "Table 1" the reader met was unresolvable -- and the
+// sentence "the third column is what Table 1 publishes" quietly meant a different table than the
+// one the earlier section defined. table() strips the `**Table N.**` marker out of the caption
+// text, so anything still matching here is running prose, and \label{tab:N} is what the reader
+// would actually see numbered.
+{
+  const labeled = new Set([...body.matchAll(/\\label\{tab:(\d+)\}/g)].map(m => Number(m[1])));
+  const refs = [...new Set([...body.matchAll(/\bTable\s+(\d+)\b/g)].map(m => Number(m[1])))];
+  const bad = refs.filter(n => !labeled.has(n));
+  if (bad.length) {
+    block('E-TABLE-REF-UNRESOLVED',
+      SRC + ' 正文引用了 Table ' + bad.join('/Table ') + '，但 ' + OUT + ' 里没有这个编号的表'
+      + '（现有编号：' + ([...labeled].sort((x, y) => x - y).join(', ') || '一个都没有') + '）。',
+      '要么给对应的表补一行 `**Table N.** 题注`，要么把引用改到它真正指的那一张。'
+      + '同一个 "Table 1" 在文里指两张表时，读者只能猜，审稿人只能拒。');
+  }
+}
 
 const stray = new Map();
 for (const ch of body + (TITLE || '')) {
@@ -623,6 +706,10 @@ auditText = '# LaTeX build and `[S#]` provenance audit'
     : 'none (this document has no front matter)') + '\n'
   + '- tags cited in the body: ' + usedInBody.length + '\n'
   + '- figures pulled in: ' + FIGS.length + ' -> ' + verdict(FIGS) + '\n'
+  + '- tables emitted: ' + tablesTotal + '; with a numbered caption: ' + tablesNumbered
+  + (tablesTotal && tablesNumbered !== tablesTotal
+      ? ' -> **FAIL: ' + (tablesTotal - tablesNumbered) + ' float(s) have no number to cite**'
+      : (tablesTotal ? ' -> all numbered' : ' (this document has no tables)')) + '\n'
   + '- inline backticked paths in the body text: ' + inlinePaths.length + ' scanned -> '
   + inlineBad + '\n'
   + '- appendix rows never cited in the body: ' + (uncited.length ? uncited.join(' ') + ' **FAIL**' : 'none') + '\n'
