@@ -6,12 +6,18 @@
 另给一种公共网格上的『最近原子硬指派』作为对照。
 
 每个点自带分区权重，因此 Σ_atoms ∫ = 分子积分 —— 这正是需要校验的性质。
+
+`SCHEMES` 里只有 Becke 家族（两个开关组合出四方案）。Voronoi 与 Hirshfeld 是**构造上
+不属于该家族**的归属，入口是"给定这批点上的坐标"，不是 `(becke_scheme, radii_adjust)`
+这一对，所以它们进 `CROSS_FAMILY_SCHEMES`，由 `scheme_factors()` 统一分派 —— 六个方案
+一个入口，但家族内那四个的既有调用点（按 `for s in SCHEMES` 遍历后喂给
+`partition_matrix`）不会被塞进一个它接不住的参数。
 """
 import ctypes
 
 import numpy as np
-from pyscf import lib, gto
-from pyscf.dft import gen_grid, radi
+from pyscf import lib, gto, scf
+from pyscf.dft import gen_grid, radi, numint
 from pyscf import dft
 
 SCHEMES = {
@@ -20,6 +26,13 @@ SCHEMES = {
     "becke-treutler": (gen_grid.original_becke, radi.treutler_atomic_radii_adjust),
     "stratmann":      (gen_grid.stratmann,      None),
 }
+
+# 家族外归属构造（见模块头：为什么它们不并进 SCHEMES）
+CROSS_FAMILY_SCHEMES = ("voronoi", "hirshfeld")
+ALL_SCHEMES = tuple(SCHEMES) + CROSS_FAMILY_SCHEMES
+
+# 自由原子的基态多重度（Hirshfeld 的自由原子密度按这个自旋态解 UHF）
+FREE_ATOM_MULT = {"H": 2, "C": 3, "N": 4, "O": 3, "F": 2}
 
 
 def partition_matrix(mol, coords, scheme="becke"):
@@ -172,6 +185,109 @@ def nearest_partition(mol, coords):
     nuc = np.asarray(mol.atom_coords())
     d2 = ((coords[:, None, :] - nuc[None, :, :]) ** 2).sum(-1)
     return np.argmin(d2, axis=1)
+
+
+_NORM_TOL = 1e-12   # 每点权重和偏离 1 的容差；与包外家族外测量脚本同值，动它就不是同一条判据
+
+
+def _check_normalized(S, scheme):
+    dev = np.abs(np.asarray(S).sum(axis=0) - 1.0).max()
+    if dev > _NORM_TOL:
+        raise AssertionError(f"{scheme}: 归一化后每点和偏离 1 达 {dev:.3e}")
+
+
+def voronoi_factors(mol, coords):
+    """Voronoi：最近原子硬指派写成 one-hot 的逐点归属权重，返回 (natm, N)。
+
+    不依赖任何密度，也不依赖 Becke 乘积因子 —— 它是"归属"这一侧最省的构造。
+    护栏：one-hot 的 argmax 必须与 nearest_partition 逐点一致，否则给的不是 Voronoi。
+    """
+    coords = np.asarray(coords)
+    owner = nearest_partition(mol, coords)
+    S = np.zeros((mol.natm, len(coords)))
+    S[owner, np.arange(len(coords))] = 1.0
+    if not np.array_equal(S.argmax(axis=0), owner):
+        raise AssertionError("voronoi: one-hot 权重与 nearest_partition 不一致")
+    _check_normalized(S, "voronoi")
+    return S
+
+
+def hirshfeld_factors(mol, coords, basis="6-31g*", mult=None):
+    """Hirshfeld / stockholder：逐点 w_A = ρ_A^free / Σ_B ρ_B^free，返回 (S, S_alt, n_zero)。
+
+    自由原子 = 该元素基态多重度（FREE_ATOM_MULT）、UHF 密度、与复合物同基组、同一批网格点，
+    **不做球平均**（与 Gaussian 默认实现的差别，按本仓规矩写在这里，不留给读者猜）。
+    S_alt 仅在有点需要兜底时非 None：那是"等权兜底"的敏感性对照，不是另一个方案；
+    n_zero 是自由原子密度全零（下溢）的点数，主规则对这些点按最近原子兜底。
+
+    中心坐标与传进来的 `coords` **同为 Bohr**（2026-10-12 A 件修正）。此前这里减的是
+    `mol.atom_coord(a, unit="Angstrom")`，而 PySCF 网格坐标恒为 Bohr，两个单位相减会让每个
+    自由原子按 (1 − 1/BOHR)·R 整体错位、离原点越远挪得越多；那是包外家族外测量脚本的原样口径，
+    本仓已归档的八格 Hirshfeld 读数就是这么来的，并进包内时曾刻意保持逐字不变。
+    改成同单位之后，那几份归档**不再能逐位复现**：旧档原样保留（同目录 sidecar 注记说明），
+    新读数以新档名入库；`evidence/common_grid/20261011T115335Z_*` 那份构造审计里
+    "水二聚体 +Hirshfeld 增量 0.0214 → 0.0000"就是本修正的定价读数。
+    """
+    coords = np.asarray(coords)
+    mult = FREE_ATOM_MULT if mult is None else mult
+    dens = []
+    ni = numint.NumInt()
+    for a in range(mol.natm):
+        sym = mol.atom_symbol(a)
+        atm = gto.M(atom="%s 0 0 0" % sym, basis=basis, unit="Angstrom",
+                    spin=mult[sym] - 1, verbose=0)
+        atm.build()
+        mf = scf.UHF(atm).run()
+        if not mf.converged:
+            raise RuntimeError("%s: 自由原子 UHF 未收敛" % sym)
+        dm = mf.make_rdm1()
+        # 自由原子必须落在它自己的位置上：把网格搬到以该原子为原点再取值。
+        # 早先有一版把全部自由原子建在原点，权重退化成 1/natm，片间块恰好等于总量的
+        # 一半 —— 那是构造错的指纹而不是物理结果，靠"恰好整齐分数"这条线索才抓到。
+        rel = coords - mol.atom_coord(a)          # 与 coords 同为 Bohr（A 件修正，见函数头）
+        ao = ni.eval_ao(atm, rel, deriv=1)
+        rho = ni.eval_rho(atm, ao, dm, xctype="GGA")
+        dens.append(np.asarray(rho[0], dtype=float))   # 只要密度分量；整块 append 会把梯度也塞进来
+    W = np.vstack(dens)
+    if W.shape[0] != mol.natm:
+        raise ValueError("hirshfeld: 权重矩阵 %s 的行数 ≠ 原子数 %d —— 只许 append rho[0]"
+                         % (W.shape, mol.natm))
+    denom = W.sum(axis=0)
+    zero = denom <= 0
+    n_zero = int(zero.sum())
+    if n_zero == 0:
+        S = W / denom
+        _check_normalized(S, "hirshfeld")
+        return S, None, n_zero
+    owner = nearest_partition(mol, coords)
+    S_alt = W.copy()
+    S_alt[:, zero] = 1.0 / mol.natm
+    S_alt = S_alt / S_alt.sum(axis=0)
+    S = W.copy()
+    S[:, ~zero] = W[:, ~zero] / denom[~zero]
+    S[:, zero] = 0.0
+    S[owner[zero], np.arange(len(coords))[zero]] = 1.0
+    _check_normalized(S, "hirshfeld")
+    return S, S_alt, n_zero
+
+
+def scheme_factors(mol, coords, scheme="becke", basis="6-31g*"):
+    """任意归属方案（家族内四方案 + 家族外两种）在同一批点上的逐点权重 S (natm, N)。
+
+    家族内走 `partition_matrix` 再按列归一，与包外脚本一致；家族外走各自构造函数。
+    返回的 S 每点求和为 1，可直接喂给 `nlc.fragment_decomposition(soft=S)`。
+    """
+    if scheme in SCHEMES:
+        p = partition_matrix(mol, coords, scheme)
+        S = p / p.sum(axis=0)
+        _check_normalized(S, scheme)
+        return S
+    if scheme == "voronoi":
+        return voronoi_factors(mol, coords)
+    if scheme == "hirshfeld":
+        S, _, _ = hirshfeld_factors(mol, coords, basis=basis)
+        return S
+    raise KeyError(f"未知 scheme {scheme!r}，可选 {sorted(ALL_SCHEMES)}")
 
 
 def scf_grid(mol, xc="wb97x_v", level=3, basis="6-31g*"):

@@ -2,3 +2,10 @@
 # 若 git 做 LF/CRLF 归一化，checkout 出来的哈希就对不上，审计链当场断掉。
 evidence/** -text
 evidence/** binary
+
+# 同一件事在源码上也发生了一次（实测，不是推测）：归档抬头印的是这些 .py 的哈希，
+# 而本机 core.autocrlf=true ⇒ Windows 侧 checkout 把 LF 写成 CRLF，
+# 同一个文件多出的字节正好等于行数，哈希与归档对不上。本仓所有计算只在 Linux 侧跑，
+# 所以这条只是让"在 Windows 侧打开仓读源码"的那位也能把自己那份哈希对上归档。
+# 已核：仓里跟踪的 .py 全部存的就是 LF（唯一带 CRLF 的那份在 evidence/ 下，已由上面两条保护）。
+nlcsplit/** -text

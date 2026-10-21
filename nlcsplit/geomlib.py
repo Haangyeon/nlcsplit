@@ -137,7 +137,11 @@ FRAGS = {
 
 # ---------------------------------------------------------------- S22 官方几何
 # 来源：Grimme 实验室官方仓库 https://github.com/grimme-lab/GMTKN55 (tag v1) 的
-# S22/NN/struc.xyz，原始出处 Jureček et al., Phys. Chem. Chem. Phys. 5, 1811 (2003)。
+# S22/NN/struc.xyz。这个文件是 2026-10-13 改的：原来这一行写"原始出处 Jureček et al.,
+# PCCP 5, 1811 (2003)"，而 `evidence/bib_provenance/G_s22_provenance_20260930.md` 的结论是
+# 那条 2003 引文在 Crossref 三条独立检索里都取不到，所以 09-30 已把它从正文和
+# references.bib 里撤掉、只留查得到的链条——但代码注释漏了改，而这个文件随 wheel 发布，
+# 读者会拿它跟 §2.4 对。现在只说核得住的：几何取自上述 GMTKN55 发行版。
 # 用官方坐标而不是自己构造，是为了让"S22 子集"这张表可复现、可引，且免掉
 # "你的二聚体几何是哪来的"这类质疑。取回脚本见 tools/get_s22.sh。
 _Z2S = {1: "H", 6: "C", 7: "N", 8: "O", 16: "S"}
