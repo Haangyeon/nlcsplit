@@ -127,3 +127,1450 @@
 2026-10-09T11:41:44.597Z stop-bypass（收工前仍有未了结项）
   未提交的实质改动 1 个（列前 8 个）：
       M tools/hooks/GATE-OVERRIDES.log
+2026-10-11T09:59:06.060Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 1 个（列前 8 个）：
+      ?? paper/notes/PLAN-20261011-next-steps.md
+2026-10-11T19:43:07.959Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 14 个（列前 8 个）：
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+      ?? evidence/common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out
+  证据清单陈旧 8 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T03:15:01.728Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 14 个（列前 8 个）：
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+      ?? evidence/common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out
+  证据清单陈旧 8 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T03:29:21.506Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 14 个（列前 8 个）：
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+      ?? evidence/common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out
+  证据清单陈旧 8 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T03:37:52.544Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 15 个（列前 8 个）：
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+      ?? evidence/common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out
+  证据清单陈旧 8 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T03:39:23.016Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 15 个（列前 8 个）：
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+      ?? evidence/common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out
+  证据清单陈旧 8 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T03:58:33.605Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 20 个（列前 8 个）：
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+  证据清单陈旧 12 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T04:19:48.166Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 20 个（列前 8 个）：
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+  证据清单陈旧 12 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T04:25:07.626Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 20 个（列前 8 个）：
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+  证据清单陈旧 12 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T04:34:07.759Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 22 个（列前 8 个）：
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc
+  证据清单陈旧 14 条：
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out 未登记进 MANIFEST.sha256
+      bib_provenance/20261011T114318Z_p0a_precedents_crossref_summary.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261011T115335Z_hirshfeld_construction_audit_l0_small.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T04:58:16.057Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 24 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+2026-10-12T05:02:21.199Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 26 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 2 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/run_w2_benzwater_pricing.sh 未登记进 MANIFEST.sha256
+2026-10-12T05:07:00.786Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 26 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 2 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/run_w2_benzwater_pricing.sh 未登记进 MANIFEST.sha256
+2026-10-12T05:18:56.087Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 27 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 2 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/run_w2_benzwater_pricing.sh 未登记进 MANIFEST.sha256
+2026-10-12T05:27:46.850Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 27 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 2 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/run_w2_benzwater_pricing.sh 未登记进 MANIFEST.sha256
+2026-10-12T05:41:24.982Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 28 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 7 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/run_w2_benzwater_pricing.sh 未登记进 MANIFEST.sha256
+      rvv10_referee/20261012T053850Z_r0_libxc_coef_table.out 未登记进 MANIFEST.sha256
+      rvv10_referee/NOTE_r0_referee_census_20261012.md 未登记进 MANIFEST.sha256
+      rvv10_referee/probe_r0_libxc_coef.py 未登记进 MANIFEST.sha256
+2026-10-12T05:42:53.733Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 28 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 7 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/run_w2_benzwater_pricing.sh 未登记进 MANIFEST.sha256
+      rvv10_referee/20261012T053850Z_r0_libxc_coef_table.out 未登记进 MANIFEST.sha256
+      rvv10_referee/NOTE_r0_referee_census_20261012.md 未登记进 MANIFEST.sha256
+      rvv10_referee/probe_r0_libxc_coef.py 未登记进 MANIFEST.sha256
+2026-10-12T05:59:28.849Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 35 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 15 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out 未登记进 MANIFEST.sha256
+2026-10-12T06:24:12.907Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 38 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 19 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T06:47:51.132Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 43 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 29 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+2026-10-12T07:39:04.332Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 43 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 30 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+2026-10-13T06:00:38.957Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 47 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+  证据清单陈旧 36 条：
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out 未登记进 MANIFEST.sha256
+      common_grid/20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out.rc 未登记进 MANIFEST.sha256
+2026-10-13T13:04:58.782Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 51 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+2026-10-13T14:03:15.299Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 51 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+2026-10-13T14:03:15.838Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 51 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js
+      ?? evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_result.json
+2026-10-13T14:17:35.245Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 58 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+2026-10-13T14:17:54.293Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 58 个（列前 8 个）：
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/hooks/GATE-OVERRIDES.log
+2026-10-13T15:19:46.405Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 101 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 4 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/run_s22_full_batch.sh 未登记进 MANIFEST.sha256
+      common_grid/s22_full_batch_20261013T152010Z.log 未登记进 MANIFEST.sha256
+      common_grid/s22_full_certificate.py 未登记进 MANIFEST.sha256
+2026-10-13T15:31:04.674Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 110 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 12 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_04_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_08_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T15:34:00.212Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 112 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 14 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_04_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T15:35:07.993Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 114 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 15 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T15:39:00.755Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 118 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 19 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T15:41:06.137Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 118 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 19 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T15:42:34.170Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 119 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 20 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T15:45:17.230Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 119 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 20 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T18:59:23.705Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 218 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 106 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T19:28:31.937Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 228 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 116 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T19:33:30.433Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 231 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 118 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T19:47:54.686Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 236 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 123 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T19:55:31.124Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 238 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 125 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T19:59:18.393Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 238 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 125 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:03:55.009Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:04:17.896Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:07:54.115Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:09:00.864Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:09:40.761Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:16:38.587Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:17:53.083Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:20:25.002Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 240 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 127 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:23:20.304Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 242 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 129 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:24:17.892Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 242 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 129 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:25:35.171Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 246 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 133 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:30:04.723Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:32:04.439Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:33:27.609Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:33:48.517Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:34:52.101Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:35:12.182Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T20:35:51.104Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 249 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 136 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T21:35:27.589Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 255 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 142 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T21:36:42.706Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 255 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 142 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T21:37:06.702Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 255 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 142 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T21:38:22.605Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 255 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 142 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-13T22:13:34.774Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 269 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 156 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T00:55:39.156Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 280 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 167 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T03:05:43.784Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T06:19:26.058Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T14:00:55.491Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T14:03:02.171Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T14:39:56.278Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T14:44:18.617Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-14T15:16:22.262Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-15T04:41:07.583Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 293 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-15T04:55:49.640Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 294 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+  证据清单陈旧 180 条：
+      common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out 未登记进 MANIFEST.sha256
+2026-10-15T11:39:11.972Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T13:00:10.900Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T13:16:30.869Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T13:31:22.250Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T14:11:39.365Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T14:31:51.189Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T14:59:28.315Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T16:50:22.322Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T17:01:45.297Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T17:11:47.418Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-15T17:19:17.898Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 301 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-18T11:07:26.711Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 302 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+      M nlcsplit/__init__.py
+2026-10-18T12:42:32.457Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 349 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+  证据清单陈旧 38 条：
+      common_grid/20261018T111430Z_selftest_certification_gate.out 未登记进 MANIFEST.sha256
+      common_grid/20261018T111430Z_selftest_certification_gate.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261018T111521Z_selftest_certification_gate.out 未登记进 MANIFEST.sha256
+      common_grid/20261018T111521Z_selftest_certification_gate.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261018T111616Z_selftest_certification_gate.out 未登记进 MANIFEST.sha256
+      common_grid/20261018T111616Z_selftest_certification_gate.out.rc 未登记进 MANIFEST.sha256
+2026-10-18T13:05:46.570Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 353 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+2026-10-18T13:07:26.993Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 353 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+2026-10-18T13:49:28.601Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 353 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+2026-10-21T09:46:45.161Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 372 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+  证据清单陈旧 19 条：
+      common_grid/20261021T091653Z_hirshfeld_crossfamily_l2_water.out 未登记进 MANIFEST.sha256
+      common_grid/20261021T091653Z_hirshfeld_crossfamily_l2_water.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out 未登记进 MANIFEST.sha256
+      common_grid/20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261021T094231Z_grid_convergence_full_set.out 未登记进 MANIFEST.sha256
+      common_grid/20261021T094231Z_grid_convergence_full_set.out.rc 未登记进 MANIFEST.sha256
+2026-10-21T10:52:38.853Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 385 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+  证据清单陈旧 32 条：
+      common_grid/20261021T091653Z_hirshfeld_crossfamily_l2_water.out 未登记进 MANIFEST.sha256
+      common_grid/20261021T091653Z_hirshfeld_crossfamily_l2_water.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out 未登记进 MANIFEST.sha256
+      common_grid/20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out.rc 未登记进 MANIFEST.sha256
+      common_grid/20261021T094231Z_grid_convergence_full_set.out 未登记进 MANIFEST.sha256
+      common_grid/20261021T094231Z_grid_convergence_full_set.out.rc 未登记进 MANIFEST.sha256
+2026-10-21T12:30:15.260Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 405 个（列前 8 个）：
+      M evidence/agentb_sweep/MANIFEST.sha256
+      M evidence/bib_provenance/MANIFEST.sha256
+      M evidence/common_grid/MANIFEST.sha256
+      M evidence/common_grid/hirshfeld_crossfamily.py
+      M evidence/l2cp/MANIFEST.sha256
+      M evidence/recompute/MANIFEST.sha256
+      M evidence/release_qa/MANIFEST.sha256
+      M evidence/retrieval_calibration/MANIFEST.sha256
+2026-10-21T14:07:36.685Z precommit-bypass 理由: 闸门要的"清单新鲜"此刻做不到——批还在往归档件里追加，按硬规矩 2 先哈希一个还在增长的档会钉住半写成摘要；runner 本身先入库防丢，落定后重跑表与负控、最后重生成清单并单独一笔提交（任务 #66/#65 同一条收口顺序）。
+  问题:
+  证据清单陈旧 2 条：
+      common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out 未登记进 MANIFEST.sha256
+      common_grid/run_crossfamily_level2_three_cells.sh 未登记进 MANIFEST.sha256
+      办法：cd 进那个目录，find . -maxdepth 1 -type f ! -name 'MANIFEST*' -printf '%f\0' | xargs -0 sha256sum > /tmp/mf.new && mv /tmp/mf.new MANIFEST.sha256，再 git add
+2026-10-21T14:08:17.442Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 39 个（列前 8 个）：
+      M nlcsplit/__init__.py
+      M nlcsplit/geomlib.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/claim_gate.js
+      M tools/hooks/GATE-OVERRIDES.log
+      M tools/make_public_repo.js
+      ?? evidence/common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out
+  证据清单陈旧 2 条：
+      common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out 未登记进 MANIFEST.sha256
+      common_grid/run_crossfamily_level2_three_cells.sh 未登记进 MANIFEST.sha256
+2026-10-21T16:11:57.083Z precommit-bypass 理由: 闸门要的"清单新鲜"仍做不到——level-2 批还在往自己的归档追加，此刻哈希等于钉住半写成摘要；与上一笔同一个回收条件，任务 #67 里写死为"落定→重跑表与负控→最后重生成清单"，两条越闸记录届时一起收掉。
+  问题:
+  证据清单陈旧 2 条：
+      common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out 未登记进 MANIFEST.sha256
+      common_grid/run_crossfamily_level2_three_cells.sh 未登记进 MANIFEST.sha256
+      办法：cd 进那个目录，find . -maxdepth 1 -type f ! -name 'MANIFEST*' -printf '%f\0' | xargs -0 sha256sum > /tmp/mf.new && mv /tmp/mf.new MANIFEST.sha256，再 git add
+2026-10-21T16:12:18.181Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 39 个（列前 8 个）：
+      M nlcsplit/__init__.py
+      M nlcsplit/geomlib.py
+      M nlcsplit/partition.py
+      M paper/references.bib
+      M tools/claim_gate.js
+      M tools/hooks/GATE-OVERRIDES.log
+      M tools/make_public_repo.js
+      ?? evidence/common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out
+  证据清单陈旧 2 条：
+      common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out 未登记进 MANIFEST.sha256
+      common_grid/run_crossfamily_level2_three_cells.sh 未登记进 MANIFEST.sha256
+
+2026-10-21T20:55:00Z 收账（人工追加，不是闸门写的这条；闸门记录保持原样）：
+  上面 14:07:36Z 与 16:11:57Z 两笔 precommit-bypass 的共同回收条件已兑现。条件原文是
+  「落定→重跑表与负控→最后重生成清单」，逐句对质：
+  - 落定：只认文件。批的 .rc 与档内自印的 exit 行都是成功码，时间戳在归档件自己身上；通知里的退出码没被当证据。
+  - 重跑：evidence/common_grid/run_grid_convergence_archive.sh 一次出 full_set / scoped / negctl 三份，
+    每份带自己的 .rc 与档内 exit 行；读数件与它的 stamp 就在那个目录里，按名字找。
+  - 清单：在所有证据编辑定稿之后才重生成（硬规矩 2 的顺序），随后两道核对都绿——
+    tools/verify_evidence_manifests.sh（common_grid 的登记条数与逐条校验见其输出）与
+    tools/check_manifest_regression.sh（按**条目名**比 HEAD，无目录丢条目；
+    rvv10_referee 在 HEAD 里没有基线，脚本明写「不算失败但要说出来」，所以那一目录不算通过）。
+  - 范围声明：本笔**不**收掉 16:12:18Z 那笔 stop-bypass 的全部范围。它当时还列了 common_grid 之外的
+    未提交改动；其中 nlcsplit/ 三个文件已在紧邻的前一笔（家族外构造进版本控制）落定，
+    其余 tools/、paper/notes/、paper/references.bib、evidence/rvv10_referee/ 仍未了结，在此不声明为已收。
