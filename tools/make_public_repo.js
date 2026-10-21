@@ -58,7 +58,10 @@ const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'
   // fastpair.py 是 P2 的主体，也被 step_j_scaling.py 直接 import。它原先**不在发布清单里**：
   // wheel 里没有这个模块，而随包发的 step 脚本却 import 它——读者从 wheel 里跑不出任何
   // 一个 P2 的数字。闸门 E 只查"外部依赖有没有声明"，查不出这种**包内**依赖，所以没人响。
-  'fastpair.py'];
+  'fastpair.py',
+  // certificate.py（2026-10-13）：正文跨构造那一列的**入口**，也是 §5 "implements … every table"
+  // 唯一能被一条命令复现的地方。不进清单 ⇒ 闸门 V 报 stray，出货直接失败。
+  'certificate.py'];
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
   'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py',
@@ -84,7 +87,13 @@ const TESTS = ['__init__.py', 'conftest.py', 'test_geometry.py', 'test_kernel.py
   // "可加性检查拿 E_nl 比它自己的定义式"之后，这条守卫就是正文 [S33] 与 §2.2 那句
   // "抓不到什么"的唯一实测凭据；只 import nlcsplit.nlc / .partition（都随包），
   // 所以它能进包，不像 test_fastpair_ide 那样会撞收集期 ImportError。
-  'test_nlc_closure.py'];
+  'test_nlc_closure.py',
+  // 2026-10-13：家族外两个构造（voronoi/hirshfeld）并进 partition.py 之后，
+  // 全仓对这三个符号的测试命中原本是 **0**——发一个没人跑过的新分支比不发更糟。
+  'test_crossfamily_schemes.py',
+  // 证书本体与它的负控：故意把退化构造（逐点 1/natm，本仓真出过的那版）混进方案集，
+  // 必须被标记**且不让界退化成 span=0**。这条就是任务书要的"随包 QA 里有一条负控"。
+  'test_certificate.py'];
 const EXAMPLES = ['__init__.py', 'quickstart.py', 'check_fast_pair.py', 'check_soft_partition.py'];
 // CITATION.cff 也在根清单里：JOSS/SoftwareX 的审稿人按这份文件核署名与授权，
 // 它不在包里就等于让读者去 git clone 才能拿到引用信息。

@@ -43,7 +43,15 @@ const FMT = 6;   // 索引格式版本：改了抽取规则就 +1，否则缓存
 
 function git(args) {
   try {
-    return cp.execSync("git " + args, { encoding: "utf8", maxBuffer: 1 << 28 }).trim();
+    // `-c core.quotepath=false` 是必需的，不是装饰：默认设置下 `git ls-files` / `git status --porcelain`
+    // 会把非 ASCII 档名输出成八进制转义串（`"evidence/orca_widen/\346\260\251..."`），
+    // 而**同一个仓在 Windows 侧与 WSL 侧的输出居然不一样**。实测（2026-10-18）：
+    // WSL 侧因此有 **18 份 CJK 名档 `readFileSync` ENOENT**，而下面用的是
+    // `try { ... } catch { continue; }` ⇒ **静默跳过**，索引到的小数从 40 406 掉到 26 721，
+    // `claim_gate --stop` 报出的"indexed numbers"两侧分别给出 20987 与 13940。
+    // 闸门的判据不能随"在哪一侧跑"而变：档名转义一旦进路径，`isCarrier`/`fs.existsSync`
+    // 也会把 CJK 名的载体文件静默漏掉。关掉 quotepath 从根上取消这类歧义。
+    return cp.execSync("git -c core.quotepath=false " + args, { encoding: "utf8", maxBuffer: 1 << 28 }).trim();
   } catch (e) {
     return "";
   }
