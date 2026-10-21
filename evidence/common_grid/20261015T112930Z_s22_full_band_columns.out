@@ -1,0 +1,7 @@
+# W4 满表派生列：逐格家族外增量来源 + Voronoi-only 带
+# 只读 22 份单格证书；不重算能量、不改判据
+REFUSED —— 找到 23 份证书，预期写死 22 份（不从被检对象自算）
+   缺 .rc：20261013T152010Z_s22_full_certificate_S22_03_l1_small.out
+# 瀹夸富鏃堕挓 UTC=20261015T112930Z  鏈湴=2026-10-15 19:29:30 +0800
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# sha256 s22_full_band_columns.py = 7fa179da9fd4469ecade2c592efa7b21c8da35b95f649db9317a1ac29db455df

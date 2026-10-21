@@ -1,0 +1,78 @@
+# W4 满表派生列：逐格家族外增量来源 + Voronoi-only 带
+# 只读 22 份单格证书；不重算能量、不改判据
+# 异常件（不计入格数，逐份点名）：
+#   20261013T152010Z_s22_full_certificate_S22_03_l1_small.out  605 B  VERDICT=False exit自报=False .rc=False 内容=None
+#
+# 有效证书 22 份 == 预期 22 份；异常件 1 份已点名
+# 全部 22 份证书同一 git HEAD：df8ff6680556d74f88454148245f361294fdfed8
+#
+# 列定义：fam = 家族四方案跨度；famV = 家族+Voronoi 跨度；all = 六方案跨度；
+#           incV = famV - fam（Voronoi 造成的增量）；incH = all - famV（再加 Hirshfeld 的增量）；
+#           末列 = 六方案跨带的两端由哪个构造占据
+
+folder    nA  fam      famV     all      incV     incH     ratio_all  lo(六)              hi(六)
+----------------------------------------------------------------------------------------------
+S22_01.xyz  8  0.0284   0.0284   0.0332   0.0000   0.0048   1.17       hirshfeld -0.6534  becke-becke-rad -0.6202
+S22_02.xyz  6  0.0433   0.0433   0.0433   0.0000   0.0000   1.00       becke -0.6010      becke-becke-rad -0.5577
+S22_03.xyz 10  0.2342   0.2342   0.2342   0.0000   0.0000   1.00       becke -2.3578      becke-becke-rad -2.1236
+S22_04.xyz 12  0.2143   0.2143   0.2143   0.0000   0.0000   1.00       becke -2.1782      becke-becke-rad -1.9639
+S22_05.xyz 24  0.2152   0.2152   0.2152   0.0000   0.0000   1.00       becke -2.7894      becke-becke-rad -2.5742
+S22_06.xyz 25  0.2716   0.2716   0.2716   0.0000   0.0000   1.00       becke -3.0767      becke-becke-rad -2.8051
+S22_07.xyz 30  0.2664   0.2664   0.2664   0.0000   0.0000   1.00       becke -3.3574      becke-becke-rad -3.0910
+S22_08.xyz 10  0.0034   0.0062   0.0088   0.0028   0.0026   2.59       hirshfeld -0.4797  voronoi -0.4709
+S22_09.xyz 12  0.0292   0.0292   0.0405   0.0000   0.0113   1.39       hirshfeld -1.0772  becke-becke-rad -1.0367
+S22_10.xyz 17  0.2142   0.2445   0.2445   0.0303   0.0000   1.14       voronoi -1.4727    becke-becke-rad -1.2282
+S22_11.xyz 24  0.0274   0.0305   0.0603   0.0031   0.0298   2.20       hirshfeld -4.0663  becke-treutler -4.0060
+S22_12.xyz 20  0.0098   0.0180   0.0693   0.0082   0.0513   7.07       hirshfeld -4.2422  voronoi -4.1729
+S22_13.xyz 24  0.0260   0.0384   0.1041   0.0124   0.0657   4.00       hirshfeld -6.1402  voronoi -6.0361
+S22_14.xyz 28  0.0409   0.0409   0.1025   0.0000   0.0616   2.51       hirshfeld -5.9591  becke-treutler -5.8566
+S22_15.xyz 30  0.0381   0.0410   0.1460   0.0029   0.1050   3.83       hirshfeld -8.8509  voronoi -8.7049
+S22_16.xyz 10  0.0490   0.0525   0.0525   0.0035   0.0000   1.07       voronoi -0.5800    becke-becke-rad -0.5275
+S22_17.xyz 15  0.2469   0.2747   0.2747   0.0278   0.0000   1.11       voronoi -1.3876    becke-becke-rad -1.1129
+S22_18.xyz 16  0.2219   0.2373   0.2373   0.0154   0.0000   1.07       voronoi -1.4065    becke-becke-rad -1.1692
+S22_19.xyz 15  0.3030   0.3586   0.3586   0.0556   0.0000   1.18       voronoi -1.8023    becke-becke-rad -1.4437
+S22_20.xyz 24  0.2196   0.2373   0.2373   0.0177   0.0000   1.08       voronoi -2.3876    becke-becke-rad -2.1503
+S22_21.xyz 28  0.2556   0.2684   0.2684   0.0128   0.0000   1.05       voronoi -3.2742    becke-becke-rad -3.0058
+S22_22.xyz 26  0.1407   0.1407   0.1412   0.0000   0.0005   1.00       hirshfeld -2.8239  becke-becke-rad -2.6827
+
+== 控制：重算列 vs 证书自印列（44 项，容差 1.1e-4）==
+   比对 44 项，最大偏差 1.00e-04，超容差 0 项
+== 带（22 格）==
+   家族内 fam      : 0.0034 – 0.3030
+   家族+Voronoi    : 0.0062 – 0.3586   ← G6(ii) 问的 'Voronoi-only 带' 就是这一行
+   六方案全含       : 0.0088 – 0.3586
+   Voronoi 增量     : 0.0000 – 0.0556（为 Hirshfeld 增量 0.0000 – 0.1050）
+   比值 all/fam     : 1.00 – 7.07，其中 >2 的有 6 格，>10 的有 0 格
+
+   绝对增量（all - fam）最大格：S22_15.xyz = 0.1079 kcal/mol
+   比值最大格：S22_12.xyz = 7.07（该格 fam=0.0098，分母小才把比值抬起来）
+
+   逐格判语（G6(ii) 的原话是'既不消除也不放大'，此处只按算术给三态，不做总结）：
+      S22_12.xyz  7.07×  放大 >2×   incV=0.0082 incH=0.0513  lo=hirshfeld hi=voronoi
+      S22_13.xyz  4.00×  放大 >2×   incV=0.0124 incH=0.0657  lo=hirshfeld hi=voronoi
+      S22_15.xyz  3.83×  放大 >2×   incV=0.0029 incH=0.1050  lo=hirshfeld hi=voronoi
+      S22_08.xyz  2.59×  放大 >2×   incV=0.0028 incH=0.0026  lo=hirshfeld hi=voronoi
+      S22_14.xyz  2.51×  放大 >2×   incV=0.0000 incH=0.0616  lo=hirshfeld hi=becke-treutler
+      S22_11.xyz  2.20×  放大 >2×   incV=0.0031 incH=0.0298  lo=hirshfeld hi=becke-treutler
+      S22_09.xyz  1.39×  基本不变 ≤2×   incV=0.0000 incH=0.0113  lo=hirshfeld hi=becke-becke-rad
+      S22_19.xyz  1.18×  基本不变 ≤2×   incV=0.0556 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_01.xyz  1.17×  基本不变 ≤2×   incV=0.0000 incH=0.0048  lo=hirshfeld hi=becke-becke-rad
+      S22_10.xyz  1.14×  基本不变 ≤2×   incV=0.0303 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_17.xyz  1.11×  基本不变 ≤2×   incV=0.0278 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_20.xyz  1.08×  基本不变 ≤2×   incV=0.0177 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_16.xyz  1.07×  基本不变 ≤2×   incV=0.0035 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_18.xyz  1.07×  基本不变 ≤2×   incV=0.0154 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_21.xyz  1.05×  基本不变 ≤2×   incV=0.0128 incH=0.0000  lo=voronoi hi=becke-becke-rad
+      S22_22.xyz  1.00×  基本不变 ≤2×   incV=0.0000 incH=0.0005  lo=hirshfeld hi=becke-becke-rad
+      S22_02.xyz  1.00×  不放大（=家族带）   incV=0.0000 incH=0.0000  lo=becke hi=becke-becke-rad
+      S22_03.xyz  1.00×  不放大（=家族带）   incV=0.0000 incH=0.0000  lo=becke hi=becke-becke-rad
+      S22_04.xyz  1.00×  不放大（=家族带）   incV=0.0000 incH=0.0000  lo=becke hi=becke-becke-rad
+      S22_05.xyz  1.00×  不放大（=家族带）   incV=0.0000 incH=0.0000  lo=becke hi=becke-becke-rad
+      S22_06.xyz  1.00×  不放大（=家族带）   incV=0.0000 incH=0.0000  lo=becke hi=becke-becke-rad
+      S22_07.xyz  1.00×  不放大（=家族带）   incV=0.0000 incH=0.0000  lo=becke hi=becke-becke-rad
+
+   计数：>2× 的 6 格；=1.00×（加入家族外后带完全没变）的 6 格；1–2× 之间的 10 格
+VERDICT DONE —— 派生列已打印；'既不消除也不放大'能否进正文由上面三态计数决定，不由本脚本下判
+# 瀹夸富鏃堕挓 UTC=20261015T113349Z  鏈湴=2026-10-15 19:33:49 +0800
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# sha256 s22_full_band_columns.py = 2f0fdc0b0101ce09dccd66e8d0e06acf1403f84ce3a131983e6037700e2698da

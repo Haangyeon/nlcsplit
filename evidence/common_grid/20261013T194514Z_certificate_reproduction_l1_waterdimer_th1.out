@@ -1,0 +1,19 @@
+# W3 验收：certify(包内新入口) vs 已归档的包内 dispatcher 读数
+# 原件 20261013T053243Z_crossfamily_inpackage_check_l1_small.out  体系 水二聚体  level 1  门 1e-04 kcal/mol（=原件打印分辨率）
+# 几何 水二聚体  原子 6  片间最短 1.95 Å（原件同项见其 == 段抬头）
+# certify 抬头：{'level': 1, 'basis': '6-31g*', 'xc': 'wb97x_v', 'b': 6.0, 'C': 0.01, 'npts': 18336, 'natm': 6}
+# usable ['becke', 'becke-becke-rad', 'becke-treutler', 'stratmann', 'voronoi', 'hirshfeld']  flagged []
+   becke            certify   -0.6010  归档   -0.6010  差 1.38e-05 OK
+   becke-becke-rad  certify   -0.5577  归档   -0.5577  差 1.33e-05 OK
+   becke-treutler   certify   -0.5747  归档   -0.5747  差 7.46e-06 OK
+   stratmann        certify   -0.5989  归档   -0.5989  差 1.76e-05 OK
+   voronoi          certify   -0.5836  归档   -0.5836  差 1.09e-05 OK
+   hirshfeld        certify   -0.5981  归档   -0.5982  差 7.59e-05 OK
+   界 lo   -0.6010 (becke)  hi   -0.5577 (becke-becke-rad)  span 0.0433  归档跨度 0.0433  差 2.71e-05
+   argmin = becke，归档里的同名极值方案 = becke OK
+   argmax = becke-becke-rad，归档里的同名极值方案 = becke-becke-rad OK
+   E_nl 跨方案极差 = 1.776e-15（应到机器精度；这条是分区穷尽且互不重叠的闭包判据）
+   E_nl certify   -7.8950  归档   -7.8950  差 0.0000（门 0.005）OK
+VERDICT DONE —— certify 在原件打印分辨率内逐方案复现已归档的包内读数，界与闭包同向
+# 体系=水二聚体  线程=1  CERT_CELL=水二聚体  门 TOL=1e-4
+# exit=0 at 2026-10-13T19:59:52Z

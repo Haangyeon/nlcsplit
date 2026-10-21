@@ -1,0 +1,23 @@
+# stamper host clock UTC : 20261021T122137Z
+# stamper WSL  clock UTC : 2026-10-21T12:21:48Z
+# runner                 : evidence/common_grid/run_grid_convergence_archive.sh
+# command                : evidence/common_grid/grid_level_convergence_negative_control.py
+# level-2 water archive exit evidence: .rc=0
+# level-0 currentcode archive exit evidence: .rc=0
+# negative controls for grid_level_convergence.py
+# python 3.10.12  target sha256=9373b802c069c12d
+case                                                         want    got   marker      bytes verdict
+C0 in-gate ladder says grid-stable                              0      0      yes       2555 PASS
+C1 out-of-gate ladder says NOT grid-stable                      3      3      yes       2591 PASS
+C2 rung without .rc is excluded, not silently trusted           2      2      yes       2032 PASS
+C3 disagreeing exit evidence is excluded                        2      2      yes       2043 PASS
+C4 truncated archive does not enter the table                   2      2      yes       1023 PASS
+C5 span inconsistent with its own columns is caught             2      2      yes       1968 PASS
+C6 cross-code pair is split, never joined                       2      2      yes       2389 PASS
+C7 empty input set is a failure, not a pass                     2      2      yes        968 PASS
+C8 crash exits with the crash code                              4      4      yes        426 PASS
+C9 real set: ladders exist and the two claims are self-consistent      0      0      yes      27015 PASS
+
+10 cases, 10 behaved as declared, 0 misbehaved
+VERDICT rc=0
+# exit=0 at 2026-10-21T12:21:49Z

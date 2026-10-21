@@ -84,7 +84,12 @@ def free_atom_soft(mol, X0, basis="6-31g*"):
         # 权重≈均匀(1/natm) ⇒ 片间块恰好等于总量的一半（三条体系全都如此），
         # 那是构造错的指纹，不是物理结果；那条错读数留档在
         # evidence/common_grid/20261009T152500Z_hirshfeld_crossfamily_l1_small.out
-        rel = X0 - mol.atom_coord(a, unit="Angstrom")
+        # 2026-10-12 A 件修正：X0 来自 partition.scf_grid → mf.grids.coords，恒为 Bohr；
+        # 原先这里减的是 mol.atom_coord(a, unit="Angstrom")，两个单位相减 ⇒ 每个自由原子
+        # 按 (1 − 1/BOHR)·R 整体错位，离坐标原点越远挪得越多。现与网格同为 Bohr（默认单位）。
+        # 这一改使本脚本与 20261009T155508Z / 20261009T193232Z / 20261010T061455Z 三份归档
+        # 不再逐位相符：旧档原样不重写（MANIFEST 按原始字节锁着），更正注记见同目录 sidecar。
+        rel = X0 - mol.atom_coord(a)
         ao = ni.eval_ao(atm, rel, deriv=1)
         rho = ni.eval_rho(atm, ao, dm, xctype="GGA")
         dens.append(np.asarray(rho[0], dtype=float))   # 只要密度分量；整块 append 会把梯度也塞进来

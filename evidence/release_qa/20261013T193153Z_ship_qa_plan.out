@@ -1,0 +1,13 @@
+# 验收第 2 条：出货件 QA 流水线
+# 生成 2026-10-13T19:31:55Z   临时安装目录 /tmp/nlcsplit_shipqa_eSGLIu
+
+PLAN ONLY（未执行任何东西）—— 要真跑请显式加 --yes，且这仅代表授权**出货**这一步：
+  1) node tools/make_public_repo.js            # 从导出树出货；工作树直建会把 6 个 INTERNAL_ONLY 模块装进去
+  2) python3 -m wheel_census.py                # 数成员：certificate.py 在不在、测试模块数
+  3) python3 -m pip install --no-deps --target /tmp/nlcsplit_shipqa_eSGLIu dist/nlcsplit-*.whl
+  4) cd /tmp && python3 -m pytest /tmp/nlcsplit_shipqa_eSGLIu/nlcsplit/tests -m 'not slow' -q   # 树外 cwd，验 import 不靠仓内文件
+  5) python3 evidence/release_qa/test_count_census.py + wheel_member_diff.py 三份归档
+  6) bash tools/run_w4_closeout.sh             # 最后一步才重生成清单（顺序纪律）
+  仍然**不**做：PAT / push_manual / 转 public / ORCID / Zenodo / ScholarOne
+
+# exit=0 at 2026-10-13T19:31:56Z

@@ -1,0 +1,15 @@
+# Hirshfeld 两份实现的等价对照（只建网格，不跑复合物 SCF）
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# sha256 nlcsplit/partition.py = ec6c0c569241fc7df1f842cce3474f329ba81254c8872a8f5057ca94be4fdc73
+# 体系 苯-氨  原子 16  片段 2  片间最短 2.76 A  网格点 58448（level 1，不跑复合物 SCF）
+# 包外脚本顶层字面量常量补入 5 条；它的多重度表叫 MULT
+# 返回元数：包内 3（n_zero=0）vs 包外 2
+# 自比 max|ΔS|：包内两次 = 8.711e-02   包外两次 = 6.270e-01
+# 互比 max|ΔS| = 5.818e-01   均值 = 2.626e-03
+
+VERDICT NOT_REPRODUCIBLE —— 包内 partition.hirshfeld_factors；包外 free_atom_soft 同一份实现、同一批坐标两次结果差 6.270e-01 > 1e-10
+   病因不是『两份实现不同』那么简单：至少一份在自由原子 UHF 上每次收敛到不同的近简并解。
+   ⇒ 在拿到自身散布之前，『两份实现差多少』这个问题没有意义；
+   ⇒ 任何走 Hirshfeld 的读数（含本轮满表那一列）在这个体系上都不可逐位复现，
+      正文引用它之前必须先把这条量出来并写进门。
+# exit=3 at 2026-10-13T17:52:36Z

@@ -1,0 +1,26 @@
+# stamper host clock UTC : 20261021T104857Z
+# stamper WSL  clock UTC : 2026-10-21T10:48:58Z
+# runner                 : evidence/common_grid/run_grid_convergence_archive.sh
+# command                : evidence/common_grid/grid_level_convergence_negative_control.py
+# level-2 water archive exit evidence: .rc=0
+# level-0 currentcode archive exit evidence: .rc=0
+# negative controls for grid_level_convergence.py
+# python 3.10.12  target sha256=0bbb9c3e9ee6dd2a
+case                                                         want    got   marker      bytes verdict
+C0 in-gate ladder says grid-stable                              0      0      yes       2127 PASS
+C1 out-of-gate ladder says NOT grid-stable                      3      3      yes       2100 PASS
+C2 rung without .rc is excluded, not silently trusted           2      2      yes       2032 PASS
+C3 disagreeing exit evidence is excluded                        2      2      yes       2043 PASS
+C4 truncated archive does not enter the table                   2      2      yes       1023 PASS
+C5 span inconsistent with its own columns is caught             2      2      yes       1968 PASS
+C6 cross-code pair is split, never joined                       2      2      yes       2389 PASS
+C7 empty input set is a failure, not a pass                     2      2      yes        968 PASS
+C8 crash exits with the crash code                              4      4      yes        426 PASS
+C9 real set, strict = full-set claim cannot be measured         2      3      yes      11693 FAIL
+C9 real set, scoped = measured ladders stable and count is nonzero      0      3      yes      11784 FAIL
+
+11 cases, 9 behaved as declared, 2 misbehaved
+---- C9 real set, strict = full-set claim cannot be measured : want rc=2 got rc=3 marker_ok=True bytes=11693
+---- C9 real set, scoped = measured ladders stable and count is nonzero : want rc=0 got rc=3 marker_ok=grid-stable bytes=11784
+VERDICT rc=3
+# exit=3 at 2026-10-21T10:49:00Z

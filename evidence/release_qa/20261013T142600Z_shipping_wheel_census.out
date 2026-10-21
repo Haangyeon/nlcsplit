@@ -1,0 +1,62 @@
+# wheel census: scratch/wheel_qa_20261013T142600Z/build/nlcsplit-0.1.0-py3-none-any.whl
+# sha256 = 857188255645f5661b5a21cd5cd33af314c9bb0bf5964301377cd2dc36630708
+# members (files, not directories): 46
+# files under */tests/: 12  (其中真正的测试模块 10)
+#   nlcsplit/tests/__init__.py                     test_ defs=0   not-a-test
+#   nlcsplit/tests/conftest.py                     test_ defs=0   not-a-test
+#   nlcsplit/tests/test_cc_convention.py           test_ defs=7   
+#   nlcsplit/tests/test_crossfamily_schemes.py     test_ defs=5   
+#   nlcsplit/tests/test_fastpair.py                test_ defs=10  
+#   nlcsplit/tests/test_fastpair_ide.py            test_ defs=20  
+#   nlcsplit/tests/test_geometry.py                test_ defs=7   
+#   nlcsplit/tests/test_kernel.py                  test_ defs=5   
+#   nlcsplit/tests/test_nlc_closure.py             test_ defs=5   
+#   nlcsplit/tests/test_partition_factors.py       test_ defs=6   
+#   nlcsplit/tests/test_regression.py              test_ defs=4   
+#   nlcsplit/tests/test_tolerance_probe.py         test_ defs=1   
+# non-test members: 34
+#   nlcsplit-0.1.0.dist-info/METADATA
+#   nlcsplit-0.1.0.dist-info/RECORD
+#   nlcsplit-0.1.0.dist-info/WHEEL
+#   nlcsplit-0.1.0.dist-info/licenses/LICENSE
+#   nlcsplit-0.1.0.dist-info/top_level.txt
+#   nlcsplit/__init__.py
+#   nlcsplit/examples/__init__.py
+#   nlcsplit/examples/check_fast_pair.py
+#   nlcsplit/examples/check_screen_bound_ide.py
+#   nlcsplit/examples/check_soft_partition.py
+#   nlcsplit/examples/coretail_bound.py
+#   nlcsplit/examples/hybrid_nearfield.py
+#   nlcsplit/examples/probe_bound_forms.py
+#   nlcsplit/examples/quickstart.py
+#   nlcsplit/fastpair.py
+#   nlcsplit/fastpair_ide.py
+#   nlcsplit/figures.py
+#   nlcsplit/geomlib.py
+#   nlcsplit/nlc.py
+#   nlcsplit/partition.py
+#   nlcsplit/step1_validate.py
+#   nlcsplit/step2_convergence.py
+#   nlcsplit/step_b_scan.py
+#   nlcsplit/step_c_relaxation.py
+#   nlcsplit/step_d_floor.py
+#   nlcsplit/step_e_kernel.py
+#   nlcsplit/step_f_dispersion.py
+#   nlcsplit/step_g_basis.py
+#   nlcsplit/step_h_s22.py
+#   nlcsplit/step_i_gridrepr.py
+#   nlcsplit/step_j_scaling.py
+#   nlcsplit/step_k_population.py
+#   nlcsplit/step_l_sweep_compare.py
+#   nlcsplit/step_m_ccsdt.py
+# VERDICT script-style tests shipped: 0 
+# VERDICT 成员总数 46 = 测试模块 10 + tests/ 下非测试 2 + 其余 34，四项相加=46
+# 新 wheel 里 partition.py 字节数 = 12062
+#   含 CROSS_FAMILY_SCHEMES   True
+#   含 ALL_SCHEMES            True
+#   含 def voronoi_factors    True
+#   含 def hirshfeld_factors  True
+#   含 def scheme_factors     True
+#   随包新测试模块: ['nlcsplit/tests/test_crossfamily_schemes.py']
+#   与工作树 nlcsplit/partition.py 逐字节相同: True
+# exit=0 at 2026-10-13T14:26:09Z
