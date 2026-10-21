@@ -5775,3 +5775,29 @@ level-2 三格批仍在跑（苯二聚体(A) 那一格），收敛表与清单�
 
 
 
+
+
+## [2026-10-21 21:1x] [agent=cn-qoder] [done] 收工闸门点名 31 项未跟踪：能当场收的全收了，剩 5 项如实挂账
+
+Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
+
+- `a65aac8` **tools/**：今天收口清单真正用到的三个脚本（make_evidence_manifest / verify_evidence_manifests /
+  check_manifest_regression）此前**只在未跟踪状态里干活**——"证据靠一套不在仓里的工具锁定"这件事本身是个洞。
+  连同同源十个脚本一起入库。入库前当场重跑 `selftest_manifest_gate.sh` 四向（A 拒且原清单未动、B 放行、
+  C 结转条目还在 1/1、D 第一层真丢了要拒 rc=1），读数件按规矩带 sidecar 与档内 exit 行落 `evidence/release_qa/`，
+  该目录清单在两份新档定稿**之后**才重生成（114→116 条），随后逐条校验与按条目名比 HEAD 都绿。
+  `selftest_manifest_regression.sh` 一并入库但**没跑**：它是唯一会动真实清单的自检，而真实清单刚收过口，
+  这里不重复冒险（这条差别也写进提交信息，不是遗漏）。
+  两个被改的既有文件是实测驱动：claim_gate 加 `-c core.quotepath=false`（10-18 实测：默认输出把 CJK 档名
+  转成八进制串且两侧不一致，18 份档读不到而走 catch-continue **静默跳过**，索引小数 40 406→26 721，
+  同一道闸在两侧报出两个数）；make_public_repo 把 certificate.py 与两个新测试列进发布清单（本笔**不**执行导出）。
+- `295a0c5` **paper/notes/ + 两份根目录调研书 + references.bib**：十五份被正文和台账反复"见 paper/notes/…"指向的文件
+  一直不在版本控制里 ⇒ 换一棵树那些指针全是空的。入库前逐份扫凭据（无密码/无私钥/无个人邮箱；
+  "不用 token"那类是元讨论）。bib 三条新条目**如实声明还没有正文引用**——`paper/tex_audit.md:15` 本来就在报
+  25 of 28，判定原件在刚入库的 P0a 那份草稿里；BibTeX 只排印被引条目，所以 PDF 的文献数没被撑大。
+
+**剩 5 项不跟踪，逐条交代**：`evidence/rvv10_referee/`（任务 #60，两百多份散档的清单覆盖边界，
+不该在这一轮仓促定边界）；`.HOSTCLOCK`、`timer.dat`、`.chatgpt-binding.json`（运行态/本地绑定态，
+其中那份 binding 文件属本机，故意不入库）；仓根 `.rc`＝**1 字节换行**、mtime 10-14 02:48，
+形态与"runner 里 $OUT 未设就写 sidecar"一致，是那次静默归档失败的残迹而不是证据——
+记大小与内容，不删也不入库。
