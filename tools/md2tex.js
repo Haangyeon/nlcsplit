@@ -174,8 +174,13 @@ function cite(s) {
   });
 }
 function inline(s) {
-  const parts = s.split(/(`[^`]*`)/);
-  return symize(parts.map(p => {
+  // Inline math `$...$` rides through as a third kind of token, beside code spans: the split
+  // below already isolates it, so the escaping that follows never sees a dollar sign it should
+  // have kept. (A placeholder-based version put control characters into the .tex; LaTeX reads
+  // those as U+0008 and stops.)
+  const parts = s.split(/(`[^`]*`|\$[^$]+\$)/);
+  return parts.map(p => {
+    if (p.startsWith('$') && p.endsWith('$') && p.length > 2) return p;   // LaTeX math: never symized
     if (p.startsWith('`') && p.endsWith('`') && p.length > 2) {
       // Underscores stay literal-ish (escaped), and # must be escaped here too: the
       // first build died on \texttt{[S#]} with "macro parameter character #".
@@ -194,15 +199,15 @@ function inline(s) {
       if (p.length > 28) {
         code = code.replace(/\//g, '/\\allowbreak{}').replace(/\\_/g, '\\_\\allowbreak{}');
       }
-      return '\\texttt{' + code + '}';
+      return symize('\\texttt{' + code + '}');
     }
     let t = p;
     t = cite(t);
     t = t.replace(/\[S(\d+)\]/g, (_, n) => '\\prov{S' + n + '}');
     t = t.replace(/\*\*([^*]+)\*\*/g, '\\textbf{$1}');
     t = t.replace(/(^|[\s(])\*([^*\n]+?)\*(?=[\s.,):]|$)/g, '$1\\emph{$2}');
-    return t.replace(/[&%#$_~^]/g, c => ESC[c]);
-  }).join(''));
+    return symize(t.replace(/[&%#$_~^]/g, c => ESC[c]));
+  }).map(t => t).join('');
 }
 
 function isTable(lines, i) {
@@ -409,6 +414,12 @@ while (i < lines.length) {
   // 标题后的前两段是署名与单位：uthor 已排过，再排一次第 1 页就有两遍作者行。
   // 第三段是 ORCID 脚注，uthor 里没有，保留。
   if (skipFront > 0) { skipFront--; out.push('% byline/affiliation already typeset by uthor'); continue; }
+  // Display math: a paragraph that is exactly `$$ ... $$` becomes \[...\], not escaped text.
+  const whole = para.join(' ').trim();
+  if (/^\$\$[\s\S]+\$\$$/.test(whole)) {
+    out.push('\\[' + whole.slice(2, -2).trim() + '\\]');
+    continue;
+  }
   out.push(inline(para.join(' ')));
 }
 

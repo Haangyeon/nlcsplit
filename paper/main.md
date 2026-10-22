@@ -231,11 +231,13 @@ as a kernel-only check here.
 
 ### 2.2 Blocks, half-blocks and additivity
 
-`pair_energy(A, B)` returns the half block ½ Σ_{i∈A} Σ_{j∈B} w_i w_j Φ_ij, so
+`pair_energy(A, B)` returns the half block $\frac{1}{2}\sum_{i\in A}\sum_{j\in B} w_i w_j \Phi_{ij}$, so
 that the inter-fragment term reported by `fragment_decomposition` is
-E_AB = 2·pair_energy(A,B) and
+$E_{AB} = 2\,\mathrm{pair\_energy}(A,B)$, and the nonlocal energy of the whole molecule is the
+sum of its blocks:
 
-E_NL = Σ_A E_AA + Σ_{A<B} E_AB
+$$E_{\mathrm{NL}} = \sum_A E_{AA} + \sum_{A<B} E_{AB}$$
+
 
 holds by construction. That identity is why the check quoted here is not the package's own
 assert: comparing a block sum against the total the sum defines would be a guard with no way
@@ -289,7 +291,7 @@ also regenerating its own grid - which is the second of the two switches, and th
 published spread is now reported as attribution and quadrature separately (§3.4). Points with ρ below
 `rho_floor` (default 10⁻¹²) are excluded from the double sum; across the sweep this
 drops 10.7–22.6% of the points, and the points it drops carry at most 2.3×10⁻⁶
-electrons. Over the floor interval the sweep accepts (10⁻¹⁰ to 10⁻¹⁴) E_AB moves by
+electrons. Over the floor interval the sweep accepts ($10^{-10}$ to $10^{-14}$) E_AB moves by
 2.1×10⁻¹¹ Ha at grid level 1 and 4.2×10⁻¹¹ Ha at level 2; adding the two outer rungs
 at 10⁻⁸ and 10⁻¹⁶ still leaves the reported value unchanged at six decimals in
 kcal/mol [S7]. The local term β∫ρ is a one-body functional of the density and is not
@@ -792,7 +794,7 @@ the zero-slip geometry, not either S22 entry - falls below the band at 0.915
 those two [S8]. Those three level-0 readings are not the same measurement as the level-2
 value they are set beside, and the archive says why: on the coarsest grid the electron number
 is not integrated exactly - 19.992853 against 20 for the water dimer, 84.038083 against 84
-for the sandwich - so each energy carries a discretisation offset in the local term beta*int_rho
+for the sandwich - so each energy carries a discretisation offset in the local term $\beta\!\int\!\rho\,d\mathbf{r}$
 before any physics is subtracted. That offset does not corrupt a ratio between two densities on
 the *same* grid (the same archive prints 84.038083 and 84.038271 for the sandwich's
 self-consistent and superposed densities, which agree to three decimals, so the local term is
@@ -910,8 +912,8 @@ which is 0.0081 kcal/mol over level 0 to 2 at 6-31G\* and 0.0002 over level 1 to
 ### 3.5 A limit of fragment-resolved quantities
 
 Because beta is a constant and the integral of rho is the electron number, the
-local term attributed to a fragment is exactly beta*N_A where N_A is its Becke
-population, and beta = 3.0415 kcal/mol per electron. Any scheme-induced spread in
+local term attributed to a fragment is exactly $\beta N_A$, where $N_A$ is its Becke
+population, and $\beta = 3.0415$ kcal/mol per electron. Any scheme-induced spread in
 the population is therefore amplified into the fragment-resolved local term by
 that factor as an identity, not an estimate: for the water dimer at grid level 3
 the four schemes give fragment-A populations of 10.1559 (Becke), 10.1537 (Stratmann),
