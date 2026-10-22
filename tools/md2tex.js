@@ -381,8 +381,13 @@ while (i < lines.length) {
     // two-panel figure at that width halves the panel size, and a near-square schematic grows
     // taller than the text block. Read the PNG's own pixel size and size by aspect.
     const dim = pngSize(m[2]);
+    // 宽度按"这张图当初的设计宽度"来定，而不是按宽高比一刀切：fig4/fig5 是按 6.8 in 设计的
+    // 多面板图，被压到 0.62 版心后 6 pt 的字只剩不到 4 pt，面板里的注释直接压在曲线上（作者看到
+    // 的"拥挤"就是这个）。像素宽 ÷ 200 dpi ＝ 设计英寸；与 6.3 in 的版心比，得到它该占的比例，
+    // 只在 0.62–0.98 之间取，近方形的大图也能占满版心。
     const aspect = dim && dim.h ? dim.w / dim.h : 1.8;
-    const figW = Math.min(0.95, Math.max(0.62, 0.95 * Math.min(1, aspect / 1.9)));
+    const designIn = dim ? dim.w / 200 : 6.3;
+    const figW = Math.min(0.98, Math.max(0.62, designIn / 6.3));
     console.log('  figure ' + m[2] + ': ' + (dim ? dim.w + 'x' + dim.h : 'size unreadable')
       + ' aspect ' + aspect.toFixed(2) + ' -> width=' + figW.toFixed(2) + '\\textwidth');
     // The caption arrives with its own "**Figure N.**" marker. Handing that to \caption printed
