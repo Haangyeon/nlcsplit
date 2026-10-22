@@ -61,7 +61,12 @@ def fig1(rows):
            label=r"$\Delta E_{\rm xc}$ rest (semilocal + exact exch.)", color="#c05621")
     ax.axhline(0, color="k", lw=0.8)
     ax.set_xticks(list(x))
-    ax.set_xticklabels(labels, fontsize=8, rotation=30, ha="right")
+    # 作者："横轴标签非要搞那么长么，建议缩写，在图题下面解释。"
+    # A/B = 两个苯二聚体几何；Bz = benzene；其余即相应二聚体的化学式。解释写进图注。
+    SHORT = {"benzene dimer A": "A", "benzene dimer B": "B",
+             "benzene···H2O": "Bz·H2O", "benzene···NH3": "Bz·NH3",
+             "benzene···CH4": "Bz·CH4"}
+    ax.set_xticklabels([SHORT.get(l, l) for l in labels], fontsize=9, rotation=0)
     ax.set_ylabel("kcal/mol")
     ax.set_title("Attraction vs repulsion inside $E_{\\rm xc}$ (superposition, no BSSE)",
                  fontsize=9)
@@ -143,10 +148,7 @@ def fig3(windows):
     axA.set_xscale("log"); axA.set_yscale("log")
     axA.set_xlabel("far point pairs actually evaluated")
     axA.set_ylabel("wall clock (s)")
-    axA.set_title(f"(a) contention gate: external runnable tasks = 0 at each sampling instant;"
-                  f" {n_win} timing windows\n"
-                  "each connector = same system: less work, more time — not an idle-box claim",
-                  fontsize=7.6)
+    axA.set_title("(a)", fontsize=9, loc="left")
     axA.legend(fontsize=5.0, loc="upper left")
 
     for r in good:
@@ -159,10 +161,9 @@ def fig3(windows):
     axB.axvspan(1e-7, 1e-6, color="#2e7d32", alpha=.12)
     axB.text(1e-6, axB.get_ylim()[1] * .42, "what the paper needs\n(|dE| ≤ 1e-6 kcal/mol)",
              fontsize=6.8, ha="right", color="#2e7d32")
-    axB.set_xscale("log"); axB.set_xlabel("actual error |E_screened − E_exact|  (kcal/mol)")
-    axB.set_ylabel("far point pairs still evaluated  (%)")
-    axB.set_title("(b) work saved is a function of accuracy you cannot afford to give up",
-                  fontsize=8.5)
+    axB.set_xscale("log"); axB.set_xlabel("actual error (kcal/mol)")
+    axB.set_ylabel("far pairs still evaluated (%)")
+    axB.set_title("(b)", fontsize=9, loc="left")
     fig.tight_layout()
     f = os.path.join(OUT, "fig3_screening_cost.png")
     fig.savefig(f, dpi=200)

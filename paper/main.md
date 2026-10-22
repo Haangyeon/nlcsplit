@@ -428,7 +428,7 @@ the same paper's provenance appendix (S2) and is recoverable from these two colu
 
 ![Per-system split of the superposition exchange-correlation change into the VV10 term and the rest of ΔE_xc minus ΔE_NLC](figs/fig1_xc_split.png)
 
-**Figure 2.** The same quantity two ways, per system: the VV10 term ΔE_NLC and the remainder ΔE_xc - ΔE_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of ΔE_xc belongs to the VV10 term. Data: `nlcsplit/logs/step_h.json`, produced by `nlcsplit/step_h_s22.py`; drawn by `nlcsplit/figures.py` [S2].
+**Figure 2.** The same quantity two ways, per system: the VV10 term ΔE_NLC and the remainder ΔE_xc - ΔE_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. Axis labels are abbreviated: A and B are the two benzene-dimer geometries (parallel-displaced and T-shaped), Bz is benzene, and (H2O)2, (NH3)2 and (CH4)2 are the corresponding dimers. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of ΔE_xc belongs to the VV10 term. Data: `nlcsplit/logs/step_h.json`, produced by `nlcsplit/step_h_s22.py`; drawn by `nlcsplit/figures.py` [S2].
 
 
 | System | atoms | dE_int | dE_xc (total) | dE_NLC | share of dE_xc (only where it is defined) |
@@ -955,10 +955,13 @@ slower-everywhere statement can be read off one panel rather than taken on trust
 ![Provable block screening timed against the exact double sum: wall clock versus the number of far-field point pairs actually evaluated, and the retained-pair fraction versus the achieved error, for both contention-gated windows](figs/fig3_screening_cost.png)
 
 **Figure 6.** The cost of keeping the (i, j) index, and why the provable bound does not pay for
-it. Left: for each system and grid level, the wall clock of the screened path is plotted against
-the number of far-field point pairs it actually evaluated, paired by connector with the exact
-double sum on the same system - every connector goes from less work to more time, which is the
-statement "none of the 33 pairs ran faster" in picture form. Right: the fraction of far-field
+it. Panel (a): for each system and grid level, the wall clock of the screened path is plotted
+against the number of far-field point pairs it actually evaluated, paired by connector with the
+exact double sum on the same system - every connector goes from less work to more time, which is
+the statement "none of the 33 pairs ran faster" in picture form. Every timing in this panel
+passed the contention gate: at each sampling instant the number of external runnable tasks was
+zero, so the ratio is a same-system comparison and not a claim about an idle machine. Panel (b):
+the fraction of far-field
 pairs retained against the achieved error, with the accuracy the paper needs drawn as a band; the
 retained share stays high precisely where the tolerance has to be tight. Hollow markers are the
 archived window, filled markers the 2026-09-30 re-run, so a single figure carries both windows
