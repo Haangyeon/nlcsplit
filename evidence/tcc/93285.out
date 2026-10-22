@@ -1,0 +1,90 @@
+Sender: LSF System <lsfadmin@chinahpc>
+Subject: Job 93285: <nlcbenz> in cluster <chinahpc> Exited
+
+Job <nlcbenz> was submitted from host <chinahpc> by user <XAR> in cluster <chinahpc>.
+Job was executed on host(s) <8*chinahpc>, in queue <normal>, as user <XAR> in cluster <chinahpc>.
+</home/XAR> was used as the home directory.
+</share/BackUp/XAR/nlcc> was used as the working directory.
+Started at Results reported on 
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q normal
+#BSUB -J nlcbenz
+#BSUB -n 8
+#BSUB -R "span[hosts=1] rusage[mem=16000]"
+#BSUB -W 48:00
+#BSUB -cwd /share/BackUp/XAR/nlcc
+#BSUB -o /share/BackUp/XAR/nlcc/out/%J.out
+#BSUB -e /share/BackUp/XAR/nlcc/out/%J.err
+
+# 目的：关掉母仓 §3.2 自己记下的那条限制 —— "苯系四个与苯-水/苯-氨本机跑不动，留在限制里"。
+# 一次作业里先校验再算苯：
+#   阶段 0 水二聚体（母仓已有归档：6-31g* 冻核反泊松 -6.8559）——同一套代码、同一约定，
+#          在这台机、这个 lib 上必须重现那个数，容差 0.0005 kcal/mol（三位小数，作者标准）。
+#          对不上就说明通路/版本/约定有问题，此时**不**往苯上押 48 小时。
+#   阶段 1-3 苯-水 → 苯-氨 → 苯-甲烷（AO 递增），每个体系单独落一份 log，跑完一个成一个，
+#          作业被墙钟掐掉也不丢已完成的体系。
+# 刻意不含苯二聚体(A)：那是 228 AO，单节点 48 h 大概率不够，先看这三个的真实墙钟再决定。
+set -u
+ROOT=/share/BackUp/XAR/nlcc
+PY=/share/BackUp/XAR/xar/Demo/Dependencies/miniconda3/envs/py311/bin/python
+LOGD="$ROOT/logs"
+mkdir -p "$LOGD"
+cd "$ROOT" || exit 96
+
+export PYTHONPATH="$ROOT/lib" OMP_NUM_THREADS=8 MAXMEM_MB=60000
+export S22DIR="$ROOT/scratch/lit/s22" BASES="6-31g*"
+
+echo "=== 作业自证 ==="
+echo "LSB_JOBID=$LSB_JOBID  host=$(hostname)  slots: $LSB_PROCESSOR_LIST"
+echo "tcc钟 $(date -u +%FT%TZ) —— 本机钟比 UTC 慢 32-34 min，母仓回填一律用提交/取回时刻"
+echo "pyscf: $($PY -c 'import pyscf;print(pyscf.__version__, pyscf.__file__)')"
+echo "numpy: $($PY -c 'import numpy;print(numpy.__version__)')"
+free -g | head -2
+
+echo "=== AO 维度预检（只建基组，不跑 SCF）==="
+$PY - <<'PYF'
+import sys, os
+sys.path.insert(0, "/share/BackUp/XAR/nlcc")
+from nlcsplit import geomlib, step_m_ccsdt as m
+for name in ["水二聚体", "苯-水", "苯-氨", "苯-甲烷", "苯二聚体(A)"]:
+    try:
+        atoms, frags = geomlib.s22_system(name, m.OFFDIR)
+        mol = m.build([a[0] for a in atoms], [a[1] for a in atoms], "6-31g*")
+        print("  %-12s 原子=%-3d nao=%-4d nbas=%-4d nelec=%d 片段数=%d"
+              % (name, len(atoms), mol.nao_nr(), mol.nbas, mol.nelectron, len(frags)))
+    except Exception as e:
+        print("  %-12s 预检失败: %r" % (name, e))
+PYF
+
+
+(... more ...)
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   0.04 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     16000.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   1 sec.
+    Turnaround time :                            262470 sec.
+
+The output (if any) follows:
+
+=== 作业自证 ===
+
+
+PS:
+
+Read file </share/BackUp/XAR/nlcc/out/93285.err> for stderr output of this job.
+

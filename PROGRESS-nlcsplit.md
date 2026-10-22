@@ -5801,3 +5801,27 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 其中那份 binding 文件属本机，故意不入库）；仓根 `.rc`＝**1 字节换行**、mtime 10-14 02:48，
 形态与"runner 里 $OUT 未设就写 sidecar"一致，是那次静默归档失败的残迹而不是证据——
 记大小与内容，不删也不入库。
+
+
+## [2026-10-22 09:0x] [agent=cn-qoder] [done] 租期要到期 ⇒ 三格 level-2 当场起跑；tcc 那笔"待取回"其实是 1 秒就死的失败作业
+
+作者说这周租期到期、后面算起来麻烦 ⇒ 不再等机时决定，直接按最贵的那条把 compute 全吃掉。
+
+1. **起跑**：`evidence/common_grid/run_crossfamily_level2_three_pi_cells.sh`，LEVEL=2，
+   NAMES=苯-氨 / 苯-甲烷 / 苯二聚体(B)，**一个进程串行**（保持每格"用时"不被我自己争用，
+   与已归档的另外五格可比），档名 `20261022T085504Z_hirshfeld_crossfamily_l2_three_pi_cells.out`。
+   档头照旧并排印宿主钟与 WSL 钟、`nproc`/`Cpus_allowed_list`/线程变量与 `uptime`——
+   这次还印出一条有用的：机器在我起跑前一分钟刚重启过，空载。
+   报价仍是"最近的同尺寸档外推"，约 11 h；**指数未跨体系验证**，落地后读档内 用时 才算数。
+2. **起跑前差点踩的坑**：我先用 `grep '"苯-甲烷"' evidence/common_grid/hirshfeld_crossfamily.py` 查名字，
+   零命中，差点据此改脚本。实际那张 名字→xyz 表在 `nlcsplit/geomlib.py`（8 条），三个名字都在。
+   ⇒ 同一个"查错了载体"的形态：零命中只能证明"这个文件里没有"，何况我连文件都选错了。
+3. **tcc 93285（任务 #31）关账：没有结果可取**。取回 `/share/BackUp/XAR/nlcc/out/93285.{out,err}`
+   到 `evidence/tcc/`（远端与本地 sha256 逐字符相同，见该目录 README 与清单）。
+   该作业 `<nlcbenz>` **exit 1、CPU 0.04 s、Run time 1 s、排队 262470 s**，
+   死因只有一行：wrapper 第 30 行 `LSB_PROCESSOR_LIST: unbound variable`（`set -u` 下引用 LSF 未导出变量）。
+   ⇒ 它从未进入计算。§3.2 的苯二聚体 CCSD(T) 锚来自 SNNU 50945/50980，与本作业无关。
+   该机 `out/` 里**只有**这一对文件，没有别的未取回产出；SNNU 侧 `squeue` 空、无挂起作业。
+4. **没入库的一件**：本轮新写的 runner 暂不提交——它一进 `evidence/common_grid/`，清单就必须重生成，
+   而归档件此刻还在增长（正好是当初那两笔 bypass 的理由）。等批落定，按"落定→重跑表与负控→
+   最后重生成清单"一次收，本轮不重复踩。
