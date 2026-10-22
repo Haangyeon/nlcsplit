@@ -316,11 +316,13 @@ def fig4(ladders, xc, nlc, dft):
         ratios.append(span / dev)
         print("  fig4 标题核验 %-9s 基组跨度 %.3f / 泛函偏差 %.3f = %.2f"
               % (SYS_EN[cn], span, dev, span / dev))
-    fig = plt.figure(figsize=(6.8, 6.1))
+    # 作者的原话是"不要又瘦又长"。6.8x6.1 印在 0.98 版心上就是一张 15.7 cm 高、近方形的图；
+    # 改成 7.4x4.4（宽高比 1.68），横排、三个并排面板等高，同一条规则见 fig5。
+    fig = plt.figure(figsize=(7.4, 4.4))
     # suptitle 去掉后 top 从 0.845 提到 0.95，否则顶部留一条空白；wspace 加宽是因为 (c) 的
     # 纵轴标签（"benzene...methane 631G* ae" 之类）会伸进 (b) 的绘图区。
     gs = fig.add_gridspec(2, 3, height_ratios=[1.2, 1.0], hspace=0.52, wspace=0.95,
-                          left=0.155, right=0.965, top=0.95, bottom=0.095)
+                          left=0.15, right=0.97, top=0.95, bottom=0.11)
     xs = list(range(len(RUNGS)))
 
     # (a1..a3) 每个体系一根自己的纵轴：混在一张轴上，水/氨/甲烷的量级差会把后两个压扁。
@@ -334,7 +336,7 @@ def fig4(ladders, xc, nlc, dft):
                     color="#c05621", xytext=(2, 4), textcoords="offset points")
         ax.axhline(0, color="k", lw=0.6)
         ax.set_xticks(xs)
-        ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=6.5)
+        ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=5.8)
         ax.set_title("%s dimer" % SYS_EN[cn], fontsize=8)
         if si == 0:
             ax.set_ylabel("$\\Delta E_{\\rm CP}$ (kcal/mol)", fontsize=8)
@@ -362,7 +364,7 @@ def fig4(ladders, xc, nlc, dft):
     ax3.barh(lab[::-1], [abs(d) for *_, d in xc][::-1], color="#4a5568", height=0.62)
     ax3.axvline(0.001, color="#c05621", ls="--", lw=1.0)
     ax3.text(0.00095, 3.4, "bar 0.001  ", fontsize=6.5, color="#c05621", ha="right")
-    ax3.set_xlabel("CCSD(T): |ORCA-PySCF| (kcal/mol)", fontsize=7)
+    ax3.set_xlabel("CCSD(T): |ORCA-PySCF| (kcal/mol)", fontsize=6.2)
     ax3.set_xlim(0, 0.0012)
     ax3.tick_params(axis="y", labelsize=5.6)
     ax3.set_title("(c) the anchor itself", fontsize=8)
@@ -501,7 +503,7 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
         ratios6.append(r)
         print("  fig5 核验 %-15s span %.3f / dev %.3f = %.2f" % (nm, span, dev, r))
 
-    fig = plt.figure(figsize=(6.9, 6.4))
+    fig = plt.figure(figsize=(7.4, 4.5))
     gs = fig.add_gridspec(2, 3, height_ratios=[1.05, 1.0], hspace=0.62, wspace=0.42,
                           left=0.185, right=0.97, top=0.86, bottom=0.13)
     xs = list(range(len(RUNGS)))
@@ -518,7 +520,7 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
                     color="#c05621", xytext=(2, 4), textcoords="offset points")
         ax.axhline(0, color="k", lw=0.6)
         ax.set_xticks(xs)
-        ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=6.2)
+        ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=5.8)
         ax.set_title(PI_EN[cn], fontsize=8)
         if si == 0:
             ax.set_ylabel("$\\Delta E_{\\rm CP}$ (kcal/mol)", fontsize=8)
