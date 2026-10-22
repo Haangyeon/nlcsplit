@@ -317,8 +317,10 @@ def fig4(ladders, xc, nlc, dft):
         print("  fig4 标题核验 %-9s 基组跨度 %.3f / 泛函偏差 %.3f = %.2f"
               % (SYS_EN[cn], span, dev, span / dev))
     fig = plt.figure(figsize=(6.8, 6.1))
-    gs = fig.add_gridspec(2, 3, height_ratios=[1.2, 1.0], hspace=0.52, wspace=0.62,
-                          left=0.155, right=0.965, top=0.845, bottom=0.095)
+    # suptitle 去掉后 top 从 0.845 提到 0.95，否则顶部留一条空白；wspace 加宽是因为 (c) 的
+    # 纵轴标签（"benzene...methane 631G* ae" 之类）会伸进 (b) 的绘图区。
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.2, 1.0], hspace=0.52, wspace=0.95,
+                          left=0.155, right=0.965, top=0.95, bottom=0.095)
     xs = list(range(len(RUNGS)))
 
     # (a1..a3) 每个体系一根自己的纵轴：混在一张轴上，水/氨/甲烷的量级差会把后两个压扁。
@@ -362,15 +364,11 @@ def fig4(ladders, xc, nlc, dft):
     ax3.text(0.00095, 3.4, "bar 0.001  ", fontsize=6.5, color="#c05621", ha="right")
     ax3.set_xlabel("CCSD(T): |ORCA-PySCF| (kcal/mol)", fontsize=7)
     ax3.set_xlim(0, 0.0012)
-    ax3.tick_params(axis="y", labelsize=6.2)
+    ax3.tick_params(axis="y", labelsize=5.6)
     ax3.set_title("(c) the anchor itself", fontsize=8)
 
-    worst = max(max(ratios), 1.0 / min(ratios))
-    fig.suptitle("Reference's basis move / functional's deviation = %.2f, %.2f, %.2f - within a\n"
-                 "factor of 2.4 on two of the three, %.1fx apart on the third, and never ordered\n"
-                 "the same way twice: which is why this paper does not judge\n"
-                 "the functional on binding energies" % (tuple(ratios) + (worst,)),
-                 fontsize=8.5, y=0.965)
+    # 图内那四行 suptitle（比值 0.43/0.07/1.11，两格 2.4 倍、一格 14.7 倍）正好压在三个面板的
+    # 标题上。同一句在正文 §3.2 已逐字给出，这里不再重复——图负责画，结论留给文字。
     f = os.path.join(OUT, "fig4_anchor_crosschecks.png")
     fig.savefig(f, dpi=200)
     return f
@@ -549,11 +547,7 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     axb.set_xlim(0, 2.75)
     axb.set_xlabel("kcal/mol", fontsize=7.5)
     axb.legend(loc="lower center", bbox_to_anchor=(0.5, 1.005), ncol=2, fontsize=6.6, frameon=False)
-    worst6 = max(max(ratios6), 1.0 / min(ratios6))
-    fig.suptitle("Across six complexes the reference's own basis move and the functional's\n"
-                 "deviation from it stay within %.1fx of each other (ratios %.2f-%.2f): neither is\n"
-                 "small enough to be the correction that removes the other"
-                 % (worst6, min(ratios6), max(ratios6)), fontsize=8.5, y=0.965)
+    # 同一原因：六体系的比值结论在正文里，图内不再放多行 suptitle。
     f = os.path.join(OUT, "fig5_six_system_spans.png")
     fig.savefig(f, dpi=200)
     return f
