@@ -1574,3 +1574,18 @@
   - 范围声明：本笔**不**收掉 16:12:18Z 那笔 stop-bypass 的全部范围。它当时还列了 common_grid 之外的
     未提交改动；其中 nlcsplit/ 三个文件已在紧邻的前一笔（家族外构造进版本控制）落定，
     其余 tools/、paper/notes/、paper/references.bib、evidence/rvv10_referee/ 仍未了结，在此不声明为已收。
+2026-10-21T21:05:09.052Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 1 个（列前 8 个）：
+      ?? evidence/rvv10_referee/
+2026-10-22T09:01:07.747Z precommit-bypass 理由: common_grid 那两个条目正是正在跑的那一批——归档件还在逐格增长，此刻登记等于把半写成的摘要钉进清单；批一落定就重跑表与负控、最后重生成清单，与本轮新 runner 一起收
+  问题:
+  证据清单陈旧 2 条：
+      common_grid/20261022T085504Z_hirshfeld_crossfamily_l2_three_pi_cells.out 未登记进 MANIFEST.sha256
+      common_grid/run_crossfamily_level2_three_pi_cells.sh 未登记进 MANIFEST.sha256
+      办法：cd 进那个目录，find . -maxdepth 1 -type f ! -name 'MANIFEST*' -printf '%f\0' | xargs -0 sha256sum > /tmp/mf.new && mv /tmp/mf.new MANIFEST.sha256，再 git add
+2026-10-22T09:01:30.632Z precommit-bypass 理由: 清单点名的两个 common_grid 条目正是正在跑的那一批——归档件还在逐格增长，此刻登记等于把半写成的摘要钉进清单；批一落定就重跑表与负控、最后重生成清单，与新 runner 一起收
+  问题:
+  证据清单陈旧 2 条：
+      common_grid/20261022T085504Z_hirshfeld_crossfamily_l2_three_pi_cells.out 未登记进 MANIFEST.sha256
+      common_grid/run_crossfamily_level2_three_pi_cells.sh 未登记进 MANIFEST.sha256
+      办法：cd 进那个目录，find . -maxdepth 1 -type f ! -name 'MANIFEST*' -printf '%f\0' | xargs -0 sha256sum > /tmp/mf.new && mv /tmp/mf.new MANIFEST.sha256，再 git add
