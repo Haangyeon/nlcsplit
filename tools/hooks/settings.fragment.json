@@ -54,6 +54,13 @@
         "hooks": [
           {
             "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/pdf_lock_gate.js\"",
+            "name": "pdf-lock-gate",
+            "statusMessage": "建 PDF 前先确认没被阅读器占着，占着就关掉它",
+            "timeout": 60
+          },
+          {
+            "type": "command",
             "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/precommit_gate.js\"",
             "if": "Bash(git commit*)",
             "name": "precommit-gate",

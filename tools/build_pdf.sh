@@ -20,6 +20,8 @@ node tools/md2tex.js "$DOC" || { echo "FAIL: md2tex (see its stderr)"; exit 1; }
 cd paper || exit 1
 export PATH="$MIKTEX:$PATH"
 rm -f "$DOC".aux "$DOC".bbl "$DOC".blg "$DOC".out "$DOC".log
+# 先删旧 PDF：没有这一步，pdflatex 写不进去时旧件会留在原地冒充"这次构建的产物"。
+rm -f "$DOC".pdf || { echo "FAIL: cannot replace $DOC.pdf (locked)"; exit 1; }
 for pass in 1 2 3; do
   pdflatex -interaction=nonstopmode "$DOC".tex >/dev/null 2>&1
   [ -f "$DOC".log ] || { echo "FAIL: pass $pass produced no log"; exit 1; }
@@ -41,3 +43,8 @@ if [ "$errs" != 0 ]; then echo "FAIL: $errs LaTeX error lines:"; grep -A2 '^!' "
 if [ "$cites" = 0 ]; then echo "FAIL: bibliography is present but nothing cites it"; exit 1; fi
 if grep -q "Couldn't load" bibtex.log 2>/dev/null; then echo "FAIL: bibtex could not load a file"; cat bibtex.log; exit 1; fi
 echo "clean"
+# 建完把正本重新打开：阅读器里那份是旧版会误导读者（作者要求"关掉再打开"）。
+# 由 PreToolUse 的 pdf-lock-gate 负责先关掉旧窗口；这里只负责打开新件。
+if [ "${PDF_NO_OPEN:-0}" != 1 ] && command -v powershell >/dev/null 2>&1; then
+  powershell -NoProfile -Command "Start-Process '$(cygpath -w "$ROOT/paper/$DOC.pdf")'" >/dev/null 2>&1 || true
+fi
