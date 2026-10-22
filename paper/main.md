@@ -14,7 +14,7 @@ than translated by us. The Chinese forms of both names are recorded in `CITATION
 with no CJK font, and `tools/md2tex.js` refuses characters it cannot map rather than dropping
 them silently.
 
-Number provenance is tagged `[S#]`; the tag-to-artefact table is the appendix at the end of
+Number provenance is tagged `[S#]`; the tag-to-artefact table is **Table 5**, the appendix at the end of
 this file, mirrored in `paper/tex_audit.md`. The literature search behind the no-precedent
 claim is described where its own limits are stated (§1 and §6).
 
@@ -95,7 +95,7 @@ are the content of this paper.
 
 The first is **attribution**. The non-uniqueness lives in which fragment owns
 each grid point (and, in the same spirit, how the local term β∫ρ is assigned),
-not in how the sum is grouped. We therefore quantify the spread over four
+not in how the sum is grouped [[andres2019ninequestions]]. We therefore quantify the spread over four
 published real-space partitions — Becke, Becke with the radius adjustment,
 Becke–Treutler, and Stratmann's — on eight S22 complexes, and report it as a
 per-system uncertainty rather than asserting one scheme as correct. The spread
@@ -419,7 +419,8 @@ the second row is what a coarse grid looks like from the inside.
 ### 3.2 The nonlocal term is not a fixed fraction of the exchange-correlation term
 
 Table 1 reports omegaB97X-V/6-31G* results for eight S22 systems at the official
-GMTKN55 geometries. The quantity of interest is dE_NLC, the change in the
+GMTKN55 geometries. The S22 set is the standard noncovalent benchmark, and reference
+interaction energies for it are compiled in [[rezac2016bench]]. The quantity of interest is dE_NLC, the change in the
 nonlocal correlation energy on bringing two fragments together from infinity at
 fixed density, and its ratio to the total dE_xc for the same process. The
 remainder, dE_xc^rest = dE_xc - dE_NLC, is the semi-local exchange-correlation plus
@@ -565,7 +566,7 @@ cluster: the same ladder was run for benzene-water, benzene-ammonia and benzene-
 (192 AO), all at official S22 geometries, 6-31g\*, counterpoise, frozen core [S26, S28, S29, S30].
 Set against the omegaB97X-V/6-31G\* level-2 counterpoise values - all eight now computed in
 PySCF 2.12.1, the same version and the same grid level as the coupled-cluster side - the eight
-deviations are:
+deviations are collected in **Table 2**:
 
 | complex | CCSD(T) dE_CP | omegaB97X-V dE_CP | deviation | correlated BSSE |
 |---|---|---|---|---|
@@ -872,7 +873,9 @@ a constructed benzene sandwich geometry whose point count is **identical in all 
 [`evidence/recompute/20261005T0410Z_additivity_census.out`]. That is the mechanism the split
 above hides at level 1: a scheme change that leaves the grid alone cannot change a total, so a
 total that moves between schemes is a grid that was rebuilt, and on a coarse grid it can move
-by more than the entire level-1 attribution band. The band quoted everywhere else in this
+by more than the entire level-1 attribution band. That quadrature sensitivities of this size
+are not unique to this kernel is documented for several recent functionals
+[[lehtola2022illbehaved]]. The band quoted everywhere else in this
 paper - Table 1, the abstract, §6 - is the level-1 one, and the level-0 readings above are
 labelled as level-0 where they are used.
 
@@ -1049,7 +1052,7 @@ with no `-V`, which contains no such line [S18]. Twenty-four serial runs - the w
 and the parallel-displaced benzene dimer (S22 #2, #11) on the cluster, the other six systems on this machine,
 all at S22 official complex geometries with 6-31G*, each
 terminating normally with a converged SCF and carrying exactly one `NL Energy` line -
-give, for the superposition difference that Table 1 reports. The last two columns compare
+give the comparison in **Table 4**, for the superposition difference that Table 1 reports. The last two columns compare
 the residual with the partition-scheme span of the same row (§3.4), which is the
 quantity a referee has to be smaller than to be informative:
 

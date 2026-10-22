@@ -1,4 +1,4 @@
-\begin{thebibliography}{25}
+\begin{thebibliography}{28}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -42,6 +42,25 @@ Susi Lehtola, Conrad Steigemann, Micael J.~T. Oliveira, and Miguel A.~L.
   functionals for density functional theory.
 \newblock \emph{SoftwareX}, 7:\penalty0 1--5, 2018.
 \newblock \doi{10.1016/j.softx.2017.11.002}.
+
+\bibitem[Andr\'{e}s et~al.(2019)Andr\'{e}s, Ayers, Boto, Carb\'{o}-Dorca,
+  Chermette, Cioslowski, Contreras-Garc\'{i}a, Cooper, Frenking, Gatti,
+  Heidar-Zadeh, Joubert, \'{A}ngel Mart\'{i}n~Pend\'{a}s, Matito, Mayer,
+  Misquitta, Mo, Pilm\'{e}, Popelier, Rahm, Ramos-Cordoba, Salvador, Schwarz,
+  Shahbazian, Silvi, Sol\`{a}, Szalewicz, Tognetti, Weinhold, and \'{E}milie
+  Laure~Zins]{andres2019ninequestions}
+Juan Andr\'{e}s, Paul~W. Ayers, Roberto~A. Boto, Ramon Carb\'{o}-Dorca, Henry
+  Chermette, Jerzy Cioslowski, Julia Contreras-Garc\'{i}a, David~L. Cooper,
+  Gernot Frenking, Carlo Gatti, Farnaz Heidar-Zadeh, Laurent Joubert, \'{A}ngel
+  Mart\'{i}n~Pend\'{a}s, Eduard Matito, Istv\'{a}n Mayer, Alston~J. Misquitta,
+  Yirong Mo, Julien Pilm\'{e}, Paul L.~A. Popelier, Martin Rahm, Eloy
+  Ramos-Cordoba, Pedro Salvador, W.~H.~Eugen Schwarz, Shant Shahbazian, Bernard
+  Silvi, Miquel Sol\`{a}, Krzysztof Szalewicz, Vincent Tognetti, Frank
+  Weinhold, and \'{E}milie Laure~Zins.
+\newblock Nine questions on energy decomposition analysis.
+\newblock \emph{Journal of Computational Chemistry}, 40:\penalty0 2248--2283,
+  2019.
+\newblock \doi{10.1002/jcc.26003}.
 
 \bibitem[Dasgupta et~al.(2024)Dasgupta, Palos, Pan, and Paesani]{dasgupta2023}
 Saswata Dasgupta, Etienne Palos, Yuanhui Pan, and Francesco Paesani.
@@ -160,6 +179,13 @@ Petr Jure{\v{c}}ka, Ji{\v{r}}{\'i} {\v{S}}poner, Ji{\v{r}}{\'i}
   2006.
 \newblock \doi{10.1039/b600027d}.
 
+\bibitem[\v{R}ez\'{a}\v{c} and Hobza(2016)]{rezac2016bench}
+Jan \v{R}ez\'{a}\v{c} and Pavel Hobza.
+\newblock Benchmark calculations of interaction energies in noncovalent
+  complexes and their applications.
+\newblock \emph{Chemical Reviews}, 116:\penalty0 5038--5071, 2016.
+\newblock \doi{10.1021/acs.chemrev.5b00526}.
+
 \bibitem[Altun et~al.(2018)Altun, Neese, and Bistoni]{altun2018dlpno}
 Zekeriya Altun, Frank Neese, and Agnieszka Bistoni.
 \newblock Local energy decomposition analysis of hydrogen-bonded dimers within
@@ -176,6 +202,12 @@ Taku Takatani, Edward~G. Hohenstein, Krzysztof Malagoli, Michael~W. Marshall,
   interaction energies.
 \newblock \emph{The Journal of Chemical Physics}, 132:\penalty0 144104, 2010.
 \newblock \doi{10.1063/1.3378024}.
+
+\bibitem[Lehtola and Marques(2022)]{lehtola2022illbehaved}
+Susi Lehtola and Miguel A.~L. Marques.
+\newblock Many recent density functionals are numerically ill-behaved.
+\newblock \emph{The Journal of Chemical Physics}, 157:\penalty0 174114, 2022.
+\newblock \doi{10.1063/5.0121187}.
 
 \bibitem[Sun et~al.(2018)Sun, Berkelbach, Blunt, Booth, Guo, Li, Liu, McClain,
   Sayfutyarova, Sharma, Wouters, and Chan]{sun2018pyscf}
