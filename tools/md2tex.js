@@ -179,7 +179,7 @@ function inline(s) {
     if (p.startsWith('`') && p.endsWith('`') && p.length > 2) {
       // Underscores stay literal-ish (escaped), and # must be escaped here too: the
       // first build died on \texttt{[S#]} with "macro parameter character #".
-      return '\\texttt{' + p.slice(1, -1)
+      let code = p.slice(1, -1)
         .replace(/\\/g, '\\textbackslash{}')
         .replace(/([_&#%$])/g, '\\$1')
         // `^` 与 `~` 在文本模式是重音控制字：`^{1/6}` 留在 \texttt 里会炸成
@@ -187,7 +187,14 @@ function inline(s) {
         // 不能用 \^ —— 后者会吞掉后面的 `{1/6}` 当参数。
         // 只在代码跨度里加：main.md 的行内代码含 ^/~ 的处数为 0，所以这条不动 main 的字节。
         .replace(/\^/g, '\\textasciicircum{}')
-        .replace(/~/g, '\\textasciitilde{}') + '}';
+        .replace(/~/g, '\\textasciitilde{}');
+      // Long paths are single unbreakable words to TeX and pushed the appendix table 86 pt past
+      // the right margin. Allow a break after a slash or an escaped underscore, but only in
+      // spans long enough to matter, so ordinary identifiers keep their shape.
+      if (p.length > 28) {
+        code = code.replace(/\//g, '/\\allowbreak{}').replace(/\\_/g, '\\_\\allowbreak{}');
+      }
+      return '\\texttt{' + code + '}';
     }
     let t = p;
     t = cite(t);
@@ -204,6 +211,26 @@ function isTable(lines, i) {
 function splitRow(l) {
   return l.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split(/(?<!\\)\|/).map(c => c.trim());
 }
+// Pixel size straight out of the PNG header, so figure sizing never depends on guessing.
+function pngSize(p) {
+  try {
+    const b = fs.readFileSync(p);
+    if (b.length > 24 && b.toString('ascii', 12, 16) === 'IHDR') {
+      return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+    }
+  } catch (e) { /* fall through to the default aspect */ }
+  return null;
+}
+
+// Headings arrive from the markdown with hand-written numbers ("## 3. Results", "### 3.1 Foo").
+// LaTeX numbers sections itself, so passing the digit through printed "4 3. Results and
+// discussion" on page 8 of the first build - the section counter said 4 and the author's own
+// "3." sat beside it. Strip the manual number and let the counter be the only source of truth.
+function stripManualNumber(t) {
+  const m = t.match(/^\s*\d+(?:\.\d+)*\.?\s+(\S.*)$/);
+  return m ? m[1] : t;
+}
+
 function table(block, cap) {
   const head = splitRow(block[0]);
   const body = block.slice(2).map(splitRow);
@@ -213,18 +240,39 @@ function table(block, cap) {
   // X columns, which wrap; narrow columns stay `l` so numbers do not get stretched.
   const wide = head.map((_, j) => Math.max(...[head, ...body].map(r => (r[j] || '').length)) > 40);
   const wrap = wide.some(Boolean);
-  const spec = wrap ? wide.map(w => w ? 'X' : 'l').join('') : 'l'.repeat(cols);
+  // Numeric columns get an `r` column: left-aligned numbers put the decimal points wherever
+  // the digit count happens to end, which is what made the first build's tables look ragged.
+  const numeric = head.map((_, j) => {
+    const cells = body.map(r => (r[j] || '').trim()).filter(Boolean);
+    if (!cells.length) return false;
+    const num = cells.filter(c => /^[-+\u2212]?\d+(?:\.\d+)?$/.test(c) || /^n\/a/.test(c));
+    return num.length / cells.length >= 0.7;
+  });
+  const spec = wrap ? wide.map(w => w ? 'X' : 'l').join('')
+    : head.map((_, j) => numeric[j] ? 'r' : 'l').join('');
   const env = wrap ? 'tabularx' : 'tabular';
   const lines = [];
-  lines.push('\\begin{table}[htbp]', '\\centering', wrap ? '\\footnotesize' : '',
-    '\\begin{' + env + '}' + (wrap ? '{\\textwidth}' : '') + '{' + spec + '}', '\\toprule',
+  const inner = [];
+  inner.push('\\begin{' + env + '}' + (wrap ? '{\\textwidth}' : '') + '{' + spec + '}', '\\toprule',
     head.map(c => '\\textbf{' + inline(c) + '}').join(' & ') + ' \\\\ \\midrule');
   for (const r of body) {
     const cells = r.slice(0, cols);
     while (cells.length < cols) cells.push('');
-    lines.push(cells.map(c => inline(c)).join(' & ') + ' \\\\');
+    inner.push(cells.map(c => inline(c)).join(' & ') + ' \\\\');
   }
-  lines.push('\\bottomrule', '\\end{' + env + '}');
+  inner.push('\\bottomrule', '\\end{' + env + '}');
+  lines.push('\\begin{table}[htbp]', '\\centering', (wrap || cols >= 6) ? '\\footnotesize' : '');
+  if (wrap) {
+    lines.push(...inner);
+  } else {
+    // Natural-width tables are NOT guaranteed to fit: the seven-column attribution table ran
+    // past the right margin in the first build and the last column was cut off. Shrink only
+    // when needed - \width is the box's own natural width, so narrow tables keep their size
+    // and do not get stretched to the text block the way a tabularx would stretch them.
+    lines.push('\\resizebox{\\ifdim\\width>\\linewidth\\linewidth\\else\\width\\fi}{!}{%');
+    lines.push(...inner);
+    lines.push('}%');
+  }
   // A float with no caption has no number, and a paper whose tables cannot be numbered is a
   // paper where "Table 1" means whatever the reader guesses. The caption text comes from a
   // `**Table N.** ...` paragraph placed directly after the table, mirroring the existing
@@ -258,6 +306,7 @@ let figNo = 1;
 let tblSeq = 0, tablesTotal = 0, tablesNumbered = 0;
 const FIGS = [];
 let TITLE = null;
+let skipFront = 0;
 let i = 0;
 const lines = md.split(/\r?\n/);
 // YAML front matter is metadata, not prose. Without this the block between the two `---`
@@ -275,14 +324,14 @@ if (/^---\s*$/.test(lines[0])) {
 while (i < lines.length) {
   const l = lines[i];
   // \title has to precede \begin{document}, so hold it and splice it into the preamble.
-  if (/^# /.test(l)) { TITLE = inline(l.slice(2)); i++; continue; }
+  if (/^# /.test(l)) { TITLE = inline(l.slice(2)); skipFront = 2; i++; continue; }
   if (/^## /.test(l)) {
     const t = l.slice(3);
     if (/^\s*Draft\b/i.test(t)) { out.push('% draft status line, intentionally not typeset'); i++; continue; }
-    seenH.push(t); out.push('\\section{' + inline(t) + '}'); i++; continue;
+    seenH.push(t); out.push('\\section{' + inline(stripManualNumber(t)) + '}'); i++; continue;
   }
-  if (/^### /.test(l)) { out.push('\\subsection{' + inline(l.slice(4)) + '}'); i++; continue; }
-  if (/^#### /.test(l)) { out.push('\\subsubsection{' + inline(l.slice(5)) + '}'); i++; continue; }
+  if (/^### /.test(l)) { out.push('\\subsection{' + inline(stripManualNumber(l.slice(4))) + '}'); i++; continue; }
+  if (/^#### /.test(l)) { out.push('\\subsubsection{' + inline(stripManualNumber(l.slice(5))) + '}'); i++; continue; }
   if (/^---+\s*$/.test(l)) { i++; continue; }
   if (isTable(lines, i)) {
     const blk = [];
@@ -328,14 +377,33 @@ while (i < lines.length) {
         '把图放进仓库，或删掉这一处图片引用。');
     }
     FIGS.push(m[2]);
+    // One width for every figure (0.92\textwidth) is wrong for both ends of the range: a
+    // two-panel figure at that width halves the panel size, and a near-square schematic grows
+    // taller than the text block. Read the PNG's own pixel size and size by aspect.
+    const dim = pngSize(m[2]);
+    const aspect = dim && dim.h ? dim.w / dim.h : 1.8;
+    const figW = Math.min(0.95, Math.max(0.62, 0.95 * Math.min(1, aspect / 1.9)));
+    console.log('  figure ' + m[2] + ': ' + (dim ? dim.w + 'x' + dim.h : 'size unreadable')
+      + ' aspect ' + aspect.toFixed(2) + ' -> width=' + figW.toFixed(2) + '\\textwidth');
+    // The caption arrives with its own "**Figure N.**" marker. Handing that to \caption printed
+    // "Figure 2: Figure 3. Left three panels..." - LaTeX's own counter (by float order) beside the
+    // author's number (by argument order), and the two disagreed because the figures are not in
+    // the file in numeric order. Strip the marker and force the counter to the semantic number,
+    // so the printed number and every "Figure N" in the running text are the same number.
+    const capBody = cap.replace(/^\*\*Figure\s*\d+\.\*\*\s*/, '');
+    const figNum = /^\d+$/.test(label) ? Number(label) : null;
     out.push('\\begin{figure}[htbp]\n\\centering\n'
-      + '\\includegraphics[width=0.92\\textwidth]{' + m[2] + '}\n'
-      + '\\caption{' + inline(cap) + '}\n\\label{fig:' + label + '}\n\\end{figure}');
+      + '\\includegraphics[width=' + figW.toFixed(2) + '\\textwidth]{' + m[2] + '}\n'
+      + (figNum ? '\\setcounter{figure}{' + (figNum - 1) + '}\n' : '')
+      + '\\caption{' + inline(capBody) + '}\n\\label{fig:' + label + '}\n\\end{figure}');
     continue;
   }
   const para = [];
   while (i < lines.length && lines[i].trim() && !/^#/.test(lines[i]) && !/^---+\s*$/.test(lines[i])
     && !/^!\[/.test(lines[i]) && !isTable(lines, i)) para.push(lines[i++]);
+  // 标题后的前两段是署名与单位：uthor 已排过，再排一次第 1 页就有两遍作者行。
+  // 第三段是 ORCID 脚注，uthor 里没有，保留。
+  if (skipFront > 0) { skipFront--; out.push('% byline/affiliation already typeset by uthor'); continue; }
   out.push(inline(para.join(' ')));
 }
 
@@ -446,6 +514,10 @@ const pre = '%% Generated by tools/md2tex.js from ' + SRC + '. Do not edit by ha
   + '\\usepackage{booktabs,graphicx,amsmath,amssymb}\n'
   + '\\graphicspath{{../}}\n'
   + '\\usepackage{tabularx}\n'
+  // Long unbreakable tokens (repository paths, DOIs, \texttt{} names) pushed 124 boxes past the
+  // right margin in the first build. emergencystretch lets TeX stretch a line instead of
+  // overrunning it, and unlike \sloppy it only kicks in when a line cannot be broken otherwise.
+  + '\\setlength{\\emergencystretch}{3em}\n'
   + '\\usepackage[numbers,sort&compress]{natbib}\n'
   + '\\usepackage{threeparttablex}\n'
   + '\\usepackage[british]{babel}\n'
@@ -464,10 +536,10 @@ const pre = '%% Generated by tools/md2tex.js from ' + SRC + '. Do not edit by ha
   // 三篇稿件作者相同，所以作者块整块共用；只有 \title 各取自己 md 的一级标题。
   + '\\author{Angran Xia\\thanks{Corresponding author; e-mail in the byline.}'
   + ' \\\\ \\small \\textit{School of Chemistry \\& Chemical Engineering, '
-  + "Shaanxi Normal University, Xi'an 710119, Shaanxi, China}"
+  + "Shaanxi Normal University, Xi'an 710119, China}"
   + ' \\\\ \\small \\texttt{haangyeon@snnu.edu.cn}'
   + ' \\and Changwei Wang \\\\ \\small \\textit{School of Chemistry \\& Chemical Engineering, '
-  + "Shaanxi Normal University, Xi'an 710119, Shaanxi, China}}\n"
+  + "Shaanxi Normal University, Xi'an 710119, China}}\n"
   + '\\date{Draft --- 29 September 2026\\\\ \\small \\textit{ORCIDs PENDING, author-supplied}}\n'
   + '\\begin{document}\n\\maketitle\n';
 

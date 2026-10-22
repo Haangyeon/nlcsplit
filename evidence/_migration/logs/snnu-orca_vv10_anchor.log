@@ -1,0 +1,21 @@
+=== SNNU -> staging: orca_vv10_anchor  start 2026-10-22T17:38:43+08:00 ===
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+
+Number of files: 114 (reg: 106, dir: 8)
+Number of created files: 114 (reg: 106, dir: 8)
+Number of deleted files: 0
+Number of regular files transferred: 106
+Total file size: 15,383,779 bytes
+Total transferred file size: 15,383,779 bytes
+Literal data: 15,383,779 bytes
+Matched data: 0 bytes
+File list size: 2,690
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 2,207
+Total bytes received: 15,394,653
+
+sent 2,207 bytes  received 15,394,653 bytes  1,140,508.15 bytes/sec
+total size is 15,383,779  speedup is 1.00
+=== rc=0  end 2026-10-22T17:38:57+08:00 ===

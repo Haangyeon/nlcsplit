@@ -1,0 +1,19 @@
+=== staging -> tcc: pyscf-wheels  start 2026-10-22T17:42:26+08:00 ===
+
+Number of files: 6 (reg: 5, dir: 1)
+Number of created files: 5 (reg: 5)
+Number of deleted files: 0
+Number of regular files transferred: 5
+Total file size: 114,379,824 bytes
+Total transferred file size: 114,379,824 bytes
+Literal data: 114,379,824 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.008 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 114,408,409
+Total bytes received: 118
+
+sent 114,408,409 bytes  received 118 bytes  9,948,567.57 bytes/sec
+total size is 114,379,824  speedup is 1.00
+=== rc=0  end 2026-10-22T17:42:37+08:00 ===

@@ -1,0 +1,19 @@
+=== staging -> tcc: nlcc-snnu  start 2026-10-22T17:41:18+08:00 ===
+
+Number of files: 470 (reg: 425, dir: 45)
+Number of created files: 469 (reg: 425, dir: 44)
+Number of deleted files: 0
+Number of regular files transferred: 425
+Total file size: 3,300,930 bytes
+Total transferred file size: 3,300,930 bytes
+Literal data: 3,300,930 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.034 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 3,331,621
+Total bytes received: 8,394
+
+sent 3,331,621 bytes  received 8,394 bytes  607,275.45 bytes/sec
+total size is 3,300,930  speedup is 0.99
+=== rc=0  end 2026-10-22T17:41:23+08:00 ===

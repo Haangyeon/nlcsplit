@@ -1,0 +1,19 @@
+=== staging -> tcc: orca_vv10_anchor  start 2026-10-22T17:42:17+08:00 ===
+
+Number of files: 114 (reg: 106, dir: 8)
+Number of created files: 113 (reg: 106, dir: 7)
+Number of deleted files: 0
+Number of regular files transferred: 106
+Total file size: 15,383,779 bytes
+Total transferred file size: 15,383,779 bytes
+Literal data: 15,383,779 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.103 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 15,393,698
+Total bytes received: 2,085
+
+sent 15,393,698 bytes  received 2,085 bytes  2,052,771.07 bytes/sec
+total size is 15,383,779  speedup is 1.00
+=== rc=0  end 2026-10-22T17:42:24+08:00 ===

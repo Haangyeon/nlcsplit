@@ -299,8 +299,9 @@ sum.
 
 ### 2.4 Geometries and fragment boundaries
 
-All dimer geometries are taken verbatim from the official GMTKN55 repository
-(github.com/grimme-lab/GMTKN55, `S22/<NN>/struc.xyz`), fetched by `nlcsplit/tools/get_s22.sh`;
+All dimer geometries are taken verbatim from the official GMTKN55 repository at
+github.com/grimme-lab/GMTKN55 (the files sit under `S22/<NN>/struc.xyz` in that repository),
+fetched by `nlcsplit/tools/get_s22.sh`;
 the repository's own citation instruction is Goerigk et al. [[goerigk2017gmtkn55]], PCCP 19, 32184-32215
 (2017), DOI 10.1039/C7CP04913G, which we verified by reverse DOI lookup. The S22
 database itself is Jurečka et al., PCCP 8, 1985-1993 (2006) [[jurecka2006s22]],
@@ -318,6 +319,17 @@ S22 water-dimer file the atoms are ordered so that the fragments interleave,
 and a hard-coded index split would mix the two molecules silently. For the
 water dimer we additionally report ωB97X-V/6-31G* optimised geometry
 (R(O···O) = 2.901 Å, 0.009 Å from the reference value) [S6].
+
+![The eight S22 dimers reported on in this paper, drawn from the official GMTKN55 geometries](figs/fig0_systems.png)
+
+**Figure 1.** The eight dimers every number here is made of, drawn from the same official GMTKN55
+geometries the tables use - not from re-optimised or hand-built structures. Panels (a)-(c) are the
+three hydrogen-bonded dimers, (d)-(f) put one aromatic ring against a small proton donor, and
+(g)-(h) are the same pair of benzene molecules in two relative orientations: parallel-displaced
+and T-shaped. That last pair is the paper's argument in one line - the orientation, not the size
+or the interaction class, is what sets both the size of the nonlocal term and how much of it each
+fragment can be assigned.
+
 
 ### 2.5 Verification
 
@@ -410,11 +422,11 @@ nonlocal correlation energy on bringing two fragments together from infinity at
 fixed density, and its ratio to the total dE_xc for the same process. The
 remainder, dE_xc^rest = dE_xc - dE_NLC, is the semi-local exchange-correlation plus
 the fraction of exact exchange; it is tabulated explicitly in
-`MAIN-skeleton.md` table 4b and is recoverable from these two columns by subtraction.
+the same paper's provenance appendix (S2) and is recoverable from these two columns by subtraction.
 
 ![Per-system split of the superposition exchange-correlation change into the VV10 term and the rest of ΔE_xc minus ΔE_NLC](figs/fig1_xc_split.png)
 
-**Figure 1.** The same quantity two ways, per system: the VV10 term ΔE_NLC and the remainder ΔE_xc - ΔE_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of ΔE_xc belongs to the VV10 term. Data: `nlcsplit/logs/step_h.json`, produced by `nlcsplit/step_h_s22.py`; drawn by `nlcsplit/figures.py` [S2].
+**Figure 2.** The same quantity two ways, per system: the VV10 term ΔE_NLC and the remainder ΔE_xc - ΔE_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of ΔE_xc belongs to the VV10 term. Data: `nlcsplit/logs/step_h.json`, produced by `nlcsplit/step_h_s22.py`; drawn by `nlcsplit/figures.py` [S2].
 
 
 | System | atoms | dE_int | dE_xc (total) | dE_NLC | share of dE_xc (only where it is defined) |
@@ -864,7 +876,7 @@ labelled as level-0 where they are used.
 
 ![Attribution spread of the interfragment pair term over the four partition schemes, as a percentage of the Becke-scheme value](figs/fig2_scheme_sensitivity.png)
 
-**Figure 2.** How much of the reported pair term is a choice about where grid points belong: the spread of P_frz over the four partition schemes of section 2.3, divided by the Becke-scheme value, per system, sorted. The two geometries of the same 24-atom benzene dimer sit at 0.8% and 9.2% and benzene...water at 18.2%, so the percentage is a property of the arrangement rather than of the pair of molecules and cannot be collapsed into one blanket error bar. Data as in Figure 1 [S2].
+**Figure 5.** How much of the reported pair term is a choice about where grid points belong: the spread of P_frz over the four partition schemes of section 2.3, divided by the Becke-scheme value, per system, sorted. The two geometries of the same 24-atom benzene dimer sit at 0.8% and 9.2% and benzene...water at 18.2%, so the percentage is a property of the arrangement rather than of the pair of molecules and cannot be collapsed into one blanket error bar. Data as in Figure 2 [S2].
 
 
 Two observations follow. First, the relative span has no pattern by interaction
@@ -935,12 +947,12 @@ exact sum twice on a node under a contention gate: the load was sampled before a
 rung, and no window enters the analysis unless the node carried no external runnable task, so a
 contended window cannot be read as a measurement. It is slower everywhere. Of 33 timed
 screened/exact pairs, none ran faster: the ratio spans 1.08-10.28x in the archived window and
-1.37-13.29x in the re-run window [S25]. Both windows are drawn in Figure 5, so the
+1.37-13.29x in the re-run window [S25]. Both windows are drawn in Figure 6, so the
 slower-everywhere statement can be read off one panel rather than taken on trust.
 
 ![Provable block screening timed against the exact double sum: wall clock versus the number of far-field point pairs actually evaluated, and the retained-pair fraction versus the achieved error, for both contention-gated windows](figs/fig3_screening_cost.png)
 
-**Figure 5.** The cost of keeping the (i, j) index, and why the provable bound does not pay for
+**Figure 6.** The cost of keeping the (i, j) index, and why the provable bound does not pay for
 it. Left: for each system and grid level, the wall clock of the screened path is plotted against
 the number of far-field point pairs it actually evaluated, paired by connector with the exact
 double sum on the same system - every connector goes from less work to more time, which is the

@@ -1,0 +1,20 @@
+=== create venv 2026-10-22T17:07:33+0800 ===
+Python 3.10.18
+=== offline pip install ===
+Looking in links: /share/BackUp/XAR/ms/projects/nlcsplit/software/pyscf-2.12.1/wheels
+Processing /share/BackUp/XAR/ms/projects/nlcsplit/software/pyscf-2.12.1/wheels/pyscf-2.12.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Processing /share/BackUp/XAR/ms/projects/nlcsplit/software/pyscf-2.12.1/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Processing /share/BackUp/XAR/ms/projects/nlcsplit/software/pyscf-2.12.1/wheels/scipy-1.15.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Processing /share/BackUp/XAR/ms/projects/nlcsplit/software/pyscf-2.12.1/wheels/h5py-3.14.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Processing /share/BackUp/XAR/ms/projects/nlcsplit/software/pyscf-2.12.1/wheels/setuptools-72.1.0-py3-none-any.whl
+Installing collected packages: setuptools, numpy, scipy, h5py, pyscf
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 65.5.0
+    Uninstalling setuptools-65.5.0:
+      Successfully uninstalled setuptools-65.5.0
+Successfully installed h5py-3.14.0 numpy-1.26.4 pyscf-2.12.1 scipy-1.15.3 setuptools-72.1.0
+=== pip freeze ===
+h5py==3.14.0
+numpy==1.26.4
+pyscf==2.12.1
+scipy==1.15.3

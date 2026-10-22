@@ -1,0 +1,73 @@
+SNNU inventory for nlcsplit migration
+=====================================
+Date (local): 2026-10-22
+Host: snnu (ssh alias; login node hostname "workstation")
+User: haangyeon, HOME=/home/haangyeon
+Filesystem: /home 300T total, 266T used, 35T avail (89%)
+Preflight: squeue -u haangyeon -> 0 jobs; load average 0.20 0.28 0.18 (47 users)
+Method: per-directory `timeout 90 du -sb <dir>` and `timeout 90 find <dir> -xdev -type f | wc -l`
+        (no find/du over /home; no symlinks found in any candidate: find -type l = 0)
+
+Candidate directories (raw command output)
+------------------------------------------
+directory             bytes          regular_files
+nlcc-snnu             3,358,738      425
+nlcgrid               338,414        63
+orca_vv10_anchor      15,431,943     115
+converged_sync        6,964,263      15
+sync_v03              5,311,681      12
+scratch_wb97xv        446,558        23
+projects              530,508,941    262
+valid                 55,610,908     14,084
+valid_test            10             0
+logs                  206            6
+------------------------------------------
+TOTAL                 617,971,662    15,005
+
+20 GB stop threshold: NOT triggered (0.618 GB decimal total).
+
+Relatedness
+-----------
+INCLUDE (nlcsplit / VV10 fragment-decomposition work):
+- nlcc-snnu/ (425 files, 3,358,738 B): nlcsplit working tree; S22 geometries at
+  scratch/lit/s22/S22_01..22.xyz; slurm/sbatch scripts; DFT/CCSD(T) outputs;
+  .publish/nlcsplit (public package snapshot with docs+evidence).
+- nlcgrid/ (63 files, 338,414 B): actual `nlcsplit` Python package source
+  (__init__.py, nlc.py, partition.py, fastpair.py, step_*.py), slurm scripts,
+  hirshfeld cross-family outputs, evidence/common_grid.
+- orca_vv10_anchor/ (115 files, 15,431,943 B): ORCA 6.0.1 VV10 anchor suite for
+  S22 water dimer (#2) and benzene dimer (#11); PROVENANCE.txt ties geometries to
+  nlcc-snnu/scratch/lit/s22.
+- scratch_wb97xv/ (23 files, 446,558 B): GAMESS BLW wB97X-V H2/H2O development
+  logs and inputs; methodological precursor of the VV10 fragment work.
+
+EXCLUDE (belong to other projects, no nlcsplit/VV10 content):
+- converged_sync/ and sync_v03/: VASP OUTCAR/vasprun/OSZICAR for
+  CLEAN-R0-N32/N160 Al-containing cells (HEA/MLIP project).
+- projects/: only SafeEdit-CRE-purecomp-20260714 (CRE pure-component MLIP
+  pipeline, 507 MB); unrelated to nlcsplit.
+- valid/: 2,014 VASP MD system_*_dynamic_N500/N864 directories (14,084 files).
+- valid_test/: empty (0 files, 10 B directory entry).
+- logs/: six zero-byte phonon_*.log files from Feb 2026.
+
+Software / environment found (read-only probes)
+-----------------------------------------------
+- which python3: /home/haangyeon/share/tcc/Program/miniconda3/envs/mace/bin/python3
+  (Python 3.10.19)
+- pyscf 2.12.1 installed in that env
+  (Location .../envs/mace/lib/python3.10/site-packages, package 178,357,662 B)
+- pyscf Requires: h5py, numpy, scipy, setuptools
+- versions in that env: numpy 1.26.4, scipy 1.15.3, h5py 3.15.1,
+  setuptools 72.1.0, pip 25.3
+- ORCA 6.0.1: /home/haangyeon/share/tcc/Program/orca-6.0.1/orca
+  (du -sb of orca-6.0.1 = 15,536,165,034 B -> NOT copied, exceeds practical scope)
+- GAMESS: /home/haangyeon/share/tcc/Program/GAMESS/rungms
+  (du -sb 324,986,055 B); GAMESS_BLW_B97XV variant 287,795,585 B.
+- ~/share/tcc resolves to /home/share/tcc (cluster-shared, not user-private).
+- No conda in ~/miniconda3; no local nlcsplit install
+  (`import nlcsplit` fails in the mace env; code lives in nlcgrid/nlcsplit).
+
+Decision
+--------
+Proceed with transfer of the four INCLUDE trees only (~19.6 MB, 626 files total
+per the counts above). Excluded trees are left untouched on SNNU.

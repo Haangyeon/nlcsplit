@@ -1,0 +1,21 @@
+=== SNNU -> staging: scratch_wb97xv  start 2026-10-22T17:38:57+08:00 ===
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+
+Number of files: 24 (reg: 23, dir: 1)
+Number of created files: 24 (reg: 23, dir: 1)
+Number of deleted files: 0
+Number of regular files transferred: 23
+Total file size: 442,462 bytes
+Total transferred file size: 442,462 bytes
+Literal data: 442,462 bytes
+Matched data: 0 bytes
+File list size: 633
+File list generation time: 0.002 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 582
+Total bytes received: 444,158
+
+sent 582 bytes  received 444,158 bytes  98,831.11 bytes/sec
+total size is 442,462  speedup is 0.99
+=== rc=0  end 2026-10-22T17:39:01+08:00 ===

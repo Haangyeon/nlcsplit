@@ -1,0 +1,19 @@
+=== staging -> tcc: nlcgrid  start 2026-10-22T17:41:23+08:00 ===
+
+Number of files: 71 (reg: 63, dir: 8)
+Number of created files: 70 (reg: 63, dir: 7)
+Number of deleted files: 0
+Number of regular files transferred: 63
+Total file size: 325,691 bytes
+Total transferred file size: 325,691 bytes
+Literal data: 325,691 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.017 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 330,044
+Total bytes received: 1,264
+
+sent 330,044 bytes  received 1,264 bytes  220,872.00 bytes/sec
+total size is 325,691  speedup is 0.98
+=== rc=0  end 2026-10-22T17:41:24+08:00 ===

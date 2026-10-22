@@ -1,0 +1,21 @@
+=== SNNU -> staging: nlcc-snnu  start 2026-10-22T17:38:12+08:00 ===
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+
+Number of files: 470 (reg: 425, dir: 45)
+Number of created files: 470 (reg: 425, dir: 45)
+Number of deleted files: 0
+Number of regular files transferred: 425
+Total file size: 3,300,930 bytes
+Total transferred file size: 3,300,930 bytes
+Literal data: 3,300,930 bytes
+Matched data: 0 bytes
+File list size: 12,518
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 8,496
+Total bytes received: 3,332,257
+
+sent 8,496 bytes  received 3,332,257 bytes  148,477.91 bytes/sec
+total size is 3,300,930  speedup is 0.99
+=== rc=0  end 2026-10-22T17:38:34+08:00 ===

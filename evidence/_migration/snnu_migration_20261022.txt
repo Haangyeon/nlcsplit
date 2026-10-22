@@ -1,0 +1,129 @@
+# SNNU -> tcc migration verification (nlcsplit / VV10 project)
+# date: 2026-10-22  source: snnu:/home/haangyeon  target: tcc:/share/BackUp/XAR/ms/projects/nlcsplit
+# method: per tree >=20 samples = 5 smallest + 5 largest + evenly spaced (deduped); wheels = all 5
+# layout: /share/BackUp/XAR/ms/data and /share/BackUp/XAR/ms/software were mode 0555 (read-only);
+#         payload was placed under /share/BackUp/XAR/ms/projects/nlcsplit/{data,software} instead.
+#         No permission or content of ms/data, ms/software, or env/env.sh was changed.
+# note: source bytes are sums of regular-file sizes (find -printf %s), not du block usage
+# tree=nlcc-snnu source_files=425 source_bytes=3300930 target_files=425 target_bytes=3300930
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  .publish/nlcsplit/nlcsplit/examples/__init__.py  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  .publish/nlcsplit/nlcsplit/tests/__init__.py  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  nlcsplit/logs/.ide-s1.lock  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  nlcsplit/logs/.ide-s1confirm.lock  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  nlcsplit/logs/.ide-s1mre.lock  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  nlcsplit/logs/.ide-s4l1nobz.lock  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  nlcsplit/logs/.ide-s5smoke.lock  OK
+7016eaec871b98bcc93b5064297acc2048903ab702328f8e01d561e6645b0bae  .publish/nlcsplit/evidence/centos/20260928T165857Z_centos-DONE.txt  OK
+bf160d9f413112848bce4d0ee75dd2be8e5fbb410d21f7fc9829ec4cde7d967d  .publish/nlcsplit/evidence/orca_control/MANIFEST.sha256  OK
+1e6a5770268a31eec922f869906654af2d06bc34feedf31048e4396852054abb  nlcsplit/logs/20260929T205348Z_wheelclean_pyargs_FULL2.out  OK
+360e53498b9560091e79b96010a99e7ca5bbd75c1d1af4ab1ec8f362535736a8  out/dimerdft_50967.out  OK
+8d603544e19a8e009b68041e2616b29fae5cb3b3669ca5128abdf42a76ab976c  .publish/nlcsplit/nlcsplit/tests/conftest.py  OK
+1706328177d988c9ec160aed3b1e38bdbc316ee9ae782e0dfc534bbfb93a0326  nlcsplit/logs/20260929T025945Z_ide-s4matbzb2.out  OK
+76545bf80d0de50f799515dcdfeedb3f6865c7002b035b479b1b20411afc6ce0  nlcsplit/logs/POP_20260929T125524Z.out  OK
+d4ef6f5c7ea5b162955adf48e0bbd595ea64cd72e28bfcd2a3244a16a71f4e32  .publish/nlcsplit/evidence/ccsdt/MANIFEST.sha256  OK
+fdf85be02fc5379de8f3be3544db95d916c82701dd4cf70f85f1f196495d5487  .publish/nlcsplit/evidence/orca_widen/苯-氨_dimer.log  OK
+83924f4abe14e5df936ab63737aef7f44932b0be00fc78f9be264800417998c8  .publish/nlcsplit/evidence/orca_widen/苯-甲烷_dimer.log  OK
+cdcf32802f090257d43aeebb7fceae5dd1251910cda0da3505e9c65e6602d9cb  .publish/nlcsplit/evidence/orca_run/benz_dimer.out  OK
+c6931315c2290bcfd205f6b0419813046412773ddb0fdd3cf7c2a76bb07648be  .publish/nlcsplit/evidence/orca_widen/苯二聚体(B)_dimer.log  OK
+7e8aa8d6305539a46063e1a66238251f54fca8303cb7b97692882d419f38dc55  .publish/nlcsplit/tools/make_public_repo.js  OK
+# sample_result tree=nlcc-snnu OK=20 MISMATCH=0
+# tree=nlcgrid source_files=63 source_bytes=325691 target_files=63 target_bytes=325691
+10926cbda333f8cbf1d90b8b32868bab742c85803a27b78f602d060ec349279a  slurm_51278.out  OK
+fd24f97e25b8cbc9b948f6c5155116613ca97506ed29f78783805ef29186ebf5  probe_51280.out  OK
+cbca84fac7d60854a3628c1e7502e1954b370f06f27070f0041d980062cd4f18  probe.slurm  OK
+373be1e93c919f038ff848b16a60a9a101d78493c36c5193efc13434e6824e76  slurm_51279.err  OK
+e7912b497bf5a7c45a62a2aacc7efbddf31909339b5d6b30a3f32c330acb01f3  scratch/lit/s22/S22_02.xyz  OK
+faba1443fae9483114a609c36d172c1086418c11024a6fad29c7703536422a8c  nlcsplit/__init__.py  OK
+0d9d8c3333e27e56096498d79e74e3a1567c5b2a130288ab08893651dde2246b  slurm_51278.err  OK
+42637119354a5c92799fb802fa9f131e5ace15a1818662a14cf0f7b39c4dc42f  submit_hirshfeld_benzene.sbatch  OK
+db2dec73873d482b4759b8db63cf11677999a5c2fc7c7fc9ce5b2c1158d21ea9  nlcsplit/__pycache__/__init__.cpython-310.pyc  OK
+3223d9e70b066d82bdc1bfccaa6cb34fa72f924519c0d04433809a9ec9561d54  submit_hirshfeld_benzex.sbatch  OK
+070ca738381ac93ac0e6162d93c4af003eedc872f0278cb2bdd6338fc1a16bda  scratch/lit/s22/S22_03.xyz  OK
+a435ad6a806f1af569b240be3701b4135020aca6a91e82a61b27b12b917d2664  scratch/lit/s22/S22_16.xyz  OK
+6e0b89183d29c69675725e2f3b27acd6327693c4f6de6d7ebb8bcedefe164eaa  scratch/lit/s22/S22_09.xyz  OK
+0c3bda265e06b6fff8ef709999bbbdc1f50188b8a874316e30efb4a48fc46165  scratch/lit/s22/S22_17.xyz  OK
+c736492597860c8fe2ff9dda870bd3eb704ec591b6daed5c8e9b31da21dabbcb  scratch/lit/s22/S22_18.xyz  OK
+b24d1100e034f1ff7d4d1d8a87401cedefb49bb0c76d5e134a4ffe6faf6728dd  nlcsplit/step_m_ccsdt.py  OK
+f3c84626d4711c87a5544bc9b9372e154da2b9f536cec31e32e790b1c33aceb0  nlcsplit/__pycache__/fastpair.cpython-310.pyc  OK
+ade60ec8be13e2df46f585de0ed86cf870c012a00add478733751e3484a1ef45  nlcsplit/fastpair.py  OK
+06107756a9447fed8ee6fc408dd14b25a869ec927fb5c01f7f832bf621fd7cd4  nlcsplit/fastpair_ide.py  OK
+317997d4ca5a06fb4c3a3ed0216091a85da8ee0aa319dcfc0348c7ab96a330c2  nlcsplit/figures.py  OK
+# sample_result tree=nlcgrid OK=20 MISMATCH=0
+# tree=orca_vv10_anchor source_files=115 source_bytes=15414722 target_files=106 target_bytes=15383779
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inp_serial/benz_dimer.inp  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inp_serial/benz_mono0.inp  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inp_serial/benz_mono1.inp  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inp_serial/h2o_dimer.inp  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inp_serial/h2o_mono0.inp  OK
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inp_serial/h2o_mono1.inp  OK
+df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119  inp_n16/h2o_mono0.bas4  OK
+df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119  inp_n4/h2o_mono0.bas2  OK
+df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119  inp_n4/h2o_mono0.bas5  OK
+df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119  inp_n8/h2o_mono0.bas4  OK
+2eb6df00b7920404cdbdb652989a8dec66ac8e8264c187f6c39ef96a21d0ab4c  launch.log  OK
+4a7934e2ca3ab1133d92b2d195d75f62b99b8b28864d1f26c3535c812ffbc1fe  inp_n4/h2o_mono0.inp  OK
+5b72b95c6db2696d26b1ab75facc589b253d273dcc85f30a6d61f5977625040c  inp_n8/h2o_mono1.inp  OK
+cae2a0bd74facc548aa5166c0e7880cee15e7934dc67617fbda34812031ad057  inp/h2o_mono1.inp  OK
+de3303289d2825c8205fcec10b6b587f61c6f46df1cdcb34aab374fe82b44f70  inp_n1/h2o_dimer.inp  OK
+703dabd366e7171592c06440bca410f7d1df5431874195d082080c8a69e84784  inp_n1/benz_mono1.gbw  OK
+4763aa5a5eff20a7959043b8c0f115b73a836a3f7f7e86d07a803458868c798e  inp_n16/h2o_mono0.bas1  OK
+4763aa5a5eff20a7959043b8c0f115b73a836a3f7f7e86d07a803458868c798e  inp_n4/h2o_mono0.bas1  OK
+4763aa5a5eff20a7959043b8c0f115b73a836a3f7f7e86d07a803458868c798e  inp_n8/h2o_mono0.bas1  OK
+803af28864385c361c2105f32ee34bd716c925574cf188fb310e3ac0c2b8205a  inp_n1/benz_dimer.gbw  OK
+# sample_result tree=orca_vv10_anchor OK=20 MISMATCH=0
+# tree=blw_wb97xv_debug source_files=23 source_bytes=442462 target_files=23 target_bytes=442462
+f802a092d36231b35a7935bd635b282e2e935b82238c85b69d631164c840ca22  blw_hf_h2.dat  OK
+5de28961fea64f819cdda526be074da5605f530f9ae182a1e5a2c7782d9db3c2  blw_wb97xv_h2.dat  OK
+5ff33bb49628b050f3ea6b7930e0fd1501307ce1b52089a36022437bbd49b1f9  blw_wb97xv_h2o.dat  OK
+a29ec5ab05836dd0ecf5b79f4e7a7237795d453b3467b2bf179d7460e29071f8  blw_hf_h2o_big.dat  OK
+5b8a079ce988badbe22ece1107f8375e7999298b778edc0cb21bd2a1e0761fd6  blw_hf_h2o_v2.dat  OK
+7c15cd24208cb1c412e5b6e1db51ae8a92c9c322e9dad1314f8bac2e311bb743  blw_wb97xv_h2o_v2.dat  OK
+c68050e3ee543165e24644ba61b0294188e4d69b6b33c1cefeef1be12f246915  blw_hf_h2_output.txt  OK
+3278dc06273b33d42cdfac75fa38076bbd9d5d432d6e9901619c6d7b6b9b4770  h2o_wb97xv.dat  OK
+d5dad3c12869e5095e9102be3cae2f5902e49c5167a2e6933a49ece92e6d1098  blw_debug2.txt  OK
+07897e5f0ffa5ebbcaa65348c4e88664d224668c8dc4d2589208c85de0054d16  blw_debug_output.txt  OK
+db017ef439af17155f0bdbac531fefbc5cf1efe557cdf161f2c11d003addb225  blw_ifort2.txt  OK
+34c3b9ae20bb09f83b93acec5d42698aabcffeb8a89a4112a365bfe1ed5a7bb9  blw_hf_h2o_big_output.txt  OK
+186c03f3d01b7a2a6c1ecccc958982ad06c354996a90ec1689c1b7ee28eedc01  blw_ifort_result.txt  OK
+bfe607006842b091a7df70865270d9990d560ed9dd598e5bab484a2002d4cfb4  blw_debug5.txt  OK
+f768e7c5aba2c86fb302728b8cc98519b762f73e8cac59e32627b41bce98628e  blw_result.txt  OK
+145698aac176b5d2ba32d6d0913a564db5ef62267690d455d854cf16cfcde649  blw_wb97xv_h2o_output.txt  OK
+82a514cb9dc133e727fbae7611afb1c1a6ff819298c45c9b33c9e1cfaa390f7e  blw_v2.txt  OK
+7b0093907774f371728749d7dc33a32a079d81680f5834796bb4c623e9f0202a  blw_wb97xv_v2.txt  OK
+54010836490b331e597260897366bbab9ad1fbe63f25840cf7893cd6b4bb59ae  h2o_wb97xv_output.txt  OK
+819e9f5e9d86231cd18ab9f61835afaffc4902729344616cc80835d2951137e1  compall_ifort.log  OK
+# sample_result tree=blw_wb97xv_debug OK=20 MISMATCH=0
+# tree=s22_geometries source_files=22 source_bytes=32378 target_files=22 target_bytes=32378
+e7912b497bf5a7c45a62a2aacc7efbddf31909339b5d6b30a3f32c330acb01f3  S22_02.xyz  OK
+d15c6911ae5f938bbd05d27814e9bd7733cc44fffaf77d0199568daad9221886  S22_01.xyz  OK
+070ca738381ac93ac0e6162d93c4af003eedc872f0278cb2bdd6338fc1a16bda  S22_03.xyz  OK
+f0c2b6baf700be6a349aba0f7967542980efae826fe840d4afed07e622976ca9  S22_08.xyz  OK
+a435ad6a806f1af569b240be3701b4135020aca6a91e82a61b27b12b917d2664  S22_16.xyz  OK
+79c87a22ece6cd6e948d17c0b95eaf34743951a37c2e62c3e935647cad0a7196  S22_04.xyz  OK
+6e0b89183d29c69675725e2f3b27acd6327693c4f6de6d7ebb8bcedefe164eaa  S22_09.xyz  OK
+0c3bda265e06b6fff8ef709999bbbdc1f50188b8a874316e30efb4a48fc46165  S22_17.xyz  OK
+58ee9caa89c9ffbc36b7e69402723d965da4eafdee558d53159f02447907027c  S22_19.xyz  OK
+c736492597860c8fe2ff9dda870bd3eb704ec591b6daed5c8e9b31da21dabbcb  S22_18.xyz  OK
+47f51ad5ae76fedcc3cac97869c4ae2c517a11c9a9e852b343ce60d970468319  S22_10.xyz  OK
+d166e65b33969ee9eee4c63014b408be07d1d527c74b9e74066b1de8f0515695  S22_12.xyz  OK
+223f076e72ae2d169b0c9d7b042231355629abf8800439a654ac9efd5aeba967  S22_05.xyz  OK
+67f5a1e419f837aff43b33fc0d47345178f9fb72b1347c6b905152d287f96b25  S22_11.xyz  OK
+04dd5d32150015c9de1efb6664c0c3372598128fe4e99ae6adc862b93279f687  S22_13.xyz  OK
+d88b6b65ff52fb239e8a52929981b6f6c85cbacd87970cedbfdddc7a91af5551  S22_22.xyz  OK
+46b73c4992b7a8c2fe8a1d2302a39ce90033997ebf9b34475e30e19b8f98b616  S22_14.xyz  OK
+7f6627e6f94e17f509e22b683b97ca2cb11ddd5a2dca0d9df79caded522e2c39  S22_21.xyz  OK
+5186de8ba17dfc87fa91c1a3bb8d08a0c43084d9430cd111ba9e780e9f1a907e  S22_07.xyz  OK
+9a6778de4902fc69f4a980ab627bf3271857d6be0914c55db9b82cf58962dcb5  S22_15.xyz  OK
+# sample_result tree=s22_geometries OK=20 MISMATCH=0
+# tree=pyscf-wheels source_files=5 source_bytes=114379824 target_files=5 target_bytes=114379824
+5a03e1860cf56bb6ef48ce186b0e557fdba433237481a9a625176c2831be15d1  setuptools-72.1.0-py3-none-any.whl  OK
+1223b902ef0b5d90bcc8a4778218d6d6cd0f5561861611eda59fa6c52b922f4d  h5py-3.14.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl  OK
+ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f  numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl  OK
+9e2abc762b0811e09a0d3258abee2d98e0c703eee49464ce0069590846f31d40  scipy-1.15.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl  OK
+025a98c21a9014f1efae21a11f0f80ce14b9a2232cf2d3d934d83691b97b999f  pyscf-2.12.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl  OK
+# sample_result tree=pyscf-wheels OK=5 MISMATCH=0
+# orca_vv10_anchor: 115 source regular files include 9 *.tmp (30,943 B) intentionally excluded; 106 transferred
+# s22_geometries is a copy of nlcc-snnu/scratch/lit/s22 (also present inside projects/nlcsplit/nlcc-snnu)
+# SAMPLE TOTAL OK=105 MISMATCH=0
+# full-file rsync -c dry-run (staging vs tcc): 6 trees, 0 file changes
+TOTAL snnu_files=653 snnu_bytes=133896007 tcc_files=644 tcc_bytes=133865064 (diff=9 files/30943 bytes = excluded *.tmp)
