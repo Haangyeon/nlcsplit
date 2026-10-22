@@ -402,7 +402,7 @@ while (i < lines.length) {
     // so the printed number and every "Figure N" in the running text are the same number.
     const capBody = cap.replace(/^\*\*Figure\s*\d+\.\*\*\s*/, '');
     const figNum = /^\d+$/.test(label) ? Number(label) : null;
-    out.push('\\begin{figure}[!htbp]\n\\centering\n'
+    out.push('\\begin{figure}[!htb]\n\\centering\n'
       + '\\includegraphics[width=' + figW.toFixed(2) + '\\textwidth]{' + m[2] + '}\n'
       + (figNum ? '\\setcounter{figure}{' + (figNum - 1) + '}\n' : '')
       + '\\caption{' + inline(capBody) + '}\n\\label{fig:' + label + '}\n\\end{figure}');

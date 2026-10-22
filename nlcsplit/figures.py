@@ -73,7 +73,7 @@ def fig1(rows):
     ax.legend(fontsize=8)
     fig.tight_layout()
     f = os.path.join(OUT, "fig1_xc_split.png")
-    fig.savefig(f, dpi=200)
+    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -91,7 +91,7 @@ def fig2(rows):
                  "not as one blanket percentage", fontsize=8.5)
     fig.tight_layout()
     f = os.path.join(OUT, "fig2_scheme_sensitivity.png")
-    fig.savefig(f, dpi=200)
+    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -118,7 +118,7 @@ def fig3(windows):
     if len(good) < 2:
         sys.exit(f"通过争用闸门的样本只有 {len(good)} 个，不出图（宁可不出，也别出错图）")
     n_win = len({r["_win"] for r in good})
-    fig, (axA, axB) = plt.subplots(1, 2, figsize=(9.6, 3.6))
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(10.2, 3.3))
     mark = {0: ("o", "#3b6ea5"), 1: ("s", "#c0504d")}
     # 同一体系在两个窗口里同色同形，只换线型：多加一种形状会让读者把"第二次测量"
     # 读成第三个体系。空心=归档窗口，实心=重跑窗口。
@@ -149,7 +149,6 @@ def fig3(windows):
     axA.set_xlabel("far point pairs actually evaluated")
     axA.set_ylabel("wall clock (s)")
     axA.set_title("(a)", fontsize=9, loc="left")
-    axA.legend(fontsize=5.0, loc="upper left")
 
     for r in good:
         for tau, v in r["runs"].items():
@@ -159,14 +158,12 @@ def fig3(windows):
                      mark[r["level"]][0], color=mark[r["level"]][1], ms=5,
                      alpha=.85)
     axB.axvspan(1e-7, 1e-6, color="#2e7d32", alpha=.12)
-    axB.text(1e-6, axB.get_ylim()[1] * .42, "what the paper needs\n(|dE| ≤ 1e-6 kcal/mol)",
-             fontsize=6.8, ha="right", color="#2e7d32")
     axB.set_xscale("log"); axB.set_xlabel("actual error (kcal/mol)")
     axB.set_ylabel("far pairs still evaluated (%)")
     axB.set_title("(b)", fontsize=9, loc="left")
     fig.tight_layout()
     f = os.path.join(OUT, "fig3_screening_cost.png")
-    fig.savefig(f, dpi=200)
+    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -319,10 +316,10 @@ def fig4(ladders, xc, nlc, dft):
               % (SYS_EN[cn], span, dev, span / dev))
     # 作者的原话是"不要又瘦又长"。6.8x6.1 印在 0.98 版心上就是一张 15.7 cm 高、近方形的图；
     # 改成 7.4x4.4（宽高比 1.68），横排、三个并排面板等高，同一条规则见 fig5。
-    fig = plt.figure(figsize=(7.4, 4.4))
+    fig = plt.figure(figsize=(7.6, 3.9))
     # suptitle 去掉后 top 从 0.845 提到 0.95，否则顶部留一条空白；wspace 加宽是因为 (c) 的
     # 纵轴标签（"benzene...methane 631G* ae" 之类）会伸进 (b) 的绘图区。
-    gs = fig.add_gridspec(2, 3, height_ratios=[1.2, 1.0], hspace=0.52, wspace=0.95,
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.15, 1.0], hspace=0.52, wspace=0.62,
                           left=0.15, right=0.97, top=0.95, bottom=0.11)
     xs = list(range(len(RUNGS)))
 
@@ -333,8 +330,6 @@ def fig4(ladders, xc, nlc, dft):
             ys = [rows[cn][conv][meth] for meth, conv in RUNGS]
             ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=SYS_COL[cn], ms=4.0, lw=1.3)
         ax.axhline(dft[cn], color="#c05621", ls=":", lw=1.2)
-        ax.annotate("this work  %.3f" % dft[cn], (0.0, dft[cn]), fontsize=6.2,
-                    color="#c05621", xytext=(2, 4), textcoords="offset points")
         ax.axhline(0, color="k", lw=0.6)
         ax.set_xticks(xs)
         ax.set_xticklabels(["MP2", "CCSD", "CCSD(T)\nfc", "CCSD(T)\nae"], fontsize=5.8)
@@ -349,31 +344,32 @@ def fig4(ladders, xc, nlc, dft):
 
     # (b)(c) 两条跨程序核对线，各自单位、各自一条通过线
     ax2 = fig.add_subplot(gs[1, 0:2])
-    ax2.barh([n for n, _ in nlc][::-1], [r for _, r in nlc][::-1], color="#2b6cb0", height=0.62)
+    short = {"water dimer": "water", "ammonia dimer": "ammonia", "methane dimer": "methane",
+             "benzene...water": "Bz...H2O", "benzene...ammonia": "Bz...NH3",
+             "benzene...methane": "Bz...CH4", "benzene dimer (A)": "Bz dimer A",
+             "benzene dimer (B)": "Bz dimer B"}
+    ax2.barh([short.get(n, n) for n, _ in nlc][::-1], [r for _, r in nlc][::-1], color="#2b6cb0", height=0.62)
     ax2.axvline(1.0, color="#c05621", ls="--", lw=1.0)
-    ax2.text(0.985, 3.4, "1% of the term  ", fontsize=6.5, color="#c05621", ha="right")
-    ax2.set_xlabel("$\\Delta E_{\\rm NLC}$: |ORCA - PySCF| as % of the term", fontsize=7.5)
+    ax2.set_xlabel("|ORCA $-$ PySCF| (% of term)", fontsize=7.5)
     ax2.set_xlim(0, 1.18)
     ax2.tick_params(axis="y", labelsize=6.5)
-    ax2.set_title("(b) the nonlocal term on 8 systems, grids deliberately not matched",
-                  fontsize=8)
+    ax2.set_title("(b)", fontsize=9, loc="left")
 
     ax3 = fig.add_subplot(gs[1, 2])
     lab = ["%s %s %s" % (SYS_EN.get(s, s),
                          "631G*" if b.startswith("6-31") else "avdz",
                          "fc" if c == "frozen" else "ae") for s, b, c, _, _, _ in xc]
-    ax3.barh(lab[::-1], [abs(d) for *_, d in xc][::-1], color="#4a5568", height=0.62)
-    ax3.axvline(0.001, color="#c05621", ls="--", lw=1.0)
-    ax3.text(0.00095, 3.4, "bar 0.001  ", fontsize=6.5, color="#c05621", ha="right")
-    ax3.set_xlabel("CCSD(T): |ORCA-PySCF| (kcal/mol)", fontsize=6.2)
-    ax3.set_xlim(0, 0.0012)
+    ax3.barh(lab[::-1], [1000 * abs(d) for *_, d in xc][::-1], color="#4a5568", height=0.62)
+    ax3.axvline(1.0, color="#c05621", ls="--", lw=1.0)
+    ax3.set_xlabel("|ORCA $-$ PySCF| ($10^{-3}$ kcal/mol)", fontsize=6.2)
+    ax3.set_xlim(0, 1.2)
     ax3.tick_params(axis="y", labelsize=5.6)
-    ax3.set_title("(c) the anchor itself", fontsize=8)
+    ax3.set_title("(c)", fontsize=9, loc="left")
 
     # 图内那四行 suptitle（比值 0.43/0.07/1.11，两格 2.4 倍、一格 14.7 倍）正好压在三个面板的
     # 标题上。同一句在正文 §3.2 已逐字给出，这里不再重复——图负责画，结论留给文字。
     f = os.path.join(OUT, "fig4_anchor_crosschecks.png")
-    fig.savefig(f, dpi=200)
+    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -552,7 +548,7 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     axb.legend(loc="lower center", bbox_to_anchor=(0.5, 1.005), ncol=2, fontsize=6.6, frameon=False)
     # 同一原因：六体系的比值结论在正文里，图内不再放多行 suptitle。
     f = os.path.join(OUT, "fig5_six_system_spans.png")
-    fig.savefig(f, dpi=200)
+    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -601,7 +597,7 @@ def toc_graphic(pi_ladders, pi_dft, hb_ladders, hb_dft):
                  % worst_toc,
                  fontsize=6.0)
     f = os.path.join(OUT, "toc_graphic.png")
-    fig.savefig(f, dpi=300)
+    fig.savefig(f, dpi=300, bbox_inches="tight", pad_inches=0.03)
     return f
 
 if __name__ == "__main__":

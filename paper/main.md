@@ -744,7 +744,8 @@ the system.
 **Figure 3.** Left three panels: the MP2/CCSD/CCSD(T) counterpoise ladder for the three
 hydrogen-bonded systems of this section, at 6-31G\* (solid) and aug-cc-pVDZ
 (dashed), with this work's
-omegaB97X-V/6-31G\* level-2 counterpoise value (PySCF 2.12.1, [S31]) as the dotted rule. The point is a comparison
+omegaB97X-V/6-31G\* level-2 counterpoise value (PySCF 2.12.1, [S31]) as the dotted rule
+(-6.153 / -3.728 / -0.376 kcal/mol for water / ammonia / methane). The point is a comparison
 of two spans, and `nlcsplit/figures.py` refuses to draw the figure unless the two fall within two
 decades of each other on every system - a side-by-side figure is claiming comparability, and that
 is the claim it checks. Per system the correlated value's move between the two bases
@@ -755,8 +756,8 @@ quantities are comparable on this figure's own terms but not ordered the same wa
 the archived runs, not transcribed. The three π complexes of the paragraph above are drawn in
 Figure 4 rather than here, so that this figure keeps one comparison per panel [S26, S27, S31]. Right
 two panels: the same
-quantity computed by two programs - (b) the nonlocal term for all eight systems, as a
-percentage of the term, against
+quantity computed by two programs - (b) the nonlocal term for all eight systems (Bz = benzene),
+as a percentage of the term, against
 the 1% guide (§4.2), and (c) the anchor of the left panels recomputed in ORCA 6.0.1, against
 the 0.001 kcal/mol bar [S24].
 
@@ -965,9 +966,12 @@ the statement "none of the 33 pairs ran faster" in picture form. Every timing in
 passed the contention gate: at each sampling instant the number of external runnable tasks was
 zero, so the ratio is a same-system comparison and not a claim about an idle machine. Panel (b):
 the fraction of far-field
-pairs retained against the achieved error, with the accuracy the paper needs drawn as a band; the
-retained share stays high precisely where the tolerance has to be tight. Hollow markers are the
-archived window, filled markers the 2026-09-30 re-run, so a single figure carries both windows
+pairs retained against the achieved error, with the 10⁻⁷ to 10⁻⁶ kcal/mol band that contains
+the accuracy the paper needs shaded green; the
+retained share stays high precisely where the tolerance has to be tight. Circles are grid level 0
+and squares level 1; hollow markers are the archived window, filled markers the 2026-09-30
+re-run; each connector joins the exact evaluation to the screened one on the same system, so a
+single figure carries both windows
 rather than the favourable one. Drawn by `nlcsplit/figures.py` from
 `evidence/scaling/step_j.json` and `evidence/scaling/step_j_rerun_20260930.json`, which are the
 same two artefacts [S25] quotes; the script prints the per-window contention-gate tally
