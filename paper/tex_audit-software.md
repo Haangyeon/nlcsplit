@@ -2,14 +2,14 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js software`; do not edit here.
 
-- source `paper/software.md`: 58000 chars, 673 lines
+- source `paper/software.md`: 30178 chars, 352 lines
 - output `paper/software.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: 32 lines (metadata; it is not body prose, so it is not in the PDF)
 - tags cited in the body: 13
 - figures pulled in: 0 -> tracked
 - tables emitted: 2; with a numbered caption: 2 -> all numbered
-- inline backticked paths in the body text: 60 scanned -> tracked
+- inline backticked paths in the body text: 18 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
 - bib entries cited: 4 of 28; **not cited anywhere in the body: altun2018dlpno, andres2019ninequestions, becke1988, calbo2015vv10review, dion2004, goerigk2017gmtkn55, hamada2011c60au, harris2020numpy, hesselmann2013nldft, hujo2011hbond, hyldgaard2014interp, jurecka2006s22, kruse2019dna, lehtola2018libxc, lehtola2022illbehaved, rezac2016bench, sinha2015fdevdw, stratmann1996, sun2018pyscf, sun2020pyscf, takatani2010s22, treutler1995, vydrov2009vv10, vydrov2010simple**

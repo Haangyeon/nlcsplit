@@ -149,35 +149,59 @@ the units.
 
 ## 3. Software description
 
-    nlcsplit/
-      nlc.py           VV10 fields, pair_energy (gemm path), fragment_decomposition
-      partition.py     four attribution schemes, partition_matrix, partition_factors
-      geomlib.py       single source of geometry truth; internal-coordinate
-                       assertions at construction; covalent-connectivity fragment
-                       splitting; official GMTKN55/S22 loader
-      step*.py         one script per table in the paper; stdout archived UTC-stamped
-      figures.py       figures built from the JSON sidecar, never from log text
-      tests/           kernel, regression, geometry and partition-factor suites
-      examples/        quickstart plus two comparison checks
+`nlcsplit` is pure Python on top of PySCF's grid and density machinery, with NumPy
+for the pair sum; no compiled extension is built or required. Three modules carry the
+physics - `nlc.py` (VV10 fields and the block pair sum), `partition.py` (the six
+attribution schemes) and `geomlib.py` (geometries, fragment boundaries and the S22
+loader). The `step_*.py` scripts reproduce one table of the companion paper each and
+write a JSON sidecar; `figures.py` draws only from those sidecars, never from log text.
 
-Dependencies: NumPy and PySCF. `partition.py` reaches into
-`libdft.VXCgen_grid` through ctypes deliberately - it is the entry point that
-`gen_grid.get_partition` itself uses, which is what makes the audit above external
-rather than circular.
+The public entry point is one function:
 
-Representative output, produced by `nlcsplit/examples/quickstart.py` (ωB97X-V/6-31G*,
-water dimer, grid level 1, kcal/mol; archived verbatim with its interpreter and module
-fingerprints as `evidence/release_qa/20261003T1901Z_quickstart_readme_example.out`):
+    res = nlc.fragment_decomposition(coords, weights, rho, sigma, fragments,
+                                     b=b, C=C, owner=owner)      # hard assignment
+    res = nlc.fragment_decomposition(coords, weights, rho, sigma, fragments,
+                                     b=b, C=C, soft=S)           # soft assignment
+
+`fragments` is a list of atom-index groups. `owner` gives the nearest-atom index of
+each grid point; `soft` is an `(natm, ngrid)` weight matrix whose columns sum to one,
+as returned by `partition.scheme_factors(mol, coords, scheme=...)`. The return value is
+a dict with `E_loc`, `E_nl`, `E_total`, `intra` keyed by fragment, and `inter` keyed by
+fragment pair. `inter[(A, B)]` is the full cross contribution, not a half, so
+`E_nl = sum(intra) + sum(inter)`; `closure_check=True` compares the block sum against a
+monolithic evaluation over the same points and raises if they differ.
+
+The six schemes are selected by name: the four Becke-family constructions used in the
+companion paper (`becke`, `becke-becke-rad`, `becke-treutler`, `stratmann`) and two
+cross-family controls (`voronoi`, `hirshfeld`). `scheme_factors` returns the same shape
+for all six, so a comparison changes one keyword and nothing else, and it refuses to
+return a matrix whose columns do not sum to one within 1e-8.
+
+A minimal run, condensed from `nlcsplit/examples/quickstart.py`:
+
+    mol = gto.M(atom=geomlib.h2o_dimer(), basis="6-31g*", unit="Angstrom")
+    mf, X0, W0, rho0, sig0 = partition.scf_grid(mol, xc="wb97x_v", level=1)
+    coords, weights, owner = partition.atom_partition(mol, level=1, scheme="becke")
+    res = nlc.fragment_decomposition(coords, weights, rho0, sig0,
+                                     geomlib.FRAGS["(H2O)2"], owner=owner)
+
+For the water dimer at omegaB97X-V/6-31G*, grid level 1, this prints the numbers below,
+archived verbatim with its interpreter and module fingerprints as
+`evidence/release_qa/20261003T1901Z_quickstart_readme_example.out`:
 
     inter[(0,1)] = -0.5237
     intra        = -3.5457 -3.7437
     E_nl         = -7.8130   E_loc = 60.8303   E_total = 53.0172
 
-`E_nl` equals intra + intra + inter as required, and `E_total` may be compared
-with the native kernel evaluated on its own reference grid, which gives 53.017
-and 53.016 for this system and level (difference +0.002 kcal/mol, which is the
-grid representation difference of section 3.1 of the companion text rather than
-an algorithmic one) [S9].
+`E_nl` equals `intra + intra + inter` as required, and `E_total` may be compared with the
+native kernel on its own reference grid, which gives 53.017 and 53.016 for this system and
+level (difference +0.002 kcal/mol, the grid-representation difference of the companion
+text's section 3.1 rather than an algorithmic one) [S9].
+
+Dependencies are NumPy and PySCF. `partition.py` reaches `libdft.VXCgen_grid` through
+ctypes deliberately: it is the entry point `gen_grid.get_partition` itself uses, which
+makes the audit against PySCF's own partition external rather than circular. There is no
+other compiled dependency and no build step.
 
 ## 4. Impact
 
@@ -204,251 +228,39 @@ absolute terms, not a ratio) refuses to state a share at all. The VV10 term ther
 cannot be reported as "the dispersion energy" without qualification, and on one row of our
 own table not even as a percentage [S2].
 
+The per-system numbers behind these statements are tabulated in the companion paper;
+this paper does not repeat them.
+
 ## 5. Availability and quality assurance
 
-Apache-2.0; no GAMESS source is included, linked or required. That claim is checked by
-scanning the published tree for GAMESS *source artefacts* specifically - `find` over
-`*.src`, `*.f`, `*.for` and `GAMESS*` returns 0 - and not for the word. An earlier version
-of this sentence asserted that the word appears only in the package docstring, and that
-assertion was false: 13 files contained it, 8 of them as part of a working-machine path
-(`/root/gamess_work/...`, `/mnt/e/Project/GAMESS/...`) including inside the shipped
-`step_h.json` and `run_all.sh`, which is how a repository name that reads as "this is the
-GAMESS project" got into a release that claims not to contain it. Two defects were behind
-that: the gate's patterns covered artefact extensions but not path forms, and it iterated
-the list of copied names rather than the directory tree, so 13 `.pyc` files that pytest had
-left inside the release directory were never opened at all. Both are now fixed - the gate
-walks the tree and fails by default on path forms, bare cluster addresses and account
-names - and the published copies are scrubbed of those paths while the numbers are left
-untouched, with a byte-level ledger of every replacement kept beside the release and the
-archived stdout in this repository still hashing to what was recorded for it. After the fix,
-counted where the count belongs - over the exported tree (dist/nlcsplit, which is build
-output and is not itself tracked), text files and exact case - the word appears in 9 files
-and the working-machine path forms in 0. The 9 are the disclaimer itself (the package
-docstring, `README.md`), prose about the disclaimer (`CONTRIBUTING.md`, the published
-docs/tables_and_provenance.md, `.github/workflows/ci.yml`), the two scanners' own detection
-patterns (`tools/audit_no_gamess.js`, `tools/make_public_repo.js`) and two archived scanner
-stdout files under `evidence/release_qa/`. Counting case-insensitively gives 13: the four
-extra are `EXPORT-MANIFEST.txt`, the release-QA README and its own manifest, and the gate
-self-test record, each hit being a file-name reference to the scanner rather than a new
-occurrence of the claim. Compiled residue is outside both counts - a `.pyc` carries the same
-strings in compiled form, the export manifest lists none, and gate R fails a build containing
-any, which is not a hypothetical: a later pytest run has left residue of exactly that kind
-inside the export directory on this machine, and the next rebuild has to clear it. That is a
-count of a tree, and it is not what the shipped scanner does: it refuses to read a tree at all
-(`--no-install` is rejected outright, because a stale copy of the build directory is how an
-earlier version of this check passed), installs into a throwaway target, and walks what lands
-in site-packages, where the occurrences it permits are the exemptions it prints by name. The
-archived run of that scan
-(`evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out`) reports 45 installed
-files, three named exemptions, 0 GAMESS hits outside the exemption ledger and 0
-licence-conflict signals at rc=0. Only two of the three exemptions are the licence disclaimer
-- the docstring and the same sentence as rendered into the wheel's METADATA; the third is
-pip's own `direct_url.json`, discussed below. The remote copy is not counted a third time
-here: it is checked blob against blob by `tools/publish_github.js` in its verify-only mode,
-and the one push on record matched 121 local blobs to 121 remote ones with nothing unmatched
-on either side (`evidence/release_qa/publish_record_20260930.txt`). Two further defects were
-found while re-checking this section on
-2026-09-29, and both were of the kind a source-tree reading cannot see. The first: an
-earlier build was reported fixed and still shipped two script-style `test_*.py` modules at
-package top level; the wheel then had 36 members and none of them was a script-style test - it
-grew again when `step_l_sweep_compare.py` was added to the whitelist, see below. That count is
-a dated reading, not a current one: the census now run by `evidence/release_qa/wheel_census.py`
-reports 38 members - 7 test modules, the 2 non-test files that live under `nlcsplit/tests/`, and 29
-others - with the same verdict that no script-style test is shipped
-[`evidence/release_qa/20261004T0317Z_wheel_census.out`], and it prints the four categories
-alongside their sum so a silently dropped category cannot pass as a member count.
-The second is worse and was found only by looking at the artefact: **`fastpair.py` was not in
-the package at all**, while the shipped `step_j_scaling.py` imports it - so a reader
-installing the wheel could not run a single number from the companion algorithm paper, and
-gate E (which checks that every import is *declared*) stayed silent because the import is
-intra-package. `fastpair.py` and its test module are now in the manifest. In the same pass
-`test_tolerance_probe.py` was published too, because a tolerance tightened from 0.10 to
-1e-4 kcal/mol is a claim about measured spread and the measurement belongs beside it.
+`nlcsplit` is released under Apache-2.0. It contains no GAMESS source, and the claim is
+checked by scanning the published tree for source artefacts (`*.src`, `*.f`, `*.for`,
+`GAMESS*`) rather than for the word, and by installing the wheel into a throwaway target
+and walking what lands in `site-packages`. The archived scan reports 45 installed files,
+three named exemptions and no hit outside the exemption ledger at rc=0 [S19].
 
-A third omission of the same kind was found by asking the question the other way round:
-`run_all.sh` - the advertised one-command reproduction path - knew four of the thirteen
-`step_*.py` scripts, and `step_l_sweep_compare.py` was missing from the shipped step list
-altogether. That script is the only producer of the "agrees to 2e-3 kcal/mol with an
-independently written script" sentence in section 2.1, so until now the published tree
-contained neither that script nor any artefact carrying the comparison column. The driver
-now lists all thirteen with each one's precondition (which need an argument, which need a
-geometry download, which need the node contention-gated - the timing script counts external
-runnable tasks and marks a dirty sample unusable rather than trusting the wall clock), derives
-the repository root from its own
-location instead of a hard-coded working path, and refuses to run the argument-taking ones
-rather than silently running them at their defaults.
+Correctness is guarded at three levels. The test suite pins the kernel against PySCF's
+native one, regression-tests the archived numbers, and checks the geometry and
+partition-factor invariants. The release script `tools/run_ship_qa.sh` enforces fifteen
+gates over the exported tree: build-residue and credential hygiene, no GAMESS source,
+byte-for-byte reproduction of every `evidence/*/MANIFEST.sha256`, no digit changed by the
+publishing scrub, import and wheel-member checks, and the provenance checks below. Each
+gate carries a two-directional self-test that must fire on a planted fault and stay silent
+on valid input, and the build refuses to ship when a self-test does not fire. The gates
+and the real defect that motivated each are listed in Table 1.
 
-That repair left no guard behind, and the omission came back the only way such a thing comes
-back: a fourteenth script. `step_m_ccsdt.py`, the producer of the coupled-cluster anchor, was
-added to the package on 2026-09-30 and never reached `run_all.sh`, so for two days the
-published tree again held a table-producing script that no entry point could run. It was found
-on 2026-10-01 by enumerating the shipped `step_*.py` files against the driver's command table,
-and that comparison is now an export gate of its own (`gateX_runner_coverage`) with the
-self-test the earlier repair lacked: truncating the command table to the four entries of the
-original bug must make it report ten missing scripts, and a table completed by construction
-must make it silent. It is evaluated against the export tree rather than against this
-repository, because the copy that has to be runnable is the reader's.
+Two checks ship with the package itself. The ORCA 6.0.1 comparison recomputes the
+nonlocal term for the eight complexes in the companion paper, together with an omegaB97X
+control that must not print the label [S18]. The partition-free referee re-evaluates the
+cross term on a two-Gaussian model density with three independent methods and reports the
+error bar [S21]. Both are archived with their own manifests, and every `[S#]` tag used in
+this paper resolves to a tracked file in the provenance appendix (Table 2); the converter
+re-checks each tag at build time and refuses to emit the PDF when one does not resolve.
 
-The suite collects 79 tests in the working repository - 58 under `-m "not slow"` and 21
-under `-m slow`, a partition of the same collection and not two numbers to be added
-(`evidence/release_qa/20261009T105424Z_test_count_census.out`, whose per-module rows must sum to
-the collected total and which also groups them by what the wheel actually carries). All 79 have
-been executed on the tree those counts describe: 79 passed with nothing skipped and nothing
-deselected in 504.41 s, with the run's exit code kept in a file of its own beside the log
-(`evidence/release_qa/20261009T094106Z_full_suite_79passed.log`,
-`evidence/release_qa/20261009T094106Z_full_suite_79passed.log.rc`) [S19]. The five
-tests added since the previous census are `nlcsplit/tests/test_nlc_closure.py` - the closure
-guard that used to be an identity, its monolithic reference, and the two regroupings that must
-make it fail. They ship in the wheel; until today they did not, and what changed is the export
-gate's own complaint rather than a decision by us (`pip install .` would install the file, the
-wheel had no stated reason to omit it, and it was not named in the list of deliberate
-exclusions). That is recorded here because a guard a reviewer cannot run from the installed
-package is not evidence of anything to that reviewer. That run used `OMP_NUM_THREADS=4` where the run it replaces used the machine default, so
-its wall clock is the longer of the two and the comparison worth drawing is the count, not the
-timing. The superseded run is kept beside it: 74 passed with nothing skipped in 328.87 s on the
-working tree of 2026-10-05, whose
-uncommitted files the archive itself lists rather than asserting a clean tree
-(`evidence/release_qa/20261005T0512Z_suite74_after_figure_fixes.out`, which supersedes a run of
-the same size taken 43 minutes earlier on an intermediate tree; its census is
-`evidence/release_qa/20261005T0404Z_test_count_census.out`). The previous full run, on the
-69-test tree that carried the convention guard added last, was 69 passed with nothing skipped in
-380.52 s (`evidence/release_qa/20260930T233800Z_suite69_full.out`). An earlier run of the first
-65 of them - 65 passed, nothing skipped, 710.73 s, with the three collection counts and the
-Python, PySCF, NumPy and SciPy versions in its own archived log
-(`evidence/release_qa/20260930T202235Z_suite65_full_and_counts.out`) - is kept beside it, and
-the useful fact is that the two disagree on wall clock by 1.87x while the added tests take
-0.28 s collectively: that is machine load, not content, and it is why no figure here is
-called "the suite time". Between those two runs an intermediate artefact
-(`...20260930T230121Z_suite69_fast_and_diffsurface.out`) recorded a partial run with the slow
-20 carried over on a change-surface argument; the full run above replaced it, and the
-argument survives only as a worked example of when a carry-over would have been legitimate.
-That execution is of the working tree under `PYTHONPATH=.`, and the
-log's own header prints `git status` - the 65-test one listed uncommitted changes - so it
-establishes the floor for the code as it then stood and says nothing about what an install
-ships. The
-out-of-tree material below belongs to objects smaller
-than the working tree. The published wheel ships eight test modules plus `__init__.py` and
-`conftest.py`; those eight collect 59 in today's tree, and the 20 that stay behind are exactly
-`test_fastpair_ide.py`'s (both counts come from `evidence/release_qa/test_count_census.py`,
-which groups the modules by the wheel's own member list and
-refuses to print unless the two groups sum to the collected total
-[`evidence/release_qa/20261009T113507Z_test_count_census.out`]) - the peer's frozen control
-module, whose `fastpair_ide.py` is
-deliberately not distributed, since shipping the test without the module would be a
-collection-time ImportError. One printout taken twelve minutes before that one
-(`evidence/release_qa/20261009T113331Z_test_count_census.out`) says seven modules and 54, and it
-is kept as the record of a mistake rather than deleted: the script had been choosing its wheel with
-`sorted(os.listdir("dist"))[0]`, and minutes earlier I renamed the previous build to a name
-prefixed `archive-` inside dist/ precisely so it would survive as evidence that a rebuild had happened - "a"
-sorts before "n", so the census quietly counted the old wheel's members and returned numbers that
-looked entirely plausible because they had been true on 2026-10-05. It now insists on the
-canonical filename and exits if that file is absent. Two different objects must not be quoted as one: `pip install .`
-from the source directory in a clean environment collected 63 in the archived logs quoted
-below, because that install pulls in
-the whole tree including the control module, and its archived full run is 62 passed and one
-skipped (the S22 geometry fetch, by design) in 1739.26 s, whose `-m "not slow"` subset is on
-record twice at 42 passed and one skipped and 20 deselected, in 10.78 s and in 11.56 s.
-That collection size is not a constant either: re-running the same two shapes on 2026-10-01,
-after four tests had been added, gives 69 collected - the in-tree step 2 of the workflow
-69 passed with nothing skipped in 576.08 s under PySCF 2.14.0 and in 673.47 s under 2.12.1,
-and the out-of-tree step 3 68 passed and one skipped in 824.43 s and 545.01 s respectively,
-the skip again being the S22 geometry fetch, which is only reachable from outside the working
-tree because the downloaded geometry is not part of the install. Both matrix arms were
-therefore run locally before the remote exists, which is the point of the dry-run - and the
-prediction it falsified was ours: no `nlc_coeff` or `get_partition` API drift between the two
-versions showed up at all (`evidence/release_qa/`).
-`pytest --pyargs nlcsplit` against the built wheel, run from a directory that is not the
-source tree, exercises only the published tests. The current wheel was re-measured this way on
-2026-10-02, in a distribution installed outside the tree with `pip install --no-deps --target`
-and the tests started from a different directory: 48 passed and one skipped in 361.28 s, exit
-status 0, with the wheel hash recorded in the archive
-(`evidence/release_qa/20261002T0815Z_wheel_install_pytest_out_of_tree.txt`). It was re-measured
-again on 2026-10-03, after the convention tests had grown: 50 passed and two skipped in 308.95 s,
-exit 0, and both skips are the official-geometry tests, which cannot run in an install that does
-not carry the downloaded geometries - they skip rather than pass silently, and the reason is
-printed (`evidence/release_qa/20261003T0955Z_wheel_and_repo_pytest.txt`). And twice on 2026-10-05, against the wheels rebuilt during and after the re-audit: 51 passed and
-three skipped in 306.16 s against `9ecfc5ee...`
-(`evidence/release_qa/20261005T0446Z_wheel_out_of_tree.out`), then the same 51 + 3 in 304.19 s
-against the build of ten minutes later, `ac354030...`
-(`evidence/release_qa/20261005T0506Z_wheel_out_of_tree_current.out`). Neither was a wheel this paper
-ships, because the export rebuilds it; the build measured today is `7bdcb6f6...` - 56 passed and 3
-skipped in 404.44 s, exit 0, with its hash, its size and the git commit it was built from recorded in
-that log's own header
-(`evidence/release_qa/20261009T113900Z_wheel_out_of_tree.out`, the exit code in
-`evidence/release_qa/20261009T113900Z_wheel_out_of_tree.out.rc`). Measuring a container that the next
-export replaces is only worth printing if the content is pinned, and here the pinning is a comparison
-rather than a sentence: against the build produced by the next run of the export,
-`evidence/release_qa/20261009T120455Z_wheel_member_diff.out` diffs the per-member digests of the
-measured build - 39 members each, 37 digests agreeing, all 34 Python modules under the
-package directory byte-identical, the two exceptions being METADATA and the RECORD that lists
-METADATA's own digest. METADATA moves for a reason worth stating plainly: pyproject.toml embeds
-README.md into it, so any wheel hash written inside the README is necessarily the hash of a build made
-before that sentence was written. The paragraph on the 2026-09-30 rebuilds further down gives the other
-mechanism by which container hashes move even when no packaged byte does. The isolation claim here is weaker
-than the 2026-10-05 one and the archive says so instead of glossing it: `python3 -m venv` now fails on
-this machine for want of `ensurepip`, its error printed verbatim in the same file, so the tests ran
-from `/tmp` with `PYTHONPATH` pointing only at a `pip install --target` directory. That establishes
-that the wheel's own contents run where the repository is not on `sys.path`; it does not establish
-that they coexist with arbitrary other packages in a fresh interpreter. The third skip in both is
-the new geometry-label test, for the same reason as the other two; and the The 2026-10-05
-number supersedes the older, smaller-wheel figures below only for the question "what does today's
-install pass"; the older logs stay because each is quoted at its own collection size. Every figure below is quoted at the
-collection size of the log it is taken from, and none of them is a sum of the others: the
-43-test wheel is on record at 42 passed and one skipped, twice, at 580.82 s and at 406.75 s,
-and its `-m "not slow"` subset at 24 passed and one skipped and 18 deselected in 4.63 s. The
-44th published test - the soft-attribution check against an analytic Gaussian, added in the
-2026-10-01 commit `647a280` - postdates those three logs and predates the two that follow it,
-which are runs of a 44-test wheel and each name the wheel it tested: 43 passed and one
-skipped in 655.52 s against `d175c7b8...`, then 43 passed and one skipped in 519.36 s against
-a 36-member build recorded as `d123d1c8...` in its own log. The 45th, the grid-measure check
-`test_base_w_on_real_density_is_not_a_measure_at_all`, is newer than those logs and has since
-been run: rebuilding the export produced `149e727b...`, whose out-of-tree `--pyargs` run
-collects 45 (27 under `not slow`, 18 under `slow`) and reports 44 passed and one skipped in
-322.21 s. That timing is not comparable with the two above it - both earlier commands are
-recorded with `OMP_NUM_THREADS=2` in their headers, this one left the thread variables unset
-on a 20-core box - which is exactly why the counts are quoted per log and the wall clocks are
-never pooled. Adding the coupled-cluster script to the packaging list rebuilt the wheel once
-more (`7e7f9d71...`, 37 members, the eight test files byte-identical to the 36-member build),
-and that wheel was also tested out of tree: 44 passed and one skipped again, in 504.67 s. The
-1.57x spread between the two runs on the same box, with the same unset thread variables, on
-wheels whose tests are identical, has no cause recorded in either log - which is the strongest
-argument here for quoting timings per artefact rather than reducing them to one number.
-A third rebuild followed the frozen-core refactor of the coupled-cluster script, which also
-shipped the convention guard as the wheel's seventh test module (`55033716...`, 38 members,
-collecting 49): its 31-test fast subset was run out of tree - 30 passed and one skipped in
-25.72 s - and its 18 slow tests were deliberately not, because the eight test files they live
-in and every library module they import are byte-identical to the 37-member wheel that was run
-in full nine minutes earlier. That is written into
-`evidence/release_qa/20260930T231147Z_wheel_pyargs_49_member38_fast.out` as a carried-over
-result with the check that licenses it, rather than presented as a run that happened.
-Naming the hash rather than
-claiming "the current wheel" is the point - every export rebuilds the wheel, so its SHA-256
-changes even when no packaged byte does, and the two runs recorded nine minutes apart on
-2026-09-30 name two different hashes. The mechanism was measured rather than assumed, and it
-is worth knowing precisely because the naive version of the claim is wrong: four rebuilds of
-a tree whose `nlcsplit/` and `nlcsplit/tests/` bytes never moved gave three distinct hashes,
-two of the four builds being byte-identical to their neighbour - the zip entries carry the
-build time at two-second resolution, so builds inside one tick reproduce and builds across a
-tick do not. What never moved is the member list: 38 members in each build, with the wheel's
-per-member digest list (its `RECORD` file) comparing clean line by line across builds. So
-`RECORD` identifies the software and the artifact hash identifies the build, and this
-paragraph quotes them apart for that reason
-(`evidence/release_qa/20261001T053741Z_wheel_hash_is_not_content.txt`). All of it, including the
-shell-quoting bug that left the hash field blank in one of the two older logs, is in
-`evidence/release_qa/` [S19]. Tables map to one
-`step_*.py` each;
-the archived stdout a claim cites lives under `evidence/**` with a UTC-stamped filename and
-a hash manifest, while working logs under `nlcsplit/logs/` are gitignored scratch and are
-not cited as evidence. Including a naive triple-loop versus BLAS
-comparison of the kernel, per-scheme additivity checks, and geometry guards that
-assert bond lengths and angles at construction time.
-
-Fifteen export gates run locally on every rebuild (`node tools/make_public_repo.js`, which
-ships in the published tree). They are
-not all of equal standing, and the difference matters: some exist because they caught a real
-defect, others only because we could not otherwise show the earlier ones were not vacuous.
-The last column says which, and "planted" means the gate has never fired on real input - it
-fires on a fault we put in deliberately to prove it would.
+The wheel census is part of the same script: members are counted by category (test
+modules, helpers under `nlcsplit/tests/`, everything else) and the category counts are
+printed beside their sum, so a silently dropped category cannot pass as a member count
+[S19].
 
 | gate | what it checks | standing |
 |---|---|---|
@@ -469,141 +281,6 @@ fires on a fault we put in deliberately to prove it would.
 | Y | every image and link target in `paper/joss/paper.md` resolves to a file the export actually carries — the gate walks the copied-file set, not the filesystem, so a figure that exists on the working machine but was never listed is a broken citation for the reader | planted only: it has not fired on real input, its two-directional self-test must fire on exactly the planted target and stay silent on a valid one, and it goes quiet when `paper/joss/` is absent from the tree |
 
 **Table 1.** The release gates: what each checks, and the real defect that put it there. A letter identifies a gate in `tools/run_ship_qa.sh`; rows marked "planted only" have fired in self-test but not yet on real input.
-
-Gate D exists because the first three could only fail in one direction. A, B, C
-catch material that should not be present; what actually went wrong repeatedly was
-material that should have been present and was not - a cited stdout living only on a
-remote machine, calibration scripts inside a gitignored directory. Those produce a
-clean export and a reader holding a citation to nothing. Gate E has the same blind spot
-in the other direction and we hit it: it checks that an import is *declared*, so it
-says nothing when a shipped module imports a sibling that was never packaged - the
-`fastpair.py` defect above.
-
-The gate code itself now ships, and that exposed a self-reference. `tools/make_public_repo.js`
-and `tools/audit_no_gamess.js` are published under `tools/` because this section and
-`CONTRIBUTING.md` tell the reader to run them; until 2026-09-30 they were not, so that
-instruction was executable only on the authors' machine - the same class of defect as a
-citation pointing into a gitignored directory. Publishing a scanner, however, publishes
-what it scans for: the exemption ledger printed by the first build that contained the
-scanner listed 54 lines, and every one of them was a detection pattern naming a cluster
-internal address, an SSH port, an account name or a working directory. Those ten rules,
-together with the fault fixtures that exercise them, now live in
-`tools/intranet_patterns.private.js`, which is excluded by design and named in the export
-report. The published copy keeps the shape-based rules (credential assignment, private-key
-block, `ssh … @`, bare-IP user), loads the named rules when they are present, and prints
-`note_private_rules_loaded`; a run that cannot load them is not reported as clean - it says
-so, and gate B is then checking four rules rather than fifteen. Running the published copy
-against a copy of the published tree turned up two more holes of the same kind: rebuilding
-crashed on the two appendix sources that are renamed on the way out, and the proxy scrub was
-not idempotent, stacking its own replacement comment a second time. Both are fixed, and a
-second run over the same tree reproduces the first byte-for-byte except for the export
-timestamp (`evidence/release_qa/`) [S19]. `tools/audit_no_gamess.js` makes its single legal
-GAMESS hit a named rule in which the file *and* the line must match, so a non-disclaimer
-sentence inside the same file is still a violation, and it refuses to scan a directory that
-was not produced by a real install, since reading a stale copy of the build directory is how
-an earlier version of this check passed.
-
-Installing from the source tree is not the same act as installing the release, and we had
-been describing it as if it were. `pip install .` collects every module inside the package
-directories; the export whitelist does not constrain it. An install from the source directory
-collects 37 packaged modules where the wheel ships 31 (the scanner walked 45 installed files
-in total), and among them it reported
-`nlcsplit/fastpair_ide.py` - the peer implementation this repository keeps as a frozen
-comparison, deliberately not released - sitting in `site-packages`. Gate V now fails a build
-if any Python module inside a packaged directory is neither whitelisted nor named, with a stated
-reason, as an unreleased internal module; the six currently named are that implementation, its
-test and its validation script, plus three measurement scripts whose outputs are archived
-under `evidence/`. The same run also surfaced the provenance record pip writes into its own
-`dist-info` directory, which stores the *caller's* install path - here a working-machine directory
-whose name contains the very word being scanned for. It is a named exemption whose predicate
-strips the URL value before deciding, so anything other than a path inside that file is still
-a violation.
-
-Release hygiene is now executed rather than specified: a clean-environment install of the
-source tree, and an out-of-tree `pytest --pyargs nlcsplit` against the built wheel from a
-directory outside the repository, both recorded with the wheel hash. Writing the
-specification down is what produced two of the fixes: script-style `test_*.py` modules were
-removed from the package (pytest collects and executes them at import), and the `slow`
-marker was registered in package configuration rather than only in repository
-configuration. An earlier out-of-tree import by path - weaker, since it read the exported
-tree rather than an installed distribution - found that `step_i_gridrepr.py` ran a full
-self-consistent-field sweep at import time because it had no `__main__` guard, since fixed.
-
-The continuous-integration workflow has now been observed executing, and what it showed was
-not the thing we had written down. Recording the workflow had already produced one real fix:
-its PySCF version matrix interpolated as `pip install "pyscf==>=2.13"`, which is not a valid
-requirement, and that class of defect only an executed run catches. What we had reported in
-place of an execution was the weaker claim **no CI run has ever been observed**, and it was
-wrong. Asking the API with credentials returned five runs on `main`: #1 (`0b903ab`) and #2
-(`99584d4`) completed `failure` in both matrix arms, #3-#5 completed `success`, #5 being the
-current head. The earlier look was made without credentials at a repository that was then
-private, and that request cannot return a run list at all - it is a method that produces
-silence, which we had read as absence. It is the same failure shape as the withdrawn ORCA
-agreement recorded later in this section: the label we searched for was not the label that
-exists.
-
-Both failures sat in one step, `Run node tools/make_public_repo.js`, and had one cause. That
-step is a shipping decision rather than a check on already-shipped content, and its
-share-rule gate spawns `tools/audit_share_rule.js`, which the release list did not carry.
-Absent that file, the gate's bidirectional self-test returns non-zero for the deliberately
-wrong sample *and* for the correct one, so the gate does the right thing - refuse to ship on a
-self-test it cannot trust - and reddens every push while nothing in the chemistry is wrong.
-Two changes follow, both in the shipped tree. The scanner ships now, and its default document
-list falls back to the material a published copy actually contains, printing that it fell
-back; falling back does not relax the rule, because an unreadable file still fails and a
-denominator of zero also fails. And the workflow no longer runs the exporter, keeping the two
-steps that can hold on a published tree. The archived observation is
-`evidence/release_qa/20261001T150706Z_github_actions_first_runs.out`: run, job and step fields
-as the API returns them, plus the pytest summary lines verbatim, because a step reported
-`success` with no count is the same void as the 404 we had mistaken for one. On both arms the
-fast lane reads 30 passed, 1 skipped, 18 deselected, and the full and out-of-tree runs each
-read 48 passed, 1 skipped - those are the CI arms' own collection sizes and cannot be re-measured
-without a push. What was re-measured locally on 2026-10-03 is the working repository: its fast
-lane collects 50 passed and 22 deselected in 26.5 s, its full run 72 passed in 350 s, and the
-installed wheel 50 passed and 2 skipped. That is 52 items, not the 72 the working repository
-collects:
-`test_fastpair_ide.py` is not distributed, because the control module it imports is not
-distributed either.
-
-The fifteen shipping gates still run in the working repository before a release, with their
-private rules module and their manuscripts present, and CI does not vouch for them - it cannot,
-since four of the fifteen read material that is deliberately not published.
-
-Independent verification of the arithmetic now has a second program behind it. An
-earlier version of this documentation withdrew an ORCA agreement because re-reading
-the archived output found no separately reported nonlocal term - and that withdrawal
-was itself wrong: the quantity is printed, under the label
-`NL Energy, E(C,NL)`. Grepping the same output for "nonlocal" or "VV10" is not a way to
-find it, but not for the reason we first gave: the words are there, in the run banner's
-feature list (`NL-DFT gradient (VV10)`, line 116 of `evidence/orca_run/h2o_dimer.out`),
-which prints on every run and reports no number. The `E(VV10-nl)` column that does match
-belongs to the PT2 correlation of double-hybrid functionals, which is a different physical
-quantity. With the label known, twenty-four ORCA 6.0.1 single points covering all eight of
-the reported systems agree with ΔE_NLC to within 1% of the term everywhere
-(0.0004 kcal/mol on the water dimer up to 0.0416 kcal/mol on the benzene dimer A), with the
-outputs and their SHA-256 manifests in the repository [S18]; the comparison is regenerated
-from those artefacts by `evidence/orca_widen/generator_cross_program_table.py`, which
-refuses to emit the table if the system list or any row's basis, grid level or counterpoise
-setting disagrees. A second program can check what the term is worth; it cannot check who
-owns it, because it does not attribute. That gap is now measured too, in
-`evidence/attribution_referee/`: on a two-Gaussian density an exact reference cross term is
-built that contains no partition, no grid assignment and no fragment ownership anywhere in
-its definition, and evaluated three independent ways - a 3-D Cartesian tensor product, a 5-D
-cylindrical reduction about the internuclear axis, and importance-sampled Monte-Carlo with
-its own standard error. Handed the exact density factors, the package's own summation code
-reproduces that reference to `7.96e-07` Ha worst, inside the reference's combined measured
-error bar of `1.060e-05` Ha; handed the production Becke/owner assignment, the same code
-sits `1.7e-08` to `1.26e-04` Ha away from it, and the offset does not move when the node set
-is changed, so it belongs to the convention rather than to the grid [S21]. The referee states
-its own resolution rather than hiding it: the offset exceeds the error bar in 5 of its 12
-configurations, and in the other 7 it is smaller than the reference's uncertainty, which is
-reported as "cannot distinguish", not as "agrees". Two limitations there are unchanged. A third, fully
-independent implementation (Psi4, or libxc's `xc_nlc_vxc` through its own bindings)
-is still outstanding - the point is that ORCA is the *only* second program, not that there
-are three. And the scope of what is checked: on the water dimer the comparison covers the
-absolute term for the complex and for both monomers, while for the other seven systems the
-second program checks the superposition difference - which is the quantity every published
-claim here is made of, but not each absolute per-fragment value.
 
 
 ## 6. Limitations
@@ -652,6 +329,8 @@ Literature is not in this table. Where a sentence needs a published work it uses
 `[[key]]` citation resolved against `paper/references.bib`, whose entries were
 reverse-checked through Crossref by DOI; the queries for the software and benchmark
 entries are archived in `evidence/bib_provenance/G_s22_provenance_20260930.md`.
+
+### Artefact provenance
 
 | Tag | Artefact | What it fixes |
 |---|---|---|
