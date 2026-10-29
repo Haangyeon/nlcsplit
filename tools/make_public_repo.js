@@ -139,6 +139,9 @@ const EXPLICITLY_EXCLUDED = ['nlcsplit/centos_run.sh', 'nlcsplit/centos_run2.sh'
 // 直接按文件名指它们，闸门 D 报"母仓里有、没随包发布"——引用落空。
 const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'recompute', 'scaling',
   'orca_control', 'population', 'agentb_sweep',
+  // 2026-10-29：两个强重叠化学控制（H3N-BH3 与 F-...H2O）进了正文 §3.4 与附录 S35/S36，
+  // 闸门 D 当天就报了 16 条"存在但未随包发布"。正文点名的出处必须在同一次改动里进白名单。
+  'chemical_controls',
   // P2 引的三份：核/尾界测量、A2b 双实现对账、几何判据与近场探针的原始 stdout。
   // p2.md 一旦被引用闸门扫到，这些目录没进白名单就会"引用落空"。
   'coretail', 'fastpair_ab', 'bound_forms', 'release_qa',

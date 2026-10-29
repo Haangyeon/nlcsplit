@@ -206,6 +206,10 @@ function inline(s) {
     t = t.replace(/\[S(\d+)\]/g, (_, n) => '\\prov{S' + n + '}');
     t = t.replace(/\*\*([^*]+)\*\*/g, '\\textbf{$1}');
     t = t.replace(/(^|[\s(])\*([^*\n]+?)\*(?=[\s.,):]|$)/g, '$1\\emph{$2}');
+    // A markdown-escaped star (`6-31G\*`) used to reach LaTeX as `\*`, which typesets NOTHING in
+    // text mode: every "6-31G*" in the built PDF read "6-31G" - a different basis - until
+    // 2026-10-29. In T1 encoding a bare * is a real asterisk, so unescape it here.
+    t = t.replace(/\\\*/g, '*');
     return symize(t.replace(/[&%#$_~^]/g, c => ESC[c]));
   }).map(t => t).join('');
 }

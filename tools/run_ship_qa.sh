@@ -11,7 +11,12 @@
 # 2026-10-23：日志先落 /tmp，收口完冻成 evidence/release_qa/<stamp>_ship_qa_plan.out，
 # 最后才重生成清单——否则这份日志自己在清单目录里、又还没登记，下一次导出的 C2 闸门必抓它。
 set -u
-cd /mnt/e/Project/GAMESS || exit 3
+# 2026-10-29：这里原来写死 `cd /mnt/e/Project/GAMESS`。在 WSL 里那是 E: 的挂载点，但对
+# Windows 侧 Git Bash 而言 `/mnt/e` 是 Git 安装目录下的一条无关路径——脚本会安静地 cd 进一个
+# 空目录、`mkdir -p evidence/release_qa` 造出假树，最后 freeze() 里的
+# `bash tools/make_evidence_manifest.sh` 报"No such file"。那次运行除了打印计划什么也没做，
+# 但计划里写着"清单已登记"是假的。改成按脚本自身位置定位，两种 shell 下都对。
+cd "$(dirname "$0")/.." || exit 3
 export PYTHONIOENCODING=utf-8
 
 STAMP=$(date -u +%Y%m%dT%H%M%SZ)

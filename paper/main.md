@@ -9,7 +9,7 @@ Xi'an 710119, Shaanxi, China
 
 ## Abstract
 
-Production kernels for the VV10 nonlocal-correlation term in range-separated hybrid functionals fold the double sum over grid-point pairs into per-point values; the pair index is gone by the time the kernel returns, and even with it a fragment-resolved value requires an external partition and is not fixed by the total density alone. We evaluate the sum explicitly, keep the (i, j) index, and assign each grid point to atoms and fragments through a real-space partition, which splits the term into intra-fragment and inter-fragment blocks. In the continuum the split is exact; on a grid the cancellation of the local part, beta times the electron number, leaves a measured residual of -0.0013 to +0.0011 kcal/mol over eight cells at level 1, and on a fixed density the explicit sum reproduces PySCF's kernel to 5.7e-06 kcal/mol. At ωB97X-V/6-31G* on the eight S22 complexes, association-time nonlocal correlation is carried predominantly by pairs that straddle the fragments: the inter-fragment block is 0.92-1.08 of the frozen-density superposition difference in the six systems checked against a counterpoise reference, while the partition choice moves the attribution by 0.004-0.247 kcal/mol at level 1 in the eight-system detailed subset (0.0034-0.3030 over all 22 S22 complexes) with no pattern by interaction type, so a fragment-resolved nonlocal descriptor needs a per-system attribution uncertainty; in the two benzene-dimer orientations the total-energy ranking is stable across all four schemes while the attribution percentage is not, making the deliverable a protocol rather than a single descriptor; no published implementation we found resolves this term into fragment pairs, and the ORCA 6.0.1 anchor agrees with our superposition differences to under 1% of the term for all eight complexes.
+Production kernels for the VV10 nonlocal-correlation term in range-separated hybrid functionals fold the double sum over grid-point pairs into per-point values; the pair index is gone by the time the kernel returns, and even with it a fragment-resolved value requires an external partition and is not fixed by the total density alone. We evaluate the sum explicitly, keep the (i, j) index, and assign each grid point to atoms and fragments through a real-space partition, which splits the term into intra-fragment and inter-fragment blocks. In the continuum the split is exact; on a grid the cancellation of the local part, beta times the electron number, leaves a measured residual of -0.0013 to +0.0011 kcal/mol over eight cells at level 1, and on a fixed density the explicit sum reproduces PySCF's kernel to 5.7e-06 kcal/mol. At ωB97X-V/6-31G* on the eight S22 complexes, association-time nonlocal correlation is carried predominantly by pairs that straddle the fragments: the inter-fragment block is 0.92-1.08 of the uncorrected frozen-density superposition difference in the six systems for which a counterpoise reference is also available, while the partition choice moves the attribution by 0.004-0.247 kcal/mol at level 1 in the eight-system detailed subset (0.0034-0.3030 over all 22 S22 complexes) with no pattern by interaction type, so a fragment-resolved nonlocal descriptor needs a per-system attribution uncertainty; in the two benzene-dimer orientations the fragment-resolved percentage differs by a factor of seven while the total interaction energies order one way before and the other way after counterpoise correction, making the deliverable a protocol rather than a single descriptor; no published implementation we found resolves this term into fragment pairs, and the ORCA 6.0.1 anchor agrees with our superposition differences to under 1% of the term for all eight complexes, though on the parallel-displaced benzene dimer that residual is 1.3 times the attribution span it would have to resolve.
 
 ## 1. Introduction
 
@@ -121,7 +121,7 @@ What survives that comparison is specific: taking an existing, already-parameter
 double sum on a numerical integration grid, resolving it into named fragment and atom pairs
 without changing the total, and measuring how much the attribution itself (not the energy)
 moves when the partition scheme is changed. A formal Web of Science search over the Core
-Collection (58,664,816 records, 2026-09-29) found no precedent for that [S16]: the two
+Collection (58,664,816 records, 2026-09-29) found no precedent for that [S17]: the two
 strings written closest to our own claim both return zero records, and the non-zero strings
 were enumerated in full through the database's own record endpoint, so every returned record
 was read rather than the top one. The nearest neighbours are each attributable in one
@@ -145,7 +145,7 @@ missed Hyldgaard et al. entirely, a paper whose abstract shares no term with any
 keywords, and the broadest topical query available is what surfaced it. And the open indexes
 tried first (OpenAlex and Crossref) retrieve a known title reliably when the query
 resembles its title but miss that same exactly-on-topic paper for legitimate topical
-phrasings, at 0/4 each [S15]; they are known-item lookup tools here, not topical search, and
+phrasings, at 0 of 4 queries and 1 of 3 respectively [S15]; they are known-item lookup tools here, not topical search, and
 their zeros are not read as absence. The calibration behind both statements, and the
 single-index coverage limit of the search, are in section 4.4.
 
@@ -276,9 +276,9 @@ electrons. Over the floor interval the sweep accepts ($10^{-10}$ to $10^{-14}$) 
 2.1×10⁻¹¹ Ha at grid level 1 and 4.2×10⁻¹¹ Ha at level 2; adding the two outer rungs
 at 10⁻⁸ and 10⁻¹⁶ still leaves the reported value unchanged at six decimals in
 kcal/mol [S7]. The local term β∫ρ is a one-body functional of the density and is not
-pair-resolved; as noted above it cancels identically from superposition
-differences, which is what makes it legitimate to decompose only the double
-sum.
+pair-resolved; as noted above it cancels from superposition differences up to the
+grid's quadrature residual in the electron number, which is what makes it legitimate
+to decompose only the double sum.
 
 ### 2.4 Geometries and fragment boundaries
 
@@ -509,8 +509,11 @@ can stop at level 1.
 question the paper invited, and it now has a measurement instead of a caveat. At the same
 official S22 geometry, the same 6-31g\* basis and the same counterpoise convention,
 coupled cluster gives dE_int = -4.8789 kcal/mol at CCSD(T) with frozen oxygen 1s
-(-4.8821 all-electron, so the frozen-core choice is worth 0.003 here), and -3.7035, -4.3316,
+(-4.8821 all-electron, so the frozen-core choice is worth 0.003 here), and -3.6986, -4.3316,
 -4.3474 and -4.7287 at cc-pVDZ, aug-cc-pVDZ, cc-pVTZ and aug-cc-pVTZ respectively [S24, S30].
+Every rung of that ladder is the frozen-core value: the archive also prints the all-electron
+numbers, which differ by 0.003-0.019 kcal/mol (largest at cc-pVTZ), and an earlier version of
+this sentence took the cc-pVDZ rung from that column by mistake.
 Three things follow. At fixed basis our functional binds 1.27 kcal/mol *more* strongly than
 correlation does in the same basis - not less, which is what an earlier version of this
 paragraph said, and the reason it said so is the subject of the next paragraph. As the
@@ -519,7 +522,8 @@ short of the -5.01 equilibrium-geometry CCSD(T)/CBS dissociation energy quoted b
 open-access coupled-cluster study [[altun2018dlpno]] (different geometry, and we have not read
 the primary reference behind it), so the residual basis error of the anchor is of the order of
 0.3 kcal/mol and the functional-vs-anchor gap of 1.27 is larger than it. And the ladder itself
-now spans 1.18 kcal/mol from cc-pVDZ to aug-cc-pVTZ, which is comparable to - not twice the
+now spans 1.03 kcal/mol from cc-pVDZ to aug-cc-pVTZ - the 6-31G* to cc-pVDZ step above it is
+the larger one, 1.18 - which is comparable to - not twice the
 size of - the deviation being judged: a verdict of the form "the functional overbinds" obtained
 by comparing one small-basis density-functional number with one CBS reference remains
 unsupportable, but for a different reason than this draft originally gave. That is a caution
@@ -823,7 +827,7 @@ returns dE_NLC and nothing else; the (i, j) index structure retained by the
 double sum is what makes 0.92-1.08 a statement that can be checked at all. The
 corresponding dispersion component published for the benzene dimer is -3.34 to
 -3.80 kcal/mol at the PBE0-VV10 [[adamo1999pbe0]], revPBE-D3 [[zhang1998revpbe]] [[grimme2010d3]] and related levels of an ALMO-EDA
-study, and -3.69 at omegaB97M-V [S11]; our -4.367 (Table 1, level 1; the level-0
+study [[dasgupta2023]], and -3.69 at omegaB97M-V [S11]; our -4.367 (Table 1, level 1; the level-0
 value was -4.448) is the same kind of quantity to within functional-generation and
 basis-set differences, and it is *not* comparable with our own uncorrected
 interaction energy for that dimer, -3.580 at the same level, which is smaller
@@ -933,14 +937,17 @@ convergence,
 which is 0.0081 kcal/mol over level 0 to 2 at 6-31G\* and 0.0002 over level 1 to
 2 [S13] - is the error bar this method has to carry.
 
-Read as a chemical decision rather than a numerical spread, the two benzene-dimer
-geometries of Table 3 form a conformational pair: the parallel-displaced structure
-is lower by more than 1.5 kcal/mol, and the worst four-scheme span in the pair (0.219
-kcal/mol, T-shaped) is more than seven times smaller than that gap. No scheme
-reverses the preference. The descriptor still differs sharply between the two
-orientations (0.032 vs 0.219 kcal/mol): what is stable is the energy ranking, not
-the fragment-resolved percentage. This is the distinction the method is meant to
-enforce.
+Read against the rest of the table, the two benzene-dimer geometries make the limit concrete
+rather than hypothetical. Their four-scheme spans differ by a factor of seven (0.032 kcal/mol
+for the parallel-displaced geometry against 0.219 for the T-shaped one), and the
+fragment-resolved percentage differs with them, 0.8% against 9.2%. What does not follow is a
+conformational preference. The two orientations' total interaction energies order one way in
+the uncorrected numbers of Table 1 (-3.580 against -3.188) and the other way in the
+counterpoise-corrected ones of Table 2 (-1.9403 against -2.4297), so the inter-fragment block
+is not a proxy for the binding energy: an earlier version of this paragraph read the difference
+between the two blocks as a total-energy gap and claimed a ranking that the data do not
+support. What is stable across all four schemes is the sign of the block, not an ordering of
+the two geometries.
 
 Two controls outside S22 test the strong-overlap limit rather than adding another
 weak dimer. In H3N-BH3 (B-N 1.6677 A, wB97X-V/6-31G*; both fragments treated as
@@ -974,8 +981,9 @@ the four schemes give fragment-A populations of 10.1559 (Becke), 10.1537 (Stratm
 geometry, a spread of 0.108 electrons which is 0.329 kcal/mol; on the constructed
 geometry the same spread is 0.09865 electrons, i.e. 0.300 kcal/mol [S20].
 Two consequences deserve stating explicitly. In a superposition difference the
-term cancels identically (electron number is conserved), so every dE_NLC value
-in this paper is free of it. But any table reporting *absolute* fragment energies
+term cancels in the continuum, where the electron number is conserved; on a grid it
+cancels only up to the quadrature error in that number, so every dE_NLC value here
+carries the residual measured in section 3.3 and no more. But any table reporting *absolute* fragment energies
 inherits an uncertainty of this size from a quantity (atomic population) that the
 method does not control. This is a property of Becke partitioning that every EDA
 scheme shares, and we state it rather than claim it as a contribution.
@@ -1250,8 +1258,8 @@ paper title was retrieved exactly (1 record), a broad concept query returned 3,3
 records, and a topical AND query in the same vocabulary returned 33. By contrast
 the two open indexes we tried first failed the same test - OpenAlex and Crossref
 each retrieved a known title 4/4 times when queried by title but missed that same
-known, on-topic paper for 2 of 3 and 3 of 3 legitimate topical phrasings
-respectively. We therefore report hit counts only from the instrument that passed.
+known, on-topic paper on both of its topical strings (0 of 4 queries) and on two of
+three respectively. We therefore report hit counts only from the instrument that passed.
 Its enumeration is complete rather than sampled, and that took a second round: the
 result-page UI virtualises its list and gave us one record per list, and the first
 attempt at working around it by excluding already-read titles backfired - the title we
@@ -1265,9 +1273,11 @@ says so. We now assert `len(records) == RecordsFound` on every query.
 
 The search covers one index -
 Web of Science Core Collection - because Scopus was measured as unsubscribed at our
-institution and Embase and SciFinder were not searched at all. Within that one index,
+institution [S16] and Embase and SciFinder were not searched at all. Within that one index,
 though, the search is now a full enumeration rather than a sample: every record
-returned by every query was read, which changed the conclusion in one place worth
+returned by every query was enumerated and its title read (abstracts were read for the
+two four-record lists and for eight of the thirty-three topical records), which changed
+the conclusion in one place worth
 reporting, since a keyword-shaped novelty query is narrower than the claim it is
 meant to test. Six queries in the first round covered the decomposition vocabulary and
 found nothing in the interpretive line; adding the broadest topical query available
@@ -1378,8 +1388,9 @@ have to repeat section 2 and everything result-shaped would have to repeat secti
 
 We have shown that the VV10 nonlocal-correlation energy can be resolved into
 fragment pairs without giving up the total: the double sum is evaluated
-explicitly, the local part cancels identically from any superposition difference
-because it is exactly beta times the electron number, and the resulting blocks
+explicitly, the local part cancels from any superposition difference up to the grid's own
+electron-number error (section 3.3), because it is exactly beta times the electron number,
+and the resulting blocks
 reproduce the total to machine precision while carrying an (i, j) index that the
 point-value evaluation discards. What the resolution cannot do is select a partition:
 the functional carries no fragment label, so a fragment-resolved value is defined only
@@ -1402,7 +1413,7 @@ the span is not an error bar on it. On the two numerical axes we checked, basis
 set and grid, the descriptor span is 0.004-0.247 kcal/mol absolute in the detailed
 set and 0.0034-0.3030 over all 22, with a relative span of 0.8-18.2% in the detailed set,
 confined to 0.0413-0.0435 across the four basis sets beyond STO-3G
-and to within 0.001 kcal/mol between grid levels 1 and 2, with
+and to within 0.0013 kcal/mol between grid levels 1 and 2, with
 no pattern by interaction type that would let a single percentage be quoted.
 That ranking does not hold on a third axis: on the methane dimer the superposition
 error of dE_NLC itself is +0.0075 kcal/mol, 1.87 times that cell's own attribution
