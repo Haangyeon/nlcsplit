@@ -1,0 +1,44 @@
+&GLOBAL
+  PROJECT C_vv10kernel_vv10pars__S22_02
+  RUN_TYPE ENERGY
+  PRINT_LEVEL MEDIUM
+&END GLOBAL
+
+&FORCE_EVAL
+  METHOD QUICKSTEP
+  &SUBSYS
+    &COORD
+      &READ_COORDS XYZFILE mol.xyz
+    &END COORD
+    &CELL
+      ABC [Angstrom] 16.000 16.000 16.000
+      PERIODIC NONE
+    &END CELL
+  &END SUBSYS
+  &DFT
+    BASIS_SET_FILE_NAME /mnt/e/conda_envs/cp2k24/share/cp2k/data/BASIS_MOLOPT
+    POTENTIAL_FILE_NAME /mnt/e/conda_envs/cp2k24/share/cp2k/data/GTH_POTENTIALS
+    CUTOFF 300
+    &SCF
+      MAX_ITER 80
+      EPS_SCF 1.0E-8
+      &OUTER_SCF
+        MAX_ITER 20
+        EPS_SCF 1.0E-8
+      &END OUTER_SCF
+    &END SCF
+    &XC
+      &XC_FUNCTIONAL SCAN
+      &END XC_FUNCTIONAL
+      &VDW_POTENTIAL
+        &NON_LOCAL
+          FUNCTIONAL VV10
+          PARAM_1 6.0000
+          PARAM_2 0.010000
+          RHO_CUT 12
+          CUTOFF 300
+        &END NON_LOCAL
+      &END VDW_POTENTIAL
+    &END XC
+  &END DFT
+&END FORCE_EVAL

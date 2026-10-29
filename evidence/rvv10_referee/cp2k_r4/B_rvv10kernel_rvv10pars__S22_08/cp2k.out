@@ -1,0 +1,32 @@
+
+===STDERR===
+
+Program received signal SIGABRT: Process abort signal.
+
+Backtrace for this error:
+#0  0x79a79e24251f in ???
+#1  0x79a79e2969bc in ???
+#2  0x79a79e242475 in ???
+#3  0x79a79e2287f2 in ???
+#4  0x79a7a12a7fa9 in __message_passing_MOD_mp_abort
+	at /usr/local/src/conda/cp2k-2024.2/build/src/mpiwrap/message_passing.F:1427
+#5  0x79a7a0e1f8f8 in __base_hooks_MOD_cp_abort
+	at /usr/local/src/conda/cp2k-2024.2/build/src/base/base_hooks.F:76
+#6  0x79a7a1246a78 in __input_parsing_MOD_section_vals_parse
+	at /usr/local/src/conda/cp2k-2024.2/build/src/input/input_parsing.F:194
+#7  0x79a7a1246499 in __input_parsing_MOD_section_vals_parse
+	at /usr/local/src/conda/cp2k-2024.2/build/src/input/input_parsing.F:177
+#8  0x79a7a1246499 in __input_parsing_MOD_section_vals_parse
+	at /usr/local/src/conda/cp2k-2024.2/build/src/input/input_parsing.F:177
+#9  0x79a7a1246499 in __input_parsing_MOD_section_vals_parse
+	at /usr/local/src/conda/cp2k-2024.2/build/src/input/input_parsing.F:177
+#10  0x79a79f840a1a in __input_cp2k_read_MOD_read_input
+	at /usr/local/src/conda/cp2k-2024.2/build/src/input_cp2k_read.F:72
+#11  0x79a7a182401f in cp2k_run
+	at /usr/local/src/conda/cp2k-2024.2/build/src/start/cp2k_runs.F:222
+#12  0x79a7a1829370 in __cp2k_runs_MOD_run_input
+	at /usr/local/src/conda/cp2k-2024.2/build/src/start/cp2k_runs.F:968
+#13  0x61f6f9a4cadd in cp2k
+	at /usr/local/src/conda/cp2k-2024.2/src/start/cp2k.F:379
+#14  0x61f6f9a4b070 in main
+	at /usr/local/src/conda/cp2k-2024.2/src/start/cp2k.F:44

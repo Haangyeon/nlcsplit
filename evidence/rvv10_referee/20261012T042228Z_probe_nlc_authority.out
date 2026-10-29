@@ -1,0 +1,52 @@
+==============================================================================
+(C) 被审对象：PySCF 自己的 VV10_XC 表 + nlc_coeff() 实际返回
+pyscf xcfun.py L314            'B97M_V'    : (6.0, 0.01),
+pyscf xcfun.py L315            'WB97M_V'   : (6.0, 0.01),
+pyscf xcfun.py L316            'WB97X_V'   : (6.0, 0.01),
+pyscf xcfun.py L317            'VV10'      : (5.9, 0.0093),
+pyscf xcfun.py L318            'LC_VV10'   : (6.3, 0.0089),
+pyscf xcfun.py L319            'REVSCAN_VV10': (9.8, 0.0093),
+pyscf xcfun.py L320            'SCAN_RVV10'  : (15.7, 0.0093),
+pyscf xcfun.py L321            'SCAN_VV10'   : (14.0, 0.0093),
+  nlc_coeff(wb97xv)            (((6.0, 0.01), 1),)
+  nlc_coeff(wb97mv)            (((6.0, 0.01), 1),)
+  nlc_coeff(b97mv)             (((6.0, 0.01), 1),)
+  nlc_coeff(scan_rvv10)        (((15.7, 0.0093), 1),)
+  nlc_coeff(vv10)              (((5.9, 0.0093), 1),)
+
+==============================================================================
+(B) Psi4 安装树 grep 常量（纯读文件）
+psi4 包目录                       ['/home/haangyeon/miniconda3/envs/psi4env/lib/python3.1/site-packages/psi4', '/home/haangyeon/miniconda3/envs/psi4env/lib/python3.10/site-packages/psi4']
+扫描文件数                          2808
+psi4 命中[name WB97M-V]          test_dft_benchmarks.py:154  pytest.param(        'wB97M-V', 0.4544676075, '6-31G'),  # Q-Chem
+psi4 命中[name WB97M-V]          test_raises.py:23  ene = psi4.energy("wB97M-V")
+psi4 命中[name WB97M-V]          input.dat:15  Enl_wb97mv_b50=0.0238946401121507
+psi4 命中[name B97M-V]           test_dft_benchmarks.py:75  pytest.param(         'B97M-V', 0.4561660762, '6-31G'),  # Q-Chem
+psi4 命中[name B97M-V]           mgga_functionals.py:217  '    B97M-V with D3(BJ) instead of VV10 dispersion \n',
+psi4 命中[name B97M-V]           libxc_functionals.py:141  funcs.append({"name": "B97M-V"         , "xc_functionals": {"MGGA_XC_B97M_V"            : {}}})
+psi4 命中[const 14.05]           无 —— 注意：字符串缺失不等于功能不存在
+psi4 命中[const 0.0359]          test_cppe.py:186  3      -0.21893712     0.05923713    -0.03599684
+psi4 命中[const 0.0359]          oei_reference_data.json:1  {"data": {"h2o": {"psi4string": "0 1\nO                     0.000000000000     0.000000000000    -0.1495449246
+psi4 命中[const 0.0359]          input.dat:9  CL        0.000000000000  0.000000000000  -0.035925275852
+psi4 命中[const 15.7]            无 —— 注意：字符串缺失不等于功能不存在
+psi4 命中[name rvv10]            无 —— 注意：字符串缺失不等于功能不存在
+
+==============================================================================
+(A) libxc 本尊 xc_nlc_coef —— 放最后调，签名风险最大
+libxc.so 候选                    2
+用这份 libxc                      /home/haangyeon/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+  libxc id(VV10)               ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(RVV10)              ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(RVV10-LC)           ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(WB97X-V)            ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(WB97M-V)            ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(B97M-V)             ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(PBE-RVV10)          ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(PBE0-RVV10)         ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(SCAN-RVV10)         ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+  libxc id(REVSCAN-VV10)       ERR module 'pyscf.dft.libxc' has no attribute 'xc_code
+(A) 状态                         上面每个名字一行要么给数要么给 ERR；崩了就说明后面的没跑到
+
+==============================================================================
+判读纪律：本脚本只登记权威给不给得出 (b,C)，不下结论。
+# exit=0 at 2026-10-12T04:22:33Z

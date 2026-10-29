@@ -1,0 +1,24 @@
+geometry: {
+ "F-O_A": 2.460364125416682,
+ "F-H_A": 1.4085097621200053,
+ "O-H_A": [
+  1.053345535822012,
+  0.9613440040998444
+ ],
+ "H-O-H_deg": 101.95355601738072
+}
+    F-...H2O complex level 1 N= 15424  E_xc(其余)=-12550.7275  E_NLC=  +52.7190  其中β∫ρ= +60.8296  E_coul= +77148.7185  NLC两实现差=3.6e-05 闭合=1.8e-11 kcal/mol
+    fragment 0 level 1 N=  5304  E_xc(其余)= -6683.4953  E_NLC=  +27.0193  其中β∫ρ= +30.4148  E_coul= +34108.6687  NLC两实现差=8.6e-06 闭合=8.9e-12 kcal/mol
+    fragment 1 level 1 N=  9744  E_xc(其余)= -5828.6075  E_NLC=  +26.6872  其中β∫ρ= +30.4147  E_coul= +28999.6646  NLC两实现差=1.9e-05 闭合=0.0e+00 kcal/mol
+    ghost fragment level 1 N= 11928  E_xc(其余)= -6683.1182  E_NLC=  +27.0294  其中β∫ρ= +30.4294  E_coul= +34100.6740  NLC两实现差=2.7e-05 闭合=1.8e-11 kcal/mol
+    ghost fragment level 1 N= 11480  E_xc(其余)= -5828.5647  E_NLC=  +26.6846  其中β∫ρ= +30.4095  E_coul= +29000.3737  NLC两实现差=2.6e-05 闭合=8.9e-12 kcal/mol
+level 1: Dtot -31.4727 Dxc -39.6123 DNLC -0.9875 CP -30.6867 P_becke -1.0895 span 0.0828 ratio 1.103 109s
+  P_frz: becke -1.0895, becke-becke-rad -1.0067, becke-treutler -1.0430, stratmann -1.0771
+    F-...H2O complex level 2 N= 33560  E_xc(其余)=-12550.7282  E_NLC=  +52.7187  其中β∫ρ= +60.8295  E_coul= +77148.7119  NLC两实现差=1.9e-05 闭合=0.0e+00 kcal/mol
+    fragment 0 level 2 N= 11608  E_xc(其余)= -6683.5014  E_NLC=  +27.0192  其中β∫ρ= +30.4148  E_coul= +34108.6888  NLC两实现差=6.4e-06 闭合=0.0e+00 kcal/mol
+    fragment 1 level 2 N= 21064  E_xc(其余)= -5828.6085  E_NLC=  +26.6872  其中β∫ρ= +30.4148  E_coul= +28999.6485  NLC两实现差=2.5e-05 闭合=0.0e+00 kcal/mol
+    ghost fragment level 2 N= 24520  E_xc(其余)= -6682.7006  E_NLC=  +27.0200  其中β∫ρ= +30.4141  E_coul= +34101.6460  NLC两实现差=2.8e-05 闭合=0.0e+00 kcal/mol
+    ghost fragment level 2 N= 24312  E_xc(其余)= -5828.5881  E_NLC=  +26.6868  其中β∫ρ= +30.4148  E_coul= +28999.8435  NLC两实现差=2.6e-05 闭合=0.0e+00 kcal/mol
+level 2: Dtot -31.4673 Dxc -39.6060 DNLC -0.9877 CP -31.1632 P_becke -1.0892 span 0.0825 ratio 1.103 256s
+  P_frz: becke -1.0892, becke-becke-rad -1.0067, becke-treutler -1.0428, stratmann -1.0767
+wrote scratch/ionic_fw/fw_nlc.json

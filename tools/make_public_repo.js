@@ -40,11 +40,19 @@ const cp = require('child_process');
 const SRC = process.cwd();
 // 出货与产物成员核验都要用 python。process.execPath 在 node 里是 node.exe，别用那个。
 const PY = process.env.NLCSPLIT_PY || 'python';
+let pyBuild;
 try {
-  cp.execFileSync(PY, ['-c', 'import setuptools,sys;print(setuptools.__version__,sys.version.split()[0])'],
-    { stdio: 'pipe' });
+  pyBuild = cp.execFileSync(PY, ['-c', 'import setuptools,sys;print(setuptools.__version__,sys.version.split()[0])'],
+    { stdio: 'pipe', encoding: 'utf8' }).trim();
 } catch (e) {
   console.error(`FATAL: 找不到可用的 python（${PY}）或 setuptools，无法出货。`);
+  process.exit(3);
+}
+// pyproject 要求 setuptools>=64；59 不认 PEP 621，会把包名读丢成 UNKNOWN-0.0.0（2026-10-23 实测）。
+const SETUPTOOLS_MAJOR = parseInt(pyBuild.split(/\s+/)[0].split('.')[0], 10);
+if (!(SETUPTOOLS_MAJOR >= 64)) {
+  console.error(`FATAL: setuptools ${pyBuild.split(/\s+/)[0]} 低于 pyproject 要求的 64；`
+    + '旧版不认 PEP 621，会静默构建成 UNKNOWN-0.0.0 空包。换一个 setuptools>=64 的 python。');
   process.exit(3);
 }
 const OUT = path.join(SRC, 'dist', 'nlcsplit');
@@ -568,7 +576,14 @@ const gamessPats = [/\$gnum/i, /\bintgc\b/, /\bdiana\b/, /rhfuhf/, /\bgameSS\.sr
 function classifyGamess(rel, line) {
   for (const [j, re] of gamessPats.entries()) {
     if (!re.test(line)) continue;
-    return { pat: j, re, exempt: SELF_DETECT.includes(rel) && line.includes(re.source) };
+    const selfLine = SELF_DETECT.includes(rel) && line.includes(re.source);
+    // 出货日志里的"具名豁免"账行会引用检测器自己的判据（JSON 转义后 source 已不是逐字），
+    // 这类行是报告，不是 GAMESS 源码工件。2026-10-23 的四条误报就是它。
+    const ledgerLine = /具名豁免「检测器自身的判据定义」/.test(line) && line.includes(`模式#${j}`);
+    // 报告还会把检测器/上一份报告的整行当 JSON 字符串抄一遍（note_word_only_gamess）。
+    // 这些引文开头是 `"<文件>:<行号> `，是报告格式，不是源码；不加这条会逐份日志递归放大。
+    const quotedReport = /^\s*"(?:tools\/make_public_repo\.js|tools\/audit_no_gamess\.js|evidence\/release_qa\/[^"]*):\d+\s/.test(line);
+    return { pat: j, re, exempt: selfLine || ledgerLine || quotedReport };
   }
   return null;
 }
@@ -586,7 +601,8 @@ function checkGamessSource(root, treeList) {
         (v.exempt ? exempt : hits)
           .push(`${rel}:${i + 1}  ${tag} 模式#${v.pat} ${v.re} | ${line.trim().slice(0, 110)}`);
       }
-      if (/gamess/i.test(line)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);
+      // 检测器自己的行不再抄进报告：那是判据定义，抄一遍会让下一份报告被上一份拦住。
+      if (/gamess/i.test(line) && !SELF_DETECT.includes(rel)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);
     });
   }
   return { hits, words, exempt };
@@ -837,7 +853,9 @@ const STDLIB = new Set(['os', 'sys', 'json', 'time', 'math', 'ctypes', 'socket',
   '__future__', 'textwrap', 'hashlib', 'glob', 'random', 'zipfile', 'tarfile',
   // 2026-10-01：证据脚本随包发布后，闸门 E 第一次扫到它们的 import。`multiprocessing`
   // 是发行版标准库，不是第三方发行包——缺它同样是这张名单不完整，不是谁的代码有问题。
-  'multiprocessing', 'statistics', 'copy', 'string', 'unittest', 'logging', 'enum']);
+  'multiprocessing', 'statistics', 'copy', 'string', 'unittest', 'logging', 'enum',
+  // 2026-10-23：证据脚本用到的下面这些也全是标准库；名单漏一个就报一个"未声明依赖"。
+  'ast', 'contextlib', 'fnmatch', 'inspect', 'urllib', 'resource']);
 const DECLARED = new Set([...read(path.join(SRC, 'pyproject.toml'))
   .matchAll(/"([A-Za-z][A-Za-z0-9_.\-]*)[<>=!~\[]?/g)].map(m => m[1].toLowerCase()));
 const DIST_OF = { matplotlib: 'matplotlib', scipy: 'scipy', pyscf: 'pyscf', numpy: 'numpy', pytest: 'pytest' };
@@ -876,11 +894,11 @@ const gateE = undeclaredImports(tree.filter(f => f.endsWith('.py')),
 const gateESelftest = (() => {
   const t = ['evidence/x/run.py', 'evidence/x/referee_lib.py', 'nlcsplit/nlc.py'];
   const rd = rel => rel.endsWith('run.py')
-    ? 'import referee_lib\nimport multiprocessing\nimport nosuchdistribution\n'
+    ? 'import referee_lib\nimport multiprocessing\nimport fnmatch\nimport nosuchdistribution\n'
     : 'import numpy\n';
   const got = undeclaredImports(t, rd);
   return { fired: got.length === 1 && /nosuchdistribution/.test(got[0]),
-    sibling_and_stdlib_silent: !/referee_lib|multiprocessing/.test(got.join('|')),
+    sibling_and_stdlib_silent: !/referee_lib|multiprocessing|fnmatch/.test(got.join('|')),
     reported: got };
 })();
 
@@ -905,6 +923,13 @@ function checkArtifacts(items) {
   const out = [];
   for (const { name: f, path: ap } of items) {
     const mem = membersOf(ap).filter(m => !m.endsWith('/'));
+    // 只查"不该有什么"会让空包静默通过：2026-10-23 的 UNKNOWN-0.0.0 只剩 dist-info，
+    // 下面每条禁项都不命中。所以这里同时要求顶层模块**在**。
+    for (const m of PKG) {
+      if (!mem.some(x => x === `nlcsplit/${m}` || x.endsWith(`/nlcsplit/${m}`))) {
+        out.push(`${f}: 成员里缺 nlcsplit/${m}`);
+      }
+    }
     // F1 任何 test_*.py，只要不在 */tests/ 下，直接 FAIL。
     for (const m of mem.filter(x => /(^|\/)test_[^\/]*\.py$/.test(x))) {
       if (!/(^|\/)tests\//.test(m)) out.push(`${f}: 夹带脚本式测试模块 ${m}（import 即执行，不该进包）`);
@@ -929,7 +954,10 @@ function checkArtifacts(items) {
   if (items.length !== 2) out.push(`期望正好 1 wheel + 1 sdist，实际 ${items.map(i => i.name).join(', ') || '无'}`);
   return out;
 }
-const gateF = checkArtifacts(artifacts.map(f => ({ name: f, path: artifactPath[f] })));
+const gateF = checkArtifacts(artifacts.map(f => ({ name: f, path: artifactPath[f] })))
+  // 产物名只在**真产物**上判；自测里的 clean-1.0 夹具是合成件，不该被这条规则误伤。
+  .concat(artifacts.filter(f => !/^nlcsplit-\d/.test(f))
+    .map(f => `${f}: 产物名不是 nlcsplit-<版本>（元数据没读进去？）`));
 
 // ---------------------------------------------------------------- 闸门 G：LICENSE 占位符与版权行
 function readArtifactLicense(p) {
@@ -1009,8 +1037,19 @@ if (process.env.NLCSPLIT_SELFTEST) {
     const inDetector = classifyGamess('tools/make_public_repo.js', line);
     const elsewhere = classifyGamess('nlcsplit/nlc.py', line);
     const innocent = classifyGamess('tools/make_public_repo.js', 'x = 1');
+    // 报告里的账行可豁免，但同一份报告里的真源码行仍必须响——否则这条通道就是空白支票。
+    const ledger = classifyGamess('evidence/release_qa/x_ship_qa_plan.out',
+      'x <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | ...');
+    const quoted = classifyGamess('evidence/release_qa/x_ship_qa_plan.out',
+      '  "tools/make_public_repo.js:571  const gamessPats = [/\\$gnum/i, /\\bintgc\\b/];",');
+    // 拼接构造：这一行本身不能被闸门 A 当成真源码（否则检测器自曝一条命中）。
+    const real = classifyGamess('evidence/release_qa/x_ship_qa_plan.out', 'E = $' + 'GNUM');
     return { detector_definition_exempt: inDetector, elsewhere_is_violation: elsewhere,
-      innocent_clean: innocent, ok: !!inDetector && !!elsewhere && !innocent };
+      innocent_clean: innocent, ledger_line_exempt: ledger && ledger.exempt,
+      quoted_report_exempt: quoted && quoted.exempt,
+      real_source_still_violation: real && real.exempt === false,
+      ok: !!inDetector && !!elsewhere && !innocent && !!ledger && ledger.exempt
+        && !!quoted && quoted.exempt && !!real && real.exempt === false };
   })();
 
   // 真 zip：把脚本式测试模块塞进一个真的 wheel 里，让 checkArtifacts 用真的读档路径去判。
@@ -1021,13 +1060,18 @@ if (process.env.NLCSPLIT_SELFTEST) {
     '"nlcsplit/tests/test_kernel.py","nlcsplit.egg-info/PKG-INFO","nlcsplit/notes.out"]:\n' +
     '    z.writestr(n,"x")\n' +
     'z.close()\n', path.join(NEG, 'poison-1.0-py3-none-any.whl').replace(/\\/g, '/')], { stdio: 'pipe' });
+  // 干净夹具必须**真包含** PKG 里的每一个顶层模块：gate F 现在要求它们在，
+  // 否则夹具自己就是缺件的包，测出来的是夹具的毛病（2026-10-23 加正面检查时当场撞到）。
+  const cleanNames = ['nlcsplit/tests/test_kernel.py', 'nlcsplit/tests/conftest.py',
+    'nlcsplit/tests/__init__.py', 'nlcsplit-1.0.dist-info/METADATA',
+    'nlcsplit-1.0.dist-info/LICENSE'].concat(PKG.map(m => 'nlcsplit/' + m));
   cp.execFileSync(PY, ['-c',
-    'import sys,zipfile\n' +
+    'import sys,zipfile,json\n' +
     'z=zipfile.ZipFile(sys.argv[1],"w")\n' +
-    'for n in ["nlcsplit/__init__.py","nlcsplit/tests/test_kernel.py","nlcsplit/tests/conftest.py",' +
-    '"nlcsplit/tests/__init__.py","nlcsplit-1.0.dist-info/METADATA","nlcsplit-1.0.dist-info/LICENSE"]:\n' +
+    'for n in json.loads(sys.argv[2]):\n' +
     '    z.writestr(n,"x")\n' +
-    'z.close()\n', path.join(NEG, 'clean-1.0-py3-none-any.whl').replace(/\\/g, '/')], { stdio: 'pipe' });
+    'z.close()\n', path.join(NEG, 'clean-1.0-py3-none-any.whl').replace(/\\/g, '/'),
+    JSON.stringify(cleanNames)], { stdio: 'pipe' });
   const poisons = checkArtifacts([{ name: 'poison-1.0-py3-none-any.whl', path: path.join(NEG, 'poison-1.0-py3-none-any.whl') }]);
   const cleans = checkArtifacts([{ name: 'clean-1.0-py3-none-any.whl', path: path.join(NEG, 'clean-1.0-py3-none-any.whl') }])
     .filter(x => !/期望正好/.test(x));
@@ -1051,6 +1095,10 @@ if (process.env.NLCSPLIT_SELFTEST) {
     changedLine: sres.split('\n')[0], untouchedLineIdentical: sres.split('\n')[1] === 'L2 E_NLC= +125.7984 N=132176',
     logged: scrubLog.filter(e => e.rel === 'SELFTEST').map(e => e.FATAL || `${e.proof} lines=${e.lines.join(',')}`),
   };
+  // 账号串大小写：同一条规则必须把两种写法都抹掉（2026-10-23 实测只抹了大写，7 条漏进发布树）。
+  R.scrub_operator_case = PRIV
+    ? { bothCases: scrubText(PRIV.SCRUB_PROBE, 'SELFTEST_CASE') === PRIV.SCRUB_EXPECT }
+    : 'skipped_no_private_rules';
   // 不动点：对"已经脱敏过的输出"再脱敏一次，必须一个字节都不变。
   // 读者拿发布树重跑本脚本是合法操作，而这类二次应用的错只有跑两遍才看得见
   // （实测过一次：get_s22.sh 的替换注释被叠了两份）。

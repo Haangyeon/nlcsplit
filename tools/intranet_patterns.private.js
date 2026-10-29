@@ -40,7 +40,9 @@ const ENDPOINT = [
 ];
 const IDENT = [
   [/\bSNNU\b/gi, '<CLUSTER>'],
-  [/\bHaangyeon\b/g, '<OPERATOR>'],
+  // 大小写两种都抹：gate B 的账号判据是 /i，而这里原先是大小写敏感的，
+  // 于是 `squeue -u haangyeon` 与 `ls -l` 的用户名列一路进了发布树（2026-10-23 闸门 B 实测 7 条）。
+  [/\bHaangyeon\b/gi, '<OPERATOR>'],
 ];
 
 // ---- 闸门 B 里点名本机的判据（从 make_public_repo.js 原样搬来，一个字符没改）----
@@ -90,5 +92,10 @@ const EMAIL_CASES = [
 ];
 // 脱敏表自己的那条反证行：路径行必须被改、数值行必须逐字节不动。
 const SAMPLE = 'L1 == 几何来源 /root/gamess_work/nlcsplit/s22 ==\nL2 E_NLC= +125.7984 N=132176\n';
+// 账号串大小写都要抹：2026-10-23 实测小写的 `squeue -u haangyeon` 与 `ls -l` 的用户名列
+// 一路进了发布树（gate B 报了 7 条），而旧规则只匹配首字母大写的写法。
+const SCRUB_PROBE = 'squeue -u haangyeon\n-rwxrwxrwx 1 haangyeon haangyeon 512 Oct 13 .\n';
+const SCRUB_EXPECT = 'squeue -u <OPERATOR>\n-rwxrwxrwx 1 <OPERATOR> <OPERATOR> 512 Oct 13 .\n';
 
-module.exports = { PATH, ENDPOINT, IDENT, SECRET_PATS, SHAPES, POISON, COVERED_NAMES, SAMPLE, EMAIL_CASES };
+module.exports = { PATH, ENDPOINT, IDENT, SECRET_PATS, SHAPES, POISON, COVERED_NAMES, SAMPLE, EMAIL_CASES,
+  SCRUB_PROBE, SCRUB_EXPECT };

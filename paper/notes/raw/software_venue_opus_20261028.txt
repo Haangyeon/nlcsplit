@@ -1,0 +1,23 @@
+requested_model: claude-opus-5-5
+returned_model: claude-opus-5-5
+http_status: 200
+usage: {"prompt_tokens": 801, "completion_tokens": 581, "total_tokens": 1382, "prompt_tokens_details": {"cached_tokens": 63, "cache_write_tokens": 95}}
+
+**Analysis of submission readiness:**
+
+The package meets core technical requirements: Apache-2.0 license, tests (94 total, 74 in wheel), documentation, CITATION.cff, installable wheel. **Blocking issues:** repository not public, no archived release/Zenodo DOI. These are mechanical fixes, not research gaps.
+
+**JOSS fit:** JOSS papers are typically 500-1000 words. The 1,673-word version exceeds this but not egregiously. However, JOSS scope issue is more fundamental: JOSS seeks "novel software that enables new research" or "adds substantial new features." This package is a reproducibility/attribution wrapper around existing PySCF VV10 functionality—it enables explicit pair tracking and fragment attribution but does not introduce new science. The scientific claim lives in the companion JCTC paper. JOSS reviewers may flag this as insufficiently novel for standalone software publication.
+
+**Long-form software article fit:** The 4,794-word version duplicates results from the companion paper and explicitly states the package "does not create a new functional, a new partitioning theory, or a faster kernel." SoftwareX, JCC software notes, and similar venues expect either (1) novel methodology with software implementation, or (2) major new capabilities. This is neither—it's a well-engineered research artifact. Publishing 12 pages that repeat the companion paper's results is redundant and will likely face desk rejection or major revision requests to remove duplication.
+
+**Correct path:** The software contribution is a reproducibility/QA artifact supporting the companion paper. The companion JCTC paper can and should reference the software package (via GitHub + Zenodo DOI) in its methods/data-availability section. A standalone software paper adds minimal value and risks rejection for overlap. If institutional/CV requirements demand a separate software publication, JOSS is the only plausible venue, but expect pushback on novelty.
+
+**Pre-submission changes:** (1) Make repository public, (2) cut a tagged release, (3) archive on Zenodo for DOI, (4) trim JOSS draft to 1,000-1,200 words by condensing "State of the field" and "Research impact" (which duplicate the companion paper). Do not create new research.
+
+**Decision:** If you must publish the software separately, use JOSS with the short form, but expect reviewers to question whether this merits standalone publication when the companion paper exists. The most defensible path is no separate software paper—cite the archived repository in the JCTC manuscript.
+
+VENUE: JOSS — short form (with reservations about novelty scope)
+
+---
+VERDICT

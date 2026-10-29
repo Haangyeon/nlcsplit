@@ -4,13 +4,14 @@
 "我记得的状态"当成"状态"，本仓一周内的真实事故全是这一类（搬错版本的数、把计数当测量、
 引用不存在的文件、把注释里的数当出处）。靠我"下次注意"是无效的，注意本身就是那条会漏的环节。
 
-## 五个闸门
+## 六个闸门
 
 | 文件 | 事件 | 判据（只判机械可判的） | 失败动作 |
 |---|---|---|---|
 | `../claim_gate.js` | PostToolUse / PreToolUse(`git commit`) / Stop | 已发出的稿里每个小数必须能在**被 git 跟踪的证据工件**里找到；每个反引号里的路径必须存在且已跟踪 | exit 2，stderr 是修法 |
 | `comment_sentinel.js` | PostToolUse | 代码注释里出现 ≥4 位小数或带单位的数——注释不是测量，不该长得像 | exit 2 |
 | `precommit_gate.js` | PreToolUse(`Bash(git commit*)`) | MANIFEST 新鲜 + 数字出处 + 路径入库 | exit 2（拦提交） |
+| `route_decisions_to_referee.js` | PreToolUse(`AskUserQuestion`) | 判断/评审/取舍问题必须走 referee MCP；只有凭据、花钱、投稿/删除等不可逆授权或作者元数据可问用户 | exit 2，stderr 指向 referee |
 | `stop_gate.js` | Stop（`asyncRewake`） | 还有未提交的实质改动 / 清单陈旧 / 数字无原件 | exit 2 并把我叫醒 |
 | `session_brief.js` | SessionStart / PreCompact | 不拦；把 HEAD、脏文件、清单状态、注册状态、闸门计数注入上下文 | — |
 
@@ -32,6 +33,7 @@ node tools/hooks/install.js            # 装；已存在且不同则拒绝（--f
 node tools/claim_gate.js --selftest          # 真数不拦 / 假数拦 / 假路径拦 / 未跟踪拦 / 作用域双向
 node tools/hooks/lib.js --selftest           # 清单核对：新鲜 0、改一字节 1、多文件 1、清单读不出 1
 node tools/hooks/install.js --selftest       # 注册比较器：相同/缺事件/改命令/键序不同
+node tools/hooks/route_decisions_to_referee.js --selftest  # 判断问题拦 / 授权与元数据放行
 node tools/hooks/comment_sentinel.js --selftest
 node tools/hooks/precommit_gate.js --selftest   # 含临时坏仓的反向验证 + 逃生口留痕验证
 node tools/hooks/stop_gate.js --selftest

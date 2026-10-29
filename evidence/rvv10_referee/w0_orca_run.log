@@ -1,0 +1,15 @@
+2026-10-12T04:39:02Z  control_WB97X_V/CH42_complex  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:39:15Z  control_WB97X_V/CH42_mono0  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:39:31Z  control_WB97X_V/CH42_mono1  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:39:47Z  control_WB97X_V/H2O2_complex  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:39:59Z  control_WB97X_V/H2O2_mono0  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:40:13Z  control_WB97X_V/H2O2_mono1  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:40:55Z  test_WB97M_V/CH42_complex  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:41:22Z  test_WB97M_V/CH42_mono0  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:41:45Z  test_WB97M_V/CH42_mono1  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:42:18Z  test_WB97M_V/H2O2_complex  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:42:39Z  test_WB97M_V/H2O2_mono0  rc=0  scf_converged=1  terminated=1  NL_lines=1
+2026-10-12T04:42:57Z  test_WB97M_V/H2O2_mono1  rc=0  scf_converged=1  terminated=1  NL_lines=1
+# runs_done=12  期望 12 = 2 rank x (complex + 2 mono) x 2 体系
+# runs_failed=0
+# exit=0 at 2026-10-12T04:42:57Z

@@ -1,0 +1,19 @@
+==============================================================================
+(C) 被审对象：PySCF 自己的 VV10_XC 表（原样抄，含行号）
+pyscf xcfun.py L314        'B97M_V'    : (6.0, 0.01),
+pyscf xcfun.py L315        'WB97M_V'   : (6.0, 0.01),
+pyscf xcfun.py L316        'WB97X_V'   : (6.0, 0.01),
+pyscf xcfun.py L317        'VV10'      : (5.9, 0.0093),
+pyscf xcfun.py L319        'REVSCAN_VV10': (9.8, 0.0093),
+pyscf xcfun.py L320        'SCAN_RVV10'  : (15.7, 0.0093),
+    nlc_coeff() 实际返回值：
+  pyscf nlc_coeff(wb97xv)  (((6.0, 0.01), 1),)
+  pyscf nlc_coeff(wb97mv)  (((6.0, 0.01), 1),)
+  pyscf nlc_coeff(b97mv)   (((6.0, 0.01), 1),)
+  pyscf nlc_coeff(scan_rvv10) (((15.7, 0.0093), 1),)
+
+==============================================================================
+(A) libxc 本尊 xc_nlc_coef —— 直接 ctypes 调，不经 PySCF 的表
+libxc.so 候选数               2
+用这份 libxc                  /home/haangyeon/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+# exit=139 at 2026-10-12T04:20:07Z

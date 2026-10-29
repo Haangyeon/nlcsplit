@@ -28,9 +28,13 @@ for (const mm of cmd.matchAll(/(?:^|[;&|]\s*|\n)\s*(?:sh|bash)\s+(?:\S*\/)?build
   docs.push(mm[1] && KNOWN.has(mm[1]) ? mm[1] : "main");
 }
 if (!docs.length) process.exit(0);
-const targets = [...new Set(docs)].map(d => path.join(root, "paper", d + ".pdf"));
+// 交付件按题名缩写命名，构建脚本用 -jobname 直接产出这些名字。
+const JOB = { main: "VV10-pair-attribution", software: "nlcsplit", p2: "p2" };
+const targets = [...new Set(docs)].map(d => path.join(root, "paper", (JOB[d] || d) + ".pdf"));
 
 function writable(p) {
+  // 交付件还没生成时不存在，不能把 ENOENT 读成“被占用”。
+  if (!fs.existsSync(p)) return true;
   // 开写句柄不足以判定：Acrobat 允许别人以写方式打开，却拒绝删除/改名。
   // 这里做一次"改名再改回"的原子探测（check_lock.py 用的同一判据），不改内容。
   const tmp = p + ".lockcheck";

@@ -1,0 +1,42 @@
+# W0 第三臂 · (b,C) 可分辨性  basis=6-31g* grids.level=1
+# 生成 2026-10-12T04:46:20.783448+00:00  pyscf=2.12.1 numpy=2.2.6
+# 前两臂的对照结果（同目录 w0_pyscf_side 与 orca_run/）：两档残差均 ~0.0004 kcal/mol
+
+== 水二聚体 ((H2O)2) nfrags=2 ==
+     as_is_wb97 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.08434131 Eh =  +52.9250 kcal  npts=18336
+     as_is_wb97 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04264560 Eh =  +26.7605 kcal  npts=9192
+     as_is_wb97 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04264693 Eh =  +26.7614 kcal  npts=9200
+     ==> dE_NLC =   -0.5969 kcal/mol
+     forced_rvv converged=True  用 (((14.05, 0.0359), 1),)  E(C,NL)=  0.02567786 Eh =  +16.1131 kcal  npts=18336
+     forced_rvv converged=True  用 (((14.05, 0.0359), 1),)  E(C,NL)=  0.01292067 Eh =   +8.1078 kcal  npts=9192
+     forced_rvv converged=True  用 (((14.05, 0.0359), 1),)  E(C,NL)=  0.01292085 Eh =   +8.1080 kcal  npts=9200
+     ==> dE_NLC =   -0.1027 kcal/mol
+     forced_vv1 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.08434131 Eh =  +52.9250 kcal  npts=18336
+     forced_vv1 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04264560 Eh =  +26.7605 kcal  npts=9192
+     forced_vv1 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04264693 Eh =  +26.7614 kcal  npts=9200
+     ==> dE_NLC =   -0.5969 kcal/mol
+
+== 甲烷二聚体 ((CH4)2) nfrags=2 ==
+     as_is_wb97 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.08195269 Eh =  +51.4261 kcal  npts=26536
+     as_is_wb97 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04139032 Eh =  +25.9728 kcal  npts=13328
+     as_is_wb97 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04139032 Eh =  +25.9728 kcal  npts=13328
+     ==> dE_NLC =   -0.5195 kcal/mol
+     forced_rvv converged=True  用 (((14.05, 0.0359), 1),)  E(C,NL)=  0.02533452 Eh =  +15.8977 kcal  npts=26536
+     forced_rvv converged=True  用 (((14.05, 0.0359), 1),)  E(C,NL)=  0.01274842 Eh =   +7.9998 kcal  npts=13328
+     forced_rvv converged=True  用 (((14.05, 0.0359), 1),)  E(C,NL)=  0.01274842 Eh =   +7.9998 kcal  npts=13328
+     ==> dE_NLC =   -0.1019 kcal/mol
+     forced_vv1 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.08195269 Eh =  +51.4261 kcal  npts=26536
+     forced_vv1 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04139032 Eh =  +25.9728 kcal  npts=13328
+     forced_vv1 converged=True  用 (((6.0, 0.01), 1),)  E(C,NL)=  0.04139032 Eh =  +25.9728 kcal  npts=13328
+     ==> dE_NLC =   -0.5195 kcal/mol
+
+## 判读（写死，不许事后挑档）
+   (H2O)2         forced_rvv10_14.05_0.0359    相对 as_is 动 0.4942 kcal/mol
+   (H2O)2         forced_vv10_6.00_0.0100      相对 as_is 动 0.0000 kcal/mol
+   (CH4)2         forced_rvv10_14.05_0.0359    相对 as_is 动 0.4177 kcal/mol
+   (CH4)2         forced_vv10_6.00_0.0100      相对 as_is 动 0.0000 kcal/mol
+
+   ORCA 侧 ωB97M-V 的 dE_NLC（同几何同基组，见 orca_run/test_WB97M_V__*）：
+     (H2O)2 = -0.5965   (CH4)2 = -0.5188   [kcal/mol，由 .out 的 NL Energy 行现算]
+   ⇒ 拿上面 R1/R2/R3 三种结局对号，本脚本不下其它结论。
+OUT=/mnt/e/Project/GAMESS/evidence/rvv10_referee/20261012T045423Z_w0_forced_params.out

@@ -1,0 +1,38 @@
+# R0 · libxc 7.1.2 的 VV10 / rVV10 参数表（逐 id 子进程隔离）
+# 库：/mnt/e/conda_envs/xcprobe/lib/libxc.so.15
+
+## 功能号自证（原文行，来自本机 xc_funcs.h）
+   XC_GGA_XC_VV10               #define  XC_GGA_XC_VV10                    255 /* Vydrov and Van Voorhis */
+   XC_MGGA_C_SCAN_RVV10         #define  XC_MGGA_C_SCAN_RVV10              292 /* SCAN + rVV10 correlation */
+   XC_HYB_GGA_XC_LC_VV10        #define  XC_HYB_GGA_XC_LC_VV10             469 /* Vydrov and Van Voorhis */
+   XC_MGGA_C_SCAN_VV10          #define  XC_MGGA_C_SCAN_VV10               584 /* SCAN + VV10 correlation */
+   XC_MGGA_C_REVSCAN_VV10       #define  XC_MGGA_C_REVSCAN_VV10            585 /* REVSCAN + VV10 correlation */
+   XC_MGGA_XC_VCML_RVV10        #define  XC_MGGA_XC_VCML_RVV10             652 /* VCML-rVV10 by Trepte and Voss */
+   XC_MGGA_C_SCANL_RVV10        #define  XC_MGGA_C_SCANL_RVV10             703 /* SCAN-L + rVV10 correlation */
+   XC_MGGA_C_SCANL_VV10         #define  XC_MGGA_C_SCANL_VV10              704 /* SCAN-L + VV10 correlation */
+
+## 逐 id 调 xc_nlc_coef（崩了记崩，不影响其它 id）
+   id   name                         结果
+   255  XC_GGA_XC_VV10               进程 rc=-11 
+   292  XC_MGGA_C_SCAN_RVV10         进程 rc=-11 
+   469  XC_HYB_GGA_XC_LC_VV10        进程 rc=-11 
+   584  XC_MGGA_C_SCAN_VV10          进程 rc=-11 
+   585  XC_MGGA_C_REVSCAN_VV10       进程 rc=-11 
+   652  XC_MGGA_XC_VCML_RVV10        进程 rc=-11 
+   703  XC_MGGA_C_SCANL_RVV10        进程 rc=-11 
+   704  XC_MGGA_C_SCANL_VV10         进程 rc=-11 
+
+## 名字反查 id（上一版 -1 的真相：我用的是别名而不是 libxc 的规范名）
+   VV10                       -> id -1
+   RVV10                      -> id -1
+   MGGA_C_SCAN_RVV10          -> id 292
+   XC_MGGA_C_SCAN_RVV10       -> id 292
+   MGGA_C_SCAN_VV10           -> id 584
+   MGGA_XC_WB97M_V            -> id -1
+   MGGA_XC_B97M_V             -> id 254
+   MGGA_XC_WB97X_V            -> id -1
+
+判读：本脚本只登记 libxc 给什么，不下结论。
+若 VV10 一列与 rVV10 一列给出**不同的 (b,C)**，则'PySCF 把 rVV10 参数塞进 VV10 核形'
+这件事至少是**值得查的实现不一致**；但要写进正文仍需能算积分的裁判（libxc 已证不能）。
+# exit=0 at 2026-10-12T05:38:50.985333+00:00

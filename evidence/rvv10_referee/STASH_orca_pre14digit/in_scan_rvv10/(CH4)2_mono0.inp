@@ -1,0 +1,12 @@
+# W0 ORCA 侧。取标签 `NL Energy, E(C,NL)`；grep VV10/nonlocal 在 ORCA 自己输出里命中 0，不要用。
+# 取数前必须确认 SCF CONVERGED AFTER n + ORCA TERMINATED NORMALLY + 恰好一行 NL Energy。
+# 几何 = GMTKN55 官方 S22 struc.xyz；单体用复合物几何、各自基组、不做 BSSE（与已入库 ΔE_NLC 口径一致）。
+# keyword card 原样：
+# ! SCAN-RVV10 6-31G* TightSCF
+# %pal nprocs 4 end
+# %maxcore 1000
+# * xyzfile 0 1 (CH4)2_mono0.xyz
+! SCAN-RVV10 6-31G* TightSCF
+%pal nprocs 4 end
+%maxcore 1000
+* xyzfile 0 1 (CH4)2_mono0.xyz

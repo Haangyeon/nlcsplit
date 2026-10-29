@@ -68,6 +68,18 @@
             "timeout": 180
           }
         ]
+      },
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${QODER_PROJECT_DIR}/tools/hooks/route_decisions_to_referee.js\"",
+            "name": "route-decisions-to-referee",
+            "statusMessage": "裁决类问题改送 referee",
+            "timeout": 30
+          }
+        ]
       }
     ],
     "Stop": [

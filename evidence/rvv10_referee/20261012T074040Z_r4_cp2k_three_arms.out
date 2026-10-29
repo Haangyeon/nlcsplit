@@ -1,0 +1,28 @@
+# R4 · CP2K 三臂形式对照  半局域=SCAN  CUTOFF=300 Ry  箱=16.0 A  单 k 点
+# 生成 2026-10-12T07:38:41.035380+00:00
+# 数据目录 /mnt/e/conda_envs/cp2k24/share/cp2k/data  basis=BASIS_MOLOPT  pot=GTH_POTENTIALS
+
+## 水二聚体 (S22_02.xyz)  natoms=6
+   [A_vv10kernel_rvv10pars] 核形=VV10 b=15.7000 C=0.009300
+      rc=-6  out=cp2k.out
+        （没抓到任何关键行 —— 说明输入语法就被拒了，看 cp2k.out 头部）
+   [B_rvv10kernel_rvv10pars] 核形=rVV10 b=15.7000 C=0.009300
+      rc=-6  out=cp2k.out
+        （没抓到任何关键行 —— 说明输入语法就被拒了，看 cp2k.out 头部）
+   [C_vv10kernel_vv10pars] 核形=VV10 b=6.0000 C=0.010000
+      rc=-6  out=cp2k.out
+        （没抓到任何关键行 —— 说明输入语法就被拒了，看 cp2k.out 头部）
+
+## 甲烷二聚体 (S22_08.xyz)  natoms=10
+   [A_vv10kernel_rvv10pars] 核形=VV10 b=15.7000 C=0.009300
+      rc=-6  out=cp2k.out
+        （没抓到任何关键行 —— 说明输入语法就被拒了，看 cp2k.out 头部）
+   [B_rvv10kernel_rvv10pars] 核形=rVV10 b=15.7000 C=0.009300
+      rc=-6  out=cp2k.out
+        （没抓到任何关键行 —— 说明输入语法就被拒了，看 cp2k.out 头部）
+   [C_vv10kernel_vv10pars] 核形=VV10 b=6.0000 C=0.010000
+      rc=-6  out=cp2k.out
+        （没抓到任何关键行 —— 说明输入语法就被拒了，看 cp2k.out 头部）
+
+判读纪律：本脚本只登记三臂各给出什么，不下结论；
+C 臂与 PySCF 对不上（量级）就整份作废，A/B 之差才有意义。

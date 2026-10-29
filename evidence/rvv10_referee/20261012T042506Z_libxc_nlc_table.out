@@ -1,0 +1,27 @@
+libxc.so 候选: ['/home/haangyeon/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so', '/home/haangyeon/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so']
+加载: /home/haangyeon/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+符号 xc_functional_get_number: 有
+符号 xc_func_get_number: 无
+
+libxc name           id          b            C
+------------------------------------------------
+VV10                 -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+RVV10                -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+RVV10-LC             -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+LC-VV10              -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+WB97X-V              -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+WB97M-V              -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+B97M-V               -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+PBE-RVV10            -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+PBE0-RVV10           -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+SCAN-RVV10           -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+R2SCAN-RVV10         -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+REVSCAN-VV10         -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+SCAN-VV10            -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+B97D-V               -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+PBE0-VV10            -1  —— libxc 里没这个名字（注意：缺失不等于不存在，可能只是别名）
+
+对照（被审对象，来自本项目实测的 PySCF 表，见同目录 probe_nlc_authority 档）：
+  pyscf nlc_coeff(wb97xv) / (wb97mv) / (b97mv) 返回同一组；scan_rvv10 返回另一组。
+判读：只登记两边各给什么，谁对谁错不由本脚本说。
+# exit=0 at 2026-10-12T04:25:07Z

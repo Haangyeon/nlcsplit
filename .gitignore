@@ -37,3 +37,12 @@ paper/build_log.txt
 # 发布暂存区：每次由 tools/publish_github.js 从 dist/nlcsplit 重新复制
 # 它自己是个独立 git 仓库（推上去的历史与母仓无关），所以母仓不能跟踪它。
 .publish/
+
+# 本机状态与临时截图（2026-10-29 核对工作树时清出来的）：不是发布物，也不该进历史。
+# .chatgpt-binding.json 是账号绑定档，含会话信息，绝不入库、绝不随包发布。
+/.rc
+/.HOSTCLOCK
+/timer.dat
+/.chatgpt-binding.json
+/scratch_*.png
+/audit_round0/

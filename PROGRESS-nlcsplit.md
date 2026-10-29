@@ -5825,3 +5825,323 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 4. **没入库的一件**：本轮新写的 runner 暂不提交——它一进 `evidence/common_grid/`，清单就必须重生成，
    而归档件此刻还在增长（正好是当初那两笔 bypass 的理由）。等批落定，按"落定→重跑表与负控→
    最后重生成清单"一次收，本轮不重复踩。
+
+## [2026-10-22 20:06] [agent=cn-qoder] [done] 苯-氨 level-2 落档（2h59m），三格批第二格在跑；正文三处引用与孤页收口
+
+1. **P6 第一格读数**：`20261022T085504Z_hirshfeld_crossfamily_l2_three_pi_cells.out` 已打印苯-氨：家族内
+   becke/becke-becke-rad/becke-treutler/stratmann 跨度 0.2229，含 Voronoi 与 Hirshfeld 的总跨度 0.2368，
+   比值 1.06。预登记写着"≤2 不许升级措辞"，故这一格**不能**用来把主张升级成跨构造，正文口径不动。
+   实测用时 10764.9 s（2h59m），对照 runner 头部的 2.7 h 预期偏慢约 11%。
+2. **第二格状态**：苯-甲烷 N=110288 已开跑（19:58 起），python 进程累计 CPU 16:31:16、pcpu 565%。
+   进程活着，但 WSL 的 etimes 与本机钟对不上（钟偏移老问题），故只认文件增长与 CPU 秒。
+3. **正文收口（commit e84ede7）**：三条入库未引文献各落一处——andres2019ninequestions 挂在"归属无唯一解"、
+   rezac2016bench 挂在 S22 基准句、lehtola2022illbehaved 挂在"粗网格求积敏感"句；Table 2/4/5 补上文内引用
+   （此前只有图注）。三句加进去后末页只剩一条文献（29 字符孤页），把 bibsep 4pt→2pt 后回到 32 页、
+   0 错 0 overfull、无短页（逐页字数扫描，最短页 3589 字符）。
+4. **闸门**：这次仍带 [gate-bypass]，理由与上次同——清单两条陈旧项就是还在写的归档件与 runner；
+   等三格跑完按"落定→重跑表与负控→最后重生成清单"一次收（#66/#67）。
+5. **bib 口径清点**：28 条全是 @article，year 全是四位纯数字，没有非 @article 的年份格式要清。
+
+## [2026-10-22 20:09] [agent=cn-qoder] [done] rvv10_referee 边界勘明但未入库；预览 PDF 仍被阅读器占用
+
+1. **#60 勘明**：337 个文件。顶层 42（含清单）里 9 个 `.out` 带 `/home/haangyeon`——已入库的 707 个 evidence 文件里
+   一个都没有这个串（`git grep` 零命中），也就是说入库等于首次把登录名写进历史，而仓里有转 public 的计划。
+   5 个子目录 294 个原件，只有 `orca_run` 平铺且已有清单；`cp2k_r4`/`orca_in`/`STASH_orca_pre14digit`/
+   `orca_run_FAILED_keywordcard_20261012` 都有更深一层文件，第一层清单盖不住。我按第一层给这四个生成过清单，
+   发现覆盖不全后**已删除**，不留半覆盖的假象。正文与软件文都不引用该目录（只有 REVIEW-REQUEST 与 PROGRESS 提到）。
+   ⇒ 三条路（原样入库含登录名 / 脱敏副本重哈希 / 保持未跟踪）需要作者定，不擅自选。
+2. **预览 PDF**：`paper/main_preview.pdf` 仍被阅读器持有（`check_lock` rc=2），本轮 Computer Use 的 node-repl
+   报 "Turn is no longer active"，关窗这条路此刻不可用；`main.pdf` 正本已重建、不受影响。
+3. **仍未提交**：`GATE-OVERRIDES.log`（跑批期间不入库，按旧例留到落定一起收）、
+   `20261022T085504Z_..._three_pi_cells.out`（还在写）、`evidence/rvv10_referee/`（口径未定）。
+
+## [2026-10-23 20:26] [agent=cn-qoder] [done] 软件出货完成（VERDICT DONE）；W4 全表 Hirshfeld 四格新旧不符另案
+
+1. **出货件**：`dist/nlcsplit-0.1.0-py3-none-any.whl` sha256 `a67c84…a386c9`，42 个成员、10 个测试模块；
+   一次性 `--target` 树外跑 pytest = 51 passed / 2 skipped / 21 deselected，rc=0。日志
+   `evidence/release_qa/20261023T122250Z_ship_qa_plan.out`（`.rc`=0）。
+2. **正文计数改口**：`test_count_census` 当天树 = 94 条（随包 74、不随包 20），软件文 §5 的
+   "59 of 79" 是旧树读数，已改 "74 of 94" 并重建 `paper/nlcsplit.pdf`（12 页、0 错、0 overfull）。
+3. **为出货修的四处闸门**（都是实测命中，不是预防性重构）：
+   a) `make_public_repo.js` 预检要求 setuptools≥64——WSL 默认 59.6.0 不认 PEP 621，会静默产出
+      `UNKNOWN-0.0.0` 空包；gate F 同时加了"顶层模块必须在"的正面检查，空包不再静默通过。
+   b) `intranet_patterns.private.js` 的账号串规则补 `i` 标志——旧规则只抹首字母大写，7 条小写
+      `haangyeon`（`squeue -u`、`ls -l` 用户列）进了导出树；自测加了大小写双样本。
+   c) gate E 的 STDLIB 名单补 ast/contextlib/fnmatch/inspect/urllib/resource；gate A 认得
+      "报告引文"（`"<file>:<line>` 开头的 JSON 串）与"具名豁免"账行，避免失败日志递归互相拦截。
+   d) `run_ship_qa.sh` 日志先落 /tmp，收口后冻进 `evidence/release_qa/` 再重生成清单；补上原计划里
+      写了但脚本体没有的第 5/6 步。清单 `staleManifests=0`。
+4. **W4 收口 rc=1（未改任何数字）**：满表与既有表的 Hirshfeld 列在 S22_10/11/18/20 四格不符——
+   新读数 0.0093/0.0064/0.0130/0.0079，旧表 0.001。档在
+   `evidence/common_grid/20261023T122043Z_w4_closeout.out`。这是主文全表的口径问题（#54 的
+   "Hirshfeld 去留"），不是 wheel 的问题；出货脚本把它单独记录、不否决 wheel。
+5. **仍未提交**：69 个改动/新增文件（含本轮 evidence 与两份 PDF）；等作者授权后再提交。
+
+## [2026-10-23 21:05] [agent=cn-qoder] [done] 主文图 4：补 (a)–(d)、图例移出 y=0 线；重建 49 页
+
+1. **图例被贯穿**：Bz···H2O 面板的 legend 原在 `upper center`、`frameon=False`，y=0 的黑色 axhline 正好从第一行
+   "6-31G*" 中间穿过。改到 `upper left`、下移 0.90，并加白底 frame；四个 ladder 面板的 y=0 线与图例不再相交。
+2. **面板编号**：四个子图补 `(a)`–`(d)`（轴外左上、粗体）；图注改为 "(a)-(c) ... (d) ..."，
+   并写明实心圆=6-31G*、虚线方块=aug-cc-pVDZ。
+3. **重建**：`paper/VV10-pair-attribution.pdf` 49 页、0 LaTeX 错、0 overfull；`claim_gate`/`precommit` 均 rc=0。
+   图 4 的实际渲染宽 0.88\textwidth（PNG 纵横 0.99），四面板仍等大。
+
+## [2026-10-23 21:35] [agent=cn-qoder] [done] 按钙钛矿论文的图题规范统一四张多面板图
+
+1. **参照文件**：perovskite 工程 `ACCEPTED_BASELINE_20260829/_cur_tex/all_figures/descriptor_correlation_scatter_3panel.pdf`
+   与该项目 `.trae/skills/matplotlib-paper-figure-tweaks/SKILL.md`。规范是 `(a) 粗体短标题`：标签在轴左侧，
+   粗体标题紧贴轴上方、左对齐；不是"角上孤零零的 (a) + 居中普通标题"。
+2. **统一到四张图**：主文 Fig 3 五个面板改成 (a)–(e)、Fig 4 四个面板 (a)–(d)、Fig 6 两个面板 (a)(b)，
+   软件文 Fig 1 四个面板 (a)–(d)。Fig 3 原先上排无编号、下排错标成 (b)(c) 的问题一并修掉；
+   Fig 3/4 左上的基组图例加白底下移到 y=0 线以下，不再被黑线穿过。
+3. **图注同步**：Fig 3 改成 "(a)-(c) ... (d)(e) ..."，Fig 4 改成 "(a)-(c) ... (d) ..."；两篇重建
+   49/12 页，0 LaTeX 错、0 overfull，`claim_gate`/`precommit` rc=0，`staleManifests=0`。
+
+## [2026-10-23 23:55] [agent=cn-qoder] [done] 参考文献 42→92；主文 87 引、52 页
+
+1. **新增 50 条**，全部先取 Crossref 元数据再生成 BibTeX，没有手写条目。主题覆盖 VV10/色散
+   （Grimme 2006/2011/D3/D4、Tkatchenko、MBD、Becke–Johnson、dDsC 等）、DFT 谱系（B3LYP/PBE/TPSS/M06/ωB97X）、
+   基组与 BSSE（Dunning、Kendall、def2、Halkier、counterpoise 综述）、SAPT/EDA、DFT 网格、S22/S66 基准、
+   QTAIM/IAO、ORCA/SciPy/Matplotlib/FAIR。每条都插进正文对应句（引言 13、方法 26、SAPT 2、基准 4、软件/FAIR 5）。
+2. **Crossref 92/92**，归档 `evidence/bib_provenance/20261023T155111Z_bib_all92_crossref_result.out`（rc=0；
+   MANIFEST 26 条）。92 条全部至少被一篇正文引用；主文 87 个唯一引用（92 个 `\citep`），软件文 20 个。
+3. **排版**：`unsrtnat` 会把标题句首化（"VV10"→"vv10"），给全部 92 条 `title` 加双花括号保护大小写；
+   main **52 页**、software 12 页，两篇 0 LaTeX 错、0 overfull；`claim_gate`/`precommit` rc=0，`staleManifests=0`。
+4. 仍未投稿、未 push。
+
+## [2026-10-24 00:35] [agent=cn-qoder] [done] 正文内联文件路径清零（45→0）
+
+1. **做法**：正文（§5 与附录出处表除外）里的 `evidence/...` 与 `nlcsplit/logs/...` 原始路径全部改成
+   "the archived run / the census script / the level-2 run" 等短语；完整路径只保留在 §5 Code availability
+   和附录 Table 5。`E-PROVENANCE` 的“正文内联路径”扫描现在是 **0 条**。
+2. **顺带清掉**：§2.4 的 `github.com/grimme-lab/GMTKN55` 与 `DOI 10.1039/C7CP04913G` 字符串；
+   两个测试路径（`nlcsplit/tests/test_cc_convention.py`、`nlcsplit/tests/test_geometry.py`）必须保留
+   `nlcsplit/` 前缀，否则路径闸门会报 missing——这条是实测出来的。
+3. **重建**：main **52 页**、0 LaTeX 错、0 overfull；`claim_gate`/`precommit` rc=0，`staleManifests=0`。
+   引用编号（92 个 `\citep`）保留，因为那是上一轮刚补的文献；若他指的是上标引用而不是文件路径，再按簇合并成 `[5–7]` 这类。
+4. 仍未投稿、未 push；61 个实质改动等作者授权提交。
+
+## [2026-10-24 19:20] [agent=cn-qoder] [done] JCTC 风格收口：标题/摘要/TOC/SI 拆分；referee REVISE 三条稿侧改完两条
+
+1. **JCTC 硬项**：标题 13→11 词；摘要 316 词/11 句→203 词/4 句；删掉首页 `Draft`/`ORCIDs PENDING`/作者内部备注；Abstract/Statements/Appendix 不编号，Introduction 回到 §1，正文 §N 全部对齐；图表题注改 `Figure N.` / `Table N.`；TOC 图 3.25×1.75 in 放参考文献后的最后一页。
+2. **文献**：92 条期刊名全部 ACS 缩写（Phys. Rev. Lett. / J. Chem. Phys. / J. Chem. Theory Comput. 等），Crossref 92/92、0 mismatch 不变；主文 87 引、软件文 20 引。
+3. **SI 拆分**：附录 Table 5 从正文移出，生成 `paper/VV10-pair-attribution-SI.pdf`（18 页，Table S1）；正文 **35 页**、0 LaTeX 错、0 overfull；软件文 12 页、0 错。main/SI/software 三份都过 claim_gate。
+4. **Referee**：referee MCP 判 **REVISE**；三条稿侧：期刊缩写（已改）、独立 SI（已拆）、W4 Hirshfeld 四格（不进入正文结论，SI 写明 4/8 等价、其余 NOT MEASURED）。作者侧仍缺：第二作者 ORCID/邮箱、提交授权。
+5. **AI 率**：没有 `HUMANIZERAI_API_KEY`，本轮**没有跑检测器、也没有 AI 率读数**；不能声称降过。仓库里也没有历史检测归档。
+6. 未投稿、未 push。
+
+## [2026-10-24 21:37] [agent=cn-qoder] [done] 人工去 AI 味：破折号清零、摘要重写；仍无检测器分数
+
+1. 用保守白名单（lieflat-less-ai-tone）只改命中规则的文字：全文 21 个 em dash 清零；摘要重写为 4 句/226 词，数字、限定词和“未发现先例”的声明逐项保留；引言与结论里的分隔破折号改成括号、逗号或句号，未改论证、术语和数值。
+2. **没有用 HUMANIZERAI_API_KEY**（付费方案已放弃），所以没有 AI 率读数；本轮是人工去痕，不声称分数变化。
+3. 重建 main **35 页**、SI **18 页**、software 12 页，均 0 LaTeX 错、0 overfull；`claim_gate` clean。
+4. 未投稿、未 push；64 个未提交改动等作者授权。
+
+## [2026-10-24 22:04] [agent=cn-qoder] [done] 22 体系 S22 普查 + 裁决钩子；referee 第四轮 ACCEPT
+
+1. **裁决钩子**：新增 `tools/hooks/route_decisions_to_referee.js`，PreToolUse(AskUserQuestion) 拦截判断/评审/取舍问题并 exit 2 指向 `mcp__referee__referee`；凭据、花钱、投稿/删除等不可逆授权，或 ORCID/邮箱等作者元数据放行。自测 8/8；`.qoder/settings.json` 与 `settings.fragment.json` 一致（`install.js --check` OK）。
+2. **22 体系普查**：用 W4 满表 22/22 的家族内四方案 span 新建 SI Table S2（0.0034–0.3030 kcal/mol）；正文 §3.4 加“8 体系详算 span（0.0040–0.2470）落在 22 体系区间内”的桥接句；摘要/结论/§4.5 改成 “descriptor variance, not binding-energy error bar”，并明确 S22-only、无离子/电荷转移/金属。
+3. **W4 边界**：四格 Hirshfeld 仍 **NOT MEASURED**，但不参与 Tables 1–3/S2 任何 span；Table S2 只用四个 Becke 系方案。
+4. **Referee**：第四轮判 **ACCEPT for JCTC Article**，无稿侧必改；两条可选清晰化（桥接句、S22 限域句）已补。第二作者邮箱已入 Author information，ORCID 未编造。
+5. main **36 页**、SI **18 页**，均 0 LaTeX 错/0 overfull；`claim_gate` clean。未投稿、未 push；未提交改动仍等作者授权。
+
+## [2026-10-24 22:09] [agent=cn-qoder] [done] 论点升级为结构结论 + 协议；最终 referee ACCEPT
+
+1. 不再把论文卖成“量到一个 spread”：§4.1 新增结构结论——VV10 核只依赖总密度，**fragment-resolved value requires more than the total density**；总 E_NL 不变而 E_AB 随分区移动，所以**no partition-independent scalar E_AB follows from the functional alone**；指定分区类后，类上的范围才是 well-defined object。
+2. §4.5 新增 **Recommendation**：相互作用能用分区不变的总量；fragment-resolved descriptor 至少报四个家族内方案的范围；S22 上为 0.0034–0.3030 kcal/mol，且不随更细网格/更大基组消失，必须逐体系携带。
+3. 22 体系 S22 普查（SI Table S2）+ 8 体系 counterpoise/ORCA/quadrature 详算的双层结构保留；W4 Hirshfeld 仍 NOT MEASURED 且不参与任何 span。
+4. 最终 referee：**ACCEPT for JCTC Article**；明确说这已经不再是 benchmark，而是“fragment-resolved VV10 需要指定分区类”的结构性结论 + 可执行协议。唯一剩余弱点是 S22 之外的可推广性（离子/电荷转移/金属），非阻塞。
+5. 未投稿、未 push；第二作者邮箱已入 Author information，ORCID 未编造；未提交改动等作者授权。
+
+
+
+
+## [2026-10-24 22:25] [agent=cn-qoder] [done] JCTC 官方硬规则核查（不靠 referee 转述）：全过；近 50 篇 Article 标定
+
+1. **来源**：`https://researcher-resources.acs.org/publish/author_guidelines?coden=jctcce`（curl 带浏览器 UA，HTTP 200；`pubs.acs.org/page/jctccr/submission/authors.html` 对 WebFetch/curl 都是 403）。逐字摘录与逐项测量存 `paper/notes/raw/jctc_author_guidelines_20261024.txt`。
+2. **硬规则**：Articles 是 full-length research manuscripts，**无页数上限**；Title 建议 ≤12 词；**摘要 3–4 句**；75 词上限只属于 Letters（四页/16 双倍行距页）。Scope 明确不接收“well-established methods 在单类体系上的直接应用”，偏好理论/方法/数据科学进展。
+3. **本稿**：标题 11 词；摘要 **4 句/244 词**（源文件 `wc -w`，PDF 提取 246 是断行连字符拆词）；主文 87 条文献（两篇合计 92，Crossref 92/92）；TOC 图 3.25×1.75 in 在末页；SI 独立。**硬规则全过，无需改稿**。正文到结论 29 页、文献 7 页，共 36 页；期刊未设页数上限。
+4. **标定**：OpenAlex JCTC 2024– 的 50 篇 `type=article`：摘要中位 172 词（IQR 147.25–205.25，范围 15–291），参考文献中位 84（IQR 61–113.25，范围 29–435）。本稿 244 词在 p75 之上、样本范围内；87 条文献正在中位。样本表 `paper/notes/raw/jctc_recent_articles_2024_20261024_summary.tsv`。
+5. **层次判断**：JCTC 已发表同类 VV10 基准/评估（Hujo & Grimme 2011, JCTC 7, 3866–3871；Heßelmann 2013, JCTC 9, 273–283）；本稿在这类数值底座之上多出结构结论（fragment-resolved value requires a partition class）与可执行协议（四方案范围），referee 在 22:04 与 22:09 两轮均为 **ACCEPT for JCTC Article**。真实剩余风险是全部算例仍在 S22 中性二聚体（无离子/电荷转移/金属），referee 标为唯一非阻塞弱点；这是审稿人风险，不是编辑部的硬门槛。
+6. 未改正文、未重建、未投稿、未 push；新增两个 `paper/notes/raw/jctc_*` 证据文件，等作者授权提交。
+
+
+## [2026-10-24 23:27] [agent=cn-qoder] [done] referee 复审：REVISE(minor) → 五处改稿 → ACCEPT；main 37 页 / SI 18 页
+
+1. **第一轮判决**：referee 对 22:09 版给 **REVISE (minor)**，明确“无强制大修触发”；两条 minor：摘要/结论的 “almost entirely” 过强，以及异核结论只像单例。另问 Hirshfeld 四格为何缺失、基组是否写明。
+2. **逐条核对**：基组 §3.4 已写明（STO-3G、6-31G*、aug-cc-pVDZ、def2-SVP、def2-TZVP），不改；referee 把“归属跨度 vs dE_NLC 叠加误差”的 2/3 计数误读成“归属跨度 vs 信号”，不按它的措辞加假限定。真正的问题是 §4.3 还写着异核 “has not been done here”，与结论和 [S22] 矛盾——这是 referee 没抓到的内部矛盾。
+3. **改稿五处**：摘要/结论 “almost entirely” → “predominantly”；§4.3 改成三组不等中心密度 × 两个元素标签 + 同核 control 逐位复现；结论 “the case” → “three configurations, each under two element labels”，并把 “cross term sits” 改成 “offset sits”；§3.4 补 “attribution dominates 是 2/3 计数结果”；SI 补 Hirshfeld 四格 #10/#11/#18/#20 且说明不参与四方案范围。
+4. **重建**：main **37 页**、SI **18 页**，0 LaTeX 错/0 overfull；claim_gate rc=0；摘要 4 句/243 词；主文 87 条文献（两篇 92，Crossref 92/92）。
+5. **复审**：referee 判 **ACCEPT**，两条 minor 均闭合，无新矛盾；明确“无 blocking problems”，最可能首轮决定仍是 minor revision；S22-only 是 acceptable limitation；异核扩展 3×2 规模 modest 但足够支撑 softened claim。唯一非阻断备注是 “both runs are shipped” 的措辞，[S22] 里 `results_run1_20261001.*` 与 `rerun_verify_20261001.log` 两跑都在，属实。
+6. 未投稿、未 push；本轮改动（main.md/main.tex/两份 PDF/supporting_information.tex）等作者授权提交。
+
+
+## [2026-10-25 01:58] [agent=cn-qoder] [done] Figure 1 重画：修 (e)/(h) 的视角与 caption 化学分类；main 37 页 / SI 18 页
+
+1. **几何核对（只看坐标）**：苯二聚体 A = S22_11，质心距 3.765 Å、面间角 0.0°、垂直层距 3.361 Å、面内滑移 1.698 Å（平行位移）；B = S22_20，质心距 4.909 Å、面间角 90.0°（T 型）。苯-氨的 N 在苯环平面上方 3.571 Å、面内偏移 0.384 Å；苯-水的 O 在上方 3.412 Å；苯-甲烷的 C 在上方 3.716 Å。标签和坐标都没有错，错的是原来的固定 `turn` 相机。
+2. **相机**：`render_systems_pymol.py` 的 `TURN` 改为逐格验证过的组合——甲烷二聚体 x20；苯-水 x30,z-90；苯-氨 y30,z90；苯-甲烷 y30,z-90；苯二聚体(A) x60,z90；苯二聚体(B) y30,x-20。坐标、配色、原子半径未动。
+3. **caption**：把“three hydrogen-bonded dimers”改为“three small dimers: two hydrogen-bonded and one dispersion-bound”；把“small proton donor”改为“water, ammonia or methane”；并补“small molecule sits above the ring plane, not inside it”与 (a) 的 O···O = 2.9 Å 说明。
+4. **重建**：main **37 页**、SI **18 页**，0 LaTeX 错/0 overfull；`claim_gate` rc=0。新 Figure 1 在正文第 7 页。
+5. 未投稿、未 push；Figure 1、main.md、main.tex、两份 PDF、supporting_information.tex 等改动等作者授权提交。
+
+
+## [2026-10-25 02:09] [agent=cn-qoder] [done] Figure 1 摆位 referee + Blender 对比：referee 两条规则需纠正；当前 Blender 不如 PyMOL 清楚，未换
+
+1. **referee 建议**：T 形沿两环法线 bisector 看；π 复合物离环法线 15–25°、小分子放 screen-top；平行位移沿 slip 方向看；换 Blender 正交哑光。几何核对后：referee 的 (g) “沿 slip 看”会正好把 1.698 Å 滑移藏掉；(h) 的 bisector 实测把两环叠成上下两个六边形，T 形消失；(e) 的 15–25° 太小，NH3 仍会落在环内。改用：π 复合物离法线 35°、screen-up 沿法线投影；T 形取 bisector + 1.0×两环平面交线，screen-up 沿质心分离；平行位移取垂直于法线且垂直于 slip、screen-up 沿 stacking axis。
+2. **Blender 5.2.3 实测**：Cycles 96 samples、正交相机、哑光 Principled、Freestyle 描边、近白背景。结果：(e) NH3 位置对，但 H 球与背景对比不足、键发白；(h) 严格显示 90° 时一个环必然更侧，bisector 版本反而叠成两层。当前 PyMOL（e y30_z90、h y30_x-20）在可读性上胜出。
+3. **结论：不换 Blender**；保留已重建的 PyMOL Figure 1（main 37 页 / SI 18 页 / 0 错 / claim_gate rc=0）。Blender 要达到“更好看”需要再一轮材质/描边/灯光设计，属于审美迭代，不是科学问题；脚本留在 `scratch/blender_fig/`，未进正文。
+4. 未投稿、未 push；改动等作者授权。
+
+## [2026-10-25 04:12] [agent=cn-qoder] [done] 合作者 ORCID 查证并入库：main 37 页 / software 12 页
+
+- 目标：补 Changwei Wang 的 ORCID。ORCID 官方检索（given-names:Changwei + family-name:Wang + SNNU 任职）返回 0；14 个同名候选中无一列出 SNNU → 该记录公开但为空（创建于 2021-07-05，无 employment/works）。
+- 改走 Crossref 著录字段：同一课题组 4 篇论文的 Changwei Wang 均带 ORCID 0000-0001-5685-2403，且机构为 Shaanxi Normal University（School of Chemistry & Chemical Engineering）：
+  - 10.1021/acs.jctc.4c00766
+  - 10.1002/jcc.26820
+  - 10.1063/5.0076872
+  - 10.1021/acs.jpca.5c03435
+- 写入：paper/main.md 作者信息段（PDF 第 1 页脚注 + 末页 Author information 两处均渲染）；paper/software.md YAML（原为 TBD）。Angran Xia 的 ORCID 一并从 TBD 补为 0009-0006-3366-6054。
+- 构建：main 37 页、software 12 页，latex errors 0、overfull 0；claim_gate rc=0。未提交、未推送、未投稿。
+
+
+## [2026-10-25 17:45] [agent=cn-qoder] [done] Figure 1 视角重建 + Figure 3 放松 + 图题居中
+
+- Figure 1：相机改为由几何量构造（环法线/面内滑移/两环法线都参与），坐标先旋进相机系再渲染，不再用 turn 试角度。
+  - (d)(e)(f) 小分子在环面上方的 3/4 视角（环法线倾斜 55°）；
+  - (g) 平行位移二聚体改为上下叠放、滑移水平（环法线竖直、滑移横向）；
+  - (h) T 型：上环 face-on、竖环打开 38°；
+  - (f) 标题遮挡由 crop+固定边距构图修掉；面板题改衬线常规体、居中。
+- Figure 3：6.8×4.4 / 2×6 改为 7.0×5.5，下排 (d)(e) 各占半宽，y 标签 5.6→7.5 pt，面板题衬线常规体居中，300 dpi。
+- 图题：md2tex 的 figure caption 改为 `width=0.94	extwidth, justification=raggedright`（整块居中、行内左对齐、labelfont/textfont=normalfont）。
+- 构建：main 37 页、software 12 页；latex errors 0、overfull 0；claim_gate rc=0。
+- 未拿到 JCTC 参考件：pubs.acs.org 403，arXiv PDF 两次超时（scratch/jctc_refs/angle2025.pdf 不完整）；本版按这类图的通行摆法做，reference 图未作为数据源。未提交、未推送。
+
+
+## [2026-10-25 18:05] [agent=cn-qoder] [done] 更正：图3 五格等宽等高；图4 子图题居中
+
+- 上一版把 Figure 3 下排 (d)(e) 改成半宽，导致上下排子图宽高不一致。现改回 2×6 网格的 1:3/3:5 两格（与上排同为 2 列），五格等宽等高；仍保留 7.0×5.5 画布、hspace 0.58 和 7.5 pt 标签，拥挤由留白与字号解决。
+- Figure 4 的“图题”指图内子图题：fig5 的 (a)-(d) 由“左对齐 + 粗体”改为 set_title 居中、衬线常规体；字号 8.5→9.0，刻度/图例同步上调；出图 200→300 dpi。
+- 正文图注仍为 width=0.94	extwidth 的整块居中、行内左对齐。
+- 构建：main 37 页，latex errors 0、overfull 0；claim_gate rc=0。未提交、未推送。
+
+
+## [2026-10-25 18:25] [agent=cn-qoder] [done] Figure 1 虚实：referee 处方 + A/B/C/D 实测
+
+- referee（REVISE）处方：`set depth_cue, 0`；H 由 white 改 gray90；`set ray_trace_mode, 1` + `ray_trace_color, black` + `line_width, 0.5`；不要加第二视角、不要改相机、不要加接触阴影。
+- 实测 0/1/3 三种 ray_trace_mode（T 型二聚体，600×480）：B（depth cue off + gray90，mode 0）解决后原子发白；C（mode 1）出现细黑描边，叠压前后可读；D（mode 3）描边过重、偏卡通。采用 C。对照图 scratch/tb_contact.png。
+- 已写入 tools/render_systems_pymol.py 并重出 figs/fig0_systems.png；main 37 页，latex errors 0、overfull 0；claim_gate rc=0。未提交、未推送。
+
+
+## [2026-10-25 18:45] [agent=cn-qoder] [done] (f)/(h) 相机修正：pi 65°，T 型改侧视 20°
+
+- (f) 单独角度对照 45/55/65/75°：65° 时环更侧向，CH4 与环面的上下关系最清楚；为同排一致，(d)(e)(f) 统一用 65°。
+- (h) 根因：旧相机沿上环法线看，两环心连线几乎落在视轴上，投影重合，任何虚实设置都救不了。改为侧视：相机距竖环法线 20°、朝上环法线偏；上环成上方薄椭圆、竖环成下方正对六边形，T 型位置明确。对照 scratch/hside_contact.png。
+- 55/38 旧默认改为 65/20；referee 的 depth_cue=0 / gray90 H / ray_trace_mode=1 / 黑描边 0.5 保留。
+- 构建：main 37 页，latex errors 0、overfull 0；claim_gate rc=0。未提交、未推送。
+
+
+## [2026-10-25 19:05] [agent=cn-qoder] [done] Figure 1 去塑料感：哑光 C3 风格
+
+- 塑料感来源：specular 0.30 + shininess 30 的高光、gray60 浅碳、0.24 球/0.10 棒。改为哑光 C3：specular 0、C gray50、球 0.22、棒 0.085、O firebrick、N slateblue、细描边 0.4；depth_cue=0 与 gray95 H 保留。
+- 四种风格（现版高光/哑光无描边/哑光细描边/浅灰底）对照：scratch/style_contact.png；C3 与更小球的 C、带微高光的 C4 对照：scratch/ref_contact.png。选 C3。
+- 构建：main 37 页，latex errors 0、overfull 0；claim_gate rc=0。未提交、未推送。
+
+
+## [2026-10-25 19:25] [agent=cn-qoder] [done] (d)(e)(f) 苯环摆平：相机绕视轴滚转
+
+- (d) 环看着歪，是因为屏幕竖直方向跟着水分子偏移走，六边形对称轴没被摆平。pi 复合物相机改为：先选离“水/氨/甲烷方位垂直方向”最近的一条 C-C 键，把它投影成水平，再让小分子落在环上方；d/e/f 同规则。
+- 环的 65° 倾角、C3 哑光风格、depth_cue=0、gray95 H、0.4 描边均保留。
+- 构建：main 37 页，latex errors 0、overfull 0；claim_gate rc=0。未提交、未推送。
+
+
+## [2026-10-25 19:43] [agent=cn-qoder] [done] Figure 1 (a) 氢键水平、(e)/(f) 环对称轴摆平、GaussView/Avogadro 质感
+
+- (a)：小二聚体不再用 `orient mol; turn x, 20` 猜相机，改走几何分支，屏幕右向直接取 H···O 接触矢量，虚线严格水平。顺带查出 PyMOL 的 `index` 是 1-based，旧代码把 0-based 的 (O,H) 传进去，实际画的是 O···O（2.910 Å）而非 H···O（1.952 Å）；已改为 `a+1,b+1` 并用 `hide labels` 去掉自动距离标签。图注相应从 “O···O separation, 2.9 Å” 改为 “the water-dimer hydrogen bond”。
+- (e)/(f)：旧的滚转把屏幕右向吸附到最近一条 C–C 键再对 view 正交化，最多可差 15°，所以仍显歪。现改为：在环平面内取离小分子偏移最近的一条六边形对称轴（顶点轴或键中点轴）作 e_w，屏幕右向严格取 e_perp=n×e_w，小分子仍由 u 的符号保证在上方。数值核对（投影后 C 坐标）：(d) 顶边两 C 的 Y 差 0.0001 Å；(e)/(f) 左右成对 C 的 Y 相同、X 对称，六边形无滚转。
+- 质感：C3 哑光+细描边换成 G2（GaussView/Avogadro 向）：specular 0.22 / shininess 25 / ambient 0.36 / direct 0.58，ray_shadow 0、ray_trace_mode 0（无黑描边），球 0.26、棒 0.10，C gray50、H gray95、O red、N blue。四种风格 × 四格对照：scratch/style_probe2.png。
+- 构建：main 37 页、latex errors 0、overfull 0；`claim_gate --stop` clean（2 carriers, 22258 indexed numbers）；新 Figure 1 在正文第 7 页。未提交、未推送。
+
+
+## [2026-10-25 19:53] [agent=cn-qoder] [done] Figure 3 五格重排：3 上 2 下、下排半宽贴外缘
+
+- 送 referee 的结论是 Option A（3-over-2，下排两个半宽面板贴图左右外缘；明确否掉奥运五环错位与 2+2+1）。注意：referee 通道返回的模型字段是 `claude-sonnet-5`，不是 Opus；如果要真正的 Opus 席位，需要先改 referee 配置。
+- 实现：`fig4` 从 7.0x5.5 / 2x6 网格改为 6.5x4.1 / 嵌套 gridspec。上排三格各约 1.66x1.47 in（不再竖长），下排 (d)(e) 各约 2.46x1.40 in 且与左右外缘对齐；中央留 0.74 in 给 (e) 的 9 个长 y 标签（第一版单 2x6 网格 wspace=0.45 只留 0.31 in，(e) 的标签会压到 (d) 的 1.0 线上，已复现并改掉）。
+- 同轮修 caption 三处错：(a)-(c) “three hydrogen-bonded systems” 改为 “three small dimers”（甲烷不是氢键体系）；|Δ| 单位所在面板 “(b)/(c)” 改为 “(d)/(e)”；守卫描述 “two decades” 改为 “a factor of 20”（代码实际是 0.05–20，注释与报错文案同步改）。
+- 核对：fig4 的跨度/偏差守卫仍打印 0.43 / 0.07 / 1.11；图 1955x1243 px、aspect 1.57。构建 main 37 页、latex errors 0、overfull 0；`claim_gate --stop` clean（2 carriers, 22256 indexed numbers）；Figure 3 在正文第 16 页。未提交、未推送。
+
+
+## [2026-10-25 20:19] [agent=cn-qoder] [done] 五格拆成 Figure 3 + Figure 4；图例贴左上但不再压线；TOC 图移出正文
+
+- 五格拆成两幅：`figs/fig4a_small_dimer_ladders.png`（a-c，1928x638）与 `figs/fig4b_cross_program_checks.png`（a-b，1900x828）。原 Figure 4/5/6 顺延为 5/6/7；正文与 caption 的硬编码编号、Table S28 的 "Figure 5's lower panel" 均改；SI 重出 18 页。
+- 两处图例：Figure 3(a) 与 Figure 5(a) 都改到 `bbox_to_anchor=(0.0,1.0)`、`frameon=False`，不再用白底压在 y 轴线上；Figure 5(a) 的旧版 0.01/0.90 白框已删。
+- Figure 5（原 Figure 4）caption 再修两处："three hydrogen-bonded" → "two hydrogen-bonded, one dispersion-bound and three pi"；"two decades/two-decade" → "a factor of 20"/"20-fold"（与代码 0.05–20 一致）。新版 Figure 4 caption 也改为 "Two cross-program checks"，并把 (a)/(b) 的单位对应写清。
+- 最后那张是 ACS 的 TOC/abstract graphic，不是正文数据图；原来被 md2tex 放在参考文献后，所以像尾图。已从 main.md 删除，正文 PDF 不再带它；PNG 与生成器保留并 staged。图本身补了 intra-A/intra-B 连线和 E_AA/E_BB 标签，右侧现在明确是 E_NL=E_AA+E_BB+E_AB。
+- 构建：main 36 页、latex errors 0、overfull 0；SI 18 页、0/0；`claim_gate --stop` clean（2 carriers, 22256 indexed numbers）。新图与 TOC 资产已 git add，未提交、未推送。
+
+## [2026-10-27 23:12] [agent=intl-qoder] [done] 继承 CN 会话 20b20fba 的记忆与 transcript，逐条回仓实测
+
+- **接手对象**：你（cn-qoder）的会话 `20b20fba-dc2c-4ebb-a93d-b5b608e4ac04`，transcript 189 005 906 B（mtime 10-27 18:05，一条 compact_boundary 在第 696 条）。CN 侧记忆只写到 10-23，**10-24→10-27 的实质进展只在 transcript 和本文件 §5924–6080**；我按"继承＝读完＋回仓实测＋落进本树索引"办，新状态件 `C:\Users\Administrator\.qoder\projects\E--Project-GAMESS\memory\project-nlcsplit-state-20261027.md` 已写并挂上索引，同时把本树 `project-jctc-first-route.md` 那行"现建议主目标 JCP"标为过期。
+- **实测确认（你说的成立）**：批归档 `.rc=0` 且文内 `# exit=0 at 2026-10-22T21:26:00Z`（与 mtime 10-23 05:26 +08 是同一时刻，**不是 WSL 钟漂**）；收口三件 rc = **full_set 3 / scoped 3 / negctl 0** ⇒ 主判据仍是 rc=3，次级八格 l1↔l2 全稳最大 0.0013；正文 `main.md:1258-1259` 已是 "all eight cells … at most 0.0013"；图号 1–7 与 `main.tex` 的 includegraphics 对上了；`claim_gate --stop` = **2 carriers / 22256 numbers**。
+- **实测纠正三处（下次别照旧说法引用）**：① 盘上 **main 是 36 页**（MiKTeX pdfinfo；SI 18、software 12），本文件 10-24/25 多处写 37；② `common_grid/MANIFEST.sha256` 实测 **347 条**、`sha256sum -c` 全过，CN 记忆里的 339 已陈旧；③ **referee 席位实测＝`claude-sonnet-5`**——`.qoder` 与 `.qoder-cn` 两份 settings.json 都指 `~/.qoder/adjudicator/referee.json`，`~/.codex/referee-mcp/referee.json`（gpt-5.6-sol）根本没被引用，`REFEREE_CONFIG` 环境变量未设。你那句"不是 Opus"是对的，我这边同一席位。
+- **一手复核了合作者 ORCID**（这条进的是要投出去的稿）：Crossref API 直读 `10.1021/acs.jctc.4c00766`、`10.1002/jcc.26820` 两条著录字段，Changwei Wang 均带 `0000-0001-5685-2403` 且机构 SNNU ⇒ 你"官方检索空记录、改走 Crossref 四篇同组论文"的取证路径成立。另确认 `0009-0006-3366-6054` 在 **HEAD 里早有载体**（`git show HEAD:paper/main.md`、`paper/joss/paper.md`）⇒ 不是 10-25 新造。
+- **登录面**：`evidence/` 现 **44 个文件 / 96 处** 含集群账号串，处置靠 `tools/intranet_patterns.private.js` 的导出脱敏（含 `<CLUSTER_HOME>`、账号串、`ls -l` 用户名列与 SCRUB_PROBE 反向夹具），**不是**源头清理——对外叙述时别说成"库里已经没有"。
+- **本轮新查出的风险（最要紧）**：最新提交仍是 `17bdd12 2026-10-22 21:29`，`git status` **94 条**——JCTC 改造、ORCID 入库、Figure 1 重画、Figure 3/4 拆分、`supporting_information.tex`、三份改名后的 PDF（旧 `main.pdf`/`software.pdf` 显示为 `D`）全在工作树里。**已拿到 ACCEPT 的 JCTC 稿目前是工作树孤本**，一次误 checkout 就没了。提交授权按规矩仍在作者，且必须 Windows 侧；眼校证据要 `git diff --text`（`.gitattributes` 把 `evidence/**` 设了 binary）。
+- **你那件等 A/B/C 的事我没有替你定**：预览件我实测在盘且**都在 gitignored 的 scratch/ 里**（optionA 1732×1504 / optionB 1744×1510 / optionC 1928×734；当前正式图 `figs/fig4a_small_dimer_ladders.png` 1928×638，aspect 3.02 比你列的 C 还挤）。观感改动按规矩由作者眼校，我保持你那句原话等他点头。建议顺手把三张预览从 scratch/ 提到版本控制内的目录（例如 `figs/layout_options/`），否则作者点头后没法追溯比对照。
+- 未提交、未推送、未投稿。我这一轮只改了本树记忆与这条日志。
+
+## [2026-10-28 10:49] [agent=intl-qoder] [done] JCTC 胃口适配度：主代理评估 + 真 Opus 独立复核
+
+- 主代理先独立判断：scope 高度对口，"结构结论＋报告协议"可形成可信 JCTC Article，但非稳过；主要缺口是 S22-only、O(N²) 无生产能力提升、没有改变化学判断的应用。
+- 随后用一次性脚本直调 **claude-opus-5-5**（不改共享 referee 配置、不喂主代理结论）：HTTP 200，请求/响应模型字段均为 **claude-opus-5-5**，usage 1751+943 tokens。Opus 判 **REJECT**：认为贡献偏 metrological/calibration，S22-only 且无 compelling chemical application 对当前 JCTC 稿是 fatal；建议补一个化学驱动判别应用，否则 JCP/JCC。
+- 综合建议已下调：**当前版不直接投 JCTC**；若继续冲 JCTC，先补一个 S22 之外、能改变或约束化学判断的应用再复审。报告 `paper/notes/JCTC-FIT-REVIEW-20261028.md`，原始请求/响应 `paper/notes/raw/jctc_fit_opus_20261028.{json,txt}`。
+- 未改稿、未提交、未推送、未投稿。
+
+## [2026-10-28 12:39] [agent=intl-qoder] [done] 新增 dative/ionic 两个强重叠控制：跨度不随强键增大
+
+- 按 JCTC 复核意见补了 S22 之外的两个小体系，仍用现有四方案与反泊松口径：**H3N-BH3**（dative，ωB97X-V/6-31G*，ORCA 6 优化，B-N 1.6677 Å）与 **F-...H2O**（ionic，ωB97X-V/aug-cc-pVDZ，F-O 2.4604 Å）。
+- 结果：H3N-BH3 的 P_frz(Becke) = -2.0039/-2.0044，四方案跨度 **0.0710/0.0710**（level 1/2）；ORCA ΔE_NLC = **-1.9711**，PySCF -1.9748/-1.9753（差 0.19–0.21%）。F-...H2O 的 P_frz(Becke) = -1.0895/-1.0892，跨度 **0.0828/0.0825**；ORCA ΔE_NLC = **-0.9850**，PySCF -0.9875/-0.9877（差 0.26–0.28%）。
+- 解释：两个强重叠体系的跨度都低于 level-2 反泊松校正（3.2 与 0.30 kcal/mol），也低于 0.1 kcal/mol；因此“强密度共享会放大分区歧义”的直觉不成立，S22 里最大的相对跨度是苯-水的小分母效应，不是强键效应。
+- 发现并绕开一个**演示级陷阱**：`step_h_s22.pair_terms()` 内部用模块级 `LEVEL`，而总能量走函数参数；新脚本因此显式按 level 传参（本地 copy），否则 level 2 的四个方案会静默复用 level 1 网格、印出“完全不变”的假收敛。生产路径 `one()` 一直用全局 LEVEL，未改包代码。
+- 正文：§3.4 加一段强重叠控制；§4.5 benchmark scope 与 §6 限制同步改写（不再说 ionic/dative 全未表征；仍明确 charge-transfer / multiply bonded / metal 未测）；附录加 S35/S36。重建 main **36 页、0 LaTeX 错、0 overfull**；`claim_gate --stop` **clean (2 carriers, 30079 indexed numbers)**。
+- 证据：`evidence/chemical_controls/`（含 dative/ionic 输入、四方案 JSON、ORCA 锚定、runner、summary 与三层 MANIFEST；`sha256sum -c` 全过），已 git add；未提交、未推送、未投稿。JCTC 的一句话结论：这补掉“只有 S22 中性体系”的缺口，但还不是 Opus 要求的“能改变化学判断的应用”，旧 REJECT 不自动失效。
+
+## [2026-10-28 12:42] [agent=intl-qoder] [done] Opus 第二轮：两个强重叠控制仍未改判，缺一个化学判别案例
+
+- 只问“新增 dative/ionic 控制是否把 JCTC verdict 从 REJECT 改成 REVISE”，不重跑全稿。请求/响应均 `claude-opus-5-5`，HTTP 200，usage 946+404；原件 `paper/notes/raw/jctc_fit_opus_round2_20261028.{json,txt}`。
+- Opus：两个控制是 additional benchmark cases，不是 chemical application；“强重叠下稳定”有价值，但没展示一个 partition/CP 选择会改变或保持某个化学结论。要求最小缺口 = **10–20 原子 host-guest / 构象 / 反应能量学**；判 **REJECT**。
+- 因此没有把旧 REJECT 当作已消除；正文中的 dative/ionic 控制保留（它们补掉 S22-only 缺口），但 JCTC fit 仍为未过。下一候选：benzene...methanol 两个取向（18 原子，level 1），先预登记“排序稳定/不稳定”两种结果；本轮尚未启动该计算。
+- 未改稿（除前述控制）、未提交、未推送、未投稿。
+
+## [2026-10-28 14:42] [agent=intl-qoder] [blocked] host-guest 尝试：benzene...methanol 两取向未形成可用的一对极小
+
+- 按 Opus 第二条要求做 18 原子苯...甲醇：用 ASE G2 甲醇 + geomlib 苯环构造 O-down / C-down 两个初猜，ORCA ωB97X-V/6-31G* 优化。
+- bm_B 收敛（E = -347.848286 Eh）；bm_A 经三次重启仍在 cycle 12 未收敛（能量先降到 -347.84965 后回跳到 -347.84606 Eh，几何在切换极小），按不充分收敛处理，**没有**把它写进正文或当成化学结论。
+- 这说明该系统不是一个干净的构象对；下一步若要继续 JCTC，需要换一个已知有分离极小的 host-guest/反应案例，或接受 JCP/JCC 路线。未改稿、未提交、未推送、未投稿。
+
+## [2026-10-28 15:06] [agent=intl-qoder] [done] 化学决策段落落地；Opus 第三轮改判 REVISE
+
+- 在 §3.4 加了一段“稳定排序 / 不稳定百分比”，只用已有 Table 3：平行位移苯二聚体 -4.038 kcal/mol、跨度 0.032（0.8%）；T 型 -2.371、跨度 0.219（9.2%）；最坏跨度小于能量差的七分之一，任何方案都不反转排序。
+- 重建 main **36 页、0 LaTeX 错、0 overfull**，`claim_gate --stop` clean（2 carriers, 30079 numbers）。
+- Opus 第三轮（`claude-opus-5-5`，HTTP 200）：**VERDICT: REVISE**。它认可“稳定排序 / 不稳定片段归属”这一区分跨过 JCTC 方法论文门槛；构象案例比 host-guest 弱，但不再是 blocking requirement。
+- benzene...methanol 的 host-guest 尝试仍未收敛，未进正文；如需补强，后续应换真正的 host-guest 或反应案例，不再重复该初猜。未提交、未推送、未投稿。
+
+## [2026-10-28 15:36] [agent=intl-qoder] [done] 软件文投哪里：Opus 判 JOSS short，但首选是不单独投
+
+- 现有两版：`paper/joss/paper.md` **1,673 词**（JOSS 六节形态）；`paper/software.md` **4,794 词 / 12 页**（完整软件文，含结果复述与 15 道 QA）。
+- Opus（`claude-opus-5-5`，HTTP 200）判：JOSS 只适合 **short form**，但 1,673 词仍偏长，且 novelty scope 有风险；12 页长文与主文结果重复，SoftwareX/JCC 也会 desk reject。**最稳妥路径是不要把软件文单独投**，在主文方法/数据可用性中引用公开仓库 + Zenodo DOI。
+- 若必须要独立软件文：JOSS short；前置机械项 = 仓库 public、tagged release、Zenodo DOI、压到 1,000–1,200 词，不要再加研究内容。
+- 原始件：`paper/notes/raw/software_venue_opus_20261028.txt` / `.json`。未改稿、未提交、未推送、未投稿。
+
+## [2026-10-28 17:40] [agent=intl-qoder] [done] 软件说明并入 JCTC 的 SI（作者定"跟 JCTC 一起投"）；JOSS 经查证不是 SCI
+
+- 先实测索引身份（不靠记忆）：JOSS 申请进 Clarivate 主刊列表被拒、2024-02 确认，**既不在 SCIE 也不在 ESCI**，无官方 IF/JCI；OpenAlex + 第三方收录页今天回读只有 DOAJ。FZ Jülich 的软件期刊指南另记它不在 WoS Core Collection / Scopus，因此该单位绩效统计不计入。对照：SoftwareX 是 SCIE（最新 IF 1.9、Q3、中科院 4 区）。⇒ "投 JOSS 算一篇 SCI" 不成立。
+- 按作者决定把软件内容并进主文 SI，不单独投。做法不是复制粘贴：**逐条重写给主文自己的 [S#] 标签**，新写成 SI 附录 "The nlcsplit package"（约 1,200 词 + 15 道闸门表 = Table S3），SI 从 18 页到 **23 页**。
+- 拦下来两处"搬旧稿会搬错"的地方，都值得记住：
+  1) 软件文那句 block-additivity residual **1.73e-18 to 6.94e-18 Ha 已被主文 §2.2 的 13 行 census（0.000e+00 to 5.551e-17 Ha, [S33]）取代**，照抄就会把作废数字搬进投稿载体；
+  2) 软件文的 **74 of 94** 出自 10-23 那次 `ship_qa_plan` 归档，而那份 `.out` **还没进 git**；md2tex 的路径闸门只认 tracked 文件，所以 SI 只能引用 tracked 的 10-13 census（59 of 94 随包）。SI 里因此只报"套件收 94 条、按模块相加自洽、不随包那几个点名"，不报随包条数。
+- 新增出处行 **S37**（`evidence/release_qa/` 的 quickstart / wheel census / test census / no-GAMESS 扫描 + 各自 MANIFEST）。`tools/run_ship_qa.sh` **从 S37 行里撤掉**：闸门 D 只查附录表格里的反引号路径且要求随包发布，而导出 `TOOLS` 只有三份 .js——留着就是"读者打不开的出处"，出货时必被 D 抓。十五道闸门的归属也据此改写成 `tools/make_public_repo.js`（随包），`run_ship_qa.sh` 只在正文散句里称作母仓驱动器。
+- 工具改动两处，都可回滚且已实测：`md2tex.js` 的 SI 节标题原来**硬写** "Provenance of every quoted number"，第二段附录会被印成同一个标题——改成从标题取，旧 SI 产物**逐字节相同**已用 diff 证明；SI 前导缺 `tolerance/emergencystretch`，长 `\texttt{}` 串撑出 4 个 overfull，补主文同款参数后归零。
+- 顺带把 §3.4 那句 "the Hirshfeld and Voronoi cross-family columns" 补上 `[[hirshfeld1977]]`，bib 命中从 87/92 到 **88/92**（剩下四条属于不再投稿的软件文）。
+- 复验：`sh tools/build_pdf.sh main` → **37 页 / 0 LaTeX 错 / 0 overfull / 93 \citation**；`... si` → **23 页 / 0 错 / 0 overfull**；md2tex 审计 37 标签、7 张表全带编号、附录无孤儿行；`claim_gate --stop` clean（2 carriers, 30079 numbers）；`audit_share_rule`、`audit_p2` PASS。构建中被闸门真拦过两次（自造的 -7.8131/53.0173 两个"算出来的数"、以及 `partition.py` 少写目录），都是改文字通过而非放行。
+- `paper/software.md` 顶部加 **Disposition** 段：不投稿、内容去向、上面两条作废数字点名写出，防止下一个窗口再搬。`paper/joss/paper.md` 保留不投。
+- 未提交、未推送、未投稿。投稿仍需作者当次明确同意；出货前 `.publish/`、`dist/` 仍要重生成（任务 13）。

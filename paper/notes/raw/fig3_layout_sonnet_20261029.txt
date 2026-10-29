@@ -1,0 +1,20 @@
+requested_model: claude-sonnet-5
+returned_model: claude-sonnet-5
+http_status: 200
+usage: {"prompt_tokens": 727, "completion_tokens": 433, "total_tokens": 1160, "prompt_tokens_details": {"cached_tokens": 23, "cache_write_tokens": 44}}
+
+**1. Ship layout F with modifications:**
+- figsize=(6.7, 3.4)
+- panels 2.0×2.3 in each (aspect ~0.87)
+- shared legend horizontal row above all panels, 2 columns, frameon=False
+- tick labels: rotate x-tick labels 45° to fit "CC(T)-fc" and "CC(T)-ae" on single lines
+- fonts: tick labels 7.5pt, axis labels 8pt, panel labels (a)(b)(c) 9pt bold, legend 7.5pt
+- 10% vertical whitespace between legend and panel tops
+
+The 45° rotation solves the two-line collision without the "CC(T)fc" ambiguity of layout E. The taller aspect (compared to current 1.6 in) gives the data breathing room. The legend above all three panels is standard ACS practice and wastes less horizontal space than embedding it in (a).
+
+**2. No, the 2×2 grid with legend-only cell is not acceptable in JCTC.** It reads as poor space economy—reviewers and editors expect figure real estate to show data. A shared legend is standard; a dedicated subplot for legend alone signals the author couldn't solve the layout problem.
+
+**3. Trap you haven't mentioned:** Layout F's original 1.95 in panel width is still only 5% wider than current (1.85 in). The gain is marginal. You need ~2.0–2.1 in width per panel to make the horizontal strip truly comfortable, which means accepting figsize closer to 6.7–6.8 in wide (touching the textwidth limit) and slightly taller (3.3–3.5 in) to maintain readable aspect ratios.
+
+**LAYOUT: F** (with 45° rotated x-tick labels, figsize 6.7×3.4 in, panels 2.0×2.3 in each)

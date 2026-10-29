@@ -1,0 +1,210 @@
+{
+  "(H2O)2": {
+    "name_en": "(H2O)2",
+    "nfrags": 2,
+    "ranks": {
+      "control_WB97X_V": {
+        "xc_code": "WB97X_V",
+        "orca_xc": "WB97X-V",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "WB97X_V",
+          "converged": true,
+          "e_tot_au": -152.7663140279679,
+          "e_nlc_au": 0.08435656625260758,
+          "e_nlc_kcal": 52.93454451761993,
+          "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+          "nao": 36,
+          "nelectron": 20,
+          "npts": 18336,
+          "natoms": 6,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(H2O)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -76.37693949964888,
+            "e_nlc_au": 0.0426505233210121,
+            "e_nlc_kcal": 26.763607454993036,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9192,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(H2O)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -76.37691922342285,
+            "e_nlc_au": 0.042651837078232904,
+            "e_nlc_kcal": 26.764431850095626,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9200,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(H2O)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.5934947874687282
+      },
+      "test_WB97M_V": {
+        "xc_code": "wb97mv",
+        "orca_xc": "WB97M-V",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "wb97mv",
+          "converged": true,
+          "e_tot_au": -152.7632569037683,
+          "e_nlc_au": 0.08434130519360707,
+          "e_nlc_kcal": 52.924968058513834,
+          "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+          "nao": 36,
+          "nelectron": 20,
+          "npts": 18336,
+          "natoms": 6,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_WB97M_V/(H2O)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "wb97mv",
+            "converged": true,
+            "e_tot_au": -76.3753213817344,
+            "e_nlc_au": 0.04264560276513026,
+            "e_nlc_kcal": 26.760519759559834,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9192,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_WB97M_V/(H2O)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "wb97mv",
+            "converged": true,
+            "e_tot_au": -76.3752979734613,
+            "e_nlc_au": 0.04264693422756603,
+            "e_nlc_kcal": 26.761355264852554,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9200,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_WB97M_V/(H2O)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.5969069658985546
+      }
+    }
+  },
+  "(CH4)2": {
+    "name_en": "(CH4)2",
+    "nfrags": 2,
+    "ranks": {
+      "control_WB97X_V": {
+        "xc_code": "WB97X_V",
+        "orca_xc": "WB97X-V",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "WB97X_V",
+          "converged": true,
+          "e_tot_au": -80.99491988131645,
+          "e_nlc_au": 0.08196234551736768,
+          "e_nlc_kcal": 51.43214832340965,
+          "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+          "nao": 44,
+          "nelectron": 20,
+          "npts": 26536,
+          "natoms": 10,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(CH4)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -40.49693068678784,
+            "e_nlc_au": 0.04139280817385902,
+            "e_nlc_kcal": 25.974379284561174,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(CH4)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -40.49693068678789,
+            "e_nlc_au": 0.041392808173859055,
+            "e_nlc_kcal": 25.974379284561195,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(CH4)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.5166102457127195
+      },
+      "test_WB97M_V": {
+        "xc_code": "wb97mv",
+        "orca_xc": "WB97M-V",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "wb97mv",
+          "converged": true,
+          "e_tot_au": -80.94356889219235,
+          "e_nlc_au": 0.08195269414464358,
+          "e_nlc_kcal": 51.42609199558817,
+          "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+          "nao": 44,
+          "nelectron": 20,
+          "npts": 26536,
+          "natoms": 10,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_WB97M_V/(CH4)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "wb97mv",
+            "converged": true,
+            "e_tot_au": -40.47124175311117,
+            "e_nlc_au": 0.04139031696276516,
+            "e_nlc_kcal": 25.972816025998043,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_WB97M_V/(CH4)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "wb97mv",
+            "converged": true,
+            "e_tot_au": -40.47124175311117,
+            "e_nlc_au": 0.04139031696276514,
+            "e_nlc_kcal": 25.97281602599803,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_WB97M_V/(CH4)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.519540056407898
+      }
+    }
+  }
+}

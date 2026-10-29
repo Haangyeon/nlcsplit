@@ -1,0 +1,52 @@
+# OpenAlex JCTC articles 2024-, 50 works, fetched 2026-10-24; abstract_words from abstract_inverted_index, refs from referenced_works_count
+abstract_words	refs	year	title
+15	381	2024	Reference Energies for Valence Ionizations and Satellite Transitions
+34	154	2024	Orbital-Resolved DFT +U for Molecules and Solids
+60	435	2024	100 Years of the Lennard-Jones Potential
+110	97	2024	Periodic Local Coupled-Cluster Theory for Insulators and Metals
+114	139	2024	Simulating Chemistry on Bosonic Quantum Devices
+116	149	2024	A Perspective on Protein Structure Prediction Using Quantum Computers
+121	71	2024	Electrostatics as a Guiding Principle in Understanding and Designing E
+122	71	2024	QupKake: Integrating Machine Learning and Quantum Chemistry for Micro-
+138	46	2025	Constant-Potential Machine Learning Force Field for the Electrochemica
+141	123	2024	Unbiased Comparison between Theoretical and Experimental Molecular Str
+143	138	2024	DFT-Based Mechanistic Exploration and Application in Photocatalytic He
+145	36	2024	Nutmeg and SPICE: Models and Data for Biomolecular Machine Learning
+148	68	2024	Obtaining Robust Density Functional Tight-Binding Parameters for Solid
+148	126	2024	Parallel Implementation of the Density Matrix Renormalization Group Me
+149	67	2024	Variational Lang–Firsov Approach Plus Møller–Plesset Perturbation Theo
+152	107	2024	Comparing Self-Consistent GW and Vertex-Corrected G 0 W 0 ( G 0 W 0 Γ)
+153	67	2025	Broadening the Scope of the ETS-NOCV Scheme: A Versatile Implementatio
+153	144	2025	Advances and Challenges in Machine Learning for RNA-Small Molecule Int
+156	61	2025	DeePMD-kit v3: A Multiple-Backend Framework for Machine Learning Poten
+158	102	2024	Effective Inclusion of Electronic Polarization Improves the Descriptio
+159	81	2025	COCOMO2: A Coarse-Grained Model for Interacting Folded and Disordered 
+163	43	2024	TorchMD-Net 2.0: Fast Neural Network Potentials for Molecular Simulati
+164	61	2024	ADAPT-QSCI: Adaptive Construction of an Input State for Quantum-Select
+167	54	2024	Distributed Implementation of Full Configuration Interaction for One T
+170	48	2024	Faster Sampling in Molecular Dynamics Simulations with TIP3P-F Water
+174	45	2024	Accurate Estimation of Diffusion Coefficients and their Uncertainties 
+177	68	2024	Recommendations for Velocity Adjustment in Surface Hopping
+179	207	2024	Current Status of the MB-pol Data-Driven Many-Body Potential for Predi
+180	29	2024	Protein Ensemble Generation Through Variational Autoencoder Latent Spa
+182	125	2024	Beyond Explored Functionals: A Computational Journey of Two-Photon Abs
+183	54	2024	Descriptor-Free Collective Variables from Geometric Graph Neural Netwo
+184	91	2024	Ligand Gaussian Accelerated Molecular Dynamics 3 (LiGaMD3): Improved C
+188	110	2024	MLatom 3: A Platform for Machine Learning-Enhanced Computational Chemi
+202	45	2024	Binding of Phosphate Species to Ca 2+ and Mg 2+ in Aqueous Solution
+202	98	2024	Cavity Quantum Electrodynamics Complete Active Space Configuration Int
+204	98	2024	van der Waals Radii of Free and Bonded Atoms from Hydrogen (Z = 1) to 
+205	70	2024	Approximating Projections of Conformational Boltzmann Distributions wi
+205	87	2024	PACMAN: A Robust Partial Atomic Charge Predicter for Nanoporous Materi
+206	64	2024	k-Means NANI: An Improved Clustering Algorithm for Molecular Dynamics 
+211	91	2024	Accurate and Transferable Machine Learning Potential for Molecular Dyn
+214	45	2024	Scalable Parallel Algorithm for Graph Neural Network Interatomic Poten
+215	81	2025	Coarse-Grained Model of Disordered RNA for Simulations of Biomolecular
+219	104	2024	OLIVES: A Go-like Model for Stabilizing Protein Structure via Hydrogen
+226	89	2024	Tensorial Properties via the Neuroevolution Potential Framework: Fast 
+227	69	2024	Histidine in Proteins: pH-Dependent Interplay between π–π, Cation–π, a
+230	107	2024	The Role of Force Fields and Water Models in Protein Folding and Unfol
+265	40	2024	emle-engine : A Flexible Electrostatic Machine Learning Embedding Pack
+280	74	2024	Accurate Machine Learning for Predicting the Viscosities of Deep Eutec
+286	104	2024	Do All Paths Lead to Rome? How Reliable is Umbrella Sampling Along a S
+291	160	2025	Can We Ever Develop an Ideal RNA Force Field? Lessons Learned from Sim

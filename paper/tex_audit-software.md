@@ -2,17 +2,17 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js software`; do not edit here.
 
-- source `paper/software.md`: 30178 chars, 352 lines
+- source `paper/software.md`: 32370 chars, 376 lines
 - output `paper/software.tex`: title from the level-1 heading, 8 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: 32 lines (metadata; it is not body prose, so it is not in the PDF)
 - tags cited in the body: 13
-- figures pulled in: 0 -> tracked
+- figures pulled in: 1 -> tracked
 - tables emitted: 2; with a numbered caption: 2 -> all numbered
-- inline backticked paths in the body text: 18 scanned -> tracked
+- inline backticked paths in the body text: 20 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
-- bib entries cited: 4 of 28; **not cited anywhere in the body: altun2018dlpno, andres2019ninequestions, becke1988, calbo2015vv10review, dion2004, goerigk2017gmtkn55, hamada2011c60au, harris2020numpy, hesselmann2013nldft, hujo2011hbond, hyldgaard2014interp, jurecka2006s22, kruse2019dna, lehtola2018libxc, lehtola2022illbehaved, rezac2016bench, sinha2015fdevdw, stratmann1996, sun2018pyscf, sun2020pyscf, takatani2010s22, treutler1995, vydrov2009vv10, vydrov2010simple**
+- bib entries cited: 20 of 92; **not cited anywhere in the body: adamo1999pbe0, altun2018dlpno, ambrosetti2014, andres2019ninequestions, becke1993b3lyp, becke2005disp, bultinck2007, burns2017bfdb, calbo2015vv10review, caldeweyher2017d3, caldeweyher2019d4, chai2008wb97x, chai2008wb97xd, chien2006sg0, cohen2012challenges, dion2004, dunning1989, francisco2006, gill1993, goerigk2011benchmark, goerigk2017gmtkn55, grimme2006jcc, grimme2010d3, grimme2011damping, grimme2011wires, halkier1998, hamada2011c60au, hesselmann2013nldft, hobza1999, hohenstein2010df, hujo2011hbond, hujo2011performance, hunter2007matplotlib, hyldgaard2014interp, jeziorski1994, kendall1992, klimes2012perspective, knizia2013, kruse2019dna, lebedev1976, lee1988lyp, lehtola2018libxc, lehtola2022illbehaved, mardirossian2017review, marshall2011, martinpendas2004, mentel2014cp, mitoraj2009, neese2012orca, neese2018orca, perdew1996pbe, rezac2011s66, rezac2016bench, riley2011, sinha2015fdevdw, smith2020psi4, steinmann2011ddsc, szalewicz2012, takatani2010s22, tao2003tpss, tkatchenko2009, tkatchenko2012mbd, vanduijneveldt1994cp, virtanen2020scipy, vydrov2009vv10, weigend2005def2, wheeler2014, wilkinson2016fair, xantheas1996, zhang1998revpbe, zhao2008m06, ziegler1977**
 
 | tag | artefact | check |
 |---|---|---|

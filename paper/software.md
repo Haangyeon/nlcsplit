@@ -3,13 +3,13 @@ title: 'nlcsplit: fragment and pair resolution of the VV10 nonlocal-correlation 
 authors:
   - name: Angran Xia
     name_localized: 夏盎然   # 中文名记在这里：这份文件不进 md2tex/pdflatex 管线，CJK 不会撞字体
-    orcid: TBD  # 需本人提供，禁止代填
+    orcid: 0009-0006-3366-6054
     affiliation: 1
     email: haangyeon@snnu.edu.cn   # 本人 2026-09-30 给的通讯邮箱（长安校区）
     corresponding: true
   - name: Changwei Wang       # 第二作者：本学院 王长崴（"崴"读 wei，据本人说明转写；名在前是 JOSS 惯例）
     name_localized: 王长崴
-    orcid: TBD                 # 需本人/王老师提供，禁止代填
+    orcid: 0000-0001-5685-2403  # Crossref 著录：SNNU 四篇论文同一 ORCID
     affiliation: 1
 affiliations:
   # 院系英文全称取该学院自己的英文站措辞（chem.snnu.edu.cn/english/，2026-09-30 抓取核对：
@@ -22,7 +22,7 @@ affiliations:
       Campus), Xi''an 710119, Shaanxi, China'
     index: 1
 date: 29 September 2026
-bibliography: references.bib  # 24 条，DOI 逐条回查（见 RESEARCH-20260929-lit.md §9）
+bibliography: references.bib  # 39 条，DOI 逐条回查（2026-10-22 全表复核见 evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_result.out）
 keywords:
   - nonlocal correlation
   - VV10
@@ -44,6 +44,21 @@ against Crossref by DOI, not by title search (see `RESEARCH-20260929-lit.md` §9
 that distinction mattered, and `evidence/bib_provenance/G_s22_provenance_20260930.md` for
 the queries behind the two software entries).*
 
+**Disposition (2026-10-28): this manuscript is not submitted.** The external referee read it as a
+duplicate of the companion paper - everything method-shaped repeats its section 2, everything
+result-shaped repeats its section 3 - and the one venue that would take it in this shape (JOSS) is
+not in the Web of Science Core Collection, so it cannot be scored as the kind of record the
+authors' institution counts. Its usable content - the entry point, the six attributions, the
+worked example, the fifteen release gates and the defect each was written for - was rewritten into
+the Supporting Information appendix "The nlcsplit package" of `paper/main.md`, keyed to that
+paper's own provenance tags rather than to the set below. Two statements in this file are **not**
+repeated there, because both are superseded: the block-additivity residual quoted as 1.73e-18 to
+6.94e-18 Ha came from one archive of one system, and the main text now quotes the 13-row census
+from its section 2.2; and the shipped-test count of 74 of 94 is the split of an export run whose
+log is not yet tracked, while the tracked census in `evidence/release_qa/` records 59 of 94 inside
+the wheel with the remaining modules named. This file stays in the tree as the record of what was
+written and why, not as a source of numbers.
+
 ## Abstract
 
 VV10-type nonlocal correlation is evaluated in production electronic-structure
@@ -60,16 +75,16 @@ single named script.
 ## 1. Motivation and statement of need
 
 Functionals that pair a range-separated hybrid with the VV10 nonlocal correlation
-term - ωB97X-V [[mardirossian2014wb97xv]] and ωB97M-V
+term [[vydrov2010simple]] - ωB97X-V [[mardirossian2014wb97xv]] and ωB97M-V
 [[mardirossian2016wb97mv]] in particular - are a routine choice for
 non-covalent interactions. Their nonlocal contribution,
 
     E_NL = ½ ∫∫ ρ(r) ρ(r') Φ(r, r') d³r d³r',
 
 is a two-centre sum, but what users get back is one number per grid point, or one
-total. When an interaction energy needs to be interpreted per fragment, the
+total [[sabatini2013]]. When an interaction energy needs to be interpreted per fragment, the
 available options stop at the semi-local part: electrostatics, exchange,
-polarisation and charge transfer can be resolved by EDA schemes, whereas the
+polarisation and charge transfer can be resolved by EDA schemes [[khaliullin2007]], whereas the
 nonlocal term is carried as an undivided block. The closest published treatment
 computes exactly that block as a whole and asks whether it is accurate
 [[dasgupta2023]]; the closest published explicit evaluation, JuNoLo
@@ -116,13 +131,14 @@ convention for splitting a local energy density: it is a property of the double
 sum alone [S3]. The flip side is reported as a limitation rather than hidden - the
 absolute local term of one fragment is exactly β·N_A, so its scheme spread is β
 times the spread of the Becke population, 3.0415 kcal/mol per electron, i.e.
-0.329 kcal/mol for the water dimer on the official S22 geometry and 0.300 on the
+0.329 kcal/mol for the water dimer on the official S22 geometry [[jurecka2006s22]] and 0.300 on the
 constructed one (`nlcsplit/step_k_population.py`, whose two runs both assert that the
 fragment populations sum to the electron number).
 
 **Attribution.** Four real-space partitions reachable through the PySCF grid
-machinery - Becke, Becke with the atomic-radius adjustment, Becke-Treutler and
-Stratmann - plus a nearest-atom hard assignment on a common grid. A point may be
+machinery - Becke [[becke1988]], Becke with the atomic-radius adjustment, Becke-Treutler
+[[treutler1995]] and Stratmann [[stratmann1996]] - plus a nearest-atom hard assignment on
+a common grid. A point may be
 shared by more than one fragment; the factor matrix is exposed as
 `partition_factors(mol, level, scheme) -> (coords, base_w, S[N, natm])`,
 normalised so that `Σ_a S[i,a] = 1` pointwise. The function refuses to return
@@ -173,7 +189,7 @@ monolithic evaluation over the same points and raises if they differ.
 
 The six schemes are selected by name: the four Becke-family constructions used in the
 companion paper (`becke`, `becke-becke-rad`, `becke-treutler`, `stratmann`) and two
-cross-family controls (`voronoi`, `hirshfeld`). `scheme_factors` returns the same shape
+cross-family controls (`voronoi`, `hirshfeld` [[hirshfeld1977]]). `scheme_factors` returns the same shape
 for all six, so a comparison changes one keyword and nothing else, and it refuses to
 return a matrix whose columns do not sum to one within 1e-8.
 
@@ -196,7 +212,24 @@ archived verbatim with its interpreter and module fingerprints as
 `E_nl` equals `intra + intra + inter` as required, and `E_total` may be compared with the
 native kernel on its own reference grid, which gives 53.017 and 53.016 for this system and
 level (difference +0.002 kcal/mol, the grid-representation difference of the companion
-text's section 3.1 rather than an algorithmic one) [S9].
+text's section 3.1 rather than an algorithmic one) [S9]. Figure 1 shows the same call over
+all five partitions: what stays fixed and what does not.
+
+![What one call returns over five partitions of the water dimer, and the cross-program check: the nonlocal total, the inter-fragment block, the block-sum residual, and ORCA against PySCF](figs/fig_sw_decomposition.png)
+
+**Figure 1.** What one call returns, on the archived water-dimer run at grid level 1 [S2].
+(a) The nonlocal total moves by 1.0×10⁻³ kcal/mol across the five partitions; points are
+deviations from the value printed for the Becke row. (b) The inter-fragment block moves by
+0.040 kcal/mol over the same five rows. (c) The block sum reproduces the monolithic
+evaluation to 1.7–6.9×10⁻¹⁸ Ha. (d) The second external anchor: ORCA 6.0.1 against PySCF
+for the same quantity on the eight complexes, 0.067–0.952% of |E_NL|, all below the dashed
+1% line [S18]. The partitions in (a)–(c) are the four Becke-family constructions of
+section 2 plus a nearest-atom hard assignment; (a) and (b) are as printed by the run (three
+decimals), while (c) is its own additivity check. Axis units: (a) deviations in 10⁻³
+kcal/mol from the value printed for the Becke row, (b) kcal/mol, (c) Ha, and (d) |Δ| =
+|ORCA − PySCF| in per cent of |E_NL|. The figure is drawn by
+`nlcsplit/figures.py --software-fig`, which parses the two archived sources and refuses to
+plot if either fails to parse.
 
 Dependencies are NumPy and PySCF. `partition.py` reaches `libdft.VXCgen_grid` through
 ctypes deliberately: it is the entry point `gen_grid.get_partition` itself uses, which
@@ -207,7 +240,7 @@ other compiled dependency and no build step.
 
 The package makes three things checkable that previously were not. It gives a
 number for how much of the nonlocal correlation is inter-fragment, which on the
-six S22 complexes that carry a counterpoise reference at grid level 2 accounts for
+six S22 complexes that carry a counterpoise reference [[boys1970]] at grid level 2 accounts for
 0.92-1.08 of the frozen-density superposition difference - association-time
 nonlocal correlation is almost entirely carried by point pairs straddling the
 fragments [S2, S10]. It supplies the per-system uncertainty that the attribution
@@ -233,23 +266,26 @@ this paper does not repeat them.
 
 ## 5. Availability and quality assurance
 
-`nlcsplit` is released under Apache-2.0. It contains no GAMESS source, and the claim is
+`nlcsplit` is released under Apache-2.0. It contains no GAMESS [[barca2020gamess]] source, and the claim is
 checked by scanning the published tree for source artefacts (`*.src`, `*.f`, `*.for`,
 `GAMESS*`) rather than for the word, and by installing the wheel into a throwaway target
 and walking what lands in `site-packages`. The archived scan reports 45 installed files,
-three named exemptions and no hit outside the exemption ledger at rc=0 [S19].
+three named exemptions and no hit outside the exemption ledger at rc=0 [S19]. The package
+ships a `CITATION.cff` so that it is citable as software on the terms the FORCE11
+principles set out [[smith2016software]], and every number it prints is regenerated from a
+tracked script rather than retyped [[peng2011repro]].
 
 Correctness is guarded at three levels. The test suite pins the kernel against PySCF's
 native one, regression-tests the archived numbers, and checks the geometry and
 partition-factor invariants. The release script `tools/run_ship_qa.sh` enforces fifteen
-gates over the exported tree: build-residue and credential hygiene, no GAMESS source,
+export QA gates over the exported tree: build-residue and credential hygiene, no GAMESS source,
 byte-for-byte reproduction of every `evidence/*/MANIFEST.sha256`, no digit changed by the
 publishing scrub, import and wheel-member checks, and the provenance checks below. Each
 gate carries a two-directional self-test that must fire on a planted fault and stay silent
 on valid input, and the build refuses to ship when a self-test does not fire. The gates
 and the real defect that motivated each are listed in Table 1.
 
-Two checks ship with the package itself. The ORCA 6.0.1 comparison recomputes the
+Two checks ship with the package itself. The ORCA 6.0.1 [[neese2020orca]] comparison recomputes the
 nonlocal term for the eight complexes in the companion paper, together with an omegaB97X
 control that must not print the label [S18]. The partition-free referee re-evaluates the
 cross term on a two-Gaussian model density with three independent methods and reports the
@@ -260,7 +296,10 @@ re-checks each tag at build time and refuses to emit the PDF when one does not r
 The wheel census is part of the same script: members are counted by category (test
 modules, helpers under `nlcsplit/tests/`, everything else) and the category counts are
 printed beside their sum, so a silently dropped category cannot pass as a member count
-[S19].
+[S19]. The published wheel carries 74 of the repository's 94 tests; the 20 that stay out
+test `nlcsplit/fastpair_ide.py`, a peer's frozen reference implementation that is
+deliberately not distributed, and the exclusion is named in the export tool's
+`INTERNAL_ONLY_MODULES` rather than left silent [S19].
 
 | gate | what it checks | standing |
 |---|---|---|

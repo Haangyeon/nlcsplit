@@ -1,0 +1,44 @@
+# W0 PySCF 侧 —— rVV10 阻尼形式对照  basis=6-31g*  grids.level=1
+# 生成 20261012T035524Z   pyscf=2.12.1  numpy=2.2.6  host=Linux
+# 几何源：/mnt/e/Project/GAMESS/scratch/lit/s22
+
+## 事实自证：PySCF 的 NLC 核形（原文行号，非转述）
+   文件：/home/haangyeon/.local/lib/python3.10/site-packages/pyscf/dft/numint.py
+   L502   Kvv=Bvv*1.5*Pi*((9.*Pi)**(-1./6.))
+   L503   Beta=((3./(Bvv*Bvv))**(0.75))/32.
+   L508   W0p=(W0p+Pi43*Rp)**0.5
+   L509   Kp=Kvv*(Rp**(1./6.))
+   L539   libdft.VXC_vv10nlc(
+   ⇒ 若上面出现 `gp=R2*W0p+Kp` / `T=RpW/(g*gp*gt)` / `F*=-1.5`，则核形为 VV10 有理阻尼，
+     且 Phi 的具体形式与 (b,C) 无关 —— 换 rVV10 参数换不掉核形。
+
+## 水二聚体 ((H2O)2)  natoms=6  nfrags=2
+   [control_WB97X_V]  xc=WB97X_V
+     complex    natoms= 6 converged=True  E(C,NL)=  0.08435657 Eh =  +52.9345 kcal/mol  npts=18336  nao=36
+     mono0      natoms= 3 converged=True  E(C,NL)=  0.04265052 Eh =  +26.7636 kcal/mol  npts=9192  nao=18
+     mono1      natoms= 3 converged=True  E(C,NL)=  0.04265184 Eh =  +26.7644 kcal/mol  npts=9200  nao=18
+   ==> dE_NLC =   -0.5935 kcal/mol   (|E_NLC| 复合物  +52.9345)
+   [test_SCAN_RVV10]  xc=SCAN_RVV10
+     complex    natoms= 6 converged=True  E(C,NL)=  0.02160004 Eh =  +13.5542 kcal/mol  npts=18336  nao=36
+     mono0      natoms= 3 converged=True  E(C,NL)=  0.01090431 Eh =   +6.8426 kcal/mol  npts=9192  nao=18
+     mono1      natoms= 3 converged=True  E(C,NL)=  0.01090453 Eh =   +6.8427 kcal/mol  npts=9200  nao=18
+   ==> dE_NLC =   -0.1310 kcal/mol   (|E_NLC| 复合物  +13.5542)
+
+## 甲烷二聚体 ((CH4)2)  natoms=10  nfrags=2
+   [control_WB97X_V]  xc=WB97X_V
+     complex    natoms=10 converged=True  E(C,NL)=  0.08196235 Eh =  +51.4321 kcal/mol  npts=26536  nao=44
+     mono0      natoms= 5 converged=True  E(C,NL)=  0.04139281 Eh =  +25.9744 kcal/mol  npts=13328  nao=22
+     mono1      natoms= 5 converged=True  E(C,NL)=  0.04139281 Eh =  +25.9744 kcal/mol  npts=13328  nao=22
+   ==> dE_NLC =   -0.5166 kcal/mol   (|E_NLC| 复合物  +51.4321)
+   [test_SCAN_RVV10]  xc=SCAN_RVV10
+     complex    natoms=10 converged=True  E(C,NL)=  0.02123027 Eh =  +13.3222 kcal/mol  npts=26536  nao=44
+     mono0      natoms= 5 converged=True  E(C,NL)=  0.01072695 Eh =   +6.7313 kcal/mol  npts=13328  nao=22
+     mono1      natoms= 5 converged=True  E(C,NL)=  0.01072695 Eh =   +6.7313 kcal/mol  npts=13328  nao=22
+   ==> dE_NLC =   -0.1403 kcal/mol   (|E_NLC| 复合物  +13.3222)
+
+## 判读口径（写死在这里，不许事后挑档）
+   控制档 (WB97X_V) 的跨程序残差 = 『网格不一致』的量级（先例：8/8 体系 <1%）。
+   测试档 (SCAN_RVV10) 若与 ORCA 的残差 ≫ 控制档，才构成 rVV10 实现形式的疑点。
+   本脚本不宣称任何程序错了。
+
+# 机器可读副本：/mnt/e/Project/GAMESS/evidence/rvv10_referee/20261012T035524Z_w0_pyscf_side.json

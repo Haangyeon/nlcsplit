@@ -255,6 +255,60 @@ function table(block, cap) {
   });
   const spec = wrap ? wide.map(w => w ? 'X' : 'l').join('')
     : head.map((_, j) => numeric[j] ? 'r' : 'l').join('');
+  // A table that cannot fit on one page has to be allowed to break. As a float it ran
+  // 7677 pt past the page in the companion paper and 180-240 pt in this one; the overflow is
+  // not on the page at all, so the rows that fall off are simply unreadable. Above twelve
+  // body rows the table becomes an xltabular (longtable headers + tabularx X columns).
+  if (body.length >= 12) {
+    const lines = [];
+    const lens = head.map((_, j) => Math.max(...[head, ...body].map(r => (r[j] || '').length)));
+    const xIdx = wide.map((w, j) => w ? j : -1).filter(j => j >= 0);
+    const sumX = xIdx.reduce((a, j) => a + Math.max(12, lens[j]), 0) || 1;
+    const fixed = 0.10 * (cols - xIdx.length) + 0.05;
+    const avail = Math.max(0.45, 0.96 - fixed);
+    // longtable (core LaTeX) rather than xltabular: this MiKTeX's xltabular dies on
+    // \SuspendTagging and then typesets nothing at all, with no error in the build summary.
+    // Split evenly rather than proportional to character count: a cell full of paths has few
+    // spaces to break at, while a prose cell wraps naturally, so equal width keeps the row
+    // height set by the paths instead of starving them to one token per line.
+    const each = Math.max(0.16, avail / Math.max(1, xIdx.length));
+    const longSpec = head.map((_, j) => {
+      if (wide[j]) {
+        return '>{\\raggedright\\arraybackslash}p{' + each.toFixed(3) + '\\textwidth}';
+      }
+      return numeric[j] ? 'r' : 'l';
+    }).join('');
+    const headRow = head.map(c => '\\textbf{' + inline(c) + '}').join(' & ') + ' \\\\ \\midrule';
+    let capTex = null;
+    if (cap) {
+      const m = cap.match(/^\*\*Table\s+(\d+)\.\*\*/);
+      if (!m) {
+        block('E-TABLE-CAPTION-UNNUMBERED',
+          SRC + ' 有一张表的题注行没有以 `**Table N.**` 开头：' + cap.slice(0, 70) + '…',
+          '题注必须自带编号，否则 \\\\label 只能靠出现顺序猜，而正文里的 "Table 3" 就是手数的。');
+      } else if (Number(m[1]) !== tblSeq) {
+        block('E-TABLE-NUMBER-ORDER', SRC + ' 第 ' + tblSeq + ' 张表的题注写着 Table ' + m[1]
+          + '，但它在文档里不是这个序号。',
+          '按文档出现顺序重编题注号，并同步正文里的引用；表号与顺序不一致时 LaTeX 生成的编号'
+          + '和读者看到的编号会是两套。');
+      } else {
+        capTex = '\\caption{' + inline(cap.replace(/^\*\*Table\s*\d+\.\*\*\s*/, '')) + '}\n'
+          + '\\label{tab:' + m[1] + '}';
+      }
+    }
+    lines.push('\\footnotesize');
+    lines.push('\\begin{longtable}{' + longSpec + '}');
+    if (capTex) lines.push(capTex + '\\\\');
+    lines.push('\\toprule', headRow, '\\endfirsthead', '\\toprule', headRow, '\\endhead',
+      '\\bottomrule', '\\endfoot');
+    for (const r of body) {
+      const cells = r.slice(0, cols);
+      while (cells.length < cols) cells.push('');
+      lines.push(cells.map(c => inline(c)).join(' & ') + ' \\\\');
+    }
+    lines.push('\\end{longtable}', '\\normalsize');
+    return lines.filter(x => x !== '').join('\n');
+  }
   const env = wrap ? 'tabularx' : 'tabular';
   const lines = [];
   const inner = [];
@@ -306,11 +360,14 @@ function table(block, cap) {
 }
 
 const out = [];
+const siOut = [];
+let target = out;
 const seenH = [];
 let figNo = 1;
 let tblSeq = 0, tablesTotal = 0, tablesNumbered = 0;
 const FIGS = [];
 let TITLE = null;
+let TOC_IMAGE = null;
 let skipFront = 0;
 let i = 0;
 const lines = md.split(/\r?\n/);
@@ -331,12 +388,37 @@ while (i < lines.length) {
   // \title has to precede \begin{document}, so hold it and splice it into the preamble.
   if (/^# /.test(l)) { TITLE = inline(l.slice(2)); skipFront = 2; i++; continue; }
   if (/^## /.test(l)) {
+    // A section heading ends the byline/affiliation skip. Without this reset, a document
+    // whose H1 is followed by an italic front note (software.md) spent both skips before the
+    // abstract, and the PDF printed "Abstract" with no text under it.
+    skipFront = 0;
     const t = l.slice(3);
-    if (/^\s*Draft\b/i.test(t)) { out.push('% draft status line, intentionally not typeset'); i++; continue; }
-    seenH.push(t); out.push('\\section{' + inline(stripManualNumber(t)) + '}'); i++; continue;
+    if (/^\s*Draft\b/i.test(t)) { target.push('% draft status line, intentionally not typeset'); i++; continue; }
+    seenH.push(t);
+    // For the main manuscript the provenance appendix is built into a separate SI file,
+    // but it stays in main.md because the tag audit resolves [S#] against it.
+    if (DOC === 'main' && /^Appendix\b/i.test(t)) {
+      target = siOut;
+      // The SI carries more than the provenance table since 2026-10-28: the software
+      // description that used to be a separate manuscript is an appendix of its own here.
+      // The title therefore has to come from the heading; the previous line hardcoded
+      // "Provenance of every quoted number" and printed that title over the new section too.
+      // Deriving it keeps the old heading's output byte-identical (verified by diffing the
+      // generated SI before and after this change).
+      const rawSi = stripManualNumber(t).replace(/^Appendix\b\s*:?\s*/i, '').trim();
+      target.push('\\section*{'
+        + (rawSi ? rawSi.charAt(0).toUpperCase() + rawSi.slice(1) : 'Appendix') + '}');
+      i++; continue;
+    }
+    // JCTC numbers the scientific sections from Introduction; the abstract, statements,
+    // appendix and TOC graphic are unnumbered.  This also keeps every "§N" reference in
+    // the prose aligned with the printed number (Introduction must be section 1).
+    const unnumbered = /^(Abstract|Statements|Appendix\b|Table of Contents Graphic)\b/i.test(t);
+    target.push((unnumbered ? '\\section*{' : '\\section{')
+      + inline(stripManualNumber(t)) + '}'); i++; continue;
   }
-  if (/^### /.test(l)) { out.push('\\subsection{' + inline(stripManualNumber(l.slice(4))) + '}'); i++; continue; }
-  if (/^#### /.test(l)) { out.push('\\subsubsection{' + inline(stripManualNumber(l.slice(5))) + '}'); i++; continue; }
+  if (/^### /.test(l)) { target.push('\\subsection{' + inline(stripManualNumber(l.slice(4))) + '}'); i++; continue; }
+  if (/^#### /.test(l)) { target.push('\\subsubsection{' + inline(stripManualNumber(l.slice(5))) + '}'); i++; continue; }
   if (/^---+\s*$/.test(l)) { i++; continue; }
   if (isTable(lines, i)) {
     const blk = [];
@@ -355,7 +437,7 @@ while (i < lines.length) {
       i = j;
       tablesNumbered++;
     }
-    out.push(table(blk, cap));
+    target.push(table(blk, cap));
     continue;
   }
   if (!l.trim()) { i++; continue; }
@@ -368,6 +450,18 @@ while (i < lines.length) {
       i++; continue;
     }
     i++;
+    // The ACS TOC/abstract graphic is a 3.25 x 1.75 in image, not a numbered text figure:
+    // it gets its own page at the end and must not consume a Figure number.
+    if (/^figs\/toc_graphic_attribution\.png$/.test(m[2])) {
+      if (!fs.existsSync(m[2])) {
+        block('E-FIGURE-MISSING', 'TOC 图不在盘上：' + m[2],
+          '先跑 tools/make_toc_graphic_attribution.py。');
+      }
+      // ACS wants this on the last page of the manuscript file, after the references.
+      TOC_IMAGE = m[2];
+      out.push('% TOC graphic emitted after the bibliography');
+      continue;
+    }
     let cap = m[1] || '';
     while (i < lines.length && !lines[i].trim()) i++;
     if (i < lines.length && /^\*\*Figure\s+\d+\.\*\*/.test(lines[i])) {
@@ -402,7 +496,9 @@ while (i < lines.length) {
     // so the printed number and every "Figure N" in the running text are the same number.
     const capBody = cap.replace(/^\*\*Figure\s*\d+\.\*\*\s*/, '');
     const figNum = /^\d+$/.test(label) ? Number(label) : null;
-    out.push('\\begin{figure}[!htb]\n\\centering\n'
+    // `p` is back in the placement list: without it a page-tall figure cannot be placed
+    // anywhere near its section and every large float is deferred to the end of the paper.
+    target.push('\\begin{figure}[!htbp]\n\\centering\n'
       + '\\includegraphics[width=' + figW.toFixed(2) + '\\textwidth]{' + m[2] + '}\n'
       + (figNum ? '\\setcounter{figure}{' + (figNum - 1) + '}\n' : '')
       + '\\caption{' + inline(capBody) + '}\n\\label{fig:' + label + '}\n\\end{figure}');
@@ -413,14 +509,14 @@ while (i < lines.length) {
     && !/^!\[/.test(lines[i]) && !isTable(lines, i)) para.push(lines[i++]);
   // 标题后的前两段是署名与单位：uthor 已排过，再排一次第 1 页就有两遍作者行。
   // 第三段是 ORCID 脚注，uthor 里没有，保留。
-  if (skipFront > 0) { skipFront--; out.push('% byline/affiliation already typeset by uthor'); continue; }
+  if (skipFront > 0) { skipFront--; target.push('% byline/affiliation already typeset by uthor'); continue; }
   // Display math: a paragraph that is exactly `$$ ... $$` becomes \[...\], not escaped text.
   const whole = para.join(' ').trim();
   if (/^\$\$[\s\S]+\$\$$/.test(whole)) {
-    out.push('\\[' + whole.slice(2, -2).trim() + '\\]');
+    target.push('\\[' + whole.slice(2, -2).trim() + '\\]');
     continue;
   }
-  out.push(inline(para.join(' ')));
+  target.push(inline(para.join(' ')));
 }
 
 // The title is taken from the document's own level-1 heading and from nothing else.
@@ -438,6 +534,7 @@ if (!TITLE) {
       : '（') + '本脚本有意不拿它当标题：那是元数据，不是稿件的正文标题。）');
 }
 const body = out.join('\n\n');
+const siBody = siOut.join('\n\n');
 
 // Row-count gate for the provenance appendix.  Found by accident on 2026-10-21: eleven appendix
 // rows (S23-S33) are present in main.md and simply absent from main.tex, because a row's long
@@ -453,7 +550,7 @@ const body = out.join('\n\n');
   // yields "S1", so every comparison misses and the gate reports the whole appendix as lost --
   // it did exactly that on its first run, and had I believed it I would have "repaired" a
   // perfectly emitted table. Capture the tag, not the number.
-  const emitted = new Set([...body.matchAll(/^(S\d+) &/gm)].map(m => m[1]));
+  const emitted = new Set([...(body + '\n' + siBody).matchAll(/^(S\d+) &/gm)].map(m => m[1]));
   const lost = mdRows.filter(t => !emitted.has(t));
   if (mdRows.length && lost.length) {
     block('E-APPENDIX-ROWS-LOST',
@@ -530,6 +627,11 @@ const pre = '%% Generated by tools/md2tex.js from ' + SRC + '. Do not edit by ha
   + '\\usepackage{booktabs,graphicx,amsmath,amssymb}\n'
   + '\\graphicspath{{../}}\n'
   + '\\usepackage{tabularx}\n'
+  + '\\usepackage{longtable}\n'
+  + '\\usepackage{caption}\n'
+  + '\\captionsetup{labelsep=period}\n'
+  + '\\captionsetup[figure]{width=0.94\\textwidth,justification=raggedright,labelfont=normalfont,textfont=normalfont,singlelinecheck=false}\n'
+  + '\\captionsetup[longtable]{justification=raggedright,singlelinecheck=false}\n'
   // Long unbreakable tokens (repository paths, DOIs, \texttt{} names) pushed 124 boxes past the
   // right margin in the first build. emergencystretch lets TeX stretch a line instead of
   // overrunning it, and unlike \sloppy it only kicks in when a line cannot be broken otherwise.
@@ -539,6 +641,9 @@ const pre = '%% Generated by tools/md2tex.js from ' + SRC + '. Do not edit by ha
   + '\\usepackage[british]{babel}\n'
   + '\\usepackage[hidelinks]{hyperref}\n'
   + '\\setlength{\\bibsep}{2pt}\n'
+  + '\\renewcommand{\\thesection}{\\arabic{section}.}\n'
+  + '\\renewcommand{\\thesubsection}{\\arabic{section}.\\arabic{subsection}}\n'
+  + '\\renewcommand{\\thesubsubsection}{\\arabic{section}.\\arabic{subsection}.\\arabic{subsubsection}}\n'
   + '% [S#] is a provenance tag. Each one resolves to a row of the appendix table in\n'
   + '% ' + path.basename(SRC) + ', which ' + cfg.audit + ' re-checks file by file. It is rendered as a\n'
   + '% small superscript rather than dropped, so an unresolved tag stays visible.\n'
@@ -555,16 +660,44 @@ const pre = '%% Generated by tools/md2tex.js from ' + SRC + '. Do not edit by ha
   // 同院。中文名字**不进 LaTeX**——本文用 pdflatex + 默认字族，CJK 会直接编译失败；中文名
   // 留在 main.md 的署名行与 CITATION.cff 里。通讯邮箱由本人给出；ORCID 仍缺，缺的留 PENDING。
   // 三篇稿件作者相同，所以作者块整块共用；只有 \title 各取自己 md 的一级标题。
-  + '\\author{Angran Xia\\thanks{Corresponding author; e-mail in the byline.}'
+  + '\\author{Angran Xia\\thanks{Corresponding author. E-mail: \\texttt{haangyeon@snnu.edu.cn}; '
+  + 'ORCID: 0009-0006-3366-6054.}'
   + ' \\\\ \\small \\textit{School of Chemistry \\& Chemical Engineering, '
   + "Shaanxi Normal University, Xi'an 710119, China}"
-  + ' \\\\ \\small \\texttt{haangyeon@snnu.edu.cn}'
   + ' \\and Changwei Wang \\\\ \\small \\textit{School of Chemistry \\& Chemical Engineering, '
   + "Shaanxi Normal University, Xi'an 710119, China}}\n"
-  + '\\date{Draft --- 29 September 2026\\\\ \\small \\textit{ORCIDs PENDING, author-supplied}}\n'
+  + '\\date{}\n'
   + '\\begin{document}\n\\maketitle\n';
 
-const tail = '\n\\bibliographystyle{unsrtnat}\n\\bibliography{' + cfg.bibName + '}\n\\end{document}\n';
+// The main manuscript's appendix is emitted as a standalone Supporting Information file.
+// Its table counter is prefixed S so the main text can cite "Table S1".
+const siPre = '%% Generated by tools/md2tex.js from ' + SRC + ' (appendix as Supporting Information).\n'
+  + '\\documentclass[11pt]{article}\n'
+  + '\\usepackage[T1]{fontenc}\n\\usepackage{lmodern}\n\\usepackage[utf8]{inputenc}\n'
+  + '\\usepackage[margin=1in]{geometry}\n'
+  + '\\usepackage{booktabs,longtable,array,tabularx,amsmath,amssymb}\n'
+  + '\\usepackage{caption}\n'
+  + '\\captionsetup{labelsep=period}\n'
+  + '\\captionsetup[figure]{width=0.94\\textwidth,justification=raggedright,labelfont=normalfont,textfont=normalfont,singlelinecheck=false}\n'
+  + '\\captionsetup[longtable]{justification=raggedright,singlelinecheck=false}\n'
+  + '\\usepackage[hidelinks]{hyperref}\n'
+  + '\\renewcommand{\\thetable}{S\\arabic{table}}\n'
+  + '\\newcommand{\\prov}[1]{\\textsuperscript{\\,#1}}\n'
+  + '\\renewcommand{\\tabularxcolumn}[1]{>{\\raggedright\\arraybackslash}p{#1}}\n'
+  // The SI carries the same long unbreakable tokens as the main text - repository paths and
+  // typewriter identifiers - but its preamble had none of the main preamble's line-breaking
+  // allowances, so four of them stuck past the margin on the first build of the software
+  // appendix. Same two knobs as `pre`, slightly looser because 11pt text is wider.
+  + '\\tolerance=2000\n\\setlength{\\emergencystretch}{3em}\n'
+  + '\\title{Supporting Information for: ' + TITLE + '}\n'
+  + "\\author{Angran Xia and Changwei Wang\\\\ \\small \\textit{School of Chemistry \\& Chemical Engineering, Shaanxi Normal University, Xi'an 710119, China}}\n"
+  + '\\date{}\n\\begin{document}\n\\maketitle\n';
+
+const tail = '\n\\bibliographystyle{unsrtnat}\n\\bibliography{' + cfg.bibName + '}\n'
+  + (TOC_IMAGE
+    ? '\\clearpage\n\\begin{center}\n\\includegraphics[width=8.25cm]{' + TOC_IMAGE + '}\n\\end{center}\n'
+    : '')
+  + '\\end{document}\n';
 
 // 前言的花括号必须配平。上一轮给 \author 加单位时少写了一个 `}`：pdflatex 照样吐出
 // 20 页 PDF，而 main.log 里 30 条错误、正文全被推进了前言。**"生成了 PDF"不等于稿子没坏**，
@@ -815,6 +948,10 @@ auditText = '# LaTeX build and `[S#]` provenance audit'
 
 dieIfBlocked();
 fs.writeFileSync(OUT, pre + body + tail);
+if (DOC === 'main' && siBody.trim()) {
+  fs.writeFileSync(path.join(path.dirname(OUT), 'supporting_information.tex'),
+    siPre + siBody + '\n\\end{document}\n');
+}
 fs.writeFileSync(cfg.audit, auditText);
 
 console.log('wrote', OUT, '| tags cited:', usedInBody.length, '| sections:', seenH.length,

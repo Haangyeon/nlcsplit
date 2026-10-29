@@ -1,0 +1,5 @@
+  File "/mnt/e/Project/GAMESS/evidence/rvv10_referee/generator_w0_pyscf_side.py", line 109
+    f.write("%s %18.14f %18.14f %18.14f\n" % (s, c[0], c[1], c[2]))
+    ^
+IndentationError: expected an indented block after 'for' statement on line 104
+# exit=1 at 2026-10-12T04:25:08Z

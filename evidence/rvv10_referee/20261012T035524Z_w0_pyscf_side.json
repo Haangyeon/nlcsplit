@@ -1,0 +1,210 @@
+{
+  "(H2O)2": {
+    "name_en": "(H2O)2",
+    "nfrags": 2,
+    "ranks": {
+      "control_WB97X_V": {
+        "xc_code": "WB97X_V",
+        "orca_xc": "WB97X-V",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "WB97X_V",
+          "converged": true,
+          "e_tot_au": -152.76631402796795,
+          "e_nlc_au": 0.0843565662526076,
+          "e_nlc_kcal": 52.93454451761994,
+          "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+          "nao": 36,
+          "nelectron": 20,
+          "npts": 18336,
+          "natoms": 6,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(H2O)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -76.37693949964881,
+            "e_nlc_au": 0.042650523321012136,
+            "e_nlc_kcal": 26.763607454993057,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9192,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(H2O)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -76.37691922342285,
+            "e_nlc_au": 0.04265183707823292,
+            "e_nlc_kcal": 26.764431850095633,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9200,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(H2O)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.5934947874687495
+      },
+      "test_SCAN_RVV10": {
+        "xc_code": "SCAN_RVV10",
+        "orca_xc": "SCAN-RVV10",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "SCAN_RVV10",
+          "converged": true,
+          "e_tot_au": -152.72991729720428,
+          "e_nlc_au": 0.021600043168738297,
+          "e_nlc_kcal": 13.554231727192262,
+          "nlc_coeff_repr": "(((15.7, 0.0093), 1),)",
+          "nao": 36,
+          "nelectron": 20,
+          "npts": 18336,
+          "natoms": 6,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_SCAN_RVV10/(H2O)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "SCAN_RVV10",
+            "converged": true,
+            "e_tot_au": -76.35838220122557,
+            "e_nlc_au": 0.010904313221941343,
+            "e_nlc_kcal": 6.842559854231657,
+            "nlc_coeff_repr": "(((15.7, 0.0093), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9192,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_SCAN_RVV10/(H2O)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "SCAN_RVV10",
+            "converged": true,
+            "e_tot_au": -76.35841557344659,
+            "e_nlc_au": 0.010904525683838564,
+            "e_nlc_kcal": 6.842693176085027,
+            "nlc_coeff_repr": "(((15.7, 0.0093), 1),)",
+            "nao": 18,
+            "nelectron": 10,
+            "npts": 9200,
+            "natoms": 3,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_SCAN_RVV10/(H2O)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.13102130312442206
+      }
+    }
+  },
+  "(CH4)2": {
+    "name_en": "(CH4)2",
+    "nfrags": 2,
+    "ranks": {
+      "control_WB97X_V": {
+        "xc_code": "WB97X_V",
+        "orca_xc": "WB97X-V",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "WB97X_V",
+          "converged": true,
+          "e_tot_au": -80.99491988131659,
+          "e_nlc_au": 0.0819623455173677,
+          "e_nlc_kcal": 51.432148323409656,
+          "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+          "nao": 44,
+          "nelectron": 20,
+          "npts": 26536,
+          "natoms": 10,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(CH4)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -40.496930686787834,
+            "e_nlc_au": 0.04139280817385905,
+            "e_nlc_kcal": 25.97437928456119,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(CH4)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "WB97X_V",
+            "converged": true,
+            "e_tot_au": -40.49693068678782,
+            "e_nlc_au": 0.04139280817385901,
+            "e_nlc_kcal": 25.974379284561163,
+            "nlc_coeff_repr": "(((6.0, 0.01), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/control_WB97X_V/(CH4)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.5166102457126982
+      },
+      "test_SCAN_RVV10": {
+        "xc_code": "SCAN_RVV10",
+        "orca_xc": "SCAN-RVV10",
+        "complex": {
+          "tag": "complex",
+          "xc_code": "SCAN_RVV10",
+          "converged": true,
+          "e_tot_au": -80.95350140731324,
+          "e_nlc_au": 0.0212302708769951,
+          "e_nlc_kcal": 13.322196110900713,
+          "nlc_coeff_repr": "(((15.7, 0.0093), 1),)",
+          "nao": 44,
+          "nelectron": 20,
+          "npts": 26536,
+          "natoms": 10,
+          "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_SCAN_RVV10/(CH4)2_complex.inp"
+        },
+        "monomers": [
+          {
+            "tag": "mono0",
+            "xc_code": "SCAN_RVV10",
+            "converged": true,
+            "e_tot_au": -40.476253871182635,
+            "e_nlc_au": 0.010726949251719912,
+            "e_nlc_kcal": 6.731262282571455,
+            "nlc_coeff_repr": "(((15.7, 0.0093), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_SCAN_RVV10/(CH4)2_mono0.inp"
+          },
+          {
+            "tag": "mono1",
+            "xc_code": "SCAN_RVV10",
+            "converged": true,
+            "e_tot_au": -40.47625387118259,
+            "e_nlc_au": 0.010726949251719908,
+            "e_nlc_kcal": 6.7312622825714525,
+            "nlc_coeff_repr": "(((15.7, 0.0093), 1),)",
+            "nao": 22,
+            "nelectron": 10,
+            "npts": 13328,
+            "natoms": 5,
+            "orca_inp": "/mnt/e/Project/GAMESS/evidence/rvv10_referee/orca_in/test_SCAN_RVV10/(CH4)2_mono1.inp"
+          }
+        ],
+        "dE_NLC_kcal": -0.1403284542421943
+      }
+    }
+  }
+}

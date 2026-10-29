@@ -1,0 +1,48 @@
+# JCTC author guidelines, fetched 2026-10-24 22:21 (+08)
+# Source: https://researcher-resources.acs.org/publish/author_guidelines?coden=jctcce
+# HTTP 200 via curl with a browser User-Agent; pubs.acs.org/page/jctccr/submission/authors.html returned 403.
+# Quotes below are verbatim from the fetched page after HTML-to-text conversion.
+
+## Manuscript Types, Articles
+Articles. Full-length research manuscripts, consistent with the objectives of the
+Journal of Chemical Theory and Computation, are the principal focus of the journal.
+Authors must follow the instructions for preparation and submission given below.
+
+## Manuscript Types, Letters
+Letters. Letters are intended for rapid publication of preliminary reports on important
+findings of novel and timely significance. The major concepts of the paper should not have
+been published previously. Manuscripts are limited to four journal pages (16 double-spaced
+manuscript pages including all materials). The abstract is limited to 75 words and should
+briefly state the purpose of the research, principal results, and major conclusions.
+
+## Manuscript Text Components, Title and Abstract
+Title. The title of the paper should be brief, preferably 12 words or fewer. Readers rarely
+read and absorb longer titles, so it should be concise. An abstract of 3-4 sentences is
+required, and as with the title, it should be concise, touching on just the major points
+about which the author wants to alert the reader.
+
+## Scope, excerpt
+The Journal does not consider papers that are straightforward applications on only
+single-class systems of well-established methods, including DFT, traditional wave function
+theories, and molecular dynamics. The Journal favors submissions that include advances in
+theory, methodology, and data science with applications to compelling problems in chemistry
+and materials science.
+
+## Measurement against the current manuscript (2026-10-24)
+- Title: 11 words, within the 12-word preference.
+- Abstract: 4 sentences, within the required 3-4. Source word count 244; no Article word cap
+  is stated on the page. The 75-word cap belongs to Letters only.
+- Article length: no page limit is stated. Current PDF: 36 pages; body through Conclusions
+  pp. 1-29, statements p. 29, references pp. 30-36.
+- TOC graphic: 3.25 x 1.75 in, emitted on the last page.
+- References: 87 entries in the main paper, each with title; 92 entries across both papers,
+  Crossref-verified 92/92 on 2026-10-23.
+
+## Calibration sample (separate file)
+- OpenAlex, ISSN 1549-9618, from_publication_date 2024-01-01, type article, 50 works,
+  fetched 2026-10-24. Query URL:
+  https://api.openalex.org/works?filter=primary_location.source.issn:1549-9618,from_publication_date:2024-01-01,type:article&per_page=50
+- Abstract word counts from abstract_inverted_index; reference counts from
+  referenced_works_count. See jctc_recent_articles_2024_20261024_summary.tsv.
+- Abstract words: median 172, IQR 147.25-205.25, range 15-291. Ours 244 (above p75, inside range).
+- References: median 84, IQR 61-113.25, range 29-435. Ours 87 (at the median).
