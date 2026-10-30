@@ -1,0 +1,15 @@
+requested_model: claude-opus-5-5
+returned_model: claude-opus-5-5
+http_status: 200
+usage: {"prompt_tokens": 788, "completion_tokens": 259, "total_tokens": 1047, "prompt_tokens_details": {"cached_tokens": 55, "cache_write_tokens": 5}}
+
+**1. Defensible headline:**
+"Four attribution schemes for fragment-resolved VV10 produce total energies within 0.3 kcal/mol across 22 S22 complexes while fragment-resolved percentages vary by factors of 2-11, establishing that dispersion attribution is numerically stable but chemically arbitrary."
+
+**2. Bar cleared?**
+Yes. The paper demonstrates that a methodological problem exists (fragment percentages are not invariant to mathematically equivalent choices) and provides the computational infrastructure for others to investigate it. The 22-system survey, strong-overlap controls, and two-program validation constitute sufficient evidence. No addition required—the retracted argument was about one system's ordering; the actual contribution is showing the percentage instability is systematic.
+
+**3. In-text retraction:**
+Strength. Catching and correcting the error before publication demonstrates rigor. Referees distinguish honest mistakes found during review from conceptual confusion. The corrected analysis (ordering flips with CP correction, percentage span remains large) is actually *stronger* evidence for the paper's thesis than the retracted claim.
+
+VERDICT: ACCEPT, because the systematic instability of fragment percentages across attribution schemes is demonstrated and the software contribution enables reproducibility.
