@@ -165,7 +165,8 @@ const EVIDENCE_DIRS = ['l2cp', 'orca_run', 'centos', 'retrieval_calibration', 'r
 
 // 有些证据目录天然带一层子目录（裁判代码 + 它的机器可读输出）。白名单是逐目录
 // 显式的，这里也显式列出要跟着发布的那一层，不做递归全盘扫描。
-const NESTED_EVIDENCE = { attribution_referee: ['outputs'] };
+// 2026-10-29：两个化学控制各带一层子目录（dative/、ionic/），母循环只收顶层文件。
+const NESTED_EVIDENCE = { attribution_referee: ['outputs'], chemical_controls: ['dative', 'ionic'] };
 
 // ================================================================ 脱敏（只发生在导出副本上）
 // 三个表分开，因为它们的"数字不变性"论证强度不同：
