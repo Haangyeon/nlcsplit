@@ -694,7 +694,7 @@ needing an argument: on the parallel-displaced benzene dimer the same one-step g
 from -2.1945 to -3.4115 kcal/mol, a step of 1.217 - of the same order as the deviations in the
 table above, whose smallest is 0.4499 (methane) and whose largest is this dimer's own 3.4115
 [S28]. An earlier version of this sentence claimed the step was larger than every deviation but
-its own, which the same table refutes: five of the eight are larger than 1.217. The grid effect is
+its own, which the same table refutes: six of the eight are larger than 1.217. The grid effect is
 neither proportional to system size nor monotone in it - benzene-methane's 0.0017 against the
 parallel-displaced dimer's 1.217 is a factor of 700 - and the level-2 value is not claimed to be converged,
 only to be the level this paper uses. The eighth complex, the T-shaped benzene dimer,
@@ -917,7 +917,7 @@ the run printed, not divided out of the sidecar afterwards: that file stores the
 methane cell's span and pair term to three decimals, and the stored numbers divide
 to 0.8% while the run, dividing before it rounded, printed 0.9% [S2]. A single blanket uncertainty
 percentage for this class of method would misstate the methane dimer by more than
-twenty-fold. Error bars must be reported per system (Fig.~\ref{fig:2}). Second, the span is an
+twenty-fold. Error bars must be reported per system (Fig.~\ref{fig:6}). Second, the span is an
 attribution property rather than a one-particle-basis property. On the official
 S22 water-dimer geometry - the same geometry the rest of this section's tables are
 computed on - re-running the four schemes at level 1 across five basis sets gives
@@ -1018,16 +1018,18 @@ slower-everywhere statement can be read off one panel rather than taken on trust
 **Figure 7.** The cost of keeping the (i, j) index, and why the provable bound does not pay for
 it. Panel (a): for each system and grid level, the wall clock of the screened path is plotted
 against the number of far-field point pairs it actually evaluated, paired by connector with the
-exact double sum on the same system - every connector goes from less work to more time, which is
-the statement "none of the 33 pairs ran faster" in picture form. Every timing in this panel
+exact double sum on the same system - every connector goes from less work to more time, the
+statement "none of the 33 pairs ran faster" in picture form; the connectors drawn are the
+1e-12 subset (11 of the 33 timed pairs), and the rest are tabulated in section 3.6. Every timing here
 passed the contention gate: at each sampling instant the number of external runnable tasks was
 zero, so the ratio is a same-system comparison and not a claim about an idle machine. Panel (b):
 the fraction of far-field
 pairs retained against the achieved error, with the 10⁻⁷ to 10⁻⁶ kcal/mol band that contains
 the accuracy the paper needs shaded green; the
 retained share stays high precisely where the tolerance has to be tight. Circles are grid level 0
-and squares level 1; hollow markers are the archived window, filled markers the 2026-09-30
-re-run; each connector joins the exact evaluation to the screened one on the same system, so a
+and squares level 1; a hollow marker is an exact-double-sum point of the archived window, every
+screened point is filled, and the two windows are told apart by position rather than by style;
+each connector joins the exact evaluation to the screened one on the same system, so a
 single figure carries both windows
 rather than the favourable one. Drawn by `figures.py` from
 the archived timing sidecar and the re-run timing sidecar, which are the
@@ -1097,7 +1099,7 @@ nonlocal term settle a grid level earlier is not explained here.
 
 **The nonlocal term is not the dispersion energy.** Section 3.2 is the evidence:
 dE_NLC accounts for anywhere between 16% and 97% of dE_xc across the seven complexes
-where that share is defined by our own cancellation test (Fig.~\ref{fig:1}) - and note that this
+where that share is defined by our own cancellation test (Table 1) - and note that this
 is not a smooth ladder: the two geometries of the same benzene dimer give 97% and 52%.
 The eighth complex, the methane dimer, is the case a percentage cannot describe at all:
 its two parts carry opposite signs, so the nonlocal term is not a fraction of the change
@@ -1120,7 +1122,7 @@ with no `-V`, which contains no such line [S18]. Twenty-four serial runs - the w
 and the parallel-displaced benzene dimer (S22 #2, #11) on the cluster, the other six systems on this machine,
 all at S22 official complex geometries with 6-31G*, each
 terminating normally with a converged SCF and carrying exactly one `NL Energy` line -
-give the comparison in **Table 4**, for the superposition difference that Table 1 reports. The last two columns compare
+give the comparison in **Table 4** and in Figure 4, for the superposition difference that Table 1 reports. The last two columns compare
 the residual with the partition-scheme span of the same row (§3.4), which is the
 quantity a referee has to be smaller than to be informative:
 
