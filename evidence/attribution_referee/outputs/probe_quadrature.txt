@@ -1,0 +1,50 @@
+VV10 parameters from PySCF nlc_coeff('wb97x_v'): b=6.0 C=0.01
+probe geometry: sep=6.0 bohr alpha=1.0 n_elec(each)=4.0 f_trunc=5.0
+
+[1] weights against EXACT single-factor normalisations
+   n= 8  3D cube 2.764042469043 exact 3.999999999982 rel 3.09e-01 | 5D cyl 22.221177156629 exact 25.132741228331 rel 1.16e-01
+   n=12  3D cube 3.936463793215 exact 3.999999999982 rel 1.59e-02 | 5D cyl 24.998960239337 exact 25.132741228331 rel 5.32e-03
+   n=16  3D cube 3.998812709100 exact 3.999999999982 rel 2.97e-04 | 5D cyl 25.130254326194 exact 25.132741228331 rel 9.90e-05
+   n=20  3D cube 3.999989785150 exact 3.999999999982 rel 2.55e-06 | 5D cyl 25.132719834418 exact 25.132741228331 rel 8.51e-07
+   n=24  3D cube 3.999999954740 exact 3.999999999982 rel 1.13e-08 | 5D cyl 25.132741133576 exact 25.132741228331 rel 3.77e-09
+   n=32  3D cube 3.999999999981 exact 3.999999999982 rel 4.19e-14 | 5D cyl 25.132741228330 exact 25.132741228331 rel 1.36e-14
+
+[2] kernel exp(-lam R^2) against the closed 6-D Gaussian integral
+   lam=0.3 analytic 0.009256616169
+     n= 8 3D 0.005463825842 rel 4.10e-01 | 5D 0.012067434073 rel 3.04e-01
+     n=12 3D 0.008616964059 rel 6.91e-02 | 5D 0.009131296946 rel 1.35e-02
+     n=16 3D 0.009231677869 rel 2.69e-03 | 5D 0.009250113206 rel 7.03e-04
+     n=20 3D 0.009256323132 rel 3.17e-05 | 5D 0.009256632919 rel 1.81e-06
+     n=24 3D 0.009256614309 rel 2.01e-07 | 5D 0.009256617090 rel 9.95e-08
+     n=28 3D 0.009256616146 rel 2.43e-09 | 5D 0.009256616161 rel 8.72e-10
+   lam=1.0 analytic 0.000018919267
+     n= 8 3D 0.000006146262 rel 6.75e-01 | 5D 0.000012593979 rel 3.34e-01
+     n=12 3D 0.000018204618 rel 3.78e-02 | 5D 0.000019641247 rel 3.82e-02
+     n=16 3D 0.000018798809 rel 6.37e-03 | 5D 0.000018889895 rel 1.55e-03
+     n=20 3D 0.000018916610 rel 1.40e-04 | 5D 0.000018919808 rel 2.86e-05
+     n=24 3D 0.000018919204 rel 3.33e-06 | 5D 0.000018919266 rel 6.62e-08
+     n=28 3D 0.000018919263 rel 2.44e-07 | 5D 0.000018919264 rel 2.08e-07
+
+[3] kernel 1/R: two analytic routes must agree, then both quadratures
+   int of analytic-Gaussian-kernel route 2.66666666140485   erf route 2.66666666140487   rel 5.33e-15
+   n=12 3D 2.581532454714 rel 3.19e-02 | 5D 2.641952970052 rel 9.27e-03
+   n=16 3D 2.665032066267 rel 6.13e-04 | 5D 2.666237334558 rel 1.61e-04
+   n=20 3D 2.666652173206 rel 5.43e-06 | 5D 2.666663221787 rel 1.29e-06
+   n=24 3D 2.666666679294 rel 6.71e-09 | 5D 2.666666650483 rel 4.10e-09
+   n=28 3D 2.666666670837 rel 3.54e-09 | 5D 2.666666660319 rel 4.07e-10
+
+[4] VV10 itself: order ladder and cross-formulation agreement
+   5D n=16 I_AB -0.00008562101417 I_AA -0.00336910911425 I_BB -0.00336910911425 I_BA -0.00008562101417 TOT -0.00345247109235 closure 2.26e-06 0s
+   5D n=24 I_AB -0.00008641736565 I_AA -0.00337364402647 I_BB -0.00337364402647 I_BA -0.00008641736565 TOT -0.00345324393037 closure 6.82e-06 1s  dI_AB vs prev 7.96e-07
+   5D n=32 I_AB -0.00008657450972 I_AA -0.00337381304608 I_BB -0.00337381304608 I_BA -0.00008657450972 TOT -0.00346091941717 closure 5.32e-07 6s  dI_AB vs prev 1.57e-07
+   5D n=40 I_AB -0.00008647124159 I_AA -0.00337368223089 I_BB -0.00337368223089 I_BA -0.00008647124159 TOT -0.00345986266411 closure 2.91e-07 18s  dI_AB vs prev 1.03e-07
+   5D n=48 I_AB -0.00008645784246 I_AA -0.00337368237622 I_BB -0.00337368237622 I_BA -0.00008645784246 TOT -0.00346006285465 closure 7.74e-08 69s  dI_AB vs prev 1.34e-08
+   5D n=56 I_AB -0.00008655403132 I_AA -0.00337377368083 I_BB -0.00337377368083 I_BA -0.00008655403132 TOT -0.00346004680073 closure 2.81e-07 100s  dI_AB vs prev 9.62e-08
+   5D n=64 I_AB -0.00008647536941 I_AA -0.00337369332782 I_BB -0.00337369332782 I_BA -0.00008647536941 TOT -0.00346006870113 closure 1.00e-07 592s  dI_AB vs prev 7.87e-08
+Traceback (most recent call last):
+  File "<REPO>/evidence/attribution_referee/probe_quadrature.py", line 85, in <module>
+    itot, _ = rl.integral_box3d(GP, B, C, n, F, which="TOT")
+  File "<REPO>/evidence/attribution_referee/referee_lib.py", line 255, in integral_box3d
+    raise NotImplementedError(
+NotImplementedError: the Cartesian TOT branch was removed: for small separations the two cubes OVERLAP, so concatenating them counts the overlap region twice (measured: a 17.7 per cent inflation of the total at sep=6, alpha=1). Use integral_cyl5d(..., which='TOT'), whose single coaxial cylinder contains both domains without double counting.
+EXIT=1

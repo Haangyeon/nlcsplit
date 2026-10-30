@@ -1,0 +1,66 @@
+# provenance
+collected_counts: full / not-slow / slow
+65 tests collected in 0.42s
+45/65 tests collected (20 deselected) in 0.36s
+20/65 tests collected (45 deselected) in 0.32s
+
+python: Python 3.10.12
+pyscf: 2.12.1
+numpy: 2.2.6
+scipy: 1.15.3
+xcfun: absent
+
+git HEAD at run time: ed0ba86
+git porcelain at archive time (the suite ran against THIS working tree, not a clean checkout):
+ M MAIN-skeleton.md
+ M PROGRESS-ide-S1.md
+ M PROGRESS-ide-S2.md
+ M PROGRESS-ide-S3.md
+ M PROGRESS-ide-S4.md
+ M PROGRESS-ide-S5.md
+ M PROGRESS-ide-S6.md
+ M PROGRESS-ide-S7.md
+ M PROGRESS-ide-S8.md
+ M PROGRESS-ide-qoder.md
+ M README.md
+ M evidence/attribution_referee/README.md
+ M evidence/attribution_referee/outputs/summary.md
+ M evidence/attribution_referee/summarize.py
+ M evidence/population/MANIFEST.sha256
+ M figs/fig3_screening_cost.png
+ M nlcsplit/examples/check_screen_bound_ide.py
+ M nlcsplit/fastpair_ide.py
+ M nlcsplit/figures.py
+ M nlcsplit/logs/orca_anchor.json
+ M nlcsplit/logs/step_h.json
+ M nlcsplit/partition.py
+ M nlcsplit/step_g_basis.py
+ M nlcsplit/step_k_population.py
+ M nlcsplit/tests/test_fastpair_ide.py
+ M nlcsplit/tests/test_partition_factors.py
+ M paper/main.bbl
+ M paper/main.md
+ M paper/notes/raw/arxiv_calibration_20260929T112126Z.json
+ M paper/notes/raw/arxiv_queries_20260929T112022Z.json
+ M paper/notes/raw/arxiv_recall_test_20260929T112239Z.json
+ M paper/notes/raw/arxiv_vv10_items_20260929T112340Z.json
+ M paper/notes/raw/crossref_topical_20260929T112509Z.json
+ M paper/notes/raw/oa_targeted_records_20260929T114619Z.json
+ M paper/notes/raw/openalex_enum_smallsets_20260929T114459Z.json
+ M paper/notes/raw/openalex_search_matrix_20260929T113836Z.json
+ M paper/notes/raw/openalex_search_retry_20260929T112445Z.json
+ M paper/notes/raw/openalex_slowpass_20260929T115528Z.json
+ M paper/p2.md
+ M paper/p2_skeleton.md
+ M paper/software.md
+?? evidence/attribution_referee/mc_tighten.py
+?? evidence/attribution_referee/outputs/mc_tight.json
+?? evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out
+?? evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out
+?? evidence/recompute/20260930T191014Z_stepg-official.out
+
+command: PYTHONPATH=. python3 -m pytest -q   (working tree, in-tree tests/)
+--- pytest output (verbatim, from scratch/pytest_full_65.log) ---
+.................................................................        [100%]
+65 passed in 710.73s (0:11:50)
+EXIT=0

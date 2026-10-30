@@ -1,0 +1,66 @@
+== ARCHIVE: heteronuclear extension run, Monte-Carlo m = 1,000,000 per configuration ==
+
+Producer: evidence/attribution_referee/hetero.py, run as
+    PYTHONPATH=. python3 -u evidence/attribution_referee/hetero.py
+from the repository root (PySCF 2.12.1, Python 3.10.12, WSL; four configurations,
+158 + 152 + 165 + 203 s; EXIT=0). Machine-readable companion: outputs/hetero.json.
+The archived homonuclear artefacts (results.json, table.md, mc_tight.json) were not
+touched by this run; the control row is a read of them, not a rewrite.
+
+What the block labelled CONTROL is for: it is homonuclear and labelled He/He exactly as
+run.py labels it, so any drift between its numbers and results.json would mean this script
+is a divergent copy and nothing below it could be read. The two diffs are printed at the
+end of this file, under "control vs the archived homonuclear run", and both are 0.000e+00.
+
+--- verbatim stdout below ---
+== heteronuclear attribution referee (sidecar; results.json untouched) ==
+  b=6.0000000000 C=0.0100000000  (read from PySCF, never hard-coded)
+  N5D=48 N3D=20 F_TRUNC=5.0 PKG_LEVEL=3 MC m=1000000
+  element mapping: Z = electrons in that Gaussian -> {2.0: 'He', 4.0: 'Be', 6.0: 'C'}
+
+--- CONTROL(homonuclear)  alpha=(1.00,1.00) n=(4.0,4.0) sep=4.00  [158s]
+    I_AB(5-D) = -4.903053278168e-04   I_BA = -4.903053278168e-04   |I_BA - I_AB| = 2.711e-18
+    I_AA      = -3.394741586529e-03   I_BB = -3.394741586529e-03   |I_BB - I_AA| = 6.505e-18   <- must be 0 here
+    closure |0.5(I_AA+I_BB)+I_AB - undecomposed| = 3.742e-06   nonfinite=0
+    bar = max(2se, |MC-5D|, |3D-5D|) = 1.217e-05 Ha   (MC se 7.077e-07, 3D-5D -1.217e-05, MC-5D 2.015e-06)
+    labels He/He  N=16304 dropped=5866  inter=-5.217115020239e-04
+        d_headline -3.1406e-05 (-6.41% of I_AB) -> RESOLVED | d_grid_only -3.6694e-07 | d_partition -3.1039e-05 | additivity 4.34e-19
+    labels Be/Be  N=25860 dropped=8612  inter=-5.216371255685e-04
+        d_headline -3.1332e-05 (-6.39% of I_AB) -> RESOLVED | d_grid_only -2.8903e-07 | d_partition -3.1043e-05 | additivity 8.67e-19
+
+--- heteronuclear  alpha=(1.00,2.00) n=(2.0,4.0) sep=4.00  [152s]
+    I_AB(5-D) = -1.487462724951e-04   I_BA = -1.487462724951e-04   |I_BA - I_AB| = 3.524e-19
+    I_AA      = -1.228887744969e-03   I_BB = -2.283611855911e-03   |I_BB - I_AA| = 1.055e-03
+    closure |0.5(I_AA+I_BB)+I_AB - undecomposed| = 2.155e-06   nonfinite=0
+    bar = max(2se, |MC-5D|, |3D-5D|) = 3.851e-07 Ha   (MC se 1.926e-07, 3D-5D 1.021e-07, MC-5D 2.735e-07)
+    labels He/Be  N=21082 dropped=8370  inter=-1.579377474965e-04
+        d_headline -9.1915e-06 (-6.18% of I_AB) -> RESOLVED | d_grid_only -2.3131e-07 | d_partition -8.9602e-06 | additivity 2.17e-19
+    labels He/Ne  N=20290 dropped=8534  inter=-1.579413749288e-04
+        d_headline -9.1951e-06 (-6.18% of I_AB) -> RESOLVED | d_grid_only -2.3676e-07 | d_partition -8.9583e-06 | additivity -4.34e-19
+
+--- heteronuclear  alpha=(1.00,0.50) n=(2.0,6.0) sep=6.00  [165s]
+    I_AB(5-D) = -1.604470139345e-04   I_BA = -1.604470139345e-04   |I_BA - I_AB| = 2.711e-20
+    I_AA      = -1.229640367349e-03   I_BB = -8.581333147022e-03   |I_BB - I_AA| = 7.352e-03
+    closure |0.5(I_AA+I_BB)+I_AB - undecomposed| = 4.732e-07   nonfinite=0
+    bar = max(2se, |MC-5D|, |3D-5D|) = 8.454e-07 Ha   (MC se 2.719e-07, 3D-5D -8.454e-07, MC-5D 5.976e-07)
+    labels He/C   N=21658 dropped=5721  inter=-2.180982703222e-04
+        d_headline -5.7651e-05 (-35.93% of I_AB) -> RESOLVED | d_grid_only -2.8933e-07 | d_partition -5.7362e-05 | additivity 8.67e-19
+    labels He/Be  N=21082 dropped=5721  inter=-2.181178137372e-04
+        d_headline -5.7671e-05 (-35.94% of I_AB) -> RESOLVED | d_grid_only -2.9126e-07 | d_partition -5.7380e-05 | additivity 1.73e-18
+
+--- heteronuclear  alpha=(2.00,0.50) n=(4.0,6.0) sep=2.50  [203s]
+    I_AB(5-D) = -1.649059971847e-03   I_BA = -1.649059971847e-03   |I_BA - I_AB| = 3.686e-18
+    I_AA      = -2.341148378916e-03   I_BB = -8.136505109739e-03   |I_BB - I_AA| = 5.795e-03
+    closure |0.5(I_AA+I_BB)+I_AB - undecomposed| = 4.280e-06   nonfinite=0
+    bar = max(2se, |MC-5D|, |3D-5D|) = 7.327e-06 Ha   (MC se 1.579e-06, 3D-5D 7.327e-06, MC-5D 4.549e-06)
+    labels Be/C   N=26436 dropped=6794  inter=-1.901817305309e-03
+        d_headline -2.5276e-04 (-15.33% of I_AB) -> RESOLVED | d_grid_only -1.4430e-07 | d_partition -2.5261e-04 | additivity -1.73e-18
+    labels He/C   N=21658 dropped=5698  inter=-1.901821400588e-03
+        d_headline -2.5276e-04 (-15.33% of I_AB) -> RESOLVED | d_grid_only -1.4951e-07 | d_partition -2.5261e-04 | additivity -8.67e-19
+
+== control vs the archived homonuclear run (this is the falsification) ==
+  I_AB       : -4.903053278168e-04  vs  -4.903053278168e-04   diff 0.000e+00
+  grid inter : -5.217115020239e-04  vs  -5.217115020239e-04   diff 0.000e+00  [grid_He_He]
+  verdict    : PASS - not a divergent copy
+wrote outputs/hetero.json (4 rows)
+EXIT=0

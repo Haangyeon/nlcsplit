@@ -1,0 +1,13 @@
+Provenance for evidence/centos/ — harvested 2026-09-29T08:22Z from CentOS
+  host ubuntu, PySCF 2.14.0, dir <REMOTE_LOG_DIR>/
+  pulled with scp -P <SSH_PORT>; CRLF normalization disabled by .gitattributes (evidence/** -text).
+
+Files and which [S#] they carry:
+  20260928T165857Z_centos-step_c.out       [S6]  water-dimer relaxation, O..O = 2.901 A (line 19)
+  20260928T165857Z_centos-step2.out        [S12][S13]  basis x grid ladder, spans at lines 17-20
+  20260928T165857Z_centos-step_f_h2o2.out  [S8]  XC accounting on the (retired) initial S22 geometry
+  20260928T165857Z_centos-DONE.txt         batch sentinel
+
+CAVEAT recorded at harvest time: the step_f_h2o2 log predates the water-dimer geometry fix
+(inter-fragment minimum 2.0258 A here vs 1.95 A in evidence/l2cp), so it is cited only as a
+component-accounting demonstration, never as a current-geometry result.

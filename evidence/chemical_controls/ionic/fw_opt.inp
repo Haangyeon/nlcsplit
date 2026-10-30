@@ -1,0 +1,12 @@
+# Initial guess: F- ... H-O-H ionic hydrogen bond.
+# O-H = 0.9572 A, H-O-H = 104.52 deg; O...F = 2.60 A, H...F collinear with O-H.
+# Geometry will be optimized at wB97X-V/aug-cc-pVDZ.
+! wB97X-V aug-cc-pVDZ Opt TightOpt TightSCF
+%pal nprocs 4 end
+%maxcore 2000
+* xyz -1 1
+F  -2.600000   0.000000   0.000000
+O   0.000000   0.000000   0.000000
+H  -0.957200   0.000000   0.000000
+H   0.239000   0.927000   0.000000
+*

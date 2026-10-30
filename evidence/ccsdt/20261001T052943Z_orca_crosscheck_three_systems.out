@@ -1,0 +1,127 @@
+== ARCHIVE: ORCA 6.0.1 recomputes the CCSD(T) counterpoise anchor on three systems, with basis identity checked on the AO dimension ==
+
+Why this execution exists. Two things changed since
+`20261001T044833Z_orca_crosscheck.out`: the plan was widened from the water dimer to water
+(6-31G* and aug-cc-pVDZ), ammonia (6-31G*) and methane (6-31G*) - the same three systems the
+PySCF ladder covers, so no row of the anchor is single-program - and the way the two programs
+are shown to be solving in the same basis was found to be wrong in the previous file.
+
+The repair, stated plainly because it is the kind of error that passes silently. That file's
+header claimed the two programs "report 18 basis functions for a water monomer in 6-31G*, so
+the d shells carry the same convention", and its prose said this was "checked rather than
+assumed". The field it read, ORCA's `Number of basis functions`, is not a usable identity
+criterion: widening the plan showed that for the same water monomer in aug-cc-pVDZ that field
+prints 47, while ORCA's own SCF section prints `Basis Dimension Dim .... 41` and its coupled
+cluster section `Number of AO's ... 41` - and 41 is PySCF's nao for that basis. The 6-31G*
+agreement at 18 was two fields happening to coincide in one basis, not a check. We could not
+account for the 47 from the printed output either (25 shells with maximum angular momentum 2:
+no Cartesian-versus-spherical bookkeeping reproduces both 47 and 41), so we do not explain it
+here; we quote the field that both programs mean the same way by, and note that where the two
+ORCA fields do agree (6-31G*: 18, 40, 44) the header field equals the AO dimension anyway.
+
+So the script now reads back, for every one of the 24 runs (dimer plus two monomers, frozen
+core and all-electron, four plan rows), ORCA's AO dimension against the PySCF nao for the same
+geometry and basis, and prints `same space` or `*** DIFFERENT SPACE ***`. It reports 24/24
+same space. The verdict also refuses to say "agree" unless both conditions hold at once -
+energy difference under the bar AND basis identity on every part - because a 2e-4 agreement
+between two different basis sets would not be agreement at all.
+
+What was measured. Worst |ORCA - PySCF| on the counterpoise interaction energy is 0.0002
+kcal/mol against a bar of 0.001, across all eight rows. The row-by-row differences are
+-0.0001, -0.0001, -0.0002, -0.0002 (water, 6-31G* then aug-cc-pVDZ), +0.0001, -0.0000
+(ammonia) and +0.0001, +0.0000 (methane). Ammonia and methane are new in this execution and
+they land at the same place as water, which matters because the water row is the one the
+paper's argument is built on: the anchor is no longer a single-system cross-program check.
+
+Repeatability between this execution and the previous one, measured rather than asserted: all
+24 absolute energies are reproduced, and the largest single-energy difference between the two
+executions is 1.09e-08 Ha, which is 6.8e-06 kcal/mol - three orders of magnitude below the
+cross-program difference it sits under. So the 1e-4 kcal/mol scatter seen in the previous
+file's two executions shows up in the *interaction energy*, where three independently noisy
+energies are combined, not in the individual CCSD(T) evaluations.
+
+Producer: `orca_crosscheck.py` in this directory, run as
+`PYTHONPATH=. python3 -u evidence/ccsdt/orca_crosscheck.py` on WSL with ORCA 6.0.1 at
+`~/orca6/orca`, `%pal nprocs 4`, `%maxcore 4000`. The PySCF column it compares against is
+transcribed into the script from
+`20260930T235900Z_stepm_three_systems_631g.out` and
+`20260930T224400Z_stepm_ladder_after_refactor.out`, and the comparison is refused if any part
+lacks an AO count. Stdout follows verbatim.
+
+--- execution 4 stdout ---
+== ORCA cross-check of the CCSD(T) counterpoise anchor ==
+  ORCA: <CLUSTER_HOME>/orca6/orca   nprocs=4 maxcore=4000 MB   workdir=<REPO>/scratch/orca_ccsdt
+  水二聚体_6-31Gstar_fc_dimer.out                  dimer  E=-152.4204260351  ok=True  frozen_core_electrons=4  correlated=16
+      basis identity: AO dimension ORCA=36 vs PySCF nao=36 -> same space   (ORCA's own header field says 36)
+  水二聚体_6-31Gstar_fc_mono0.out                  mono0  E=-76.2047712847  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=18 vs PySCF nao=18 -> same space   (ORCA's own header field says 18)
+  水二聚体_6-31Gstar_fc_mono1.out                  mono1  E=-76.2047289518  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=18 vs PySCF nao=18 -> same space   (ORCA's own header field says 18)
+  --- 水二聚体 / 6-31G*  frozen core  ->  dE_CP = -6.8560 kcal/mol   (PySCF -6.8559  diff -0.0001)
+  水二聚体_6-31Gstar_ae_dimer.out                  dimer  E=-152.4233209969  ok=True  frozen_core_electrons=0  correlated=20
+      basis identity: AO dimension ORCA=36 vs PySCF nao=36 -> same space   (ORCA's own header field says 36)
+  水二聚体_6-31Gstar_ae_mono0.out                  mono0  E=-76.2061938857  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=18 vs PySCF nao=18 -> same space   (ORCA's own header field says 18)
+  水二聚体_6-31Gstar_ae_mono1.out                  mono1  E=-76.2061519441  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=18 vs PySCF nao=18 -> same space   (ORCA's own header field says 18)
+  --- 水二聚体 / 6-31G*  all-electron  ->  dE_CP = -6.8870 kcal/mol   (PySCF -6.8869  diff -0.0001)
+
+  水二聚体_aug-cc-pVDZ_fc_dimer.out                dimer  E=-152.5559706220  ok=True  frozen_core_electrons=4  correlated=16
+      basis identity: AO dimension ORCA=82 vs PySCF nao=82 -> same space   (ORCA's own header field says 94)
+  水二聚体_aug-cc-pVDZ_fc_mono0.out                mono0  E=-76.2738127710  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=41 vs PySCF nao=41 -> same space   (ORCA's own header field says 47)
+  水二聚体_aug-cc-pVDZ_fc_mono1.out                mono1  E=-76.2737946218  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=41 vs PySCF nao=41 -> same space   (ORCA's own header field says 47)
+  --- 水二聚体 / aug-cc-pVDZ  frozen core  ->  dE_CP = -5.2480 kcal/mol   (PySCF -5.2478  diff -0.0002)
+  水二聚体_aug-cc-pVDZ_ae_dimer.out                dimer  E=-152.5606180040  ok=True  frozen_core_electrons=0  correlated=20
+      basis identity: AO dimension ORCA=82 vs PySCF nao=82 -> same space   (ORCA's own header field says 94)
+  水二聚体_aug-cc-pVDZ_ae_mono0.out                mono0  E=-76.2760716785  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=41 vs PySCF nao=41 -> same space   (ORCA's own header field says 47)
+  水二聚体_aug-cc-pVDZ_ae_mono1.out                mono1  E=-76.2760563389  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=41 vs PySCF nao=41 -> same space   (ORCA's own header field says 47)
+  --- 水二聚体 / aug-cc-pVDZ  all-electron  ->  dE_CP = -5.3275 kcal/mol   (PySCF -5.3273  diff -0.0002)
+
+  氨二聚体_6-31Gstar_fc_dimer.out                  dimer  E=-112.7467279471  ok=True  frozen_core_electrons=4  correlated=16
+      basis identity: AO dimension ORCA=40 vs PySCF nao=40 -> same space   (ORCA's own header field says 40)
+  氨二聚体_6-31Gstar_fc_mono0.out                  mono0  E=-56.3698139510  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=20 vs PySCF nao=20 -> same space   (ORCA's own header field says 20)
+  氨二聚体_6-31Gstar_fc_mono1.out                  mono1  E=-56.3698139510  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=20 vs PySCF nao=20 -> same space   (ORCA's own header field says 20)
+  --- 氨二聚体 / 6-31G*  frozen core  ->  dE_CP = -4.4553 kcal/mol   (PySCF -4.4554  diff +0.0001)
+  氨二聚体_6-31Gstar_ae_dimer.out                  dimer  E=-112.7502290245  ok=True  frozen_core_electrons=0  correlated=20
+      basis identity: AO dimension ORCA=40 vs PySCF nao=40 -> same space   (ORCA's own header field says 40)
+  氨二聚体_6-31Gstar_ae_mono0.out                  mono0  E=-56.3715503233  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=20 vs PySCF nao=20 -> same space   (ORCA's own header field says 20)
+  氨二聚体_6-31Gstar_ae_mono1.out                  mono1  E=-56.3715503233  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=20 vs PySCF nao=20 -> same space   (ORCA's own header field says 20)
+  --- 氨二聚体 / 6-31G*  all-electron  ->  dE_CP = -4.4731 kcal/mol   (PySCF -4.4731  diff -0.0000)
+
+  甲烷二聚体_6-31Gstar_fc_dimer.out                 dimer  E=-80.7095171771  ok=True  frozen_core_electrons=4  correlated=16
+      basis identity: AO dimension ORCA=44 vs PySCF nao=44 -> same space   (ORCA's own header field says 44)
+  甲烷二聚体_6-31Gstar_fc_mono0.out                 mono0  E=-40.3546164878  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=22 vs PySCF nao=22 -> same space   (ORCA's own header field says 22)
+  甲烷二聚体_6-31Gstar_fc_mono1.out                 mono1  E=-40.3546164878  ok=True  frozen_core_electrons=2  correlated=8
+      basis identity: AO dimension ORCA=22 vs PySCF nao=22 -> same space   (ORCA's own header field says 22)
+  --- 甲烷二聚体 / 6-31G*  frozen core  ->  dE_CP = -0.1783 kcal/mol   (PySCF -0.1784  diff +0.0001)
+  甲烷二聚体_6-31Gstar_ae_dimer.out                 dimer  E=-80.7137793969  ok=True  frozen_core_electrons=0  correlated=20
+      basis identity: AO dimension ORCA=44 vs PySCF nao=44 -> same space   (ORCA's own header field says 44)
+  甲烷二聚体_6-31Gstar_ae_mono0.out                 mono0  E=-40.3567405581  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=22 vs PySCF nao=22 -> same space   (ORCA's own header field says 22)
+  甲烷二聚体_6-31Gstar_ae_mono1.out                 mono1  E=-40.3567405581  ok=True  frozen_core_electrons=0  correlated=10
+      basis identity: AO dimension ORCA=22 vs PySCF nao=22 -> same space   (ORCA's own header field says 22)
+  --- 甲烷二聚体 / 6-31G*  all-electron  ->  dE_CP = -0.1872 kcal/mol   (PySCF -0.1872  diff +0.0000)
+
+== summary ==
+  system     basis          convention         ORCA      PySCF       diff
+  水二聚体       6-31G*         frozen          -6.8560    -6.8559    -0.0001
+  水二聚体       6-31G*         all-e           -6.8870    -6.8869    -0.0001
+  水二聚体       aug-cc-pVDZ    frozen          -5.2480    -5.2478    -0.0002
+  水二聚体       aug-cc-pVDZ    all-e           -5.3275    -5.3273    -0.0002
+  氨二聚体       6-31G*         frozen          -4.4553    -4.4554    +0.0001
+  氨二聚体       6-31G*         all-e           -4.4731    -4.4731    -0.0000
+  甲烷二聚体      6-31G*         frozen          -0.1783    -0.1784    +0.0001
+  甲烷二聚体      6-31G*         all-e           -0.1872    -0.1872    +0.0000
+  worst |ORCA - PySCF| = 0.0002 kcal/mol   (bar for agreement: 0.001)
+  basis identity: 24/24 parts have ORCA's printed AO dimension equal to the PySCF nao for the same geometry and basis
+  VERDICT: two programs agree to three decimals, in the same AO space
+EXIT=0

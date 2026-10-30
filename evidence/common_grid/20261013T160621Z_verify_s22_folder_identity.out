@@ -1,0 +1,15 @@
+# S22 名字↔几何内容一致性核对（片段划分用生产代码同一个 split_frags/COV_CUTOFF）
+# 自检：分子式写法与生产者 `s22_full_certificate.formula` 一致
+# 几何目录 <REPO>/scratch/lit/s22
+
+   氨二聚体       S22_01.xyz   原子   8  片段 H3N + H3N  期望 H3N + H3N  => 一致
+   水二聚体       S22_02.xyz   原子   6  片段 H2O + H2O  期望 H2O + H2O  => 一致
+   甲烷二聚体      S22_08.xyz   原子  10  片段 CH4 + CH4  期望 CH4 + CH4  => 一致
+   苯-氨        S22_18.xyz   原子  16  片段 C6H6 + H3N  期望 C6H6 + H3N  => 一致
+   苯-水        S22_17.xyz   原子  15  片段 C6H6 + H2O  期望 C6H6 + H2O  => 一致
+   苯-甲烷       S22_10.xyz   原子  17  片段 C6H6 + CH4  期望 C6H6 + CH4  => 一致
+   苯二聚体(A)    S22_11.xyz   原子  24  片段 C6H6 + C6H6  期望 C6H6 + C6H6  => 一致
+   苯二聚体(B)    S22_20.xyz   原子  24  片段 C6H6 + C6H6  期望 C6H6 + C6H6  => 一致
+
+VERDICT OK —— geomlib.S22 的 8 个名字全部与其几何内容一致
+# exit=0 at 2026-10-13T16:06:29Z

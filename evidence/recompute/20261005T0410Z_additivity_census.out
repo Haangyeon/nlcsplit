@@ -1,0 +1,29 @@
+# 可加性残差普查：整体直接双重和 vs Σ_分块
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD 8906165ba2e6ea6840539fe18f529c54ee9fe51c
+# basis 6-31g* , xc wb97x_v , 判据阈值 1.0e-10 Ha（与 nlcsplit/step1_validate.py 同）
+
+== (H2O)2 official S22_02  (6 原子, 20 电子, 公共网格 18336 点, level 1)
+  becke            N= 19936 ∫ρ= 19.99997/20 (相对 1.5e-06 OK)  E_NL(直接)=  -7.8941 kcal  残差=5.204e-18 Ha  OK  [10.5 s]
+  becke-becke-rad  N= 19936 ∫ρ= 20.00004/20 (相对 2.1e-06 OK)  E_NL(直接)=  -7.8940 kcal  残差=5.204e-18 Ha  OK  [10.7 s]
+  becke-treutler   N= 19936 ∫ρ= 19.99999/20 (相对 5.3e-07 OK)  E_NL(直接)=  -7.8940 kcal  残差=5.204e-18 Ha  OK  [11.6 s]
+  stratmann        N= 19936 ∫ρ= 19.99975/20 (相对 1.2e-05 OK)  E_NL(直接)=  -7.8939 kcal  残差=6.939e-18 Ha  OK  [10.6 s]
+  nearest(公共网格)    N= 18336 ∫ρ= 20.00000/20 (相对 6.6e-08 OK)  E_NL(直接)=  -7.8950 kcal  残差=1.735e-18 Ha  OK  [11.5 s]
+
+== (C6H6)2 A, parallel-displaced, S22_11  (24 原子, 84 电子, 公共网格 18448 点, level 0)
+  becke            N= 19752 ∫ρ= 84.01784/84 (相对 2.1e-04 粗网格)  E_NL(直接)= -57.8527 kcal  残差=2.776e-17 Ha  OK  [11.3 s]
+  becke-becke-rad  N= 19752 ∫ρ= 84.05736/84 (相对 6.8e-04 粗网格)  E_NL(直接)= -57.8787 kcal  残差=0.000e+00 Ha  OK  [11.4 s]
+  becke-treutler   N= 19752 ∫ρ= 83.97207/84 (相对 3.3e-04 粗网格)  E_NL(直接)= -57.8854 kcal  残差=5.551e-17 Ha  OK  [11.6 s]
+  stratmann        N= 19752 ∫ρ= 84.04625/84 (相对 5.5e-04 粗网格)  E_NL(直接)= -57.9008 kcal  残差=2.776e-17 Ha  OK  [13.0 s]
+
+== (C6H6)2 constructed sandwich  (24 原子, 84 电子, 公共网格 18552 点, level 0)
+  becke            N= 19752 ∫ρ= 84.03200/84 (相对 3.8e-04 粗网格)  E_NL(直接)= -56.7887 kcal  残差=2.776e-17 Ha  OK  [13.1 s]
+  becke-becke-rad  N= 19752 ∫ρ= 84.03203/84 (相对 3.8e-04 粗网格)  E_NL(直接)= -56.6574 kcal  残差=2.776e-17 Ha  OK  [11.6 s]
+  becke-treutler   N= 19752 ∫ρ= 83.95201/84 (相对 5.7e-04 粗网格)  E_NL(直接)= -56.6202 kcal  残差=1.388e-17 Ha  OK  [11.3 s]
+  stratmann        N= 19752 ∫ρ= 84.06088/84 (相对 7.2e-04 粗网格)  E_NL(直接)= -56.8369 kcal  残差=2.776e-17 Ha  OK  [11.5 s]
+
+== 汇总 ==
+  行数 = 13   体系数 = 3
+  残差最小 = 0.000e+00 Ha   残差最大 = 5.551e-17 Ha
+  最大残差来自：(C6H6)2 A, parallel-displaced, S22_11 / becke-treutler
+  全部低于判据 1.0e-10 Ha：True

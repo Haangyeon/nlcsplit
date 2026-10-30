@@ -1,0 +1,16 @@
+# 清单丢条目检查器的双向自检  2026-10-13T16:16:49Z
+# 靶文件 evidence/common_grid/MANIFEST.sha256   sha256(前)=a01a9abb0364103bef90dba0cd28a820de4f5eda0f1003fab178e1d7335666ee   备份=/tmp/mf_selftest_5090.bak
+# 靶条目（HEAD 与工作树都在）= 20261006T085207Z_ownership_vs_quadrature_l1_small.out
+
+# 已确实删掉 1 行：64 -> 63
+
+## 用例 A（该响）：rc=1 且输出点名该条目 = 1
+   !! common_grid：相对 HEAD 丢了 1 条登记（HEAD 共 19 条）
+          20261006T085207Z_ownership_vs_quadrature_l1_small.out
+      rvv10_referee：HEAD 里没有这份清单 ⇒ 无基线可比（新建目录，本脚本判不了它有没有丢东西）
+   
+## 还原：sha256(后)=a01a9abb0364103bef90dba0cd28a820de4f5eda0f1003fab178e1d7335666ee  逐字节相同
+## 用例 B（不该响）：rc=0  VERDICT OK —— 没有任何目录的清单条目相对 HEAD 消失
+
+VERDICT DONE —— A 必须响(rc≠0 且点名条目)、还原必须逐字节相同、B 必须不响(rc=0)。
+# exit=0 at 2026-10-13T16:17:40Z

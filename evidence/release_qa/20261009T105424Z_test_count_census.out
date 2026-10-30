@@ -1,0 +1,18 @@
+# test-count census
+# python 3.10.12  pyscf 2.12.1
+# git HEAD 2afce34b34025ede99e4ebb6b7e954dfabfaca1f
+# collected total=79  non-slow=58  slow=21  (non-slow+slow=79)
+#   test_cc_convention.py            7
+#   test_fastpair.py                 10
+#   test_fastpair_ide.py             20
+#   test_geometry.py                 7
+#   test_kernel.py                   5
+#   test_nlc_closure.py              5
+#   test_partition_factors.py        20
+#   test_regression.py               4
+#   test_tolerance_probe.py          1
+# 逐模块相加=79，与总数 79 一致
+# 分组（按 wheel 实际成员，不是按记忆）: shipped wheel = nlcsplit-0.1.0-py3-none-any.whl
+#   随包发布 7 个模块，共收 54 条：test_cc_convention.py, test_fastpair.py, test_geometry.py, test_kernel.py, test_partition_factors.py, test_regression.py, test_tolerance_probe.py
+#   不随包    2 个模块，共收 25 条：test_fastpair_ide.py, test_nlc_closure.py
+#   两组合计 79，与总数 79 一致

@@ -1,0 +1,62 @@
+# 自检：解析器 vs 生产者格式常量 FMT_LINE —— 一致
+# 满 S22 归属证书表（脚本从各格 .out 原件解析，非手抄）
+# 生成 2026-10-14T03:02:01.970787+00:00  解析 22/22 格
+# 主键 = GMTKN55 官方文件夹号；体系名一栏只有已独立核对过的才填
+
+| 文件夹 | 体系名 | 片段 | 原子 | npts | 家族内跨度 | 含家族外总跨度 | 绝对增量 | 判语 | 原件 |
+|---|---|---|---|---|---|---|---|---|---|
+| S22_01 | 氨二聚体 | H3N + H3N | 8 | 22616 | 0.0284 | 0.0332 | 0.0048 | DONE | `20261013T152306Z_s22_full_certificate_S22_01_l1_small.out` |
+| S22_02 | 水二聚体 | H2O + H2O | 6 | 18336 | 0.0433 | 0.0433 | 0.0000 | DONE | `20261013T152306Z_s22_full_certificate_S22_02_l1_small.out` |
+| S22_03 | （待核） | CH2O2 + CH2O2 | 10 | 35736 | 0.2342 | 0.2342 | 0.0000 | DONE | `20261013T152306Z_s22_full_certificate_S22_03_l1_small.out` |
+| S22_04 | （待核） | CH3NO + CH3NO | 12 | 40040 | 0.2143 | 0.2143 | 0.0000 | DONE | `20261013T152306Z_s22_full_certificate_S22_04_l1_small.out` |
+| S22_05 | （待核） | C4H4N2O2 + C4H4N2O2 | 24 | 87304 | 0.2152 | 0.2152 | 0.0000 | DONE | `20261013T174321Z_s22_full_certificate_S22_05_l1_small.out` |
+| S22_06 | （待核） | C5H5NO + C5H6N2 | 25 | 84344 | 0.2716 | 0.2716 | 0.0000 | DONE | `20261013T205228Z_s22_full_certificate_S22_06_l1_small.out` |
+| S22_07 | （待核） | C5H5N5 + C5H6N2O2 | 30 | 106200 | 0.2664 | 0.2664 | 0.0000 | DONE | `20261014T004111Z_s22_full_certificate_S22_07_l1_small.out` |
+| S22_08 | 甲烷二聚体 | CH4 + CH4 | 10 | 26536 | 0.0034 | 0.0088 | 0.0054 | DONE | `20261013T152306Z_s22_full_certificate_S22_08_l1_small.out` |
+| S22_09 | （待核） | C2H4 + C2H4 | 12 | 35264 | 0.0292 | 0.0405 | 0.0113 | DONE | `20261013T155004Z_s22_full_certificate_S22_09_l1_small.out` |
+| S22_10 | 苯-甲烷 | C6H6 + CH4 | 17 | 52040 | 0.2142 | 0.2445 | 0.0303 | DONE | `20261013T160222Z_s22_full_certificate_S22_10_l1_small.out` |
+| S22_11 | 苯二聚体(A) | C6H6 + C6H6 | 24 | 77072 | 0.0274 | 0.0603 | 0.0329 | DONE | `20261013T174321Z_s22_full_certificate_S22_11_l1_small.out` |
+| S22_12 | （待核） | C4H4N2 + C4H4N2 | 20 | 69216 | 0.0098 | 0.0693 | 0.0595 | DONE | `20261013T160222Z_s22_full_certificate_S22_12_l1_small.out` |
+| S22_13 | （待核） | C4H4N2O2 + C4H4N2O2 | 24 | 86344 | 0.0260 | 0.1041 | 0.0781 | DONE | `20261013T174321Z_s22_full_certificate_S22_13_l1_small.out` |
+| S22_14 | （待核） | C6H6 + C8H7N | 28 | 91440 | 0.0409 | 0.1025 | 0.0616 | DONE | `20261013T225548Z_s22_full_certificate_S22_14_l1_small.out` |
+| S22_15 | （待核） | C5H5N5 + C5H6N2O2 | 30 | 104808 | 0.0381 | 0.1460 | 0.1079 | DONE | `20261014T004111Z_s22_full_certificate_S22_15_l1_small.out` |
+| S22_16 | （待核） | C2H4 + C2H2 | 10 | 31272 | 0.0490 | 0.0525 | 0.0035 | DONE | `20261013T152306Z_s22_full_certificate_S22_16_l1_small.out` |
+| S22_17 | 苯-水 | C6H6 + H2O | 15 | 47920 | 0.2469 | 0.2747 | 0.0278 | DONE | `20261013T160222Z_s22_full_certificate_S22_17_l1_small.out` |
+| S22_18 | 苯-氨 | C6H6 + H3N | 16 | 50104 | 0.2219 | 0.2373 | 0.0154 | DONE | `20261013T160222Z_s22_full_certificate_S22_18_l1_small.out` |
+| S22_19 | （待核） | C6H6 + CHN | 15 | 50104 | 0.3030 | 0.3586 | 0.0556 | DONE | `20261013T160222Z_s22_full_certificate_S22_19_l1_small.out` |
+| S22_20 | 苯二聚体(B) | C6H6 + C6H6 | 24 | 77464 | 0.2196 | 0.2373 | 0.0177 | DONE | `20261013T205228Z_s22_full_certificate_S22_20_l1_small.out` |
+| S22_21 | （待核） | C6H6 + C8H7N | 28 | 92120 | 0.2556 | 0.2684 | 0.0128 | DONE | `20261013T225548Z_s22_full_certificate_S22_21_l1_small.out` |
+| S22_22 | （待核） | C6H6O + C6H6O | 26 | 86416 | 0.1407 | 0.1412 | 0.0005 | DONE | `20261013T205228Z_s22_full_certificate_S22_22_l1_small.out` |
+
+# 被排除在外的档（1 个）——列出来，不让它静默少算：
+   20261013T152010Z_s22_full_certificate_S22_03_l1_small.out  没有同名 .rc（多半还在跑或当年没落）
+
+家族内带 = 0.0034–0.3030（22 格）
+含家族外总跨度带 = 0.0088–0.3586（22 格）
+
+## 按片段是否同核分层（拆「只测了一类」这个定性攻击）
+   同核：12 格（S22_01、S22_02、S22_03、S22_04、S22_05、S22_08、S22_09、S22_11、S22_12、S22_13、S22_20、S22_22）家族内带 0.0034–0.2342，含家族外总跨度带 0.0088–0.2373，绝对增量 中位 0.0051 / 最大 0.0781，增量÷家族内跨度 0.00–6.07
+   异质：10 格（S22_06、S22_07、S22_10、S22_14、S22_15、S22_16、S22_17、S22_18、S22_19、S22_21）家族内带 0.0381–0.3030，含家族外总跨度带 0.0525–0.3586，绝对增量 中位 0.0216 / 最大 0.1079，增量÷家族内跨度 0.00–2.83
+   未分类：0 格
+!! 旧档 20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_苯-甲烷_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体A_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+!! 旧档 20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体B_after_unitfix.out 抬头读不出体系名，退回用档名 —— 若两者不一致这格会静默缺席
+
+## 与已归档八格的交叉认证（同一格两条路）
+##   确定性方案（家族内四 + Voronoi）门 = 1e-4（旧档打印分辨率，逐位可复现）；
+##   Hirshfeld 门 = 1e-3 —— 它的逐点权重列本来就有非唯一性下限（自由原子开壳层
+##   近简并 UHF 可在轨道间做能量不变转动），实测见 `evidence/common_grid/NOTE_hirshfeld_weight_nonuniqueness_20261012.md`。把它按 1e-4 卡会把正常抖动判成失败。
+   S22_02       水二聚体     逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0001
+   S22_01       氨二聚体     逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000
+   S22_08       甲烷二聚体    逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000
+   S22_11       苯二聚体(A)  逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体A_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OVER +0.0064
+   S22_20       苯二聚体(B)  逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体B_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OVER +0.0079
+   S22_18       苯-氨      逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OVER +0.0130
+   S22_10       苯-甲烷     逐列认证：新档六列 vs `20261012T054743Z_hirshfeld_crossfamily_l1_苯-甲烷_after_unitfix.out` → OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OK +0.0000, OVER +0.0093
+!! 有列新旧不符：[('S22_11', 'hirshfeld', 0.006400000000000183, 0.001), ('S22_20', 'hirshfeld', 0.007899999999999796, 0.001), ('S22_18', 'hirshfeld', 0.013000000000000123, 0.001), ('S22_10', 'hirshfeld', 0.009300000000000086, 0.001)] ⇒ 满表与既有表不同源，先查改动再出正文
+# exit=1 at 2026-10-14T03:02:02Z

@@ -1,0 +1,13 @@
+# artifact_kind=machine_census —— 盘上文件编码普查，不是测量结果
+# 生成 2026-10-18T12:27:24.814336+00:00  根=<REPO>
+# 扫过 954 份；非 UTF-8 21 份；其中按扩展名本该是二进制 18 份（不算缺陷）
+# 真文本缺陷 3 份：
+   档                                                                     字节     utf8断      gbk断    cp936断  gb18030断
+   evidence/common_grid/20261015T112930Z_s22_full_band_columns.out      457         5       273       273        全解
+   evidence/common_grid/20261015T113106Z_s22_full_band_columns.out     6405         5      6221      6221        全解
+   evidence/common_grid/20261015T113349Z_s22_full_band_columns.out     6507         5      6323      6323        全解
+# 是否同一个生成器：按档名尾段去重得 1 组 ⇒ 同一族，先修生成器不是修档
+# 形状判读：utf8 与 gbk **都**在某个偏移断掉 ⇒ 混合编码（一次归档被两侧打印），不是单个字符特殊；gb18030 全解只是超集效应，别当没问题
+
+VERDICT NEEDS_FIX —— 真文本缺陷 3 份 / 全量 954 份
+# exit=1 at 2026-10-18T12:27:29Z

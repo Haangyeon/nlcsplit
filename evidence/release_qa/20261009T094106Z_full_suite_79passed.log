@@ -1,0 +1,16 @@
+# 全套 pytest：evidence/release_qa/20261009T094106Z_full_suite_79passed.log 由 nlcsplit/logs/full_suite_20261009.log 原样入库
+# git HEAD 2ac6e2e  run_utc(host clock)=20261009T094106Z
+# 命令：OMP_NUM_THREADS=4 python3 -m pytest nlcsplit/tests -q   （集群默认 python 无 pytest，未擅自装）
+# 上一份全套归档是 79 passed / 355.09 s（2026-10-06，默认线程）；本次限 4 线程 ⇒ 504.09 s 级别耗时属预期
+--- verbatim pytest output follows ---
+........................................................................ [ 91%]
+.......                                                                  [100%]
+79 passed in 504.41s (0:08:24)
+# --- 更正（2026-10-09 晚，事后追查第 4 行；原文不动）---
+# 第 4 行把 2026-10-06 那次称作"归档"，用词错了，本文件当时没有为它留下原件：
+# 全仓 grep "355.09" 只命中三处——本文件第 4 行、它的发布树副本、以及
+# nlcsplit/logs/full_suite_after_closure.log（4 行、无环境头、gitignore 的工作日志，
+# 宿主时钟 mtime 2026-10-06T15:13）。按 software.md 自己定的规矩，工作日志不算可引证据，
+# 所以"上一份全套**归档**"当时刻的准确说法是"上一份全套**工作日志读数**"。
+# 没有把它升级成归档：它缺环境头（线程数/PySCF 版本/HEAD 都没有），
+# 补一份没有来历的档案比留一个用词错误更糟。正文没有引 355.09 s（五份载体 grep 过）。

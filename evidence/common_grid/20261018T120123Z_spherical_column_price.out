@@ -1,0 +1,24 @@
+# artifact_kind=probe_definition_price —— 假想定义的定价，不是已认证生产读数
+# 球平均 vs 非球平均 Hirshfeld 列在发表量 E_AB 上差多少  体系 苯-氨  level 1
+# 生成 2026-10-18T12:01:23.914881+00:00
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# sha256 nlcsplit/partition.py    = ec6c0c569241fc7df1f842cce3474f32
+# sha256 nlcsplit/nlc.py          = 2817acd6fd37a2f68bd40540e7a094c0
+# 预登记判据：PRICE/NEWCOL_OK 用 0.0001（打印分辨率）与 0.001（Hirshfeld 认证门）两档卡
+# T=1 线程环境 ['1', '1', '1']  原子 16  网格 50104  n_zero 0  球平均归一偏离 8.88e-16
+#   E_AB 非球平均 -1.298903  球平均 -1.311887  |ΔE_nl| 3.55e-15
+#   C  1-RDM cf9d08665a1007da vs 11dd1badefd0f21f **异解**
+#   H  1-RDM b2134786987bc756 vs b2134786987bc756 同解
+#   N  1-RDM 1a280aa4c626a982 vs a5e6ee174e8ddab8 **异解**
+# T=8 线程环境 ['8', '8', '8']  原子 16  网格 50104  n_zero 0  球平均归一偏离 8.88e-16
+#   E_AB 非球平均 -1.318818  球平均 -1.311893  |ΔE_nl| 1.07e-14
+#   C  1-RDM cf9d08665a1007da vs 11dd1badefd0f21f **异解**
+#   H  1-RDM b2134786987bc756 vs b2134786987bc756 同解
+#   N  1-RDM 1a280aa4c626a982 vs a5e6ee174e8ddab8 **异解**
+# PRICE      = |E_AB(非球平均,T1) − E_AB(球平均,T1)| = 1.2984e-02  [HIGH]
+# NEWCOL_OK  = |E_AB(球平均,T1) − E_AB(球平均,T8)|   = 5.6801e-06  [LOW]
+# OLDCOL     = |E_AB(非球平均,T1) − E_AB(非球平均,T8)| = 1.9915e-02  [HIGH]
+# 参照：已归档的 S22_18 hirshfeld 新旧不符 = 0.0130（`20261018T111923Z_*_closeout.out`）⇒ OLDCOL 与之同量级才算复现了同一个病因
+
+VERDICT REDEFINITION_IS_A_NEW_COLUMN —— 球平均把 E_AB 动 0.0130（≥0.001）⇒ 换定义等于换一列，旧读数不能写成'同一测量的可复现版' | SPHERICAL_COLUMN_IS_PRINTABLE —— 球平均列跨线程 5.7e-06 ≤ 0.0001
+# exit=0 at 2026-10-18T12:53:58Z

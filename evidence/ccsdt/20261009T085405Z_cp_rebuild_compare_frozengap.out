@@ -1,0 +1,164 @@
+== ARCHIVE: 同一份对照表，补一列"冻结核—全电子之差"的两种算法
+
+为什么有这一份。复查附录 S27 那行时发现它写着"the frozen/all-electron gap is itself
+basis-dependent, growing from 0.035-0.043 kcal/mol at 6-31G* to 0.192-0.202 here"。这句话
+的数字**来自被取代的那一列**：0.035–0.202 是单体在自己基组下（鬼函数修正之前）冻结核与全
+电子 CP 值之差，不是冻结核选择本身的效应。鬼函数构造下同一套体系把这个差压到 0.0025–0.0037
+（苯-水 aug 档 0.2020 → 0.0037），也就是说正文 §3.2 已经讲过的那件事——未校正的两点阶梯
+"比较的是同一误差的两个不同大小"——在冻结核这一侧同样成立，而附录当时把它当成物理写了。
+要么改成带出处的两列并排，要么这句话就不该存在。`cp_rebuild_compare.py` 因此加了一张表，
+左右两列同印：左列是旧的单体在自己基组下的差，右列是鬼函数下的差。
+
+护栏（这次改动必须是**纯加性**的）：与 2026-10-05 那份
+（`20261005T0414Z_cp_rebuild_compare_labels_fixed.out`）的 verbatim 体逐行 diff，
+删除行数必须为 0、修改行数必须为 0，只许出现新增行；脚本自己的判据照旧——
+30/30 复合物 CCSD(T) 能量在 1e-07 Ha 内一致（最差 2.00e-10），所以两列之差只可能来自
+单体构造方式。手工验算与脚本独立相符：苯-水 aug 档 -2.7107 与 -2.7144 之差 0.0037。
+
+本文件除本段说明与下面的分隔行之外，全部是 `python3 -u evidence/ccsdt/cp_rebuild_compare.py`
+的标准输出原文。
+--- verbatim output follows ---
+== does the corrected re-run differ from the archived run ONLY on the monomer side? ==
+  parsed 30 rows from 7 superseded archives, 30 rows from 4 corrected archives
+  identity bar on the complex CCSD(T) energy: 1e-07 Ha
+
+  system       basis         conv       E_dimer_old    E_dimer_new       |dE|     dE_old     dE_CP BSSE
+  氨二聚体         6-31g*        all     -112.7502292207 -112.7502292207    0.0e+00    -4.4731   -2.5404    1.9327
+      monomer basis dimension moved 20/20 -> 40/40 while the complex stayed at 40 (this is the fix; the complex line is what makes it attributable)
+  氨二聚体         6-31g*        frozen  -112.7467281526 -112.7467281526    0.0e+00    -4.4554   -2.5380    1.9174
+      monomer basis dimension moved 20/20 -> 40/40 while the complex stayed at 40 (this is the fix; the complex line is what makes it attributable)
+  氨二聚体         aug-cc-pvdz   all     -112.8611085566 -112.8611085566    0.0e+00    -3.3721   -2.6218    0.7503
+      monomer basis dimension moved 50/50 -> 100/100 while the complex stayed at 100 (this is the fix; the complex line is what makes it attributable)
+  氨二聚体         aug-cc-pvdz   frozen  -112.8558358607 -112.8558358607    0.0e+00    -3.3307   -2.6188    0.7119
+      monomer basis dimension moved 50/50 -> 100/100 while the complex stayed at 100 (this is the fix; the complex line is what makes it attributable)
+  水二聚体         6-31g*        all     -152.4233210927 -152.4233210927    0.0e+00    -6.8869   -4.8821    2.0048
+      monomer basis dimension moved 18/18 -> 36/36 while the complex stayed at 36 (this is the fix; the complex line is what makes it attributable)
+  水二聚体         6-31g*        frozen  -152.4204261343 -152.4204261343    0.0e+00    -6.8559   -4.8789    1.9770
+      monomer basis dimension moved 18/18 -> 36/36 while the complex stayed at 36 (this is the fix; the complex line is what makes it attributable)
+  水二聚体         aug-cc-pvdz   all     -152.5606181173 -152.5606181173    0.0e+00    -5.3273   -4.3361    0.9912
+      monomer basis dimension moved 41/41 -> 82/82 while the complex stayed at 82 (this is the fix; the complex line is what makes it attributable)
+  水二聚体         aug-cc-pvdz   frozen  -152.5559707371 -152.5559707371    0.0e+00    -5.2478   -4.3316    0.9162
+      monomer basis dimension moved 41/41 -> 82/82 while the complex stayed at 82 (this is the fix; the complex line is what makes it attributable)
+  甲烷二聚体        6-31g*        all     -80.7137787311 -80.7137787311    0.0e+00    -0.1872   +0.0732    0.2604
+      monomer basis dimension moved 22/22 -> 44/44 while the complex stayed at 44 (this is the fix; the complex line is what makes it attributable)
+  甲烷二聚体        6-31g*        frozen  -80.7095164355 -80.7095164355    0.0e+00    -0.1784   +0.0734    0.2518
+      monomer basis dimension moved 22/22 -> 44/44 while the complex stayed at 44 (this is the fix; the complex line is what makes it attributable)
+  甲烷二聚体        aug-cc-pvdz   all     -80.7982571569 -80.7982571569    0.0e+00    -0.9814   -0.4257    0.5557
+      monomer basis dimension moved 59/59 -> 118/118 while the complex stayed at 118 (this is the fix; the complex line is what makes it attributable)
+  甲烷二聚体        aug-cc-pvdz   frozen  -80.7921979466 -80.7921979466    0.0e+00    -0.9473   -0.4253    0.5220
+      monomer basis dimension moved 59/59 -> 118/118 while the complex stayed at 118 (this is the fix; the complex line is what makes it attributable)
+  苯-氨          6-31g*        all     -287.9118660448 -287.9118660448    0.0e+00    -2.3137   -0.8912    1.4225
+      monomer basis dimension moved 96/20 -> 116/116 while the complex stayed at 116 (this is the fix; the complex line is what makes it attributable)
+  苯-氨          6-31g*        frozen  -287.8953264882 -287.8953264882    0.0e+00    -2.2737   -0.8882    1.3855
+      monomer basis dimension moved 96/20 -> 116/116 while the complex stayed at 116 (this is the fix; the complex line is what makes it attributable)
+  苯-氨          aug-cc-pvdz   all     -288.0647845959 -288.0647845959    0.0e+00    -3.9240   -1.8824    2.0416
+      monomer basis dimension moved 192/50 -> 242/242 while the complex stayed at 242 (this is the fix; the complex line is what makes it attributable)
+  苯-氨          aug-cc-pvdz   frozen  -288.0454894838 -288.0454894838    0.0e+00    -3.7273   -1.8795    1.8478
+      monomer basis dimension moved 192/50 -> 242/242 while the complex stayed at 242 (this is the fix; the complex line is what makes it attributable)
+  苯-水          6-31g*        all     -307.7487410098 -307.7487410098    0.0e+00    -3.6963   -1.9756    1.7207
+      monomer basis dimension moved 96/18 -> 114/114 while the complex stayed at 114 (this is the fix; the complex line is what makes it attributable)
+  苯-水          6-31g*        frozen  -307.7325147710 -307.7325147710    0.0e+00    -3.6536   -1.9724    1.6812
+      monomer basis dimension moved 96/18 -> 114/114 while the complex stayed at 114 (this is the fix; the complex line is what makes it attributable)
+  苯-水          aug-cc-pvdz   all     -307.9143609823 -307.9143609823    0.0e+00    -4.7192   -2.7144    2.0048
+      monomer basis dimension moved 192/41 -> 233/233 while the complex stayed at 233 (this is the fix; the complex line is what makes it attributable)
+  苯-水          aug-cc-pvdz   frozen  -307.8954079531 -307.8954079531    0.0e+00    -4.5172   -2.7107    1.8065
+      monomer basis dimension moved 192/41 -> 233/233 while the complex stayed at 233 (this is the fix; the complex line is what makes it attributable)
+  苯-甲烷         6-31g*        all     -271.8950372464 -271.8950372464    0.0e+00    -1.0937   +0.0790    1.1727
+      monomer basis dimension moved 96/22 -> 118/118 while the complex stayed at 118 (this is the fix; the complex line is what makes it attributable)
+  苯-甲烷         6-31g*        frozen  -271.8781080731 -271.8781080731    0.0e+00    -1.0583   +0.0816    1.1399
+      monomer basis dimension moved 96/22 -> 118/118 while the complex stayed at 118 (this is the fix; the complex line is what makes it attributable)
+  苯-甲烷         aug-cc-pvdz   all     -272.0339163577 -272.0339163576    1.0e-10    -3.2010   -1.1225    2.0785
+      monomer basis dimension moved 192/59 -> 251/251 while the complex stayed at 251 (this is the fix; the complex line is what makes it attributable)
+  苯-甲烷         aug-cc-pvdz   frozen  -272.0142126389 -272.0142126391    2.0e-10    -3.0093   -1.1200    1.8893
+      monomer basis dimension moved 192/59 -> 251/251 while the complex stayed at 251 (this is the fix; the complex line is what makes it attributable)
+  苯二聚体(A)      6-31g*        all     -463.0758554757 -463.0758554757    0.0e+00    -1.5851   +1.4614    3.0465
+      monomer basis dimension moved 96/96 -> 192/192 while the complex stayed at 192 (this is the fix; the complex line is what makes it attributable)
+  苯二聚体(A)      6-31g*        frozen  -463.0462305151 -463.0462305151    0.0e+00    -1.4999   +1.4712    2.9711
+      monomer basis dimension moved 96/96 -> 192/192 while the complex stayed at 192 (this is the fix; the complex line is what makes it attributable)
+  苯二聚体(A)      aug-cc-pvdz   all     -463.2717769303 -463.2717769304    1.0e-10    -6.5267   -2.0344    4.4923
+      monomer basis dimension moved 192/192 -> 384/384 while the complex stayed at 384 (this is the fix; the complex line is what makes it attributable)
+  苯二聚体(A)      aug-cc-pvdz   frozen  -463.2382776243 -463.2382776243    0.0e+00    -6.0626   -2.0253    4.0373
+      monomer basis dimension moved 192/192 -> 384/384 while the complex stayed at 384 (this is the fix; the complex line is what makes it attributable)
+  苯二聚体(B)      6-31g*        all     -463.0775790621 -463.0775790621    0.0e+00    -2.6300   -0.5798    2.0502
+      monomer basis dimension moved 96/96 -> 192/192 while the complex stayed at 192 (this is the fix; the complex line is what makes it attributable)
+  苯二聚体(B)      6-31g*        frozen  -463.0479711581 -463.0479711581    0.0e+00    -2.5506   -0.5748    1.9758
+      monomer basis dimension moved 96/96 -> 192/192 while the complex stayed at 192 (this is the fix; the complex line is what makes it attributable)
+
+  rows in the corrected archives with no superseded counterpart: none
+  superseded rows still awaiting a corrected re-run: 0
+
+== the §3.2 deviation table (6-31g*, frozen core, counterpoise, DFT at level 2) ==
+  system                           CC dE_CP  DFT dE_CP  deviation corr. BSSE
+  water                             -4.8789    -6.1526    -1.2737     1.9770
+  ammonia                           -2.5380    -3.7277    -1.1897     1.9174
+  methane                           +0.0734    -0.3765    -0.4499     0.2518
+  benzene-water                     -1.9724    -3.2671    -1.2947     1.6812
+  benzene-ammonia                   -0.8882    -2.2227    -1.3345     1.3855
+  benzene-methane                   +0.0816    -1.3406    -1.4222     1.1399
+  benzene dimer (parallel-displaced, S22_11)    +1.4712    -1.9403    -3.4115     2.9711
+  benzene dimer (T-shaped, S22_20)    -0.5748    -2.4297    -1.8549     1.9758
+  eight deviations, 8 negative, 0 positive (the sign of DFT minus CC)
+  DFT column is one environment: PySCF 2.12.1 for all eight rows (the 2.14.0 batch is excluded above and compared in evidence/l2cp/)
+
+== 锚自己的跨基组幅度，以及它相对偏差的比值 (6-31g* -> aug-cc-pVDZ, frozen) ==
+  system                         dE_CP 631 dE_CP aug      span span/dev
+  water                            -4.8789   -4.3316    0.5473    0.43
+  ammonia                          -2.5380   -2.6188    0.0808    0.07
+  methane                          +0.0734   -0.4253    0.4987    1.11
+  benzene-water                    -1.9724   -2.7107    0.7383    0.57
+  benzene-ammonia                  -0.8882   -1.8795    0.9913    0.74
+  benzene-methane                  +0.0816   -1.1200    1.2016    0.84
+  benzene dimer (parallel-displaced, S22_11)   +1.4712   -2.0253    3.4965    1.02
+  benzene dimer (T-shaped, S22_20)   -0.5748         -         -       -   (aug 档未归档，不印比值)
+  比值 <1 的体系：5；>1 的：2 —— 两个幅度同量级，谁也不是对方的误差
+
+== 泛函那一侧的 BSSE = dE_CP - ΔE_int(未校正)，两端同环境同档位 (level 2) ==
+  water                          dE_CP   -6.1526   ΔE_int   -7.8157   BSSE  1.6631
+  ammonia                        dE_CP   -3.7277   ΔE_int   -5.1660   BSSE  1.4383
+  methane                        dE_CP   -0.3765   ΔE_int   -0.6617   BSSE  0.2853
+  benzene-water                  dE_CP   -3.2671   ΔE_int   -4.3409   BSSE  1.0738
+  benzene-ammonia                dE_CP   -2.2227   ΔE_int   -2.9288   BSSE  0.7061
+  benzene-methane                dE_CP   -1.3406   ΔE_int   -1.7800   BSSE  0.4394
+  benzene dimer (parallel-displaced, S22_11) dE_CP   -1.9403   ΔE_int   -3.5782   BSSE  1.6379
+  benzene dimer (T-shaped, S22_20) dE_CP   -2.4297   ΔE_int   -3.1859   BSSE  0.7562
+
+== frozen-core vs all-electron on one (system, basis), measured two ways ==
+   left: monomers built in their own basis (the construction this paper no longer
+   uses); right: ghost monomers. A gap that only shows up in the left column was
+   never a frozen-core effect - it is BSSE changing size with the basis.
+  system                         basis           gap own-basis   gap ghost
+  water                          6-31g*                 0.0310      0.0032
+  water                          aug-cc-pvdz            0.0795      0.0045
+  ammonia                        6-31g*                 0.0177      0.0024
+  ammonia                        aug-cc-pvdz            0.0414      0.0030
+  methane                        6-31g*                 0.0088      0.0002
+  methane                        aug-cc-pvdz            0.0341      0.0004
+  benzene-water                  6-31g*                 0.0427      0.0032
+  benzene-water                  aug-cc-pvdz            0.2020      0.0037
+  benzene-ammonia                6-31g*                 0.0400      0.0030
+  benzene-ammonia                aug-cc-pvdz            0.1967      0.0029
+  benzene-methane                6-31g*                 0.0354      0.0026
+  benzene-methane                aug-cc-pvdz            0.1917      0.0025
+  benzene dimer (parallel-displaced, S22_11) 6-31g*                 0.0852      0.0098
+  benzene dimer (parallel-displaced, S22_11) aug-cc-pvdz            0.4641      0.0091
+  benzene dimer (T-shaped, S22_20) 6-31g*                 0.0794      0.0050
+
+== the same deviation at both grid levels (6-31g*, frozen core, counterpoise) ==
+  system            level 1    level 2       step   |step| sign of the deviation
+  水二聚体              -1.5713    -1.2737    +0.2976   0.2976 no flip
+  氨二聚体              -0.5436    -1.1897    -0.6461   0.6461 no flip
+  甲烷二聚体             -0.2307    -0.4499    -0.2191   0.2191 no flip
+  苯-水               -1.4220    -1.2947    +0.1273   0.1273 no flip
+  苯-氨               -1.4373    -1.3345    +0.1028   0.1028 no flip
+  苯-甲烷              -1.4205    -1.4222    -0.0017   0.0017 no flip
+  苯二聚体(A)           -2.1945    -3.4115    -1.2170   1.2170 no flip
+  苯二聚体(B)           -2.1205    -1.8549    +0.2656   0.2656 no flip
+
+  VERDICT: 30/30 comparable rows have identical complex CCSD(T) energies to 1.0e-07 Ha (worst 2.00e-10), so every difference in the dE_CP column comes from the monomer construction and not from the machine, the thread count or the geometry parse.
+
+--- additive-guard transcript (2026-10-09, 从本文件自己的正文重跑) ---
+diff -u <20261005 marker 之后的 116 行> <本文件 marker 之后的 137 行>
+removed_lines=0 changed_hunks=0 added_lines=20
+第一版护栏数错过：纯追加的 hunk 头是 116a117,137，也以数字开头，被我的 ^[0-9] 计数当成改动，
+于是它对一次合法的新增报了 REFUSED。计数改成只认 c 型 hunk 头与 - 行，误报才消失——
+记在这里是因为一个会误报的守卫和一个不会失败的守卫一样危险。

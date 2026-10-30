@@ -1,0 +1,6 @@
+# H3N-BH3 ORCA NL anchor; geometry from ab_opt.xyz
+# Extract 'NL Energy, E(C,NL)' only after CONVERGED and normal termination.
+! WB97X-V 6-31G* TightSCF
+%pal nprocs 4 end
+%maxcore 1000
+* xyzfile 0 1 ab_bh3.xyz

@@ -1,0 +1,54 @@
+== ARCHIVE: 反泊松列换环境之后的三条 pytest 计量（仓内全量 / 仓内快车道 / 出树安装的 wheel）==
+
+为什么这一份要入库。`paper/software.md` 里"出树装 wheel 跑什么"那句话是要跟着每次发布变的，
+而它上一次更新是 2026-10-02 的 48 passed / 1 skipped。本轮加了鬼函数约定的测试、又把 DFT
+反泊松列搬到 PySCF 2.12.1，所以三个数一起重测，并且把**为什么有两处跳过**逐行留在档案里：
+两处都是"官方 S22 几何不随包走"，它们 skip 而不是 fail，但 skip 与 pass 打在同一个绿点上，
+所以理由必须能被读出来，而不是靠 `--tb=short` 之外的什么记忆。
+
+三条各自的分母不同，不许相加、不许互相替换：
+  一、仓内全量 = 72 passed（0 skipped），350.47 s；
+  二、仓内快车道（`-m "not slow"`）= 50 passed、22 deselected，26.50 s；
+  三、出树 wheel = 50 passed、2 skipped，308.95 s，52 个 item。
+72 与 52 的差是**不随包发布**的测试模块（`test_fastpair_ide.py` 依赖未发布的控制模块那一类），
+不是"少跑了"，也不是"没跑通"。
+
+wheel 是被测对象而不是源码树：`dist/nlcsplit-0.1.0-py3-none-any.whl`，
+sha256 cab807f9cdc397d8141161143b137b00148b324e594223d4cc7fc5e733220f29（与
+`make_public_repo.js` 报给 dist/ 的那一枚逐字节相同）。安装方式
+`pip install --target=./lib --no-deps <wheel>`，运行目录 `~/wheeltest_cp2121`，
+`PYTHONPATH=./lib`，在 WSL 的 python 3.10.12 / PySCF 2.12.1 下——即本文全部 DFT 数所在的环境。
+
+这份档案**不主张**：不主张 CI 两个 arm 的计数（那是 `20261001T150706Z` 那份归档的口径，
+本轮没有 token 就不能重测，正文按各自口径引用）；不主张 72 个通过里包含官方几何相关的两条
+——它们在仓内是真跑，在出树是 skip，这一条正是两边的差额之一。
+
+--- verbatim output follows ---
+
+
+===== (1) working repository, full suite =====
+
+===== (1) working repository, full suite =====
+........................................................................ [100%]
+72 passed in 350.47s (0:05:50)
+RC=0
+
+===== (2) working repository, fast lane (-m 'not slow') =====
+...................................................                      [100%]
+51 passed, 21 deselected in 26.50s
+
+===== (3) wheel installed outside the source tree =====
+......s...............s.............................                     [100%]
+=========================== short test summary info ============================
+SKIPPED [1] lib/nlcsplit/tests/test_cc_convention.py:133: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+SKIPPED [1] lib/nlcsplit/tests/test_geometry.py:72: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+50 passed, 2 skipped in 308.95s (0:05:08)
+RC=0
+
+
+--- 补记（同日，导出器重打之后）---
+本档案测的那一枚 wheel 是 sha256 cab807f9…。写完后 `make_public_repo.js` 又重打了一次，
+同一棵树的产物哈希变成 1384c98a…。这不是内容变了：wheel 的哈希是**构建时刻**的指纹
+（RECORD 与打包时间戳进哈希），成员表由导出器的 gate F 逐条比对。所以引用一个 wheel 哈希
+必须同时写"哪一次构建"，否则下一次重打就把它变成假陈述。上面第三节那一跑的产物是
+cab807f9 那枚，运行目录里的文件字节没变。

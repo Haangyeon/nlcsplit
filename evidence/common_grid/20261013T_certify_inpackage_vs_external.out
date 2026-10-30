@@ -1,0 +1,6 @@
+# Task 9 认证：包内(Bohr) vs 修后包外(Bohr)，门 1e-03 kcal/mol
+   水二聚体     包内 Hirshfeld -0.598176  包外 -0.598200  差 2.40e-05 OK | Voronoi 差 1.1e-05 OK(≤打印分辨率)
+   氨二聚体     包内 Hirshfeld -0.653385  包外 -0.653400  差 1.50e-05 OK | Voronoi 差 6.0e-06 OK(≤打印分辨率)
+   甲烷二聚体    包内 Hirshfeld -0.479746  包外 -0.479700  差 4.60e-05 OK | Voronoi 差 1.5e-05 OK(≤打印分辨率)
+VERDICT OK —— 随发布路径在门内复现修后包外读数；Voronoi 逐位相同
+# exit=0

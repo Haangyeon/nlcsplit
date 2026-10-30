@@ -1,0 +1,6 @@
+T=1  rc=0  包内两次 = 0.000e+00  互比 max|ΔS| = 0.000e+00  VERDICT IDENTICAL
+T=2  rc=3  包内两次 = 8.509e-02  互比 max|ΔS| = 6.095e-01  VERDICT NOT_REPRODUCIBLE
+T=4  rc=3  包内两次 = 7.103e-01  互比 max|ΔS| = 6.611e-01  VERDICT NOT_REPRODUCIBLE
+T=8  rc=3  包内两次 = 7.107e-01  互比 max|ΔS| = 7.020e-01  VERDICT NOT_REPRODUCIBLE
+# 明细见同前缀的 _thread{1,2,4,8}_hirshfeld_equivalence.out
+# exit=0 at 2026-10-13T18:20:35Z

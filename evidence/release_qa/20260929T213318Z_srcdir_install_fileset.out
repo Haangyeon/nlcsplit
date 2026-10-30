@@ -1,0 +1,45 @@
+=== pip install --no-deps --target /tmp/probe_20260929T213318Z .   (从母仓源码目录装) ===
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+--- 装出来的 .py 文件清单 ---
+nlcsplit/__init__.py
+nlcsplit/examples/__init__.py
+nlcsplit/examples/check_fast_pair.py
+nlcsplit/examples/check_screen_bound_ide.py
+nlcsplit/examples/check_soft_partition.py
+nlcsplit/examples/coretail_bound.py
+nlcsplit/examples/hybrid_nearfield.py
+nlcsplit/examples/probe_bound_forms.py
+nlcsplit/examples/quickstart.py
+nlcsplit/fastpair.py
+nlcsplit/fastpair_ide.py
+nlcsplit/figures.py
+nlcsplit/geomlib.py
+nlcsplit/nlc.py
+nlcsplit/partition.py
+nlcsplit/step1_validate.py
+nlcsplit/step2_convergence.py
+nlcsplit/step_b_scan.py
+nlcsplit/step_c_relaxation.py
+nlcsplit/step_d_floor.py
+nlcsplit/step_e_kernel.py
+nlcsplit/step_f_dispersion.py
+nlcsplit/step_g_basis.py
+nlcsplit/step_h_s22.py
+nlcsplit/step_i_gridrepr.py
+nlcsplit/step_j_scaling.py
+nlcsplit/step_k_population.py
+nlcsplit/step_l_sweep_compare.py
+nlcsplit/tests/__init__.py
+nlcsplit/tests/conftest.py
+nlcsplit/tests/test_fastpair.py
+nlcsplit/tests/test_fastpair_ide.py
+nlcsplit/tests/test_geometry.py
+nlcsplit/tests/test_kernel.py
+nlcsplit/tests/test_partition_factors.py
+nlcsplit/tests/test_regression.py
+nlcsplit/tests/test_tolerance_probe.py
+--- 计数 ---
+37
+--- wheel 成员计数（对照）---
+31 .py of 36 members

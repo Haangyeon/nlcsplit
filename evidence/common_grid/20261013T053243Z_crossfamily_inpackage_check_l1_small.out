@@ -1,0 +1,59 @@
+# 第零'波对跑：家族外分区并进 partition.py 之后，包内路径 vs 包外（归档那条）路径
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# sha256 nlcsplit/partition.py                          = ec6c0c569241fc7df1f842cce3474f329ba81254c8872a8f5057ca94be4fdc73
+# sha256 nlcsplit/nlc.py                                = 2817acd6fd37a2f68bd40540e7a094c004b4de5e67449621bdfb6e425e1c2f79
+# sha256 nlcsplit/step_h_s22.py                         = 9bccd14baff0e86b16d7ae3a78b8aac8ba8eb1844df33e9088a8d78fc91d5482
+# sha256 evidence/common_grid/hirshfeld_crossfamily.py  = f24579d9385cf9cc07b946fe03b8645d49b23e2dea685d3f14da7d22a2d89406
+# sha256 evidence/common_grid/crossfamily_inpackage_check.py = 4756af2374bc0211453d940673e53583211a49d9bf9932dc5018f7e30b633cd1
+# level = 1  b = 6  C = 0.01  DOUBLE = 1（1 = 同一进程里两条路径都跑分解）
+# 包内方案表：SCHEMES(家族内) = becke,becke-becke-rad,becke-treutler,stratmann ; CROSS_FAMILY_SCHEMES = voronoi,hirshfeld ; ALL_SCHEMES = becke,becke-becke-rad,becke-treutler,stratmann,voronoi,hirshfeld
+
+== 水二聚体  level=1  原子 6  公共网格 N=18336  片间min 1.95 Å
+   构造逐位相等  voronoi True (dtype float64/float64, shape (6, 18336)/(6, 18336)) | hirshfeld 最大逐点权重差 = 8.698e-01（下溢点 0，门见文件头 HIR_TOL 的来由）
+   家族内 becke            E_AB =   -0.6010  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 becke-becke-rad  E_AB =   -0.5577  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 becke-treutler   E_AB =   -0.5747  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 stratmann        E_AB =   -0.5989  （dispatcher 与 partition_matrix 逐位相等：True）
+   Voronoi(包内)   E_AB =   -0.5836  E_NL =    -7.8950
+   Hirshfeld(包内) E_AB =   -0.5982  E_NL =    -7.8950
+   同进程双跑（旧权重 vs 新权重）：voronoi -0.583589 vs -0.583589 差 0.0e+00 bit-identical | hirshfeld -0.622837 vs -0.598176 差 2.5e-02 OVER（门 1e-03）
+   → 家族内跨度 = 0.0433 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0433 kcal/mol
+   → 比值（含家族外 / 家族内） = 1.00
+   护栏：nearest(公共网格) E_NL 与普查归档 -7.8950 之差 = 0.0000（门 0.005）OK
+   （与归档对照：读数请逐位比对 evidence/common_grid/20261009T155508Z_hirshfeld_crossfamily_l1_small_after_position_fix.out 里同名体系的行）
+   （用时 365.4 s）
+
+== 氨二聚体  level=1  原子 8  公共网格 N=22616  片间min 2.15 Å
+   构造逐位相等  voronoi True (dtype float64/float64, shape (8, 22616)/(8, 22616)) | hirshfeld 最大逐点权重差 = 6.905e-01（下溢点 0，门见文件头 HIR_TOL 的来由）
+   家族内 becke            E_AB =   -0.6486  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 becke-becke-rad  E_AB =   -0.6202  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 becke-treutler   E_AB =   -0.6300  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 stratmann        E_AB =   -0.6473  （dispatcher 与 partition_matrix 逐位相等：True）
+   Voronoi(包内)   E_AB =   -0.6398  E_NL =    -8.9057
+   Hirshfeld(包内) E_AB =   -0.6534  E_NL =    -8.9057
+   同进程双跑（旧权重 vs 新权重）：voronoi -0.639794 vs -0.639794 差 0.0e+00 bit-identical | hirshfeld -0.681080 vs -0.653385 差 2.8e-02 OVER（门 1e-03）
+   → 家族内跨度 = 0.0284 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0332 kcal/mol
+   → 比值（含家族外 / 家族内） = 1.17
+   （与归档对照：读数请逐位比对 evidence/common_grid/20261009T155508Z_hirshfeld_crossfamily_l1_small_after_position_fix.out 里同名体系的行）
+   （用时 502.9 s）
+
+== 甲烷二聚体  level=1  原子 10  公共网格 N=26536  片间min 3.16 Å
+   构造逐位相等  voronoi True (dtype float64/float64, shape (10, 26536)/(10, 26536)) | hirshfeld 最大逐点权重差 = 6.724e-01（下溢点 0，门见文件头 HIR_TOL 的来由）
+   家族内 becke            E_AB =   -0.4746  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 becke-becke-rad  E_AB =   -0.4771  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 becke-treutler   E_AB =   -0.4737  （dispatcher 与 partition_matrix 逐位相等：True）
+   家族内 stratmann        E_AB =   -0.4744  （dispatcher 与 partition_matrix 逐位相等：True）
+   Voronoi(包内)   E_AB =   -0.4709  E_NL =    -9.3976
+   Hirshfeld(包内) E_AB =   -0.4797  E_NL =    -9.3976
+   同进程双跑（旧权重 vs 新权重）：voronoi -0.470915 vs -0.470915 差 0.0e+00 bit-identical | hirshfeld -0.512554 vs -0.479746 差 3.3e-02 OVER（门 1e-03）
+   → 家族内跨度 = 0.0034 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0088 kcal/mol
+   → 比值（含家族外 / 家族内） = 2.60
+   （与归档对照：读数请逐位比对 evidence/common_grid/20261009T155508Z_hirshfeld_crossfamily_l1_small_after_position_fix.out 里同名体系的行）
+   （用时 668.7 s）
+
+VERDICT REFUSED —— 对跑不过：[('水二聚体', 'hirshfeld-readings-over-tol', 0.024661432061486743), ('氨二聚体', 'hirshfeld-readings-over-tol', 0.027694458438395908), ('甲烷二聚体', 'hirshfeld-readings-over-tol', 0.03280846826813555)]
+# exit=1 at 2026-10-13T05:58:22Z

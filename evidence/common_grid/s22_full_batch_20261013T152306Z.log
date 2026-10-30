@@ -1,0 +1,74 @@
+# W4 本机批 起始 20261013T152306Z host=<OPERATOR> 核=20
+# 偏离：集群隧道不可达，改本机并行；判据与同源约束写在 s22_full_certificate.py 文件头
+  提交 S22_03 (3 线程) -> 20261013T152306Z_s22_full_certificate_S22_03_l1_small.out
+  提交 S22_01 (3 线程) -> 20261013T152306Z_s22_full_certificate_S22_01_l1_small.out
+  提交 S22_02 (3 线程) -> 20261013T152306Z_s22_full_certificate_S22_02_l1_small.out
+  提交 S22_04 (3 线程) -> 20261013T152306Z_s22_full_certificate_S22_04_l1_small.out
+  提交 S22_16 (3 线程) -> 20261013T152306Z_s22_full_certificate_S22_16_l1_small.out
+  提交 S22_08 (3 线程) -> 20261013T152306Z_s22_full_certificate_S22_08_l1_small.out
+  完成 S22_02 rc=0 bytes=1360
+  完成 S22_01 rc=0 bytes=1364
+  完成 S22_08 rc=0 bytes=1357
+  完成 S22_16 rc=0 bytes=1366
+  完成 S22_03 rc=0 bytes=1366
+  完成 S22_04 rc=0 bytes=1366
+  提交 S22_09 (3 线程) -> 20261013T155004Z_s22_full_certificate_S22_09_l1_small.out
+  完成 S22_09 rc=0 bytes=1367
+波一完成 2026-10-13T16:02:22Z
+  提交 S22_18 (4 线程) -> 20261013T160222Z_s22_full_certificate_S22_18_l1_small.out
+  提交 S22_10 (4 线程) -> 20261013T160222Z_s22_full_certificate_S22_10_l1_small.out
+  提交 S22_12 (4 线程) -> 20261013T160222Z_s22_full_certificate_S22_12_l1_small.out
+  提交 S22_17 (4 线程) -> 20261013T160222Z_s22_full_certificate_S22_17_l1_small.out
+  提交 S22_19 (4 线程) -> 20261013T160222Z_s22_full_certificate_S22_19_l1_small.out
+  完成 S22_17 rc=0 bytes=1365
+  完成 S22_18 rc=0 bytes=1365
+  完成 S22_19 rc=0 bytes=1365
+  完成 S22_10 rc=0 bytes=1365
+  完成 S22_12 rc=0 bytes=1364
+波二完成 2026-10-13T17:43:21Z
+  提交 S22_13 (6 线程) -> 20261013T174321Z_s22_full_certificate_S22_13_l1_small.out
+  提交 S22_05 (6 线程) -> 20261013T174321Z_s22_full_certificate_S22_05_l1_small.out
+  提交 S22_11 (6 线程) -> 20261013T174321Z_s22_full_certificate_S22_11_l1_small.out
+  完成 S22_11 rc=0 bytes=1367
+  完成 S22_13 rc=0 bytes=1369
+  完成 S22_05 rc=0 bytes=1373
+  提交 S22_22 (6 线程) -> 20261013T205228Z_s22_full_certificate_S22_22_l1_small.out
+  提交 S22_20 (6 线程) -> 20261013T205228Z_s22_full_certificate_S22_20_l1_small.out
+  提交 S22_06 (6 线程) -> 20261013T205228Z_s22_full_certificate_S22_06_l1_small.out
+  完成 S22_20 rc=0 bytes=1366
+  完成 S22_06 rc=0 bytes=1368
+  完成 S22_22 rc=0 bytes=1370
+波三完成 2026-10-13T22:55:48Z
+  提交 S22_21 (10 线程) -> 20261013T225548Z_s22_full_certificate_S22_21_l1_small.out
+  提交 S22_14 (10 线程) -> 20261013T225548Z_s22_full_certificate_S22_14_l1_small.out
+  完成 S22_14 rc=0 bytes=1368
+  完成 S22_21 rc=0 bytes=1367
+  提交 S22_15 (10 线程) -> 20261014T004111Z_s22_full_certificate_S22_15_l1_small.out
+  提交 S22_07 (10 线程) -> 20261014T004111Z_s22_full_certificate_S22_07_l1_small.out
+  完成 S22_15 rc=0 bytes=1367
+  完成 S22_07 rc=0 bytes=1371
+波四完成 2026-10-14T02:55:43Z
+## 汇总：各格退出码
+   20261013T152306Z_s22_full_certificate_S22_01_l1_small.out = 0
+   20261013T152306Z_s22_full_certificate_S22_02_l1_small.out = 0
+   20261013T152306Z_s22_full_certificate_S22_03_l1_small.out = 0
+   20261013T152306Z_s22_full_certificate_S22_04_l1_small.out = 0
+   20261013T152306Z_s22_full_certificate_S22_08_l1_small.out = 0
+   20261013T152306Z_s22_full_certificate_S22_16_l1_small.out = 0
+   20261013T155004Z_s22_full_certificate_S22_09_l1_small.out = 0
+   20261013T160222Z_s22_full_certificate_S22_10_l1_small.out = 0
+   20261013T160222Z_s22_full_certificate_S22_12_l1_small.out = 0
+   20261013T160222Z_s22_full_certificate_S22_17_l1_small.out = 0
+   20261013T160222Z_s22_full_certificate_S22_18_l1_small.out = 0
+   20261013T160222Z_s22_full_certificate_S22_19_l1_small.out = 0
+   20261013T174321Z_s22_full_certificate_S22_05_l1_small.out = 0
+   20261013T174321Z_s22_full_certificate_S22_11_l1_small.out = 0
+   20261013T174321Z_s22_full_certificate_S22_13_l1_small.out = 0
+   20261013T205228Z_s22_full_certificate_S22_06_l1_small.out = 0
+   20261013T205228Z_s22_full_certificate_S22_20_l1_small.out = 0
+   20261013T205228Z_s22_full_certificate_S22_22_l1_small.out = 0
+   20261013T225548Z_s22_full_certificate_S22_14_l1_small.out = 0
+   20261013T225548Z_s22_full_certificate_S22_21_l1_small.out = 0
+   20261014T004111Z_s22_full_certificate_S22_07_l1_small.out = 0
+   20261014T004111Z_s22_full_certificate_S22_15_l1_small.out = 0
+# exit=0 at 2026-10-14T02:55:43Z

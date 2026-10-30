@@ -1,0 +1,10 @@
+# 清单丢条目检查器的双向自检  2026-10-13T16:14:43Z
+# 靶文件 evidence/common_grid/MANIFEST.sha256   sha256(前)=a01a9abb0364103bef90dba0cd28a820de4f5eda0f1003fab178e1d7335666ee   备份=/tmp/mf_selftest_4439.bak
+# 要抹掉的条目名 = 20261006T085207Z_ownership_vs_quadrature_l1_small.out
+
+## 用例 A（该响）：rc=0 且输出点名该条目 = 0
+## 还原：sha256(后)=a01a9abb0364103bef90dba0cd28a820de4f5eda0f1003fab178e1d7335666ee  逐字节相同
+## 用例 B（不该响）：rc=0  VERDICT OK —— 没有任何目录的清单条目相对 HEAD 消失
+
+VERDICT REFUSED_CHECKER_DIDNAME_THE_ENTRY —— A 必须响(rc≠0 且点名条目)、还原必须逐字节相同、B 必须不响(rc=0)。
+# exit=1 at 2026-10-13T16:15:14Z

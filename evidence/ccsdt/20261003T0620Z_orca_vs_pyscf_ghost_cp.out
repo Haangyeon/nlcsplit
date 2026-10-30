@@ -1,0 +1,73 @@
+== ARCHIVE: the counterpoise anchor computed twice over — PySCF and ORCA 6.0.1, same geometry ==
+
+这份档案解决的是上一份没问到的那一半。`20261003T0616Z_orca_ghost_probe.out` 只到 RHF，也就是
+只证明解析器接受冒号拼法、鬼函数进了基组空间。**反泊松锚点是耦合簇数**，所以还要问两件事：
+ORCA 的相关模块是不是把这些函数一路带进了 CCSD(T)（而不是只在 SCF 里用了一下），以及
+`FrozenCore` 在几何里多出一个不带核电荷的氧之后，还算不算"冻一个氧 1s"。两件事的读数都在
+下面的逐字输出里，而且都是从 ORCA 自己的输出里读回来的，不是从输入关键字推的。
+
+结论先说：四个量全部对上。
+
+    convention     quantity              ORCA      PySCF      diff
+    frozen core    counterpoise         -4.8790   -4.8789    -0.0001
+    frozen core    uncorrected          -6.8560   -6.8559    -0.0001
+    all-electron   counterpoise         -4.8822   -4.8821    -0.0001
+    all-electron   uncorrected          -6.8870   -6.8869    -0.0001
+
+kcal/mol，判据 0.001（两位程序共用同一基组时，相互作用能达到小数点后三位是应当的；早先版本
+这条判据写的是 0.02，那个宽度能放过一次真正的约定错位——6d 对 5d 就值 0.01–0.1 kcal/mol）。
+
+未校正那一栏**在同一次执行里重算**，是有意为之：本目录 2026-10-03 之前的档案印的就是那个量
+（水二聚体 -6.8559），先复现它，新报的反泊松数才是与同一条记录可比的，而不是与另一台机器、
+另一次解析可比的。
+
+读回来的字段，逐条：
+  · `Basis Dimension Dim` = 36 在复合物、两个带鬼单体上都成立（裸单体 18）。鬼函数进的是
+    相关模块用的同一个空间，不是只有 SCF。
+  · `Frozen core treatment ... chemical core (4 el)` 在复合物、`(2 el)` 在每个带鬼单体上；
+    即"一个氧 1s"，与 PySCF 一侧 `freeze_plan` 给的每片段 1 个轨道一致。第二个氧是鬼，
+    它不带电子，因此不带芯——这一点不能假定，所以是从输出里读的。
+  · `Number of correlated electrons` 16（复合物，冻核）/ 8（单体，冻核）/ 20 与 10（全电子）。
+
+机器与条件：本机 WSL；ORCA 6.0.1（`~/orca6/orca`），`! RHF CCSD(T) 6-31G* TightSCF`，
+%pal nprocs 4，%maxcore 4000 MB；PySCF 2.12.1 / Python 3.10.12，OMP_NUM_THREADS=8，
+MAXMEM 默认 12000 MB；同一份官方 S22 水二聚体几何（S22_02.xyz）。
+KCAL = 627.509474。生产者脚本 `orca_ghost_cc_probe.py` 随本目录发布。
+
+两次执行的差：本档案之前跑过一次同样的脚本（当时代码里根路径是硬编码的，其余一致），
+复合物 CCSD(T) 绝对能量两次相差 2.1e-11 Ha，反泊松相互作用能两次都是 -4.8790。这与
+`README.md` 里"绝对能量在 1e-7 Ha 量级重复、散点落在相互作用能那一侧"的记录一致。
+
+这份档案不支持的主张，写明在这里：它不是 CBS 极限（只有一个基组，没有外推）；不是弛豫几何
+（官方 S22 初始几何）；它只覆盖水二聚体这一个体系（其余体系的跨程序核对见
+`20261001T052943Z_orca_crosscheck_three_systems.out`，那份的对照量是未校正的，其更正见本目录
+`README.md` 顶部 2026-10-03 一节）。
+
+--- verbatim output follows ---
+
+== PySCF (the library the paper's anchor comes from) ==
+  frozen  complex freezes 2 orbital(s), fragments [1, 1] -> dE_CP -4.8789  dE_unc -6.8559  BSSE +1.9771
+  all-el  complex freezes 0 orbital(s), fragments [0, 0] -> dE_CP -4.8821  dE_unc -6.8869  BSSE +2.0048
+  ghost monomer nao: [36, 36] (complex nao=36)
+
+== ORCA 6.0.1, FrozenCore ==
+  dimer   rc=0   normal=True  Dim=36   E=-152.4204260330  core=chemical core (4 el)     correlated_e=16
+  ghost0  rc=0   normal=True  Dim=36   E=-76.2055327241   core=chemical core (2 el)     correlated_e=8
+  ghost1  rc=0   normal=True  Dim=36   E=-76.2071181707   core=chemical core (2 el)     correlated_e=8
+  bare0   rc=0   normal=True  Dim=18   E=-76.2047712838   core=chemical core (2 el)     correlated_e=8
+  bare1   rc=0   normal=True  Dim=18   E=-76.2047289509   core=chemical core (2 el)     correlated_e=8
+  ORCA dE_CP = -4.8790   PySCF -4.8789   diff -0.0001 kcal/mol
+  ORCA dE_unc= -6.8560   PySCF -6.8559   diff -0.0001 kcal/mol
+  basis identity: complex Dim=36 vs PySCF nao=36; ghost monomers 36,36
+
+== ORCA 6.0.1, NoFrozenCore ==
+  dimer   rc=0   normal=True  Dim=36   E=-152.4233209948  core=NO frozen core           correlated_e=20
+  ghost0  rc=0   normal=True  Dim=36   E=-76.2069709580   core=NO frozen core           correlated_e=10
+  ghost1  rc=0   normal=True  Dim=36   E=-76.2085697312   core=NO frozen core           correlated_e=10
+  bare0   rc=0   normal=True  Dim=18   E=-76.2061938851   core=NO frozen core           correlated_e=10
+  bare1   rc=0   normal=True  Dim=18   E=-76.2061519435   core=NO frozen core           correlated_e=10
+  ORCA dE_CP = -4.8822   PySCF -4.8821   diff -0.0001 kcal/mol
+  ORCA dE_unc= -6.8870   PySCF -6.8869   diff -0.0001 kcal/mol
+  basis identity: complex Dim=36 vs PySCF nao=36; ghost monomers 36,36
+
+CC_PROBE_EXIT=0

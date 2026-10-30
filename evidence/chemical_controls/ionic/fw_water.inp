@@ -1,0 +1,6 @@
+# F-...H2O ORCA NL anchor; geometry from fw_opt.xyz
+# Fragment 0 = F-, fragment 1 = H2O; no ghost functions.
+! WB97X-V aug-cc-pVDZ TightSCF
+%pal nprocs 4 end
+%maxcore 1000
+* xyzfile 0 1 fw_water.xyz

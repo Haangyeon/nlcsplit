@@ -1,0 +1,46 @@
+# 家族外构造自审：Hirshfeld 中心单位口径 + 自由原子 UHF 可重复性
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# sha256 nlcsplit/partition.py                          = ae9ca976ce13b5e5c97aaf0854a0e3f13486dd751391b1314bf93f75040247da
+# sha256 nlcsplit/nlc.py                                = 2817acd6fd37a2f68bd40540e7a094c004b4de5e67449621bdfb6e425e1c2f79
+# sha256 nlcsplit/step_h_s22.py                         = 9bccd14baff0e86b16d7ae3a78b8aac8ba8eb1844df33e9088a8d78fc91d5482
+# sha256 evidence/common_grid/hirshfeld_crossfamily.py  = 50f3f54397f3b2b50941a4a21aca529f2bd2e305997745d41c2b4f9ca915088c
+# sha256 evidence/common_grid/crossfamily_inpackage_check.py = 4756af2374bc0211453d940673e53583211a49d9bf9932dc5018f7e30b633cd1
+# sha256 evidence/common_grid/hirshfeld_construction_audit.py = 3beafc51e74d12d0358d1453707682e86b93314dd44831bfffbb4ae0b8affbd1
+# level = 0  b = 6  C = 0.01
+
+== 自由原子 UHF：同一进程内重复三次 ==
+   C  spin=2  e_tot 三次全同=False (-37.680576679563)  dm_sha 三次全同=False  76e919577adfa08d ef2e8b5a7a8bdca1 983be3de724eea16
+   F  spin=1  e_tot 三次全同=False (-99.363412021863)  dm_sha 三次全同=False  00216f68cf2dea06 9f3a0c891e007f76 322981722db9e27f
+   H  spin=1  e_tot 三次全同=True (-0.498232910729)  dm_sha 三次全同=True  b2134786987bc756 b2134786987bc756 b2134786987bc756
+   N  spin=3  e_tot 三次全同=False (-54.385007712011)  dm_sha 三次全同=False  7882fa0ff383bb8b d28ba5f8c96ad012 35c8b8207cbbc7a4
+   O  spin=2  e_tot 三次全同=False (-74.783180912518)  dm_sha 三次全同=False  d6ddf099f039a1f0 fb15c5a01e2aa167 382d0238152f1fa3
+
+== 水二聚体  level=0  原子 6  公共网格 N=4440  片间min 1.95 Å
+   单位事实：|grids coords| max = 10.5909  |atom_coord() 默认(Bohr)| max = 3.8525  |atom_coord(unit=Angstrom)| max = 2.0387  比值 = 1.8897
+   权重差 max|S_Angstrom - S_Bohr| = 0.867791
+   E_AB  becke  -0.6000 | voronoi  -0.5714 | hirshfeld(Å 归档口径)  -0.6214 | hirshfeld(Bohr 同单位)  -0.5970 | 差  +0.0244
+   跨度  家族内 0.0430 | +Voronoi 0.0430 | +Hirshfeld(Å) 0.0645 | +Hirshfeld(Bohr) 0.0430
+   → 换到同单位后，家族外增量按绝对量 = 0.0214 → 0.0000 kcal/mol（+Voronoi 那档 0.0000 不变）
+   E_NL 全方案同值 = -7.8738（归属只改分块，不改总量）
+   （用时 102.3 s）
+
+== 氨二聚体  level=0  原子 8  公共网格 N=5600  片间min 2.15 Å
+   单位事实：|grids coords| max = 10.8175  |atom_coord() 默认(Bohr)| max = 4.0792  |atom_coord(unit=Angstrom)| max = 2.1586  比值 = 1.8897
+   权重差 max|S_Angstrom - S_Bohr| = 0.689429
+   E_AB  becke  -0.6460 | voronoi  -0.6342 | hirshfeld(Å 归档口径)  -0.6789 | hirshfeld(Bohr 同单位)  -0.6509 | 差  +0.0280
+   跨度  家族内 0.0285 | +Voronoi 0.0285 | +Hirshfeld(Å) 0.0614 | +Hirshfeld(Bohr) 0.0335
+   → 换到同单位后，家族外增量按绝对量 = 0.0329 → 0.0050 kcal/mol（+Voronoi 那档 0.0000 不变）
+   E_NL 全方案同值 = -8.9145（归属只改分块，不改总量）
+   （用时 143.9 s）
+
+== 甲烷二聚体  level=0  原子 10  公共网格 N=6736  片间min 3.16 Å
+   单位事实：|grids coords| max = 12.3098  |atom_coord() 默认(Bohr)| max = 5.5715  |atom_coord(unit=Angstrom)| max = 2.9483  比值 = 1.8897
+   权重差 max|S_Angstrom - S_Bohr| = 0.669987
+   E_AB  becke  -0.4849 | voronoi  -0.4801 | hirshfeld(Å 归档口径)  -0.5234 | hirshfeld(Bohr 同单位)  -0.4910 | 差  +0.0324
+   跨度  家族内 0.0045 | +Voronoi 0.0083 | +Hirshfeld(Å) 0.0433 | +Hirshfeld(Bohr) 0.0109
+   → 换到同单位后，家族外增量按绝对量 = 0.0388 → 0.0064 kcal/mol（+Voronoi 那档 0.0038 不变）
+   E_NL 全方案同值 = -9.4164（归属只改分块，不改总量）
+   （用时 189.5 s）
+
+AUDIT DONE —— 两条自审的读数都已打印；判读与是否重跑八格由作者定，本脚本不改任何归档。

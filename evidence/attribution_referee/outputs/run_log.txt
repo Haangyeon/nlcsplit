@@ -1,0 +1,126 @@
+VV10 parameters from PySCF nlc_coeff('wb97x_v'): b=6.0 C=0.01
+beta = (1/32)(3/b^2)^(3/4) = 0.004846900308
+numpy 2.2.6  PySCF 2.12.1  python 3.10.12  workers 10
+model: rhoA+rhoB normalised Gaussians, 4 e each, alpha in [0.5, 1.0, 2.0] bohr^-2, sep in [2.5, 4.0, 6.0, 10.0] bohr, domain cut exp(-25), nphi=1.5n
+
+==============================================================================
+PHASE 1  falsification suite
+==============================================================================
+[1a] w0/kappa vs nlcsplit.nlc.vv10_fields on 18334 random points with rho>1e-10 (rho range 2.28e-16..7.18e-01): rel dev w0 0.000e+00  kappa 0.000e+00
+[1b] single-factor normalisation against the exact cube/cylinder integrals: 3D rel 2.55e-06  5D rel 6.50e-15
+[1c] K=exp(-0.3 R^2) vs closed 6-D Gaussian integral: analytic 0.009256616169  3D rel 3.17e-05  5D rel 1.20e-09
+[1c] K=exp(-1.0 R^2) vs closed 6-D Gaussian integral: analytic 0.000018919267  3D rel 1.40e-04  5D rel 2.03e-07
+[1d] K=1/R: two independent closed forms agree to rel 5.33e-15 (2.666666661405 vs 2.666666661405); quadratures rel 3D 5.43e-06  5D 2.25e-10
+[1e] POSITIVE CONTROL. package same-centre total -0.003460244522 Ha vs independent quadrature -0.003460062855 Ha (diff -0.0001 kcal/mol).
+     package documented-WRONG pairing: total -0.003468495890 Ha vs independent quadrature with the same wrong pairing -0.003468389585 Ha (diff -0.0001 kcal/mol).
+     the wrong pairing shifts the term by 0.0052 kcal/mol on this density => the comparison has the resolution to see a kernel error.
+[1f] Monte-Carlo (400000 draws, importance-sampled on the density factor itself) for I_AB: quad -0.000086457842  MC -0.000086232928 +- 0.000000164610  z = -1.37
+[1f] Monte-Carlo (400000 draws, importance-sampled on the density factor itself) for I_AA: quad -0.003373682376  MC -0.003374099548 +- 0.000002430127  z = +0.17
+[1h] MEASUREMENT-MASSAGE GUARD. Same molecule, same level, same points:
+     sum(partition_factors base_w * rho) = 15.99930120 electrons; sum(atom_partition weights * rho) = 8.00000305 (expected 8.0)
+     ratio 1.999912, identical point lists: True (N=16304 vs 16304).  Every node set used below is checked against the electron count before use.
+[1g] large-separation scaling of the cross term (alpha=1.0):
+       sep=  8.0  I_AB -1.95634204e-05 Ha   I_AB*R^6 -5.12843327e+00
+       sep= 12.0  I_AB -2.01508110e-06 Ha   I_AB*R^6 -6.01699992e+00
+       sep= 16.0  I_AB -3.78063936e-07 Ha   I_AB*R^6 -6.34286032e+00
+       sep= 20.0  I_AB -1.01492375e-07 Ha   I_AB*R^6 -6.49551198e+00
+       sep= 24.0  I_AB -3.44255374e-08 Ha   I_AB*R^6 -6.57882264e+00
+       sep= 28.0  I_AB -1.37565986e-08 Ha   I_AB*R^6 -6.62917147e+00
+       fitted log-log slope -5.8035 (the kernel's own large-R expansion gives R^-6, i.e. -6), max residual 0.043
+
+==============================================================================
+PHASE 2  error bar on the reference
+==============================================================================
+[2a] a0.5_R4.0: cylindrical 5-D I_AB order ladder (Ha)
+       n=16  -0.00142843958922
+       n=24  -0.00140413888896   change 2.430e-05
+       n=32  -0.00141222659486   change 8.088e-06
+       n=40  -0.00141259286823   change 3.663e-07
+       n=48  -0.00141218251491   change 4.104e-07
+       last change 4.104e-07  contraction ratio 1.120  geometric extrapolation NOT applicable
+       undecomposed total at the top orders: n=32 -0.006256441597  n=40 -0.006261595368  n=48 -0.006262965374
+       3-D x 3-D I_AB ladder: n=12 -0.001432343694  n=16 -0.001414753851  n=20 -0.001418354296  n=24 -0.001404217665
+       3D(top) - 5D(top) = +7.965e-06 Ha (5.64e-03 relative) <- different nodes, domain shape, reduction
+       domain truncation (n=40): f=3.6 -0.001412253581  f=4.2 -0.001412183118  f=5.0 -0.001412592868  f=5.9 -0.001411022267  | shift f=5.0 vs 5.9 1.571e-06
+[2a] a0.5_R10.0: cylindrical 5-D I_AB order ladder (Ha)
+       n=16  -0.00003138170976
+       n=24  -0.00003168471214   change 3.030e-07
+       n=32  -0.00003169847224   change 1.376e-08
+       n=40  -0.00003169612150   change 2.351e-09
+       n=48  -0.00003169632829   change 2.068e-10
+       last change 2.068e-10  contraction ratio 0.088  geometric extrapolation -0.00003169630834
+       undecomposed total at the top orders: n=32 -0.004886523610  n=40 -0.004888568416  n=48 -0.004888306274
+       3-D x 3-D I_AB ladder: n=12 -0.000034565847  n=16 -0.000030708356  n=20 -0.000031901440  n=24 -0.000031688934
+       3D(top) - 5D(top) = +7.394e-09 Ha (2.33e-04 relative) <- different nodes, domain shape, reduction
+       domain truncation (n=40): f=3.6 -0.000031697880  f=4.2 -0.000031696969  f=5.0 -0.000031696122  f=5.9 -0.000031697051  | shift f=5.0 vs 5.9 9.297e-10
+[2a] a1.0_R4.0: cylindrical 5-D I_AB order ladder (Ha)
+       n=16  -0.00047378874232
+       n=24  -0.00048383544552   change 1.005e-05
+       n=32  -0.00048795043111   change 4.115e-06
+       n=40  -0.00048969193888   change 1.742e-06
+       n=48  -0.00049030532782   change 6.134e-07
+       last change 6.134e-07  contraction ratio 0.352  geometric extrapolation -0.00048997181155
+       undecomposed total at the top orders: n=32 -0.003873139477  n=40 -0.003878185840  n=48 -0.003881304572
+       3-D x 3-D I_AB ladder: n=12 -0.000555564810  n=16 -0.000468412453  n=20 -0.000502470507  n=24 -0.000483960681
+       3D(top) - 5D(top) = +6.345e-06 Ha (1.29e-02 relative) <- different nodes, domain shape, reduction
+       domain truncation (n=40): f=3.6 -0.000490633315  f=4.2 -0.000490441426  f=5.0 -0.000489691939  f=5.9 -0.000491717983  | shift f=5.0 vs 5.9 2.026e-06
+[2a] a1.0_R10.0: cylindrical 5-D I_AB order ladder (Ha)
+       n=16  -0.00000561781380
+       n=24  -0.00000569815623   change 8.034e-08
+       n=32  -0.00000569613599   change 2.020e-09
+       n=40  -0.00000569567419   change 4.618e-10
+       n=48  -0.00000569573252   change 5.833e-11
+       last change 5.833e-11  contraction ratio 0.126  geometric extrapolation -0.00000569572409
+       undecomposed total at the top orders: n=32 -0.003379219930  n=40 -0.003379122611  n=48 -0.003379181531
+       3-D x 3-D I_AB ladder: n=12 -0.000006659623  n=16 -0.000005448486  n=20 -0.000005725679  n=24 -0.000005703098
+       3D(top) - 5D(top) = -7.366e-09 Ha (1.29e-03 relative) <- different nodes, domain shape, reduction
+       domain truncation (n=40): f=3.6 -0.000005695729  f=4.2 -0.000005695733  f=5.0 -0.000005695674  f=5.9 -0.000005696110  | shift f=5.0 vs 5.9 4.358e-10
+[2a] a2.0_R4.0: cylindrical 5-D I_AB order ladder (Ha)
+       n=16  -0.00011798550063
+       n=24  -0.00011942844049   change 1.443e-06
+       n=32  -0.00011910220974   change 3.262e-07
+       n=40  -0.00011928170419   change 1.795e-07
+       n=48  -0.00011920544595   change 7.626e-08
+       last change 7.626e-08  contraction ratio 0.425  geometric extrapolation -0.00011914911571
+       undecomposed total at the top orders: n=32 -0.002399754580  n=40 -0.002399391390  n=48 -0.002399510940
+       3-D x 3-D I_AB ladder: n=12 -0.000134768174  n=16 -0.000116091790  n=20 -0.000119122332  n=24 -0.000119526754
+       3D(top) - 5D(top) = -3.213e-07 Ha (2.70e-03 relative) <- different nodes, domain shape, reduction
+       domain truncation (n=40): f=3.6 -0.000119278291  f=4.2 -0.000119337153  f=5.0 -0.000119281704  f=5.9 -0.000119421652  | shift f=5.0 vs 5.9 1.399e-07
+[2a] a2.0_R10.0: cylindrical 5-D I_AB order ladder (Ha)
+       n=16  -0.00000101367464
+       n=24  -0.00000102855690   change 1.488e-08
+       n=32  -0.00000102734041   change 1.216e-09
+       n=40  -0.00000102735669   change 1.628e-11
+       n=48  -0.00000102736747   change 1.077e-11
+       last change 1.077e-11  contraction ratio 0.662  geometric extrapolation -0.00000102734639
+       undecomposed total at the top orders: n=32 -0.002284720050  n=40 -0.002281391730  n=48 -0.002281158076
+       3-D x 3-D I_AB ladder: n=12 -0.000001270789  n=16 -0.000000981908  n=20 -0.000001027265  n=24 -0.000001030502
+       3D(top) - 5D(top) = -3.134e-09 Ha (3.05e-03 relative) <- different nodes, domain shape, reduction
+       domain truncation (n=40): f=3.6 -0.000001027365  f=4.2 -0.000001027367  f=5.0 -0.000001027357  f=5.9 -0.000001027421  | shift f=5.0 vs 5.9 6.421e-11
+[2b] PySCF production grid, alpha=1.0 sep=6.0: level ladder
+       level 1  N=4608  rmax=22.1  electrons 8.00029306  dropped=1314  density-factor inter -0.000086551836  production inter -0.000094035544  total -0.003460716702
+       level 3  N=16304  rmax=25.7  electrons 8.00000305  dropped=5854  density-factor inter -0.000086506582  production inter -0.000093608158  total -0.003460244522
+       level 5  N=38008  rmax=28.1  electrons 8.00000002  dropped=15540  density-factor inter -0.000086484037  production inter -0.000093577348  total -0.003460188839
+[2c] density-floor study (level 3, alpha=1.0 sep=6.0): the same points are dropped for every partition, so this is a shared bias.
+       floor 1e-08  dropped 7068  electrons kept 8.0000029153  density-factor inter -0.000086506582  production inter -0.000093608157  E_nl -0.003460244521
+       floor 1e-12  dropped 5854  electrons kept 8.0000030500  density-factor inter -0.000086506582  production inter -0.000093608158  E_nl -0.003460244522
+       floor 1e-16  dropped 5212  electrons kept 8.0000030501  density-factor inter -0.000086506582  production inter -0.000093608158  E_nl -0.003460244522
+       drift floor 1e-8 -> 1e-16: density-factor inter 3.454e-13  production inter 5.217e-13  E_nl 1.308e-12 Ha
+
+==============================================================================
+PHASE 3  the referee table
+==============================================================================
+alpha=0.5 sep= 2.5 | I_AB -2.421595e-03 | production inter -2.296031e-03 | diff +1.256e-04 (+1.84% of E_NL, +5.2% of I_AB) | closure 1.1e-09 | 305s
+alpha=0.5 sep= 4.0 | I_AB -1.412183e-03 | production inter -1.446893e-03 | diff -3.471e-05 (-0.55% of E_NL, -2.5% of I_AB) | closure 8.3e-08 | 300s
+alpha=0.5 sep= 6.0 | I_AB -4.203196e-04 | production inter -4.609604e-04 | diff -4.064e-05 (-0.77% of E_NL, -9.7% of I_AB) | closure 7.9e-06 | 257s
+alpha=0.5 sep=10.0 | I_AB -3.169633e-05 | production inter -3.543348e-05 | diff -3.737e-06 (-0.08% of E_NL, -11.8% of I_AB) | closure 8.8e-09 | 238s
+alpha=1.0 sep= 2.5 | I_AB -1.387405e-03 | production inter -1.391878e-03 | diff -4.473e-06 (-0.10% of E_NL, -0.3% of I_AB) | closure 5.7e-08 | 301s
+alpha=1.0 sep= 4.0 | I_AB -4.903053e-04 | production inter -5.217115e-04 | diff -3.141e-05 (-0.81% of E_NL, -6.4% of I_AB) | closure 3.7e-06 | 310s
+alpha=1.0 sep= 6.0 | I_AB -8.645784e-05 | production inter -9.360816e-05 | diff -7.150e-06 (-0.21% of E_NL, -8.3% of I_AB) | closure 7.7e-08 | 321s
+alpha=1.0 sep=10.0 | I_AB -5.695733e-06 | production inter -5.982091e-06 | diff -2.864e-07 (-0.01% of E_NL, -5.0% of I_AB) | closure 7.3e-08 | 249s
+alpha=2.0 sep= 2.5 | I_AB -6.030726e-04 | production inter -6.244512e-04 | diff -2.138e-05 (-0.74% of E_NL, -3.5% of I_AB) | closure 1.7e-06 | 311s
+alpha=2.0 sep= 4.0 | I_AB -1.192054e-04 | production inter -1.258837e-04 | diff -6.678e-06 (-0.28% of E_NL, -5.6% of I_AB) | closure 2.7e-07 | 319s
+alpha=2.0 sep= 6.0 | I_AB -1.708177e-05 | production inter -1.769276e-05 | diff -6.110e-07 (-0.03% of E_NL, -3.6% of I_AB) | closure 2.3e-08 | 159s
+alpha=2.0 sep=10.0 | I_AB -1.027367e-06 | production inter -1.044189e-06 | diff -1.682e-08 (-0.00% of E_NL, -1.6% of I_AB) | closure 1.2e-07 | 198s
+
+total runtime 730 s

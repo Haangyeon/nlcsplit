@@ -1,0 +1,9 @@
+cwd=<REPO>/scratch/wheel_qa_20261013T150059Z/workdir/outside
+in_source_tree=0
+nlcsplit.__file__ = <REPO>/scratch/wheel_qa_20261013T150059Z/site/nlcsplit/__init__.py
+.............................................ss........................  [100%]
+=========================== short test summary info ============================
+SKIPPED [1] ../../site/nlcsplit/tests/test_geometry.py:101: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+SKIPPED [1] ../../site/nlcsplit/tests/test_geometry.py:126: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+69 passed, 2 skipped, 23 deselected in 96.46s (0:01:36)
+# exit=0 at 2026-10-13T15:02:55Z

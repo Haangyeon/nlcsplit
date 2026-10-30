@@ -1,0 +1,2921 @@
+{
+ "meta": {
+  "stamp_utc": "20261009T122601Z",
+  "rev": "rev2",
+  "host_clock_note": "文件名时间戳由宿主 Git Bash `date -u +%Y%m%dT%H%M%SZ` 计算；未采用 WSL 时钟（本机 WSL 钟被观测到会慢几天）",
+  "generated_from": "paper/references.bib（只读，本脚本不写 paper/ 下任何文件）",
+  "method": "skill reference-metadata-crossref-check：/works?query.bibliographic&rows=3 主题检索 -> 题名归一化字符 4-gram Jaccard ≥0.80 匹配 -> 只比 年/卷/页 硬字段；页码缩写还原；期刊名缩写感知（仅证据列）。另对每条**存储 DOI 独立回查**作对象级交叉核验，两者同入候选池，同对象优先。",
+  "user_agent": "refcheck/1.0 (mailto:<通讯作者机构地址，来源 paper/main.md 第 8 行；2026-10-09 由调用方从字面量改为来源指针，因导出闸门 B 不许公开副本出现登录名>)",
+  "rows": 3,
+  "threshold": 0.8,
+  "delay_ms": 250,
+  "api_calls": 51,
+  "api_errors": [],
+  "mailto_source": "paper/main.md L8 / paper/p2.md L15 / paper/software.md front matter（仓内既有通讯邮箱，未臆造）",
+  "candidate_rule": "CITEABLE 类型白名单 + 排除 component/peer-review 等空壳对象；排序键 = [是否等于存储DOI, 类型是否被排除, 类型优先级, 可比字段数, 题名相似度]",
+  "match_requirement": "MATCH 必须真比过「年」且「卷或页」之一（≥2 个硬字段），否则记 UNVERIFIED 而不是 MATCH",
+  "parse_rates": {
+   "entriesFound": 25,
+   "title": 25,
+   "author": 25,
+   "journal": 25,
+   "year": 25,
+   "volume": 25,
+   "pages": 25,
+   "doi": 25
+  },
+  "parser_anchor_selftest": [
+   {
+    "key": "kruse2019dna",
+    "expected": {
+     "year": "2018",
+     "volume": "15",
+     "pages": "95-115",
+     "doi": "10.1021/acs.jctc.8b00643"
+    },
+    "ok": true,
+    "mismatchedFields": []
+   },
+   {
+    "key": "dion2004",
+    "expected": {
+     "year": "2004",
+     "volume": "92",
+     "pages": "246401"
+    },
+    "ok": true,
+    "mismatchedFields": []
+   },
+   {
+    "key": "sun2018pyscf",
+    "expected": {
+     "volume": "8",
+     "pages": "e1340",
+     "year": "2018"
+    },
+    "ok": true,
+    "mismatchedFields": []
+   },
+   {
+    "key": "vydrov2009vv10",
+    "expected": {
+     "year": "2009",
+     "volume": "103",
+     "pages": "063004"
+    },
+    "ok": true,
+    "mismatchedFields": []
+   },
+   {
+    "key": "altun2018dlpno",
+    "expected": {
+     "year": "2018",
+     "volume": "14",
+     "pages": "919-929"
+    },
+    "ok": true,
+    "mismatchedFields": []
+   },
+   {
+    "key": "hamada2011c60au",
+    "expected": {
+     "year": "2011",
+     "volume": "83",
+     "pages": "245437"
+    },
+    "ok": true,
+    "mismatchedFields": []
+   }
+  ],
+  "counts": {
+   "entries": 25,
+   "matched": 25,
+   "mismatch": 0,
+   "unverified": 0
+  },
+  "exit_code_meaning": {
+   "0": "方法学有效且无 MISMATCH",
+   "1": "方法学失败（解析地板/负控/取数）——本次结论不可用",
+   "2": "方法学有效，发现 MISMATCH 或 DOI 硬问题"
+  },
+  "controls": [
+   {
+    "id": "C0-baseline",
+    "desc": "同一条未篡改记录（证明 C1–C3 的差异只来自篡改）",
+    "expect": "无硬分歧且≥2字段可比",
+    "got": "hard=0 fieldsOK=3",
+    "detail": "",
+    "pass": true
+   },
+   {
+    "id": "C1-year-1901",
+    "desc": "把 becke1988 的 year 改成 1901 后重跑比对",
+    "expect": "MISMATCH",
+    "got": "MISMATCH",
+    "detail": "year: 年 1901 不等于 Crossref 任一年份 [1988]",
+    "pass": true
+   },
+   {
+    "id": "C2-volume-9999",
+    "desc": "把 becke1988 的 volume 改成 9999",
+    "expect": "MISMATCH",
+    "got": "MISMATCH",
+    "detail": "volume: 卷 9999 vs 88",
+    "pass": true
+   },
+   {
+    "id": "C3-pages-1-2",
+    "desc": "把 becke1988 的 pages 改成 1-2",
+    "expect": "MISMATCH",
+    "got": "MISMATCH",
+    "detail": "pages: 起页 1 vs 2547",
+    "pass": true
+   },
+   {
+    "id": "C4-title-sim-rejects-wrong-object",
+    "desc": "harris2020numpy 题名 vs gnomAD 题名相似度必须 < 0.8",
+    "expect": "sim<0.8",
+    "got": "sim=0.0000",
+    "detail": "gnomAD 题名：The mutational constraint spectrum quantified from variation in 141,456 humans",
+    "pass": true
+   },
+   {
+    "id": "C5-stored-doi-wrong-object",
+    "desc": "把 gnomAD 记录冒充 harris2020numpy 的 DOI 回查结果，闸门必须报 WRONG-OBJECT 并印出真题名",
+    "expect": "WRONG-OBJECT",
+    "got": "WRONG-OBJECT",
+    "detail": "DOI 能解析，但题名不匹配（sim 0.000）。Crossref 在该 DOI 上的记录是：「The mutational constraint spectrum quantified from variation in 141,456 humans」Nature 581 434-443（2020）—— 正是历史踩坑 a/b 的形状。",
+    "pass": true
+   },
+   {
+    "id": "C6-candidate-ranking-beats-shells",
+    "desc": "给候选池同时喂 component(type空壳,sim=1.0) / peer-review(括引题名,sim=0.93) / 存储DOI的journal-article(sim=0.9)，必须选中后者",
+    "expect": "journal-article + 存储DOI",
+    "got": "journal-article + stored-doi",
+    "detail": "被选中的是 10.1021/acs.jctc.8b00643 [journal-article]",
+    "pass": true
+   },
+   {
+    "id": "C7-page-abbrev-expansion",
+    "desc": "缩写还原：23578-83 -> 23578/23583、4435--41 -> 4435/4441、95-115 -> 95/115",
+    "expect": "23583,4441,115",
+    "got": "23583,4441,115",
+    "pass": true
+   },
+   {
+    "id": "C8-mathml-title-normalizes",
+    "desc": "APS 题名里的 MathML 必须被剥掉：hamada2011c60au 相似度应 >= 0.8",
+    "expect": "sim>=0.8",
+    "got": "sim=1.000 doiFlag=OK",
+    "detail": "Adsorption ofC60on Au(111) revisited: A van der Waals density functional study",
+    "pass": true
+   },
+   {
+    "id": "C9-parse-floor",
+    "desc": "条目数=25 且 year/volume/pages 解析数各 ≥20",
+    "expect": "25/≥20/≥20/≥20",
+    "got": "25/25/25/25",
+    "pass": true
+   },
+   {
+    "id": "C10-parser-anchor-values",
+    "desc": "解析器必须提出**正确的**字段值（不是只提出非空值）",
+    "expect": "all anchors ok",
+    "got": "kruse2019dna:OK dion2004:OK sun2018pyscf:OK vydrov2009vv10:OK altun2018dlpno:OK hamada2011c60au:OK",
+    "pass": true
+   }
+  ]
+ },
+ "rows": [
+  {
+   "key": "kruse2019dna",
+   "cite": {
+    "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+    "titleRaw": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+    "journal": "Journal of Chemical Theory and Computation",
+    "volume": "15",
+    "pages": "95-115",
+    "year": "2018",
+    "doiStored": "10.1021/acs.jctc.8b00643",
+    "firstAuthorFamily": "Sponer"
+   },
+   "crossref": {
+    "doi": "10.1021/acs.jctc.8b00643",
+    "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+    "titleRawCr": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+    "journal": "Journal of Chemical Theory and Computation",
+    "volume": "15",
+    "page": "95-115",
+    "articleNumber": null,
+    "yearIssued": 2018,
+    "yearPrint": 2019,
+    "yearOnline": 2018,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+    "doiRecordJournal": "Journal of Chemical Theory and Computation",
+    "doiRecordVolume": "15",
+    "doiRecordPage": "95-115",
+    "doiRecordYear": 2019
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jctc] vs cr[jctc] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1021/acs.jctc.8b00643.s001",
+     "type": "component",
+     "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jctc.8b00643.s002",
+     "type": "component",
+     "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jctc.8b00643",
+     "type": "journal-article",
+     "title": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects",
+     "journal": "Journal of Chemical Theory and Computation",
+     "volume": "15",
+     "page": "95-115",
+     "articleNumber": "",
+     "years": {
+      "issued": 2018,
+      "print": 2019,
+      "online": 2018,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Investigations of Stacked DNA Base-Pair Steps: Highly Accurate Stacking Interaction Energies, Energy Decomposition, and Many-Body Stacking Effects Sponer",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "year/OK: 软提示：稿件年 2018 命中的是**在线首发/issued**年，而卷 15 所属正刊(print)年为 2019。两个写法都站得住，但\"卷-年配对\"按惯例应以 print 年为准，需人工定夺。",
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "sinha2015fdevdw",
+   "cite": {
+    "title": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method",
+    "titleRaw": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "143",
+    "pages": "084120",
+    "year": "2015",
+    "doiStored": "10.1063/1.4928531",
+    "firstAuthorFamily": "Pavanello"
+   },
+   "crossref": {
+    "doi": "10.1063/1.4928531",
+    "title": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method",
+    "titleRawCr": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "143",
+    "page": null,
+    "articleNumber": "084120",
+    "yearIssued": 2015,
+    "yearPrint": 2015,
+    "yearOnline": 2015,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "143",
+    "doiRecordPage": "084120",
+    "doiRecordYear": 2015
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/1.4928531",
+     "type": "journal-article",
+     "title": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "143",
+     "page": "",
+     "articleNumber": "084120",
+     "years": {
+      "issued": 2015,
+      "print": 2015,
+      "online": 2015,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.4890839",
+     "type": "journal-article",
+     "title": "FDE-vdW: A van der Waals inclusive subsystem density-functional theory",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "141",
+     "page": "",
+     "articleNumber": "044127",
+     "years": {
+      "issued": 2014,
+      "print": 2014,
+      "online": 2014,
+      "accepted": null
+     },
+     "sim": 0.04,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jpcc.6b10187.s001",
+     "type": "component",
+     "title": "DFT-Based Method for More Accurate Adsorption Energies: An Adaptive Sum of Energies from RPBE and vdW Density Functionals",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.0774,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Exact kinetic energy enables accurate evaluation of weak interactions by the FDE-vdW method Pavanello",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "hujo2011hbond",
+   "cite": {
+    "title": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds",
+    "titleRaw": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "13",
+    "pages": "13942",
+    "year": "2011",
+    "doiStored": "10.1039/c1cp20591a",
+    "firstAuthorFamily": "Grimme"
+   },
+   "crossref": {
+    "doi": "10.1039/c1cp20591a",
+    "title": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds",
+    "titleRawCr": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "13",
+    "page": "13942",
+    "articleNumber": null,
+    "yearIssued": 2011,
+    "yearPrint": 2011,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds",
+    "doiRecordJournal": "Physical Chemistry Chemical Physics",
+    "doiRecordVolume": "13",
+    "doiRecordPage": "13942",
+    "doiRecordYear": 2011
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[pccp] vs cr[pccp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1039/c1cp20591a",
+     "type": "journal-article",
+     "title": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds",
+     "journal": "Physical Chemistry Chemical Physics",
+     "volume": "13",
+     "page": "13942",
+     "articleNumber": "",
+     "years": {
+      "issued": 2011,
+      "print": 2011,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/jp810323m.s001",
+     "type": "component",
+     "title": "Hydrogen Bonding Described Using Dispersion-Corrected Density Functional Theory",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.4528,
+     "usable": false
+    },
+    {
+     "doi": "10.1186/1758-2946-4-s1-p56",
+     "type": "journal-article",
+     "title": "Performance of dispersion-corrected density functional theory for thermochemistry and non-covalent interactions",
+     "journal": "Journal of Cheminformatics",
+     "volume": "4",
+     "page": "",
+     "articleNumber": "P56",
+     "years": {
+      "issued": 2012,
+      "print": 2012,
+      "online": 2012,
+      "accepted": null
+     },
+     "sim": 0.44,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Comparison of the performance of dispersion-corrected density functional theory for weak hydrogen bonds Grimme",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "hamada2011c60au",
+   "cite": {
+    "title": "Adsorption of C60 on Au(111) revisited: A van der Waals density functional study",
+    "titleRaw": "Adsorption of {C}$_{60}$ on {Au}(111) revisited: A van der Waals density functional study",
+    "journal": "Physical Review B",
+    "volume": "83",
+    "pages": "245437",
+    "year": "2011",
+    "doiStored": "10.1103/physrevb.83.245437",
+    "firstAuthorFamily": "Tsukada"
+   },
+   "crossref": {
+    "doi": "10.1103/physrevb.83.245437",
+    "title": "Adsorption ofC60on Au(111) revisited: A van der Waals density functional study",
+    "titleRawCr": "Adsorption of<mml:math xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><mml:mrow><mml:msub><mml:mi mathvariant=\"normal\">C</mml:mi><mml:mrow><mml:mn>60</mml:mn></mml:mrow></mml:msub></mml:mrow></mml:math>on Au(111) revisited: A van der Waals density functional study",
+    "journal": "Physical Review B",
+    "volume": "83",
+    "page": null,
+    "articleNumber": "245437",
+    "yearIssued": 2011,
+    "yearPrint": null,
+    "yearOnline": 2011,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Adsorption ofC60on Au(111) revisited: A van der Waals density functional study",
+    "doiRecordJournal": "Physical Review B",
+    "doiRecordVolume": "83",
+    "doiRecordPage": "245437",
+    "doiRecordYear": 2011
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[prb] vs cr[prb] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1103/physrevb.83.245437",
+     "type": "journal-article",
+     "title": "Adsorption ofC60on Au(111) revisited: A van der Waals density functional study",
+     "journal": "Physical Review B",
+     "volume": "83",
+     "page": "",
+     "articleNumber": "245437",
+     "years": {
+      "issued": 2011,
+      "print": null,
+      "online": 2011,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jpcc.1c07982.s001",
+     "type": "component",
+     "title": "Theoretical Study of Weakly Bound Adsorbates on Au(111): Tests on van der Waals Density Functionals",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3462,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jpcc.8b03068.s001",
+     "type": "component",
+     "title": "Azobenzene Adsorption on the MoS2(0001) Surface: A Density Functional Investigation within van der Waals Corrections",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2339,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Adsorption of C60 on Au(111) revisited: A van der Waals density functional study Tsukada",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "becke1988",
+   "cite": {
+    "title": "A multicenter numerical integration scheme for polyatomic molecules",
+    "titleRaw": "A multicenter numerical integration scheme for polyatomic molecules",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "88",
+    "pages": "2547-2553",
+    "year": "1988",
+    "doiStored": "10.1063/1.454033",
+    "firstAuthorFamily": "Becke"
+   },
+   "crossref": {
+    "doi": "10.1063/1.454033",
+    "title": "A multicenter numerical integration scheme for polyatomic molecules",
+    "titleRawCr": "A multicenter numerical integration scheme for polyatomic molecules",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "88",
+    "page": "2547-2553",
+    "articleNumber": null,
+    "yearIssued": 1988,
+    "yearPrint": 1988,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "A multicenter numerical integration scheme for polyatomic molecules",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "88",
+    "doiRecordPage": "2547-2553",
+    "doiRecordYear": 1988
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/1.454033",
+     "type": "journal-article",
+     "title": "A multicenter numerical integration scheme for polyatomic molecules",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "88",
+     "page": "2547-2553",
+     "articleNumber": "",
+     "years": {
+      "issued": 1988,
+      "print": 1988,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.467061",
+     "type": "journal-article",
+     "title": "Automatic numerical integration techniques for polyatomic molecules",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "100",
+     "page": "6520-6534",
+     "articleNumber": "",
+     "years": {
+      "issued": 1994,
+      "print": 1994,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.4557,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.455005",
+     "type": "journal-article",
+     "title": "Numerical solution of Poisson’s equation in polyatomic molecules",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "89",
+     "page": "2993-2997",
+     "articleNumber": "",
+     "years": {
+      "issued": 1988,
+      "print": 1988,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2824,
+     "usable": true
+    }
+   ],
+   "searchQuery": "A multicenter numerical integration scheme for polyatomic molecules Becke",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "treutler1995",
+   "cite": {
+    "title": "Efficient molecular numerical integration schemes",
+    "titleRaw": "Efficient molecular numerical integration schemes",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "102",
+    "pages": "346-354",
+    "year": "1995",
+    "doiStored": "10.1063/1.469408",
+    "firstAuthorFamily": "Ahlrichs"
+   },
+   "crossref": {
+    "doi": "10.1063/1.469408",
+    "title": "Efficient molecular numerical integration schemes",
+    "titleRawCr": "Efficient molecular numerical integration schemes",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "102",
+    "page": "346-354",
+    "articleNumber": null,
+    "yearIssued": 1995,
+    "yearPrint": 1995,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Efficient molecular numerical integration schemes",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "102",
+    "doiRecordPage": "346-354",
+    "doiRecordYear": 1995
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/1.469408",
+     "type": "journal-article",
+     "title": "Efficient molecular numerical integration schemes",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "102",
+     "page": "346-354",
+     "articleNumber": "",
+     "years": {
+      "issued": 1995,
+      "print": 1995,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.70675/30931abfz8935z4f4czbbf2z4e14768383f6",
+     "type": "dissertation",
+     "title": "Development of new numerical integration schemes of.multiscale coarse-graining methods",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2667,
+     "usable": true
+    },
+    {
+     "doi": "10.1007/bfb0025805",
+     "type": "book-chapter",
+     "title": "Parallelization schemes for integration algorithms",
+     "journal": "Lecture Notes in Computer Science",
+     "volume": "",
+     "page": "223-231",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2206,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Efficient molecular numerical integration schemes Ahlrichs",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "stratmann1996",
+   "cite": {
+    "title": "Achieving linear scaling in exchange-correlation density functional quadratures",
+    "titleRaw": "Achieving linear scaling in exchange-correlation density functional quadratures",
+    "journal": "Chemical Physics Letters",
+    "volume": "257",
+    "pages": "213-223",
+    "year": "1996",
+    "doiStored": "10.1016/0009-2614(96)00600-8",
+    "firstAuthorFamily": "Frisch"
+   },
+   "crossref": {
+    "doi": "10.1016/0009-2614(96)00600-8",
+    "title": "Achieving linear scaling in exchange-correlation density functional quadratures",
+    "titleRawCr": "Achieving linear scaling in exchange-correlation density functional quadratures",
+    "journal": "Chemical Physics Letters",
+    "volume": "257",
+    "page": "213-223",
+    "articleNumber": null,
+    "yearIssued": 1996,
+    "yearPrint": 1996,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Achieving linear scaling in exchange-correlation density functional quadratures",
+    "doiRecordJournal": "Chemical Physics Letters",
+    "doiRecordVolume": "257",
+    "doiRecordPage": "213-223",
+    "doiRecordYear": 1996
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[cpl] vs cr[cpl] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1016/0009-2614(96)00600-8",
+     "type": "journal-article",
+     "title": "Achieving linear scaling in exchange-correlation density functional quadratures",
+     "journal": "Chemical Physics Letters",
+     "volume": "257",
+     "page": "213-223",
+     "articleNumber": "",
+     "years": {
+      "issued": 1996,
+      "print": 1996,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1007/978-1-4757-9975-0_2",
+     "type": "book-chapter",
+     "title": "Coordinate Scaling Requirements for Approximating Exchange and Correlation",
+     "journal": "NATO ASI Series",
+     "volume": "",
+     "page": "11-31",
+     "articleNumber": "",
+     "years": {
+      "issued": 1995,
+      "print": 1995,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.1491,
+     "usable": true
+    },
+    {
+     "doi": "10.1103/physreva.43.4637",
+     "type": "journal-article",
+     "title": "Density-functional exchange correlation through coordinate scaling in adiabatic connection and correlation hole",
+     "journal": "Physical Review A",
+     "volume": "43",
+     "page": "4637-4646",
+     "articleNumber": "",
+     "years": {
+      "issued": 1991,
+      "print": null,
+      "online": 1991,
+      "accepted": null
+     },
+     "sim": 0.3017,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Achieving linear scaling in exchange-correlation density functional quadratures Frisch",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "dion2004",
+   "cite": {
+    "title": "Van der Waals Density Functional for General Geometries",
+    "titleRaw": "Van der Waals Density Functional for General Geometries",
+    "journal": "Physical Review Letters",
+    "volume": "92",
+    "pages": "246401",
+    "year": "2004",
+    "doiStored": "10.1103/PhysRevLett.92.246401",
+    "firstAuthorFamily": "Lundqvist"
+   },
+   "crossref": {
+    "doi": "10.1103/physrevlett.92.246401",
+    "title": "Van der Waals Density Functional for General Geometries",
+    "titleRawCr": "Van der Waals Density Functional for General Geometries",
+    "journal": "Physical Review Letters",
+    "volume": "92",
+    "page": null,
+    "articleNumber": "246401",
+    "yearIssued": 2004,
+    "yearPrint": null,
+    "yearOnline": 2004,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Van der Waals Density Functional for General Geometries",
+    "doiRecordJournal": "Physical Review Letters",
+    "doiRecordVolume": "92",
+    "doiRecordPage": "246401",
+    "doiRecordYear": 2004
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[prl] vs cr[prl] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1103/physrevlett.92.246401",
+     "type": "journal-article",
+     "title": "Van der Waals Density Functional for General Geometries",
+     "journal": "Physical Review Letters",
+     "volume": "92",
+     "page": "",
+     "articleNumber": "246401",
+     "years": {
+      "issued": 2004,
+      "print": null,
+      "online": 2004,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1103/physrevlett.95.109902",
+     "type": "journal-article",
+     "title": "Erratum: Van der Waals Density Functional for General Geometries [Phys. Rev. Lett.92, 246401 (2004)]",
+     "journal": "Physical Review Letters",
+     "volume": "95",
+     "page": "",
+     "articleNumber": "109902",
+     "years": {
+      "issued": 2005,
+      "print": null,
+      "online": 2005,
+      "accepted": null
+     },
+     "sim": 0.93,
+     "usable": true
+    },
+    {
+     "doi": "10.1007/978-1-4899-0316-7_17",
+     "type": "book-chapter",
+     "title": "Van der Waals Interactions in Density Functional Theory",
+     "journal": "Electronic Density Functional Theory",
+     "volume": "",
+     "page": "243-260",
+     "articleNumber": "",
+     "years": {
+      "issued": 1998,
+      "print": 1998,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3333,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Van der Waals Density Functional for General Geometries Lundqvist",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "mardirossian2014wb97xv",
+   "cite": {
+    "title": "omegaB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy",
+    "titleRaw": "{$\\omega$}B97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "16",
+    "pages": "9904",
+    "year": "2014",
+    "doiStored": "10.1039/c3cp54374a",
+    "firstAuthorFamily": "Head-Gordon"
+   },
+   "crossref": {
+    "doi": "10.1039/c3cp54374a",
+    "title": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy",
+    "titleRawCr": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "16",
+    "page": "9904",
+    "articleNumber": null,
+    "yearIssued": 2014,
+    "yearPrint": 2014,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 0.93,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 0.93,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 0.930），年/卷/页与稿件一致",
+    "doiRecordTitle": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy",
+    "doiRecordJournal": "Physical Chemistry Chemical Physics",
+    "doiRecordVolume": "16",
+    "doiRecordPage": "9904",
+    "doiRecordYear": 2014
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[pccp] vs cr[pccp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1039/c3cp54374a",
+     "type": "journal-article",
+     "title": "ωB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy",
+     "journal": "Physical Chemistry Chemical Physics",
+     "volume": "16",
+     "page": "9904",
+     "articleNumber": "",
+     "years": {
+      "issued": 2014,
+      "print": 2014,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.93,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.4952647",
+     "type": "journal-article",
+     "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "144",
+     "page": "",
+     "articleNumber": "214110",
+     "years": {
+      "issued": 2016,
+      "print": 2016,
+      "online": 2016,
+      "accepted": null
+     },
+     "sim": 0.2698,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.4868117",
+     "type": "journal-article",
+     "title": "Exploring the limit of accuracy for density functionals based on the generalized gradient approximation: Local, global hybrid, and range-separated hybrid functionals with and without dispersion corrections",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "140",
+     "page": "",
+     "articleNumber": "18A527",
+     "years": {
+      "issued": 2014,
+      "print": 2014,
+      "online": 2014,
+      "accepted": null
+     },
+     "sim": 0.2809,
+     "usable": true
+    }
+   ],
+   "searchQuery": "omegaB97X-V: A 10-parameter, range-separated hybrid, generalized gradient approximation density functional with nonlocal correlation, designed by a survival-of-the-fittest strategy Head-Gordon",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "mardirossian2016wb97mv",
+   "cite": {
+    "title": "omega B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+    "titleRaw": "{$\\omega$} B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "144",
+    "pages": "214110",
+    "year": "2016",
+    "doiStored": "10.1063/1.4952647",
+    "firstAuthorFamily": "Head-Gordon"
+   },
+   "crossref": {
+    "doi": "10.1063/1.4952647",
+    "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+    "titleRawCr": "<i>ω</i>\n                    B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "144",
+    "page": null,
+    "articleNumber": "214110",
+    "yearIssued": 2016,
+    "yearPrint": 2016,
+    "yearOnline": 2016,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 0.93,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 0.93,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 0.930），年/卷/页与稿件一致",
+    "doiRecordTitle": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "144",
+    "doiRecordPage": "214110",
+    "doiRecordYear": 2016
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/1.4952647",
+     "type": "journal-article",
+     "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "144",
+     "page": "",
+     "articleNumber": "214110",
+     "years": {
+      "issued": 2016,
+      "print": 2016,
+      "online": 2016,
+      "accepted": null
+     },
+     "sim": 0.93,
+     "usable": true
+    },
+    {
+     "doi": "10.26434/chemrxiv.15005656/v1",
+     "type": "posted-content",
+     "title": "Dispersionless range-separated hybrid meta-GGA functional",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2026,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2605,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jpclett.0c00549.s001",
+     "type": "component",
+     "title": "M11plus, a Range-Separated Hybrid Meta Functional Incorporating Nonlocal Rung-3.5 Correlation, Exhibits Broad Accuracy on Diverse Databases",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.226,
+     "usable": false
+    }
+   ],
+   "searchQuery": "omega B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation Head-Gordon",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "lazic2010junolo",
+   "cite": {
+    "title": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy",
+    "titleRaw": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy",
+    "journal": "Computer Physics Communications",
+    "volume": "181",
+    "pages": "371-379",
+    "year": "2010",
+    "doiStored": "10.1016/j.cpc.2009.09.016",
+    "firstAuthorFamily": "Brako"
+   },
+   "crossref": {
+    "doi": "10.1016/j.cpc.2009.09.016",
+    "title": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy",
+    "titleRawCr": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy",
+    "journal": "Computer Physics Communications",
+    "volume": "181",
+    "page": "371-379",
+    "articleNumber": null,
+    "yearIssued": 2010,
+    "yearPrint": 2010,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy",
+    "doiRecordJournal": "Computer Physics Communications",
+    "doiRecordVolume": "181",
+    "doiRecordPage": "371-379",
+    "doiRecordYear": 2010
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[cpc] vs cr[cpc] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1016/j.cpc.2009.09.016",
+     "type": "journal-article",
+     "title": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy",
+     "journal": "Computer Physics Communications",
+     "volume": "181",
+     "page": "371-379",
+     "articleNumber": "",
+     "years": {
+      "issued": 2010,
+      "print": 2010,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1016/b978-0-12-809835-6.00009-8",
+     "type": "book-chapter",
+     "title": "The vdW-DF Family of Nonlocal Exchange-Correlation Functionals",
+     "journal": "Non-Covalent Interactions in Quantum Chemistry and Physics",
+     "volume": "",
+     "page": "241-274",
+     "articleNumber": "",
+     "years": {
+      "issued": 2017,
+      "print": 2017,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.1327,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jpca.0c10847.s001",
+     "type": "component",
+     "title": "From Molecules to Solids: A vdW-DF-C09 Case Study of the Mercury Dihalides",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.0227,
+     "usable": false
+    }
+   ],
+   "searchQuery": "JuNoLo – Jülich nonlocal code for parallel post-processing evaluation of vdW-DF correlation energy Brako",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "dasgupta2023",
+   "cite": {
+    "title": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+    "titleRaw": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+    "journal": "Journal of Chemical Theory and Computation",
+    "volume": "20",
+    "pages": "49-67",
+    "year": "2023",
+    "doiStored": "10.1021/acs.jctc.3c00903",
+    "firstAuthorFamily": "Paesani"
+   },
+   "crossref": {
+    "doi": "10.1021/acs.jctc.3c00903",
+    "title": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+    "titleRawCr": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+    "journal": "Journal of Chemical Theory and Computation",
+    "volume": "20",
+    "page": "49-67",
+    "articleNumber": null,
+    "yearIssued": 2023,
+    "yearPrint": 2024,
+    "yearOnline": 2023,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+    "doiRecordJournal": "Journal of Chemical Theory and Computation",
+    "doiRecordVolume": "20",
+    "doiRecordPage": "49-67",
+    "doiRecordYear": 2024
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jctc] vs cr[jctc] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1021/acs.jctc.3c00903.s001",
+     "type": "component",
+     "title": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jctc.3c00903",
+     "type": "journal-article",
+     "title": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals",
+     "journal": "Journal of Chemical Theory and Computation",
+     "volume": "20",
+     "page": "49-67",
+     "articleNumber": "",
+     "years": {
+      "issued": 2023,
+      "print": 2024,
+      "online": 2023,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.26434/chemrxiv-2023-nc64t",
+     "type": "posted-content",
+     "title": "Balance between physical interpretability and energetic predictability in widely used dispersion-corrected density functionals",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2023,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals Paesani",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "year/OK: 软提示：稿件年 2023 命中的是**在线首发/issued**年，而卷 20 所属正刊(print)年为 2024。两个写法都站得住，但\"卷-年配对\"按惯例应以 print 年为准，需人工定夺。",
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "calbo2015vv10review",
+   "cite": {
+    "title": "The Nonlocal Correlation Density Functional VV10",
+    "titleRaw": "The Nonlocal Correlation Density Functional VV10",
+    "journal": "Annual Reports in Computational Chemistry",
+    "volume": "11",
+    "pages": "37-102",
+    "year": "2015",
+    "doiStored": "10.1016/bs.arcc.2015.09.002",
+    "firstAuthorFamily": "Aragó"
+   },
+   "crossref": {
+    "doi": "10.1016/bs.arcc.2015.09.002",
+    "title": "The Nonlocal Correlation Density Functional VV10",
+    "titleRawCr": "The Nonlocal Correlation Density Functional VV10",
+    "journal": "Annual Reports in Computational Chemistry",
+    "volume": null,
+    "page": "37-102",
+    "articleNumber": null,
+    "yearIssued": 2015,
+    "yearPrint": 2015,
+    "yearOnline": null,
+    "type": "book-chapter",
+    "comparableFieldCount": 2
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 2,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "NO-DATA",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "The Nonlocal Correlation Density Functional VV10",
+    "doiRecordJournal": "Annual Reports in Computational Chemistry",
+    "doiRecordVolume": null,
+    "doiRecordPage": "37-102",
+    "doiRecordYear": 2015
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[arcc] vs cr[arcc] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1016/bs.arcc.2015.09.002",
+     "type": "book-chapter",
+     "title": "The Nonlocal Correlation Density Functional VV10",
+     "journal": "Annual Reports in Computational Chemistry",
+     "volume": "",
+     "page": "37-102",
+     "articleNumber": "",
+     "years": {
+      "issued": 2015,
+      "print": 2015,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.4952647",
+     "type": "journal-article",
+     "title": "ω B97M-V: A combinatorially optimized, range-separated hybrid, meta-GGA density functional with VV10 nonlocal correlation",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "144",
+     "page": "",
+     "articleNumber": "214110",
+     "years": {
+      "issued": 2016,
+      "print": 2016,
+      "online": 2016,
+      "accepted": null
+     },
+     "sim": 0.283,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jpclett.0c02956.s003",
+     "type": "component",
+     "title": "A New Mixing of Nonlocal Exchange and Nonlocal Correlation with Multiconfiguration Pair-Density Functional Theory",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2959,
+     "usable": false
+    }
+   ],
+   "searchQuery": "The Nonlocal Correlation Density Functional VV10 Aragó",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "volume/NO-DATA: Crossref 未给卷号",
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "goerigk2017gmtkn55",
+   "cite": {
+    "title": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions",
+    "titleRaw": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "19",
+    "pages": "32184-32215",
+    "year": "2017",
+    "doiStored": "10.1039/c7cp04913g",
+    "firstAuthorFamily": "Grimme"
+   },
+   "crossref": {
+    "doi": "10.1039/c7cp04913g",
+    "title": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions",
+    "titleRawCr": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "19",
+    "page": "32184-32215",
+    "articleNumber": null,
+    "yearIssued": 2017,
+    "yearPrint": null,
+    "yearOnline": 2017,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions",
+    "doiRecordJournal": "Physical Chemistry Chemical Physics",
+    "doiRecordVolume": "19",
+    "doiRecordPage": "32184-32215",
+    "doiRecordYear": 2017
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[pccp] vs cr[pccp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1039/c7cp04913g",
+     "type": "journal-article",
+     "title": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions",
+     "journal": "Physical Chemistry Chemical Physics",
+     "volume": "19",
+     "page": "32184-32215",
+     "articleNumber": "",
+     "years": {
+      "issued": 2017,
+      "print": null,
+      "online": 2017,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/ct900489g",
+     "type": "journal-article",
+     "title": "A General Database for Main Group Thermochemistry, Kinetics, and Noncovalent Interactions − Assessment of Common and Reparameterized (meta-)GGA Density Functionals",
+     "journal": "Journal of Chemical Theory and Computation",
+     "volume": "6",
+     "page": "107-126",
+     "articleNumber": "",
+     "years": {
+      "issued": 2009,
+      "print": 2010,
+      "online": 2009,
+      "accepted": null
+     },
+     "sim": 0.4317,
+     "usable": true
+    },
+    {
+     "doi": "10.1039/c0cp02984j",
+     "type": "journal-article",
+     "title": "A thorough benchmark of density functional methods for general main group thermochemistry, kinetics, and noncovalent interactions",
+     "journal": "Physical Chemistry Chemical Physics",
+     "volume": "13",
+     "page": "6670",
+     "articleNumber": "",
+     "years": {
+      "issued": 2011,
+      "print": 2011,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.4843,
+     "usable": true
+    }
+   ],
+   "searchQuery": "A look at the density functional theory zoo with the advanced GMTKN55 database for general main group thermochemistry, kinetics and noncovalent interactions Grimme",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "vydrov2009vv10",
+   "cite": {
+    "title": "Nonlocal van der Waals Density Functional Made Simple",
+    "titleRaw": "Nonlocal van der Waals Density Functional Made Simple",
+    "journal": "Physical Review Letters",
+    "volume": "103",
+    "pages": "063004",
+    "year": "2009",
+    "doiStored": "10.1103/PhysRevLett.103.063004",
+    "firstAuthorFamily": "Voorhis"
+   },
+   "crossref": {
+    "doi": "10.1103/physrevlett.103.063004",
+    "title": "Nonlocal van der Waals Density Functional Made Simple",
+    "titleRawCr": "Nonlocal van der Waals Density Functional Made Simple",
+    "journal": "Physical Review Letters",
+    "volume": "103",
+    "page": null,
+    "articleNumber": "063004",
+    "yearIssued": 2009,
+    "yearPrint": null,
+    "yearOnline": 2009,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Nonlocal van der Waals Density Functional Made Simple",
+    "doiRecordJournal": "Physical Review Letters",
+    "doiRecordVolume": "103",
+    "doiRecordPage": "063004",
+    "doiRecordYear": 2009
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[prl] vs cr[prl] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1103/physrevlett.103.063004",
+     "type": "journal-article",
+     "title": "Nonlocal van der Waals Density Functional Made Simple",
+     "journal": "Physical Review Letters",
+     "volume": "103",
+     "page": "",
+     "articleNumber": "063004",
+     "years": {
+      "issued": 2009,
+      "print": null,
+      "online": 2009,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.3398840",
+     "type": "journal-article",
+     "title": "Implementation and assessment of a simple nonlocal van der Waals density functional",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "132",
+     "page": "",
+     "articleNumber": "164113",
+     "years": {
+      "issued": 2010,
+      "print": 2010,
+      "online": 2010,
+      "accepted": null
+     },
+     "sim": 0.507,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jctc.0c00471.s001",
+     "type": "component",
+     "title": "Next-Generation Nonlocal van der Waals Density Functional",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.5893,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Nonlocal van der Waals Density Functional Made Simple Voorhis",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "vydrov2010simple",
+   "cite": {
+    "title": "Nonlocal van der Waals density functional: The simpler the better",
+    "titleRaw": "Nonlocal van der Waals density functional: The simpler the better",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "133",
+    "pages": "244103",
+    "year": "2010",
+    "doiStored": "10.1063/1.3521275",
+    "firstAuthorFamily": "Voorhis"
+   },
+   "crossref": {
+    "doi": "10.1063/1.3521275",
+    "title": "Nonlocal van der Waals density functional: The simpler the better",
+    "titleRawCr": "Nonlocal van der Waals density functional: The simpler the better",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "133",
+    "page": null,
+    "articleNumber": "244103",
+    "yearIssued": 2010,
+    "yearPrint": 2010,
+    "yearOnline": 2010,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Nonlocal van der Waals density functional: The simpler the better",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "133",
+    "doiRecordPage": "244103",
+    "doiRecordYear": 2010
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/1.3521275",
+     "type": "journal-article",
+     "title": "Nonlocal van der Waals density functional: The simpler the better",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "133",
+     "page": "",
+     "articleNumber": "244103",
+     "years": {
+      "issued": 2010,
+      "print": 2010,
+      "online": 2010,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1103/physrevlett.103.063004",
+     "type": "journal-article",
+     "title": "Nonlocal van der Waals Density Functional Made Simple",
+     "journal": "Physical Review Letters",
+     "volume": "103",
+     "page": "",
+     "articleNumber": "063004",
+     "years": {
+      "issued": 2009,
+      "print": null,
+      "online": 2009,
+      "accepted": null
+     },
+     "sim": 0.6379,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jctc.0c00471.s001",
+     "type": "component",
+     "title": "Next-Generation Nonlocal van der Waals Density Functional",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.5077,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Nonlocal van der Waals density functional: The simpler the better Voorhis",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "hyldgaard2014interp",
+   "cite": {
+    "title": "Interpretation of van der Waals density functionals",
+    "titleRaw": "Interpretation of van der Waals density functionals",
+    "journal": "Physical Review B",
+    "volume": "90",
+    "pages": "075148",
+    "year": "2014",
+    "doiStored": "10.1103/PhysRevB.90.075148",
+    "firstAuthorFamily": "Schr\"oder"
+   },
+   "crossref": {
+    "doi": "10.1103/physrevb.90.075148",
+    "title": "Interpretation of van der Waals density functionals",
+    "titleRawCr": "Interpretation of van der Waals density functionals",
+    "journal": "Physical Review B",
+    "volume": "90",
+    "page": null,
+    "articleNumber": "075148",
+    "yearIssued": 2014,
+    "yearPrint": null,
+    "yearOnline": 2014,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "stored-doi",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Interpretation of van der Waals density functionals",
+    "doiRecordJournal": "Physical Review B",
+    "doiRecordVolume": "90",
+    "doiRecordPage": "075148",
+    "doiRecordYear": 2014
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[prb] vs cr[prb] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1021/acs.jpca.0c05973.s001",
+     "type": "component",
+     "title": "Perspectives on van der Waals Density Functionals: The Case of TiS2",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3824,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jpca.4c07586.s002",
+     "type": "component",
+     "title": "The Source of Some Empirical Density Functionals van der Waals Forces",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3108,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jpca.4c07586.s001",
+     "type": "component",
+     "title": "The Source of Some Empirical Density Functionals van der Waals Forces",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3108,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Interpretation of van der Waals density functionals Schr\"oder",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "hesselmann2013nldft",
+   "cite": {
+    "title": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods",
+    "titleRaw": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods",
+    "journal": "Journal of Chemical Theory and Computation",
+    "volume": "9",
+    "pages": "273-283",
+    "year": "2013",
+    "doiStored": "10.1021/ct300735g",
+    "firstAuthorFamily": "Hesselmann"
+   },
+   "crossref": {
+    "doi": "10.1021/ct300735g",
+    "title": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods",
+    "titleRawCr": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods",
+    "journal": "Journal of Chemical Theory and Computation",
+    "volume": "9",
+    "page": "273-283",
+    "articleNumber": null,
+    "yearIssued": 2012,
+    "yearPrint": 2013,
+    "yearOnline": 2012,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods",
+    "doiRecordJournal": "Journal of Chemical Theory and Computation",
+    "doiRecordVolume": "9",
+    "doiRecordPage": "273-283",
+    "doiRecordYear": 2013
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jctc] vs cr[jctc] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1021/ct300735g",
+     "type": "journal-article",
+     "title": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods",
+     "journal": "Journal of Chemical Theory and Computation",
+     "volume": "9",
+     "page": "273-283",
+     "articleNumber": "",
+     "years": {
+      "issued": 2012,
+      "print": 2013,
+      "online": 2012,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jctc.9b00183.s001",
+     "type": "component",
+     "title": "Performance of Semilocal Kinetic Energy Functionals for Orbital-Free Density Functional Theory",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2222,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jpclett.8b01926.s001",
+     "type": "component",
+     "title": "Semilocal PauliGaussian Kinetic Functionals for Orbital-Free Density Functional Theory Calculations of Solids",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2171,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Assessment of a Nonlocal Correction Scheme to Semilocal Density Functional Theory Methods Hesselmann",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "year/OK: Crossref 存在多个年份（issued 2012 / print 2013 / online 2012），稿件值命中其一",
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "harris2020numpy",
+   "cite": {
+    "title": "Array programming with NumPy",
+    "titleRaw": "Array programming with {NumPy}",
+    "journal": "Nature",
+    "volume": "585",
+    "pages": "357-362",
+    "year": "2020",
+    "doiStored": "10.1038/s41586-020-2649-2",
+    "firstAuthorFamily": "Oliphant"
+   },
+   "crossref": {
+    "doi": "10.1038/s41586-020-2649-2",
+    "title": "Array programming with NumPy",
+    "titleRawCr": "Array programming with NumPy",
+    "journal": "Nature",
+    "volume": "585",
+    "page": "357-362",
+    "articleNumber": null,
+    "yearIssued": 2020,
+    "yearPrint": 2020,
+    "yearOnline": 2020,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "stored-doi",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Array programming with NumPy",
+    "doiRecordJournal": "Nature",
+    "doiRecordVolume": "585",
+    "doiRecordPage": "357-362",
+    "doiRecordYear": 2020
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[n] vs cr[n] 词集重合 1.00",
+   "searchCandidates": [
+    {
+     "doi": "10.14293/s2199-1006.1.sor-uncat.a7759461.v1.raugfi",
+     "type": "peer-review",
+     "title": "Review of \"Array programming with NumPy\"",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2021,
+      "print": 2021,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.93,
+     "usable": false
+    },
+    {
+     "doi": "10.3410/f.738677898.793581450",
+     "type": "dataset",
+     "title": "Faculty Opinions recommendation of Array programming with NumPy.",
+     "journal": "Faculty Opinions – Post-Publication Peer Review of the Biomedical Literature",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2020,
+      "print": 2021,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.93,
+     "usable": false
+    },
+    {
+     "doi": "10.1017/cbo9781139871754.006",
+     "type": "book-chapter",
+     "title": "NumPy",
+     "journal": "Learning Scientific Programming with Python",
+     "volume": "",
+     "page": "184-279",
+     "articleNumber": "",
+     "years": {
+      "issued": 2015,
+      "print": 2015,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.93,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Array programming with NumPy Oliphant",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "sun2018pyscf",
+   "cite": {
+    "title": "PySCF: the Python-based simulations of chemistry framework",
+    "titleRaw": "{PySCF}: the {Python}-based simulations of chemistry framework",
+    "journal": "WIREs Computational Molecular Science",
+    "volume": "8",
+    "pages": "e1340",
+    "year": "2018",
+    "doiStored": "10.1002/wcms.1340",
+    "firstAuthorFamily": "Chan"
+   },
+   "crossref": {
+    "doi": "10.1002/wcms.1340",
+    "title": "P y SCF: the Python‐based simulations of chemistry framework",
+    "titleRawCr": "P\n                    <scp>y</scp>\n                    SCF: the Python‐based simulations of chemistry framework",
+    "journal": "WIREs Computational Molecular Science",
+    "volume": "8",
+    "page": null,
+    "articleNumber": "e1340",
+    "yearIssued": 2017,
+    "yearPrint": 2018,
+    "yearOnline": 2017,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "stored-doi",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "P y SCF: the Python‐based simulations of chemistry framework",
+    "doiRecordJournal": "WIREs Computational Molecular Science",
+    "doiRecordVolume": "8",
+    "doiRecordPage": "e1340",
+    "doiRecordYear": 2018
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[wcms] vs cr[wcms] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/5.0285025",
+     "type": "journal-article",
+     "title": "Enhancing PySCF-based quantum chemistry simulations with modern hardware, algorithms, and Python tools",
+     "journal": "APL Computational Physics",
+     "volume": "1",
+     "page": "016101",
+     "articleNumber": "",
+     "years": {
+      "issued": 2025,
+      "print": 2025,
+      "online": 2025,
+      "accepted": null
+     },
+     "sim": 0.1909,
+     "usable": true
+    },
+    {
+     "doi": "10.26434/chemrxiv.15006303/v1",
+     "type": "posted-content",
+     "title": "physcode: A PySCF-Based Gaussian-Style Python Interface for Teaching Quantum Chemistry Beyond the Black Box",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2026,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.1157,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jpca.4c05876",
+     "type": "journal-article",
+     "title": "Introducing GPU Acceleration into the Python-Based Simulations of Chemistry Framework",
+     "journal": "The Journal of Physical Chemistry A",
+     "volume": "129",
+     "page": "1459-1468",
+     "articleNumber": "",
+     "years": {
+      "issued": 2025,
+      "print": 2025,
+      "online": 2025,
+      "accepted": null
+     },
+     "sim": 0.56,
+     "usable": true
+    }
+   ],
+   "searchQuery": "PySCF: the Python-based simulations of chemistry framework Chan",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "year/OK: Crossref 存在多个年份（issued 2017 / print 2018 / online 2017），稿件值命中其一",
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "sun2020pyscf",
+   "cite": {
+    "title": "Recent developments in the PySCF program package",
+    "titleRaw": "Recent developments in the {PySCF} program package",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "153",
+    "pages": "024109",
+    "year": "2020",
+    "doiStored": "10.1063/5.0006074",
+    "firstAuthorFamily": "Chan"
+   },
+   "crossref": {
+    "doi": "10.1063/5.0006074",
+    "title": "Recent developments in the P y SCF program package",
+    "titleRawCr": "Recent developments in the P\n                    <scp>y</scp>\n                    SCF program package",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "153",
+    "page": null,
+    "articleNumber": "024109",
+    "yearIssued": 2020,
+    "yearPrint": 2020,
+    "yearOnline": 2020,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "stored-doi",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Recent developments in the P y SCF program package",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "153",
+    "doiRecordPage": "024109",
+    "doiRecordYear": 2020
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1021/acs.jpca.5c01146.s001",
+     "type": "component",
+     "title": "Recent Developments in DFTB+, a Software Package for Efficient Atomistic Quantum Mechanical Simulations",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2019,
+     "usable": false
+    },
+    {
+     "doi": "10.3997/2214-4609.201405085",
+     "type": "proceedings-article",
+     "title": "Recent developments in curvelet-based seismic processing",
+     "journal": "69th EAGE Conference and Exhibition - Workshop Package",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2007,
+      "print": 2007,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.2464,
+     "usable": true
+    },
+    {
+     "doi": "10.26434/chemrxiv-2022-575bs",
+     "type": "posted-content",
+     "title": "Implementation of Real-Time TDDFT for Periodic Systems in the Open-Source PySCF Software Package",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": 2022,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.1028,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Recent developments in the PySCF program package Chan",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "lehtola2018libxc",
+   "cite": {
+    "title": "Recent developments in libxc - A comprehensive library of functionals for density functional theory",
+    "titleRaw": "Recent developments in {libxc} --- {A} comprehensive library of functionals for density functional theory",
+    "journal": "SoftwareX",
+    "volume": "7",
+    "pages": "1-5",
+    "year": "2018",
+    "doiStored": "10.1016/j.softx.2017.11.002",
+    "firstAuthorFamily": "Marques"
+   },
+   "crossref": {
+    "doi": "10.1016/j.softx.2017.11.002",
+    "title": "Recent developments in libxc — A comprehensive library of functionals for density functional theory",
+    "titleRawCr": "Recent developments in libxc — A comprehensive library of functionals for density functional theory",
+    "journal": "SoftwareX",
+    "volume": "7",
+    "page": "1-5",
+    "articleNumber": null,
+    "yearIssued": 2018,
+    "yearPrint": 2018,
+    "yearOnline": null,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Recent developments in libxc — A comprehensive library of functionals for density functional theory",
+    "doiRecordJournal": "SoftwareX",
+    "doiRecordVolume": "7",
+    "doiRecordPage": "1-5",
+    "doiRecordYear": 2018
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[s] vs cr[s] 词集重合 1.00",
+   "searchCandidates": [
+    {
+     "doi": "10.1016/j.softx.2017.11.002",
+     "type": "journal-article",
+     "title": "Recent developments in libxc — A comprehensive library of functionals for density functional theory",
+     "journal": "SoftwareX",
+     "volume": "7",
+     "page": "1-5",
+     "articleNumber": "",
+     "years": {
+      "issued": 2018,
+      "print": 2018,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1016/j.cpc.2012.05.007",
+     "type": "journal-article",
+     "title": "Libxc: A library of exchange and correlation functionals for density functional theory",
+     "journal": "Computer Physics Communications",
+     "volume": "183",
+     "page": "2272-2281",
+     "articleNumber": "",
+     "years": {
+      "issued": 2012,
+      "print": 2012,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3564,
+     "usable": true
+    },
+    {
+     "doi": "10.1016/s1380-7323(96)80093-8",
+     "type": "book-chapter",
+     "title": "Time-Dependent Density Functional Response Theory of Molecular Systems: Theory, Computational Methods, and Functionals",
+     "journal": "Theoretical and Computational Chemistry",
+     "volume": "",
+     "page": "391-439",
+     "articleNumber": "",
+     "years": {
+      "issued": 1996,
+      "print": 1996,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.1594,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Recent developments in libxc - A comprehensive library of functionals for density functional theory Marques",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "jurecka2006s22",
+   "cite": {
+    "title": "Benchmark database of accurate (MP2 and CCSD(T) complete basis set limit) interaction energies of small model complexes, DNA base pairs, and amino acid pairs",
+    "titleRaw": "Benchmark database of accurate ({MP2} and {CCSD(T)} complete basis set limit) interaction energies of small model complexes, {DNA} base pairs, and amino acid pairs",
+    "journal": "Physical Chemistry Chemical Physics",
+    "volume": "8",
+    "pages": "1985-1993",
+    "year": "2006",
+    "doiStored": "10.1039/b600027d",
+    "firstAuthorFamily": "Hobza"
+   },
+   "crossref": {
+    "doi": "10.1039/b600027d",
+    "title": "Benchmark database of accurate (MP2 and CCSD(T) complete basis set limit) interaction energies of small model complexes, DNA base pairs, and amino acid pairs",
+    "titleRawCr": "Benchmark database of accurate (MP2 and CCSD(T) complete basis set limit) interaction energies of small model complexes, DNA base pairs, and amino acid pairs",
+    "journal": "Phys. Chem. Chem. Phys.",
+    "volume": "8",
+    "page": "1985-1993",
+    "articleNumber": null,
+    "yearIssued": 2006,
+    "yearPrint": null,
+    "yearOnline": 2006,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Benchmark database of accurate (MP2 and CCSD(T) complete basis set limit) interaction energies of small model complexes, DNA base pairs, and amino acid pairs",
+    "doiRecordJournal": "Phys. Chem. Chem. Phys.",
+    "doiRecordVolume": "8",
+    "doiRecordPage": "1985-1993",
+    "doiRecordYear": 2006
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[pccp] vs cr[pccp] 词集重合 0.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1039/b600027d",
+     "type": "journal-article",
+     "title": "Benchmark database of accurate (MP2 and CCSD(T) complete basis set limit) interaction energies of small model complexes, DNA base pairs, and amino acid pairs",
+     "journal": "Phys. Chem. Chem. Phys.",
+     "volume": "8",
+     "page": "1985-1993",
+     "articleNumber": "",
+     "years": {
+      "issued": 2006,
+      "print": null,
+      "online": 2006,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1063/1.1906205",
+     "type": "journal-article",
+     "title": "On geometries of stacked and H-bonded nucleic acid base pairs determined at various DFT, MP2, and CCSD(T) levels up to the CCSD(T)/complete basis set limit level",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "122",
+     "page": "",
+     "articleNumber": "204322",
+     "years": {
+      "issued": 2005,
+      "print": 2005,
+      "online": 2005,
+      "accepted": null
+     },
+     "sim": 0.196,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/jp0661692",
+     "type": "journal-article",
+     "title": "Hydrogen-Bonded Nucleic Acid Base Pairs Containing Unusual Base Tautomers: Complete Basis Set Calculations at the MP2 and CCSD(T) Levels",
+     "journal": "The Journal of Physical Chemistry B",
+     "volume": "111",
+     "page": "641-645",
+     "articleNumber": "",
+     "years": {
+      "issued": 2006,
+      "print": 2007,
+      "online": 2006,
+      "accepted": null
+     },
+     "sim": 0.1523,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Benchmark database of accurate (MP2 and CCSD(T) complete basis set limit) interaction energies of small model complexes, DNA base pairs, and amino acid pairs Hobza",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  },
+  {
+   "key": "takatani2010s22",
+   "cite": {
+    "title": "Basis set consistent revision of the S22 test set of noncovalent interaction energies",
+    "titleRaw": "Basis set consistent revision of the {S22} test set of noncovalent\n             interaction energies",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "132",
+    "pages": "144104",
+    "year": "2010",
+    "doiStored": "10.1063/1.3378024",
+    "firstAuthorFamily": "Sherrill"
+   },
+   "crossref": {
+    "doi": "10.1063/1.3378024",
+    "title": "Basis set consistent revision of the S22 test set of noncovalent interaction energies",
+    "titleRawCr": "Basis set consistent revision of the S22 test set of noncovalent interaction energies",
+    "journal": "The Journal of Chemical Physics",
+    "volume": "132",
+    "page": null,
+    "articleNumber": "144104",
+    "yearIssued": 2010,
+    "yearPrint": 2010,
+    "yearOnline": 2010,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Basis set consistent revision of the S22 test set of noncovalent interaction energies",
+    "doiRecordJournal": "The Journal of Chemical Physics",
+    "doiRecordVolume": "132",
+    "doiRecordPage": "144104",
+    "doiRecordYear": 2010
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[jcp] vs cr[jcp] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.1063/1.3378024",
+     "type": "journal-article",
+     "title": "Basis set consistent revision of the S22 test set of noncovalent interaction energies",
+     "journal": "The Journal of Chemical Physics",
+     "volume": "132",
+     "page": "",
+     "articleNumber": "144104",
+     "years": {
+      "issued": 2010,
+      "print": 2010,
+      "online": 2010,
+      "accepted": null
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jctc.3c00952.s001",
+     "type": "component",
+     "title": "Plane Waves Versus Correlation-Consistent Basis Sets: A Comparison of MP2 Non-Covalent Interaction Energies in the Complete Basis Set Limit",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.292,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/ct200673a",
+     "type": "journal-article",
+     "title": "Accurate Prediction of Noncovalent Interaction Energies with the Effective Fragment Potential Method: Comparison of Energy Components to Symmetry-Adapted Perturbation Theory for the S22 Test Set",
+     "journal": "Journal of Chemical Theory and Computation",
+     "volume": "8",
+     "page": "2835-2843",
+     "articleNumber": "",
+     "years": {
+      "issued": 2012,
+      "print": 2012,
+      "online": 2012,
+      "accepted": null
+     },
+     "sim": 0.2283,
+     "usable": true
+    }
+   ],
+   "searchQuery": "Basis set consistent revision of the S22 test set of noncovalent interaction energies Sherrill",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 单值（文章号或起页）相等"
+   ]
+  },
+  {
+   "key": "altun2018dlpno",
+   "cite": {
+    "title": "Local energy decomposition analysis of hydrogen-bonded dimers within a domain-based pair natural orbital coupled cluster study",
+    "titleRaw": "Local energy decomposition analysis of hydrogen-bonded dimers within a\n             domain-based pair natural orbital coupled cluster study",
+    "journal": "Beilstein Journal of Organic Chemistry",
+    "volume": "14",
+    "pages": "919-929",
+    "year": "2018",
+    "doiStored": "10.3762/bjoc.14.79",
+    "firstAuthorFamily": "Bistoni"
+   },
+   "crossref": {
+    "doi": "10.3762/bjoc.14.79",
+    "title": "Local energy decomposition analysis of hydrogen-bonded dimers within a domain-based pair natural orbital coupled cluster study",
+    "titleRawCr": "Local energy decomposition analysis of hydrogen-bonded dimers within a domain-based pair natural orbital coupled cluster study",
+    "journal": "Beilstein Journal of Organic Chemistry",
+    "volume": "14",
+    "page": "919-929",
+    "articleNumber": null,
+    "yearIssued": 2018,
+    "yearPrint": null,
+    "yearOnline": 2018,
+    "type": "journal-article",
+    "comparableFieldCount": 3
+   },
+   "matchedVia": "bibliographic-search",
+   "similarity": 1,
+   "threshold": 0.8,
+   "fieldsComparedOK": 3,
+   "fieldCheck": {
+    "year": "OK",
+    "volume": "OK",
+    "pages": "OK"
+   },
+   "storedDoiCheck": {
+    "flag": "OK",
+    "similarity": 1,
+    "journalAgree": true,
+    "detail": "DOI 解析到同一对象（题名 sim 1.000），年/卷/页与稿件一致",
+    "doiRecordTitle": "Local energy decomposition analysis of hydrogen-bonded dimers within a domain-based pair natural orbital coupled cluster study",
+    "doiRecordJournal": "Beilstein Journal of Organic Chemistry",
+    "doiRecordVolume": "14",
+    "doiRecordPage": "919-929",
+    "doiRecordYear": 2018
+   },
+   "journalAgree": true,
+   "journalEvidence": "bib[bjoc] vs cr[bjoc] 词集重合 1.00，首字母序列相同",
+   "searchCandidates": [
+    {
+     "doi": "10.3762/bjoc.14.79",
+     "type": "journal-article",
+     "title": "Local energy decomposition analysis of hydrogen-bonded dimers within a domain-based pair natural orbital coupled cluster study",
+     "journal": "Beilstein Journal of Organic Chemistry",
+     "volume": "14",
+     "page": "919-929",
+     "articleNumber": "",
+     "years": {
+      "issued": 2018,
+      "print": null,
+      "online": 2018,
+      "accepted": 2018
+     },
+     "sim": 1,
+     "usable": true
+    },
+    {
+     "doi": "10.1021/acs.jctc.8b01145.s001",
+     "type": "component",
+     "title": "Local Energy Decomposition of Open-Shell Molecular Systems in the Domain-Based Local Pair Natural Orbital Coupled Cluster Framework",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3718,
+     "usable": false
+    },
+    {
+     "doi": "10.1021/acs.jctc.6b00523.s001",
+     "type": "component",
+     "title": "Decomposition of Intermolecular Interaction Energies within the Local Pair Natural Orbital Coupled Cluster Framework",
+     "journal": "",
+     "volume": "",
+     "page": "",
+     "articleNumber": "",
+     "years": {
+      "issued": null,
+      "print": null,
+      "online": null,
+      "accepted": null
+     },
+     "sim": 0.3013,
+     "usable": false
+    }
+   ],
+   "searchQuery": "Local energy decomposition analysis of hydrogen-bonded dimers within a domain-based pair natural orbital coupled cluster study Bistoni",
+   "searchError": null,
+   "verdict": "MATCH",
+   "mismatchHard": [],
+   "notesSoft": [
+    "pages/OK: 起末均一致（缩写已还原）"
+   ]
+  }
+ ]
+}

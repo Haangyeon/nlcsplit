@@ -1,0 +1,17 @@
+== 水二聚体 E_AB 基组阶梯（ωB97X-V，网格 level=1，几何：官方 S22 几何 <REPO>/scratch/lit/s22/S22_02.xyz）==
+基组              ne       N           becke  becke-becke-ra  becke-treutler       stratmann       方案跨度      bias
+sto-3g          20   19936         -0.4577         -0.4278         -0.4389         -0.4559    +0.0299    +0.001    39s
+6-31g*          20   19936         -0.6012         -0.5577         -0.5748         -0.5991    +0.0435    +0.000    97s
+aug-cc-pvdz     20   19936         -0.6334         -0.5922         -0.6081         -0.6313    +0.0413    +0.000   167s
+def2-svp        20   19936         -0.5933         -0.5512         -0.5676         -0.5912    +0.0421    +0.000   111s
+def2-tzvp       20   19936         -0.6192         -0.5769         -0.5933         -0.6171    +0.0423    +0.000    81s
+
+  跨基组漂移（相对 sto-3g）：
+    6-31g*        becke -0.1435   四方案 max|Δ| +0.1435 kcal/mol
+    aug-cc-pvdz   becke -0.1757   四方案 max|Δ| +0.1757 kcal/mol
+    def2-svp      becke -0.1356   四方案 max|Δ| +0.1356 kcal/mol
+    def2-tzvp     becke -0.1615   四方案 max|Δ| +0.1615 kcal/mol
+
+  最后两档（def2-svp→def2-tzvp）becke 漂移 = -0.0259 kcal/mol，四方案最大 +0.0259
+  判据：最后两档漂移 < 0.05 ⇒ 基组已趋 CBS，剩余不确定度由方案跨度决定；否则需要再加一档（cc-pVQZ 级）才能谈 CBS。
+EXIT=0

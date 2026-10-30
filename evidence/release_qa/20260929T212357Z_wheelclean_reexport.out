@@ -1,0 +1,7 @@
+wheel sha256: 4dc33eaf281b83a842fed09ccf14605119241c5e55901439f1f9d75aad6b7644
+target: /tmp/inst3_20260929T212357Z  cwd: /tmp/oot3_20260929T212357Z  (source tree not on sys.path)
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+import resolves to /tmp/inst3_20260929T212357Z/nlcsplit/__init__.py
+...............s...........................                              [100%]
+42 passed, 1 skipped in 406.75s (0:06:46)

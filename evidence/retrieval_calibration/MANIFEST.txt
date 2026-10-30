@@ -1,0 +1,15 @@
+This directory is the calibration evidence behind the claim that Web of Science, not OpenAlex
+or Crossref, is the only instrument used for the no-precedent search (paper/main.md section 4, [S15]).
+
+It was promoted out of scratch/ on 2026-09-29 because scratch/ is gitignored: the paper cited these
+four files, so a reader of the released repository could not resolve the citation that carries the
+retrieval-instrument judgement. Promotion, not duplication - scratch/ keeps the working copies.
+
+  oa_stab.js              query driver against the OpenAlex API
+  openalex_stability.json its output: 4/4 near-exact titles retrieved at rank 0, 0/4 for each of
+                          two legitimate topical strings
+  xref_calib2.js          same design against Crossref (4/4 at rank 0)
+  xref_r3.js              Crossref topical strings (1/3)
+
+Known self-correction, kept deliberately: an HTTP 429 was first counted as a non-retrieval; the
+conclusion only stands after the retry/backoff fix, and both runs are preserved here.

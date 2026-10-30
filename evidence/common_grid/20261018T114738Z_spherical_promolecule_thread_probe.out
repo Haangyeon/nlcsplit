@@ -1,0 +1,9 @@
+# 球平均参照密度的线程判别实验  体系 苯-氨  level 1  径向 400 点 × 方向 252
+# 生成 2026-10-18T11:47:38.493952+00:00
+# 判读规则（跑前写死）：|ΔS_球平均| <= 1e-12 且 |ΔS_现状| >= 0.001 ⇒ DEFINITION_IS_CAUSE；|ΔS_球平均| >= 0.001 ⇒ ORIENTATION_HYPOTHESIS_REFUTED；|ΔS_现状| <= 1e-14 ⇒ NO_SIGNAL
+!! 子进程（1 线程）失败 rc=1：
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+ImportError: cannot import name 'numint' from 'pyscf' (<CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/__init__.py)
+
+# exit=2 at 2026-10-18T11:47:40Z

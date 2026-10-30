@@ -1,0 +1,9 @@
+# W4 满表收口  起始 2026-10-13T16:19:55Z  host=<OPERATOR>
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+
+## 步 1：summarize_s22_full.py 出满表
+wrote 20261013T161955Z_summarize_s22_full_table.out rc=1 bytes=3660
+   rc=1
+STOP —— 满表还出得来不了（上面列了缺哪些格）。
+   清单**没动**：这正是本脚本存在的理由，别让'先把清单跑绿'插到表前面。
+# exit=1 at 2026-10-13T16:19:59Z

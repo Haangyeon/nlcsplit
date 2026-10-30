@@ -1,0 +1,7 @@
+# 验收第 2 条：出货件 QA 流水线
+# 生成 2026-10-29T13:22:54Z   临时安装目录 /tmp/nlcsplit_shipqa_gJ0Na0
+
+## 步 1：从导出树出货
+FATAL: 找不到可用的 python（python）或 setuptools，无法出货。
+!! make_public_repo.js 非零（它自带 15 道闸门，先读它的判语再重试）
+# exit=1 at 2026-10-29T13:22:55Z

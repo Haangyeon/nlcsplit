@@ -1,0 +1,16 @@
+# Initial guess only: NH3 (rNH=1.012 A, HNH=106.7 deg) and BH3 (rBH=1.208 A, planar)
+# placed on the C3 axis at B-N = 1.60 A, staggered. Geometry will be optimized.
+! wB97X-V 6-31G* Opt TightOpt TightSCF
+%pal nprocs 4
+end
+%maxcore 2000
+* xyz 0 1
+N   0.000000   0.000000   0.000000
+H   0.937000   0.000000  -0.381000
+H  -0.468500   0.811400  -0.381000
+H  -0.468500  -0.811400  -0.381000
+B   0.000000   0.000000   1.600000
+H   0.604000   1.046200   1.600000
+H  -1.208000   0.000000   1.600000
+H   0.604000  -1.046200   1.600000
+*

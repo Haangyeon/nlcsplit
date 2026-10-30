@@ -1,0 +1,56 @@
+# 归属效应 vs 求积效应：公共网格上只换归属
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD 441f63b0a8a06f7c6c5ac547ac48468655136e48
+# sha256 nlcsplit/partition.py      = d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+# sha256 nlcsplit/nlc.py            = 2817acd6fd37a2f68bd40540e7a094c004b4de5e67449621bdfb6e425e1c2f79
+# sha256 nlcsplit/step_h_s22.py     = 9bccd14baff0e86b16d7ae3a78b8aac8ba8eb1844df33e9088a8d78fc91d5482
+# level = 1  b = 6  C = 0.01  quad=True swap=False
+
+== 苯-水  level=1  原子 15  公共网格 N=47920  片间min 2.60 Å
+   ∫ρ = 52.000015 / 52   离散 Δ(β∫ρ) = +0.0000 kcal/mol（公共网格上四方案恒同）
+   归属 becke            E_AB =   -1.3598   E_NL(总) =   -31.4256
+   归属 becke-becke-rad  E_AB =   -1.1129   E_NL(总) =   -31.4256
+   归属 becke-treutler   E_AB =   -1.1962   E_NL(总) =   -31.4256
+   归属 stratmann        E_AB =   -1.3595   E_NL(总) =   -31.4256
+   → 纯归属跨度（同一网格同一权重） = 0.2468 kcal/mol
+   控制 nearest(公共网格) E_NL(直接) = -31.4256
+   求积 becke            N= 54512 ∫ρ= 51.99998  E_NL(总) =   -31.4273
+   求积 becke-becke-rad  N= 54512 ∫ρ= 51.99982  E_NL(总) =   -31.4273
+   求积 becke-treutler   N= 54512 ∫ρ= 52.00001  E_NL(总) =   -31.4271
+   求积 stratmann        N= 54512 ∫ρ= 52.00004  E_NL(总) =   -31.4273
+   → 求积侧总量跨度（各方案自带网格） = 0.0002 kcal/mol
+   → 归属/求积 = 1046.15
+   [1177 s]
+== 苯-氨  level=1  原子 16  公共网格 N=50104  片间min 2.76 Å
+   ∫ρ = 51.999917 / 52   离散 Δ(β∫ρ) = -0.0003 kcal/mol（公共网格上四方案恒同）
+   归属 becke            E_AB =   -1.3911   E_NL(总) =   -31.9582
+   归属 becke-becke-rad  E_AB =   -1.1692   E_NL(总) =   -31.9582
+   归属 becke-treutler   E_AB =   -1.2430   E_NL(总) =   -31.9582
+   归属 stratmann        E_AB =   -1.3897   E_NL(总) =   -31.9582
+   → 纯归属跨度（同一网格同一权重） = 0.2219 kcal/mol
+   控制 nearest(公共网格) E_NL(直接) = -31.9582
+   求积 becke            N= 56852 ∫ρ= 52.00056  E_NL(总) =   -31.9630
+   求积 becke-becke-rad  N= 56852 ∫ρ= 52.00025  E_NL(总) =   -31.9607
+   求积 becke-treutler   N= 56852 ∫ρ= 51.99998  E_NL(总) =   -31.9604
+   求积 stratmann        N= 56852 ∫ρ= 52.00066  E_NL(总) =   -31.9627
+   → 求积侧总量跨度（各方案自带网格） = 0.0026 kcal/mol
+   → 归属/求积 = 84.44
+   [1290 s]
+== 苯-甲烷  level=1  原子 17  公共网格 N=52040  片间min 2.98 Å
+   ∫ρ = 52.000371 / 52   离散 Δ(β∫ρ) = +0.0011 kcal/mol（公共网格上四方案恒同）
+   归属 becke            E_AB =   -1.4424   E_NL(总) =   -32.3624
+   归属 becke-becke-rad  E_AB =   -1.2282   E_NL(总) =   -32.3624
+   归属 becke-treutler   E_AB =   -1.2984   E_NL(总) =   -32.3624
+   归属 stratmann        E_AB =   -1.4403   E_NL(总) =   -32.3624
+   → 纯归属跨度（同一网格同一权重） = 0.2143 kcal/mol
+   控制 nearest(公共网格) E_NL(直接) = -32.3624
+   求积 becke            N= 59240 ∫ρ= 51.99957  E_NL(总) =   -32.3660
+   求积 becke-becke-rad  N= 59240 ∫ρ= 52.00099  E_NL(总) =   -32.3677
+   求积 becke-treutler   N= 59240 ∫ρ= 52.00041  E_NL(总) =   -32.3665
+   求积 stratmann        N= 59240 ∫ρ= 51.99996  E_NL(总) =   -32.3661
+   → 求积侧总量跨度（各方案自带网格） = 0.0018 kcal/mol
+   → 归属/求积 = 121.66
+   [1387 s]
+
+全部体系护栏通过。判决规则见文件头预登记：归属/求积 ≈ 1 以上 → 结局 A；≈ 0 → 结局 B 停下先报。
+host=<OPERATOR>  run_utc=2026-10-06T10:11:29Z

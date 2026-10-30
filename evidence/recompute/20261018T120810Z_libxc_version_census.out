@@ -1,0 +1,45 @@
+# artifact_kind=machine_census —— 本机环境普查，不是分子体系的测量值
+# 生成 2026-10-18T12:08:11.007500+00:00  host=<OPERATOR>
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# 候选 5 份（两个 conda 根 + PySCF 自带）：/mnt/e/conda_envs/cp2k24/lib/libxc.so, /mnt/e/conda_envs/cp2kprobe/lib/libxc.so, /mnt/e/conda_envs/xcprobe/lib/libxc.so, <CLUSTER_HOME>/miniconda3/envs/psi4env/lib/libxc.so, <CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+
+== /mnt/e/conda_envs/cp2k24/lib/libxc.so
+   soname      : ['libxc.so.12']
+   nm -D 非局域符号: ['xc_nlc_coef']
+   自报版本    : 6.2.2（经 xc_version_string）   conda-meta 包版本: 6.2.2
+   ctypes 取得到 : xc_nlc_coef
+
+== /mnt/e/conda_envs/cp2kprobe/lib/libxc.so
+   soname      : ['libxc.so.15']
+   nm -D 非局域符号: ['xc_nlc_coef']
+   自报版本    : 7.1.2（经 xc_version_string）   conda-meta 包版本: 7.1.2
+   ctypes 取得到 : xc_nlc_coef
+
+== /mnt/e/conda_envs/xcprobe/lib/libxc.so
+   soname      : ['libxc.so.15']
+   nm -D 非局域符号: ['xc_nlc_coef']
+   自报版本    : 7.1.2（经 xc_version_string）   conda-meta 包版本: 7.1.2
+   ctypes 取得到 : xc_nlc_coef
+
+== <CLUSTER_HOME>/miniconda3/envs/psi4env/lib/libxc.so
+   soname      : ['libxc.so.9']
+   nm -D 非局域符号: ['xc_nlc_coef']
+   自报版本    : 5.2.3（经 xc_version_string）   conda-meta 包版本: 5.2.3
+   ctypes 取得到 : xc_nlc_coef
+
+== <CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+   soname      : 裸名
+   nm -D 非局域符号: ['xc_nlc_coef']
+   自报版本    : 7.0.0（经 xc_version_string）   conda-meta 包版本: None
+   ctypes 取得到 : xc_nlc_coef
+
+# 判读（只对盘上证据负责）：
+   /mnt/e/conda_envs/cp2k24/lib/libxc.so
+   /mnt/e/conda_envs/cp2kprobe/lib/libxc.so
+   /mnt/e/conda_envs/xcprobe/lib/libxc.so
+   <CLUSTER_HOME>/miniconda3/envs/psi4env/lib/libxc.so
+   <CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+# 版本自报与 conda-meta 不一致的份数：0
+# 本机 libxc 构建共 5 份，去重版本 4 个：5.2.3, 6.2.2, 7.0.0, 7.1.2
+# 正文 `main.md:64` 现写'两份（conda-forge 5.2.3 与 PySCF 自带 7.0.0）'——份数与版本清单以本档为准，措辞若要改属落笔口径事项，须作者点头
+# exit=0 at 2026-10-18T12:08:11Z

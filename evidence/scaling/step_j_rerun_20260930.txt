@@ -1,0 +1,18 @@
+step_j 独立复现 2026-09-30T09:41Z（本机 WSL，PySCF 2.12.1，OMP_NUM_THREADS=4，load_gate=1）
+与 evidence/scaling/step_j.json 是同机不同窗口的第二次测量，不覆盖原工件。
+  L0 natm3   tau1e-08  ratio=8.956  外部R=0  valid=true
+  L0 natm3   tau1e-10  ratio=5.561  外部R=0  valid=true
+  L0 natm3   tau1e-12  ratio=6.403  外部R=0  valid=true
+  L0 natm6   tau1e-08  ratio=5.456  外部R=0  valid=true
+  L0 natm6   tau1e-10  ratio=6.411  外部R=0  valid=true
+  L0 natm6   tau1e-12  ratio=9.523  外部R=0  valid=true
+  L0 natm9   tau1e-08  ratio=6.177  外部R=0  valid=true
+  L0 natm9   tau1e-10  ratio=9.505  外部R=0  valid=true
+  L0 natm9   tau1e-12  ratio=10.846  外部R=0  valid=true
+  L0 natm12  tau1e-08  ratio=6.010  外部R=0  valid=true
+  L0 natm12  tau1e-10  ratio=10.449  外部R=0  valid=true
+  L0 natm12  tau1e-12  ratio=13.287  外部R=0  valid=true
+  L1 natm6   tau1e-08  ratio=1.372  外部R=0  valid=true
+  L1 natm6   tau1e-10  ratio=1.939  外部R=0  valid=true
+  L1 natm6   tau1e-12  ratio=2.628  外部R=0  valid=true
+配对数 15，其中 ratio<1（比密算快）的：0

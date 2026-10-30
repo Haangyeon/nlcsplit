@@ -1,0 +1,36 @@
+# 家族外分区：同一公共网格上换归属构造（Voronoi / Hirshfeld）
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD 0d405206a9674d3b193567df704022640c84aa1f
+# sha256 nlcsplit/partition.py      = d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+# sha256 nlcsplit/nlc.py            = 2817acd6fd37a2f68bd40540e7a094c004b4de5e67449621bdfb6e425e1c2f79
+# sha256 nlcsplit/step_h_s22.py     = 9bccd14baff0e86b16d7ae3a78b8aac8ba8eb1844df33e9088a8d78fc91d5482
+# level = 0  b = 6  C = 0.01  Hirshfeld 自由原子：基态多重度/UHF/不球平均
+
+== 水二聚体  level=0  原子 6  公共网格 N=4440  片间min 1.95 Å
+   家族内 becke            E_AB =   -0.6000  E_NL =    -7.8738
+   家族内 becke-becke-rad  E_AB =   -0.5570  E_NL =    -7.8738
+   家族内 becke-treutler   E_AB =   -0.5739  E_NL =    -7.8738
+   家族内 stratmann        E_AB =   -0.5979  E_NL =    -7.8738
+   Voronoi(最近原子硬指派)  E_AB =   -0.5714  E_NL =    -7.8738
+   Hirshfeld(自由原子库存化) E_AB =   -0.6214  E_NL =    -7.8738
+   （对照，不计入判据）等权 1/natm E_AB =   -3.9369  E_NL =    -7.8738
+   → 家族内跨度 = 0.0430 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0644 kcal/mol
+   → 比值（含家族外 / 家族内） = 1.50（预登记：≤2 不许升级措辞；>10 必须按跨构造写）
+   （普查控制值是 level 1 的，本行 level=0 不适用该门——不拿它当护栏）
+   （用时 44.1 s）
+
+== 甲烷二聚体  level=0  原子 10  公共网格 N=6736  片间min 3.16 Å
+   家族内 becke            E_AB =   -0.4849  E_NL =    -9.4164
+   家族内 becke-becke-rad  E_AB =   -0.4884  E_NL =    -9.4164
+   家族内 becke-treutler   E_AB =   -0.4839  E_NL =    -9.4164
+   家族内 stratmann        E_AB =   -0.4847  E_NL =    -9.4164
+   Voronoi(最近原子硬指派)  E_AB =   -0.4801  E_NL =    -9.4164
+   Hirshfeld(自由原子库存化) E_AB =   -0.5233  E_NL =    -9.4164
+   （对照，不计入判据）等权 1/natm E_AB =   -4.7082  E_NL =    -9.4164
+   → 家族内跨度 = 0.0045 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0432 kcal/mol
+   → 比值（含家族外 / 家族内） = 9.62（预登记：≤2 不许升级措辞；>10 必须按跨构造写）
+   （用时 182.9 s）
+
+VERDICT DONE —— 数值都已打印；判读按预登记的三档，比值与其分母（家族内跨度）同时报出

@@ -1,0 +1,167 @@
+== ARCHIVE: 苯-水 / 苯-氨 / 苯-甲烷 的 CCSD(T)/6-31g* 反泊松阶梯（在 <CLUSTER> 上算的）==
+
+为什么换集群，以及为什么这份归档值得单独存在。main.md §3.2 与 §4.5 之前写着"苯系四个与
+苯-水/苯-氨本机跑不动，留在限制里"。那是一条**限制**，不是一个结果；而它当时唯一的依据是
+本机 WSL 的内存与核数不够。tcc 那份 LSF 作业（93285）排队排到整机 36/36 满
+（bhosts chinahpc = closed_Full），所以 10-02 把同一套代码部署到 <CLUSTER> 的 cpu 分区上算掉了。
+"跑不动"这句话现在被替换成三个数。
+
+取数条件（与母仓那条水/氨/甲烷阶梯完全同一 call path，因此可比而不是相似）：
+  · 脚本 nlcsplit/step_m_ccsdt.py（随包发布的那一份，PYTHONPATH 指向 .publish/nlcsplit）
+  · 官方 S22 初始几何（未弛豫）：苯-水 = S22_17.xyz（片间最短 2.5978 A），苯-氨 = S22_18.xyz
+  （2.7650 A），苯-甲烷 = S22_10.xyz（2.9764 A）；水二聚体校验用 S22_02.xyz。基组 6-31g*，RHF 参考，
+    MP2/CCSD/CCSD(T) 同一 RHF 出发，冻核与全电子各一档，反泊松
+  · 片段划分沿用 geomlib.s22_system 的 [0..11] / [12..14]，与 DFT 那一侧同一划分
+
+机器与环境：<CLUSTER> Slurm 作业 50937（partition cpu, 单节点 32 槽, cpu1），
+Python 3.10.19 / PySCF 2.12.1 / NumPy 2.2.5 / SciPy 1.15.3，OMP_NUM_THREADS=32，
+MAXMEM_MB=60000，State=COMPLETED ExitCode=0 Elapsed=00:04:08。
+
+阶段 0 校验（同一份代码、同一约定必须先把母仓已归档的水二聚体数复现出来，否则不把机时押在苯上）：
+    guard: |-6.8559 - (-6.856)| = 0.0001 <= 0.0015 -> PASS
+这一段还留着两次自己的错，写下来是因为它们都会以"成功"的形态出现：
+  (1) 第一次提交（50935）上传输脚本的 stdin 重定向漏了，远端脚本 0 字节，作业 1 秒
+      COMPLETED、退出码 0 —— 空脚本是成功的。现在推送脚本的循环里加了字节数下限判据。
+  (2) 第二版守卫按"汇总表"那一行取水二聚体的数，但单体系运行时 step_m 根本不打印汇总表
+      （len(SYSTEMS)>1 才打），于是解析成空串、守卫正确地拒绝跑苯 —— 红的是我的解析，
+      不是通路。改成按 CCSD(T) 那一行取第 4 列（tcc 那份 LSF 脚本一直就是这么取的）。
+
+结果（dE_CP，kcal/mol；冻核那档是与 §3.2 那条阶梯同类的量）：
+    体系        nao   MP2      CCSD    CCSD(T)   CCSD(T) 全电子
+    苯-水       114  -4.0248  -3.4648  -3.6536   -3.6963
+    苯-氨       116  -2.5796  -2.0665  -2.2737   -2.3137
+    苯-甲烷     118  -1.3028  -0.8386  -1.0583   -1.0937
+三个体系每一步都打印了 RHF=True CCSD=True，即 SCF 与 CCSD 均收敛，不是靠 DIIS 兜住的未收敛值。
+
+这份归档**不主张**的东西，先说在这里，免得后人拿它去撑没做的论证：
+  · 不是 CBS 极限：只有一个基组（6-31g*），没有外推；苯-水这类色散主导的复合物在
+    6-31g* 下偏浅是本目录水/氨/甲烷那条阶梯已经量过的现象（0.3-0.8 kcal/mol 且符号不统一），
+    这里给的是"同一基组下的相关参考值"，不是完备基参考。
+  · 不是弛豫几何上的结合能：官方 S22 初始几何，未弛豫。
+  · 不含 BSSE 之外的任何分解：CCSD(T) 这一栏只用来判 DFT 那一栏的量级是否可信。
+  · 苯二聚体(A) 不在这里：它是 192 AO 的那一档，tcc 那份脚本按同一理由把它排除在押机时之外，
+    此处的墙钟（114-118 AO 合计 4 分钟）不足以推断它也可行。
+
+复现方式（<CLUSTER> 上）：
+    sbatch -p cpu -N 1 -n 32 -t 04:00:00 \
+      --wrap='bash <CLUSTER_HOME>/snnu_benzene.sh'
+生产者脚本随本目录发布为 snnu_benzene_runner.sh；校验日志 validate_water 的逐字输出在下面的
+第一个分隔块里。
+
+--- verbatim output follows ---
+
+===== sbatch_50937.out (854 bytes) =====
+== host=cpu1 cpus=32 threads=32 maxmem=60000MB ==
+3.10.19 pyscf 2.12.1 <CLUSTER_HOME>/share/tcc/Program/miniconda3/envs/mace/lib/python3.10/site-packages/pyscf/__init__.py
+== s22 文件数=22 ==
+water_ccsdT=[-6.8559] rc=0
+guard: |-6.8559 - (-6.856)| = 0.0001 <= 0.0015 -> PASS
+GUARD_PASS
+== running 苯-水 @ 2026-10-01T20:29:57Z ==
+   rc=0 lines=22
+== running 苯-氨 @ 2026-10-01T20:31:12Z ==
+   rc=0 lines=22
+== running 苯-甲烷 @ 2026-10-01T20:32:32Z ==
+   rc=0 lines=22
+== 2026-10-01T20:34:00Z ALL_DONE ==
+b826447a990d0ebeb06421c2a8fddc1fcdeb437f7a1106b6524a1165e1682d4f  ccsdt_苯-氨.log
+099625ed737ceb62bb6bd536b93addd5f5581401fee3d1b24d24d9fe9b3a2c78  ccsdt_苯-水.log
+1a1f563460d4f40a1d56629a6f2ceaa342d906ff848edf9f2bb640d25cb0b552  ccsdt_苯-甲烷.log
+88329575537495fbfc98b057049cf5bc107da5bfd382bfbf800d98c798471a83  validate_water.log
+
+===== validate_water.log (1582 bytes) =====
+== Step M · 水二聚体 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_02.xyz（初始几何，未弛豫），原子 6，片间最短距离 1.9516 A
+  片段 : [[0, 2, 3], [1, 4, 5]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=32   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+  对照 : 正文 ωB97X-V/6-31g* level-2 未校正 -7.816，反泊松 -6.129 kcal/mol
+
+### basis = 6-31g*
+  复合物 nao=36 nbas=20 nelec=20；单体 nao=18/18；每片段冻核 [1, 1]，合计 2
+  --- frozen(cores)  (复合物冻 2，单体冻 [1, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.3989543401    -152.3875610975            -7.1494          0.0
+    CCSD         -152.4166629333    -152.4060138618            -6.6824          0.9
+    CCSD(T)      -152.4204261343    -152.4095005169            -6.8559          0.1
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 2 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -152.4022441820    -152.3907991493            -7.1819          0.0
+    CCSD         -152.4195201360    -152.4088222958            -6.7130          0.8
+    CCSD(T)      -152.4233210927    -152.4123461140            -6.8869          0.1
+    RHF 参考=   -152.0272662226  收敛 RHF=True CCSD=True MP2=None   本档合计 2 s
+
+
+===== ccsdt_苯-水.log (1526 bytes) =====
+== Step M · 苯-水 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_17.xyz（初始几何，未弛豫），原子 15，片间最短距离 2.5978 A
+  片段 : [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], [12, 13, 14]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=32   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+
+### basis = 6-31g*
+  复合物 nao=114 nbas=58 nelec=52；单体 nao=96/18；每片段冻核 [6, 1]，合计 7
+  --- frozen(cores)  (复合物冻 7，单体冻 [6, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -307.6490297321    -307.6426157864            -4.0248          0.2
+    CCSD         -307.6959746395    -307.6904531377            -3.4648         14.6
+    CCSD(T)      -307.7325147710    -307.7266923254            -3.6536          2.4
+    RHF 参考=   -306.7145917326  收敛 RHF=True CCSD=True MP2=None   本档合计 28 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -307.6662216028    -307.6597339594            -4.0711          0.2
+    CCSD         -307.7118864919    -307.7062975344            -3.5071         25.2
+    CCSD(T)      -307.7487410098    -307.7428506220            -3.6963          4.7
+    RHF 参考=   -306.7145917326  收敛 RHF=True CCSD=True MP2=None   本档合计 46 s
+
+
+===== ccsdt_苯-氨.log (1530 bytes) =====
+== Step M · 苯-氨 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_18.xyz（初始几何，未弛豫），原子 16，片间最短距离 2.7650 A
+  片段 : [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=32   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+
+### basis = 6-31g*
+  复合物 nao=116 nbas=60 nelec=52；单体 nao=96/20；每片段冻核 [6, 1]，合计 7
+  --- frozen(cores)  (复合物冻 7，单体冻 [6, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -287.8048411071    -287.8007303022            -2.5796          0.2
+    CCSD         -287.8581942302    -287.8549010009            -2.0665         16.7
+    CCSD(T)      -287.8953264882    -287.8917031786            -2.2737          2.2
+    RHF 参考=   -286.8865400133  收敛 RHF=True CCSD=True MP2=None   本档合计 29 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -287.8223346974    -287.8181546260            -2.6230          0.3
+    CCSD         -287.8744167007    -287.8710606381            -2.1060         29.4
+    CCSD(T)      -287.9118660448    -287.9081789631            -2.3137          4.9
+    RHF 参考=   -286.8865400133  收敛 RHF=True CCSD=True MP2=None   本档合计 51 s
+
+
+===== ccsdt_苯-甲烷.log (1537 bytes) =====
+== Step M · 苯-甲烷 CCSD(T) 反泊松锚点 ==
+  几何 : 官方 S22 S22_10.xyz（初始几何，未弛豫），原子 17，片间最短距离 2.9764 A
+  片段 : [[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12], [6, 13, 14, 15, 16]]  （与 l2cp 那一行同一划分）
+  基组 : 6-31g*
+  方法 : RHF 参考，MP2/CCSD/CCSD(T)；冻核与全电子各报一次
+  线程 : OMP_NUM_THREADS=32   单位: 总能量 Ha，相互作用 kcal/mol (x627.509474)
+
+### basis = 6-31g*
+  复合物 nao=118 nbas=62 nelec=52；单体 nao=96/22；每片段冻核 [6, 1]，合计 7
+  --- frozen(cores)  (复合物冻 7，单体冻 [6, 1]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -271.7821338894    -271.7800577990            -1.3028          0.2
+    CCSD         -271.8406314095    -271.8392949368            -0.8386         18.6
+    CCSD(T)      -271.8781080731    -271.8764215178            -1.0583          2.5
+    RHF 参考=   -270.8957993175  收敛 RHF=True CCSD=True MP2=None   本档合计 33 s
+  --- all-electron  (复合物冻 0，单体冻 [0, 0]) ---
+    method               E_dimer         sum E_mono     dE_CP kcal/mol            s
+    MP2          -271.7999403585    -271.7978031320            -1.3411          0.2
+    CCSD         -271.8572373619    -271.8558458845            -0.8732         32.3
+    CCSD(T)      -271.8950372464    -271.8932943691            -1.0937          5.7
+    RHF 参考=   -270.8957993175  收敛 RHF=True CCSD=True MP2=None   本档合计 54 s
+

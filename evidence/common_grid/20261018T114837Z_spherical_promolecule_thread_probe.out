@@ -1,0 +1,16 @@
+# 球平均参照密度的线程判别实验  体系 苯-氨  level 1  径向 400 点 × 方向 252
+# 生成 2026-10-18T11:48:37.942908+00:00
+# 判读规则（跑前写死）：|ΔS_球平均| <= 1e-12 且 |ΔS_现状| >= 0.001 ⇒ DEFINITION_IS_CAUSE；|ΔS_球平均| >= 0.001 ⇒ ORIENTATION_HYPOTHESIS_REFUTED；|ΔS_现状| <= 1e-14 ⇒ NO_SIGNAL
+# 子进程(1) stdout：# 球平均权重逐点求和偏离 1 的最大值 = 8.882e-16
+# 注：球平均后最近原子归属（argmax）与现状不一致的点数 = 2023
+# 子进程(8) stdout：# 球平均权重逐点求和偏离 1 的最大值 = 8.882e-16
+# 注：球平均后最近原子归属（argmax）与现状不一致的点数 = 2468
+# 网格点 58448，原子 16，n_zero 0
+# 自由原子（T=1 / T=8 各自自报）：
+Traceback (most recent call last):
+  File "<REPO>/evidence/common_grid/probe_spherical_promolecule_thread.py", line 187, in <module>
+    sys.exit(main())
+  File "<REPO>/evidence/common_grid/probe_spherical_promolecule_thread.py", line 158, in main
+    % (sym, x["threads"], y["threads"], x["e_tot"], y["e_tot"],
+KeyError: 'threads'
+# exit=1 at 2026-10-18T11:48:45Z

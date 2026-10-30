@@ -1,0 +1,15 @@
+# first of the two out-of-tree runs of the 44-test wheel
+# recorded UTC: 2026-09-30T18:10:00Z (written after the fact from scratch/wheel_out2.log)
+# wheel: dist/nlcsplit-0.1.0-py3-none-any.whl as rebuilt by the export that ran at that time
+# wheel sha256: d175c7b8ce9f09f929b78be3c74932be5e28955cef30f48459a97daa68267271
+#   ^ that hash is the sha256_in_dist the export itself printed for the build under test, not a
+#     value read off this file; the wheel in dist/ has since been rebuilt again, which is exactly
+#     why each log here names its own hash.
+# extraction dir: scratch/wheelchk2
+# invocation cwd: /tmp (not the source tree)
+# command: PYTHONPATH=<unpacked wheel> OMP_NUM_THREADS=2 python3 -m pytest -q --pyargs nlcsplit
+# raw output follows
+wheel=<REPO>/dist/nlcsplit-0.1.0-py3-none-any.whl
+...............s............................                             [100%]
+43 passed, 1 skipped in 655.52s (0:10:55)
+EXIT_FULL=0

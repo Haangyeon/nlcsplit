@@ -1,0 +1,17 @@
+# wheel 成员逐字节比对
+# A = dist/measured-7bdcb6f6-nlcsplit-0.1.0-py3-none-any.whl
+#     sha256=7bdcb6f60ea8d7936a0966066e4cc99043d77c6877d52c7d70d57f580080bfd9  size=124606
+# B = dist/nlcsplit-0.1.0-py3-none-any.whl
+#     sha256=97f710c31ba7d56bdf0f32333d40af809894741e7c7377d52d5a1015e8d34552  size=124682
+
+A 成员数=39  B 成员数=39  两边都有=39  哈希相同=37  哈希不同=2  只在A=0  只在B=0
+  DIFF    nlcsplit-0.1.0.dist-info/METADATA
+          A=8e955d3c1020fed2deeebc05ec9fe152830eaa2c87920bd670f4499f7f2c20e4
+          B=7e54122a2e478f385aa52132c87dff58124bbd34678ee8a669c38ed0babe56b0
+  DIFF    nlcsplit-0.1.0.dist-info/RECORD
+          A=26d9c89eb4c54eae7adb06616f3c47feba5d617c1ccea34134270529ca546af0
+          B=2c1bab1bcb174ea4c7835ebabd2ced3038f24f8000aceb0783f71f932c3704bb
+
+被测内容成员（nlcsplit/**.py）=34，其中逐字节相同=34
+
+VERDICT OK —— 差异只在 dist-info 的 METADATA/RECORD；34 个 nlcsplit/**.py 成员逐字节相同

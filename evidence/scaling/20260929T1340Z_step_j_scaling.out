@@ -1,0 +1,48 @@
+=== step_j_scaling  PySCF 2.12.1  basis=6-31g*  xc=wb97x_v
+    OMP_NUM_THREADS=4  uptime_s=62  load1_now=0.44
+    判据：非本进程树的可运行用户任务 > 1 的计时样本标 INVALID，只留功占比与正确性。
+
+-- 1 个水单体（3 原子）level=0  load1=0.44
+   exact        评估点对=     1,291,836  占 far 100.00%  cert=0.000e+00 Ha  |dE|=- kcal      0.08 s  load1=0.99  外部R=0
+   tau1e-08     评估点对=       938,292  占 far  72.63%  cert=1.033e-05 Ha  |dE|=1.268e-03 kcal      0.43 s  load1=0.99  外部R=0
+   tau1e-10     评估点对=     1,148,456  占 far  88.90%  cert=7.315e-08 Ha  |dE|=1.227e-05 kcal      0.55 s  load1=0.99  外部R=0
+   tau1e-12     评估点对=     1,232,369  占 far  95.40%  cert=2.824e-10 Ha  |dE|=6.828e-08 kcal      0.64 s  load1=1.07  外部R=0
+   侧车 → <REPO>/nlcsplit/logs/step_j.json（1 行，增量落盘）
+
+-- 2 个水单体（6 原子）level=0  load1=1.07
+   exact        评估点对=     6,824,954  占 far 100.00%  cert=0.000e+00 Ha  |dE|=- kcal      0.48 s  load1=2.90  外部R=0
+   tau1e-08     评估点对=     3,759,786  占 far  55.09%  cert=5.279e-05 Ha  |dE|=7.118e-03 kcal      1.42 s  load1=2.90  外部R=0
+   tau1e-10     评估点对=     5,587,100  占 far  81.86%  cert=2.947e-07 Ha  |dE|=4.605e-05 kcal      2.39 s  load1=2.90  外部R=0
+   tau1e-12     评估点对=     6,398,217  占 far  93.75%  cert=1.185e-09 Ha  |dE|=1.166e-07 kcal      2.62 s  load1=2.83  外部R=0
+   侧车 → <REPO>/nlcsplit/logs/step_j.json（2 行，增量落盘）
+
+-- 3 个水单体（9 原子）level=0  load1=2.83
+   exact        评估点对=    16,691,466  占 far 100.00%  cert=0.000e+00 Ha  |dE|=- kcal      0.52 s  load1=3.74  外部R=0
+   tau1e-08     评估点对=     7,693,775  占 far  46.09%  cert=1.154e-04 Ha  |dE|=1.433e-02 kcal      2.95 s  load1=3.74  外部R=0
+   tau1e-10     评估点对=    12,436,722  占 far  74.51%  cert=8.244e-07 Ha  |dE|=1.445e-04 kcal      4.63 s  load1=3.52  外部R=0
+   tau1e-12     评估点对=    15,240,118  占 far  91.30%  cert=3.416e-09 Ha  |dE|=6.111e-07 kcal      5.34 s  load1=3.32  外部R=0
+   侧车 → <REPO>/nlcsplit/logs/step_j.json（3 行，增量落盘）
+
+-- 4 个水单体（12 原子）level=0  load1=3.32
+   exact        评估点对=    30,884,264  占 far 100.00%  cert=0.000e+00 Ha  |dE|=- kcal      0.99 s  load1=4.24  外部R=0
+   tau1e-08     评估点对=    11,579,258  占 far  37.49%  cert=2.198e-04 Ha  |dE|=2.444e-02 kcal      4.62 s  load1=4.06  外部R=0
+   tau1e-10     评估点对=    20,445,302  占 far  66.20%  cert=1.805e-06 Ha  |dE|=2.995e-04 kcal      8.36 s  load1=3.59  外部R=0
+   tau1e-12     评估点对=    26,666,671  占 far  86.34%  cert=9.187e-09 Ha  |dE|=1.773e-06 kcal     10.22 s  load1=3.19  外部R=0
+   侧车 → <REPO>/nlcsplit/logs/step_j.json（4 行，增量落盘）
+
+-- 2 个水单体（6 原子）level=1  load1=3.19
+   exact        评估点对=   120,040,968  占 far 100.00%  cert=0.000e+00 Ha  |dE|=- kcal      4.45 s  load1=4.00  外部R=0
+   tau1e-08     评估点对=    49,936,048  占 far  41.60%  cert=1.291e-04 Ha  |dE|=1.534e-02 kcal      4.86 s  load1=3.75  外部R=0
+   tau1e-10     评估点对=    82,106,903  占 far  68.40%  cert=9.223e-07 Ha  |dE|=7.879e-05 kcal      7.32 s  load1=3.53  外部R=0
+   tau1e-12     评估点对=   101,348,224  占 far  84.43%  cert=4.917e-09 Ha  |dE|=4.382e-07 kcal      8.68 s  load1=3.37  外部R=0
+   侧车 → <REPO>/nlcsplit/logs/step_j.json（5 行，增量落盘）
+
+-- 3 个水单体（9 原子）level=1  load1=3.37
+   exact        评估点对=   297,165,609  占 far 100.00%  cert=0.000e+00 Ha  |dE|=- kcal      9.63 s  load1=3.86  外部R=0
+   tau1e-08     评估点对=    93,176,540  占 far  31.36%  cert=3.502e-04 Ha  |dE|=3.819e-02 kcal     10.41 s  load1=3.42  外部R=0
+   tau1e-10     评估点对=   179,638,849  占 far  60.45%  cert=2.645e-06 Ha  |dE|=3.055e-04 kcal     15.68 s  load1=2.88  外部R=0
+   tau1e-12     评估点对=   236,127,947  占 far  79.46%  cert=1.351e-08 Ha  |dE|=1.531e-06 kcal     21.06 s  load1=2.35  外部R=0
+   侧车 → <REPO>/nlcsplit/logs/step_j.json（6 行，增量落盘）
+
+[计时可用性] 24 / 24 个样本空载可用。 只有这些能进标度图。
+EXIT=0

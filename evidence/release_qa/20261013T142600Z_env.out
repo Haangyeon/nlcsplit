@@ -1,0 +1,18 @@
+git_HEAD=df8ff6680556d74f88454148245f361294fdfed8
+Python 3.10.12
+pyscf 2.12.1 numpy 2.2.6 scipy 1.15.3
+90
+ec6c0c569241fc7df1f842cce3474f329ba81254c8872a8f5057ca94be4fdc73 *nlcsplit/partition.py
+19b8e6be0fcf7ca06ecfd43fa7a4ba4d7d438ef99d0bcc83a3980da63106b666 *nlcsplit/tests/test_crossfamily_schemes.py
+--- 现役 dist/ wheel（对照基线，未改动）---
+72e61ab5363f7ef9c5d4ef8420068d3f404d342ce1cf6051b76fab15cadc9260 *dist/nlcsplit-0.1.0-py3-none-any.whl
+# wheel census: dist/nlcsplit-0.1.0-py3-none-any.whl
+# sha256 = 72e61ab5363f7ef9c5d4ef8420068d3f404d342ce1cf6051b76fab15cadc9260
+# members (files, not directories): 39
+# files under */tests/: 10  (其中真正的测试模块 8)
+#   nlcsplit/tests/__init__.py                     test_ defs=0   not-a-test
+#   nlcsplit/tests/conftest.py                     test_ defs=0   not-a-test
+#   nlcsplit/tests/test_cc_convention.py           test_ defs=7   
+#   nlcsplit/tests/test_fastpair.py                test_ defs=10  
+# 基线 wheel 里 partition.py 字节数 = 7717 含 CROSS_FAMILY_SCHEMES = False
+# exit=0 at 2026-10-13T14:26:03Z

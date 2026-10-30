@@ -1,0 +1,83 @@
+{
+ "system": "F-...H2O",
+ "geometry_source": "evidence/chemical_controls/ionic/fw_opt.xyz",
+ "geometry_method": "wB97X-V/aug-cc-pVDZ Opt TightSCF TightOpt, ORCA 6",
+ "basis": "aug-cc-pvdz",
+ "schemes": [
+  "becke",
+  "becke-becke-rad",
+  "becke-treutler",
+  "stratmann"
+ ],
+ "metrics": {
+  "F-O_A": 2.460364125416682,
+  "F-H_A": 1.4085097621200053,
+  "O-H_A": [
+   1.053345535822012,
+   0.9613440040998444
+  ],
+  "H-O-H_deg": 101.95355601738072
+ },
+ "rows": [
+  {
+   "level": 1,
+   "basis": "aug-cc-pvdz",
+   "natm": 4,
+   "frags": [
+    [
+     0
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "charge": -1,
+   "dtot": -31.47271120360614,
+   "dxc": -39.61232350397885,
+   "dnlc": -0.9875339281529301,
+   "dcp": -30.686708831241262,
+   "pint": {
+    "becke": -1.0895038611835879,
+    "becke-becke-rad": -1.0066579372992333,
+    "becke-treutler": -1.0429643360693501,
+    "stratmann": -1.0770590674950877
+   },
+   "span": 0.08284592388435463,
+   "ratio_pfrz_dnlc": 1.1032571440065668,
+   "seconds": 127.4
+  },
+  {
+   "level": 2,
+   "basis": "aug-cc-pvdz",
+   "natm": 4,
+   "frags": [
+    [
+     0
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "charge": -1,
+   "dtot": -31.467325208278893,
+   "dxc": -39.60598789303412,
+   "dnlc": -0.9877158610740874,
+   "dcp": -31.163216632728773,
+   "pint": {
+    "becke": -1.0892068355970932,
+    "becke-becke-rad": -1.0067043558332918,
+    "becke-treutler": -1.042847375220263,
+    "stratmann": -1.076655117125928
+   },
+   "span": 0.08250247976380143,
+   "ratio_pfrz_dnlc": 1.1027532092201495,
+   "seconds": 265.5
+  }
+ ],
+ "host": "<OPERATOR>",
+ "pyscf_version": "2.12.1"
+}

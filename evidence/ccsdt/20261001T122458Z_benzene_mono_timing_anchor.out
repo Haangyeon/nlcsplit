@@ -1,0 +1,57 @@
+== ARCHIVE: benzene-monomer CCSD(T)/6-31g* timing anchor ==
+
+Why this exists. Two claims needed a measured middle point, and both would otherwise have
+been arithmetic I made up:
+
+  1. How long the queued benzene jobs (tcc job 93285, 苯-水 / 苯-氨 / 苯-甲烷, 114-118 AO)
+     will take. The archived ladder only spans the water dimer at 36-82 AO, and its (T)
+     seconds are printed to one decimal (0.1, 0.9), which cannot anchor an extrapolation.
+  2. Whether the benzene dimer (192 AO) is out of reach because of memory.
+
+Measured here, on this box, 8 threads, through the production function
+`nlcsplit/step_m_ccsdt.correlated()` - same call path and same frozen-core convention as the
+ladder, so the seconds are comparable rather than merely similar.
+
+    苯单体  nao=96  nbas=48  nelec=42   occ=21  vir=75
+      frozen(cores), 6 pairs frozen (相关 occ=15)   rung 13.1 s   CCSD 7.2 s  (T) 5.1 s
+      all-electron,  0 pairs frozen (相关 occ=21)   rung 26.7 s   CCSD 13.8 s (T) 12.4 s
+      E_ref(RHF) = -230.7019770331 Ha in both rungs, as it must be.
+
+Two things this settles and one it does not.
+
+It settles that a 96-AO closed-shell CCSD(T) in this code path costs tens of seconds, not
+hours - which is why the earlier guess of "3-10 hours per benzene complex" was wrong and why
+the queued job is expected inside an hour once it starts.
+
+It does NOT settle the benzene-dimer question, and this archive is where that is recorded.
+The bottom block of the output computes C(occ,3)*vir^3 doubles, giving ~102 GB for the dimer
+at correlated occ=30, vir=150. That figure is not a memory requirement: `pyscf/cc/ccsd_t.py`
+line 101 sizes the (T) contraction buffer as
+`(max_memory*0.5e6/8 - nocc**3*3*num_threads()) / (nocc*nmo)` and the triple-indexed work is
+block-contracted over virtual pairs (`prange_tril`), so the full array is never materialised.
+Quoting 102 GB (or the 729 GB you get from nocc^3*nvir^3 instead of the combination count) as
+"why the dimer is not computed" would be an unverified claim about another program's memory
+behaviour, and paper/main.md §3.2 therefore still says what was measured, not this.
+
+To appear: reproduce with
+    PYTHONPATH=. OMP_NUM_THREADS=8 python3 -u scratch/tune_benzene_mono.py
+The benzene geometry is the first fragment of the official S22 entry 11 (geomlib.S22_system),
+so the monomer leg matches the dimer rungs already archived in this directory.
+
+--- verbatim output follows ---
+苯单体 nao=96 nbas=48 nelec=42 -> occ=21 vir=75
+  --- frozen(cores)(冻核 6, 相关 occ=15, vir=75)  合计 13.1 s
+      CCSD     E=-231.4874630286        7.2 s
+      CCSD(T)  E=-231.5219201121        5.1 s
+      MP2      E=-231.4488471848        0.1 s
+      _ref_and_conv E=-230.7019770331        1.0 s
+  --- all-electron(冻核 0, 相关 occ=21, vir=75)  合计 26.7 s
+      CCSD     E=-231.5019123605        13.8 s
+      CCSD(T)  E=-231.5366647569        12.4 s
+      MP2      E=-231.4643560251        0.1 s
+      _ref_and_conv E=-230.7019770331        1.0 s
+=== 外推用算术（t3 = C(occ,3)*vir^3 个 double）===
+  苯-水        nao=114  相关occ=19  vir=88    t3 数组 ≈      4.9 GB
+  苯-氨        nao=116  相关occ=19  vir=90    t3 数组 ≈      5.3 GB
+  苯-甲烷       nao=118  相关occ=18  vir=92    t3 数组 ≈      4.7 GB
+  苯二聚体(A)    nao=192  相关occ=30  vir=150   t3 数组 ≈    102.1 GB

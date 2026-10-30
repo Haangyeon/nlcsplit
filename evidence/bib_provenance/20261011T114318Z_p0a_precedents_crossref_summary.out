@@ -1,0 +1,87 @@
+第零波 P0-a —— 四条定性先例的 Crossref 回查与 bib 生成（已落笔）
+stamp 20261011T114318Z (UTC，取自档名) | 本次取数 2026-10-11T11:43:33Z | 阈值 0.8 | API 10 次 | 原始返回 → 20261011T114318Z_p0a_precedents_crossref_result.json
+
+================================================================================================
+A. 逐条回查
+================================================================================================
+  [ACCEPT] lehtola2022illbehaved   sim=1
+      断言: 近期泛函在常用数值求积下能量收敛得极慢（Lehtola & Marques, JCP 157, 174114 (2022)）
+      DOI: 10.1063/5.0121187  type=journal-article  The Journal of Chemical Physics v157 p174114
+      年份: 2022（判据 published-print；print=2022 issued=2022）
+      作者 2 人 | 转义残留: 无 | Crossref 被引 44 次（本次读数，会随时间变，别当定值引）
+  [ACCEPT] andres2019ninequestions   sim=1
+      断言: EDA 分区方案之所以多元并存，是因为许多化学概念的定义本就不精确（Andres 等 30 人，JCC 40, 2248 (2019)）
+      DOI: 10.1002/jcc.26003  type=journal-article  Journal of Computational Chemistry v40 p2248-2283
+      年份: 2019（判据 published-print；print=2019 issued=2019）
+      作者 30 人 | 转义残留: 无 | Crossref 被引 150 次（本次读数，会随时间变，别当定值引）
+  [ACCEPT] rezac2016bench   sim=1
+      断言: 计划记作"Chem. Rev. 2016：atomic contributions is not well-defined"的那条，按卷页 116, 5038-5071 定位到 Rezac & Hobza 的这篇综述。原句是否逐字如此本脚本无从判（Crossref 无摘要、ACS 全文不在本机）：只能引"这篇综述里的这段讨论"，不得加引号当逐字引用
+      DOI: 10.1021/acs.chemrev.5b00526  type=journal-article  Chemical Reviews v116 p5038-5071
+      年份: 2016（判据 published-print；print=2016 issued=2016）
+      作者 2 人 | 转义残留: 无 | Crossref 被引 427 次（本次读数，会随时间变，别当定值引）
+
+================================================================================================
+B. 计划 §五 待核那条"被引 63"
+================================================================================================
+  计划里那个 63 来自死会话的网页检索，没有落原始证据。Crossref 本次 is-referenced-by-count = 44。两个数口径不同，正文不许引"被引 N 次"，除非连口径和读数日期一起写。
+
+================================================================================================
+C. 第四条（计划记作 Keller 2025 JCP）—— 未定位，不建条目
+================================================================================================
+  原样断言: Keller 2025 JCP：能量"cannot be decomposed into atom-pair contributions"
+  [bibliographic] energy decomposition atom-pair contributions   返回 5 条
+        最佳候选 sim=0.217 [journal-article] Density functional energy decomposition into one- and two-atom contribut (10.1063/1.1935511)
+  [bibliographic] cannot be decomposed into atom-pair contributions   返回 5 条
+        最佳候选 sim=0.247 [posted-content] Paid-In Capital Contributions Cannot Be Deferred Indefinitely (10.2139/ssrn.7285720)
+  [bibliographic] decomposition into atom-pair contributions is not possible   返回 5 条
+        最佳候选 sim=0.217 [journal-article] Density functional energy decomposition into one- and two-atom contribut (10.1063/1.1935511)
+  [bibliographic] pairwise additive energy decomposition not unique   返回 5 条
+        最佳候选 sim=0.057 [journal-article] Submacroscopic Disarrangements Induce a Unique, Additive and Universal D (10.1007/s10659-015-9542-5)
+  [author] Keller   返回 8 条
+        最佳候选 sim=0.071 [?] On the Decomposition of Motion in the Description of Interdiffusion in a (10.1134/s0025654424606013)
+  [author] Keller, Stefan   返回 8 条
+        最佳候选 sim=0.104 [?] The decomposition of perturbation modeling (10.1038/s43588-024-00706-4)
+  结论: Crossref 上没定位到这个对象。它留在待核清单里，不进 bib、不进正文；要引这条得先由作者给出可核对的出处（卷/页/DOI 之一）。
+
+================================================================================================
+D. 负控 / 自证（守卫必须能失败）
+================================================================================================
+  [PASS] D1 题名闸：拿 10.1038/s41586-020-2308-7（gnomAD，真存在但错对象）冒充靶条目，必须拒 → sim=0.0275（阈值 0.8）
+  [PASS] D2 转义自证：故意喂未映射码点 U+0117，residual() 必须报出来 → 实报 "U+0117"
+
+================================================================================================
+E. 将要追加进 paper/references.bib 的条目
+================================================================================================
+@article{lehtola2022illbehaved,
+  author  = {Susi Lehtola and Miguel A. L. Marques},
+  title   = {Many recent density functionals are numerically ill-behaved},
+  journal = {The Journal of Chemical Physics},
+  volume  = {157},
+  pages   = {174114},
+  year    = {2022},
+  doi     = {10.1063/5.0121187},
+}
+
+@article{andres2019ninequestions,
+  author  = {Juan Andr\'{e}s and Paul W. Ayers and Roberto A. Boto and Ramon Carb\'{o}-Dorca and Henry Chermette and Jerzy Cioslowski and Julia Contreras-Garc\'{i}a and David L. Cooper and Gernot Frenking and Carlo Gatti and Farnaz Heidar-Zadeh and Laurent Joubert and \'{A}ngel Mart\'{i}n Pend\'{a}s and Eduard Matito and Istv\'{a}n Mayer and Alston J. Misquitta and Yirong Mo and Julien Pilm\'{e} and Paul L. A. Popelier and Martin Rahm and Eloy Ramos-Cordoba and Pedro Salvador and W. H. Eugen Schwarz and Shant Shahbazian and Bernard Silvi and Miquel Sol\`{a} and Krzysztof Szalewicz and Vincent Tognetti and Frank Weinhold and \'{E}milie-Laure Zins},
+  title   = {Nine questions on energy decomposition analysis},
+  journal = {Journal of Computational Chemistry},
+  volume  = {40},
+  pages   = {2248-2283},
+  year    = {2019},
+  doi     = {10.1002/jcc.26003},
+}
+
+@article{rezac2016bench,
+  author  = {Jan \v{R}ez\'{a}\v{c} and Pavel Hobza},
+  title   = {Benchmark Calculations of Interaction Energies in Noncovalent Complexes and Their Applications},
+  journal = {Chemical Reviews},
+  volume  = {116},
+  pages   = {5038-5071},
+  year    = {2016},
+  doi     = {10.1021/acs.chemrev.5b00526},
+}
+
+
+[已落笔] 追加 3 条：lehtola2022illbehaved, andres2019ninequestions, rezac2016bench
+  追加前 @ 行数 25 → 追加后 28

@@ -1,0 +1,18 @@
+SUPERSEDED LOG (kept, not deleted, per the no-deletion rule): produced by an
+intermediate version of the code with (a) cylindrical radial nodes mapped to +-radius
+instead of [0,radius] and (b) the union-of-overlapping-boxes double count and (c) the
+partition_factors raw-weight double count. Its numbers are WRONG and must not be
+quoted. Current artifacts: run_log_stdout.txt, table.md, validation.md,
+convergence.md, headline.md, summary.md, probe_quadrature.txt.
+
+cyl n=12 gauss 0.000000000000 err -9.26e-03 | analytic 0.009256616169
+cyl n=16 gauss 0.000000000000 err -9.26e-03 | analytic 0.009256616169
+cyl n=20 gauss 0.000000000000 err -9.26e-03 | analytic 0.009256616169
+cyl n=24 gauss 0.000000000000 err -9.26e-03 | analytic 0.009256616169
+cyl vol check 4934.802201 (should 785.398163)  int rho_a = 25.1302543262
+cyl int rho_a over r=5.9,hz=5.9 n=24: 25.132731577147055
+--- VV10 convergence, cyl5d (cheap) ---
+n=16  I_AB 0.000000000000  I_AA -0.000000000000  TOT -0.000000000000  closure 1.181e-18  0.8s
+n=24  I_AB 0.000000000000  I_AA -0.000000000000  TOT 0.000000000000  closure 2.047e-19  7.1s
+n=32  I_AB -0.000000000000  I_AA 0.000000000000  TOT -0.000000000000  closure 3.503e-19  23.5s
+n=40  I_AB 0.000000000000  I_AA 0.000000000000  TOT -0.000000000000  closure 3.385e-19  87.5s

@@ -1,0 +1,5 @@
+# 随包源码相对 HEAD 的改动：nlcsplit/__init__.py nlcsplit/examples/check_screen_bound_ide.py nlcsplit/fastpair_ide.py nlcsplit/geomlib.py nlcsplit/logs/orca_anchor.json nlcsplit/logs/step_h.json nlcsplit/partition.py nlcsplit/tests/test_fastpair_ide.py 
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+.......................................................................  [100%]
+71 passed, 23 deselected in 98.62s (0:01:38)
+# exit=0 at 2026-10-13T15:59:01Z

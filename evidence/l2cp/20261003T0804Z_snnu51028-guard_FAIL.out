@@ -1,0 +1,59 @@
+== ARCHIVE: <CLUSTER> 作业 51028 —— 守卫在 6-31g* 上如实报 FAIL，没有押 aug 机时 ==
+
+为什么这份"失败"要入库。生产者 `snnu_dft_cp_avdz.py` 的设计是先在一把便宜的基组上复现一个
+已归档的 level-2 反泊松值，通过了才去算 aug-cc-pVDZ。51028 在 2026-10-03T07:42Z 复现水二聚体，
+得到 -6.1526，与它被要求对照的归档值 -6.1290 差 0.0236 > 2e-3，于是 rc=1 停手。**守卫按设计
+工作了**，这份档案记的就是它工作的那一刻，而不是事后被改好的通过记录。
+
+这一停把一件一直没被当成变量的事问了出来：-6.1290 是谁算的。它是 2026-09-28 的 CentOS 批次
+（`evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`，抬头写的几何来源是
+<REMOTE_WORKDIR>），那一台跑的是 **PySCF 2.14.0**；本集群是 2.12.1（下面第 2 行自己印的）。
+§3.2 偏差表的 DFT 列里有五行取自 2.12.1（<CLUSTER>，含 CC 侧同一环境），三行取自那个 2.14.0 批次——
+也就是说这张表此前把两个 PySCF 版本的数并排比。
+
+顺带这份档案还给出一个跨机器的复现：<CLUSTER> cpu1（Python 3.10.19 / PySCF 2.12.1）的水二聚体
+level-2 反泊松 = **-6.1526**，复合物网格点数 **38944**；本机 WSL（Python 3.10.12 / 同一
+PySCF 2.12.1）独立重算同一格得 -6.152597、同一个 38944（见
+`evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out`）。两台的 E_xc/E_NLC/E_coul 到打印位逐字
+相同。所以"这一格在 2.12.1 上就是 -6.1526"不是单机偶然，而 2.14.0 的 -6.1290 也不是手误。
+
+版本才是变量这件事由 `evidence/l2cp/cp_version_probe.py` 用单变量重跑钉死（同一台机器、同一份
+脚本、同一几何、同一线程数，只有 PYTHONPATH 里的 PySCF 不同），机制落在**零核电荷原子的积分
+网格**上：2.12.1 给带鬼原子的单体 34864 个点，而 2.14.0 给它与复合物同样多的 43904 个点。
+反泊松是本文里唯一把 ghost 放进网格的量，所以也只有它动。
+
+生产者哈希要说清楚，否则这份档案会被读成"守卫后来变了"。本档案里的 rc=1 出自
+`snnu_dft_cp_avdz.py` 的 sha256 32db2e069cdd409a0cdbace34dde908ef9f710fef8713a54d704e5dba70f9d87
+（下面第 3 行），那一版把水的期望值押成 CentOS 的 -6.129。按上面的结论押到 2.12.1 的 -6.1526
+之后，同一份文件的新哈希是 d40c6bdaa9bae118d5b949152b8b159a3a9ee747e0eff3ead1f0bb49f27c6cd8，
+作业 51025 跑的是这一版；改的只有守卫的期望值与注释，`dft_cp()` 调的仍然是部署件里那个
+`step_h_s22.counterpoise()`（sha 006293e6…，下面第 4 行）。
+
+这份档案**不主张**：不主张 2.14.0 与 2.12.1 谁更对（两者都是收敛的 SCF，差别在网格而非收敛阈值）；
+不主张偏差表里那三行的符号或大小变了结论——变的是数值本身，见 §3.2。
+
+--- verbatim output follows ---
+
+
+===== sbatch_51028.out (984 bytes) =====
+
+===== sbatch_51028.out (984 bytes) =====
+== host=cpu1 cpus=16 threads=16 maxmem=962637MB ==
+3.10.19 pyscf 2.12.1
+32db2e069cdd409a0cdbace34dde908ef9f710fef8713a54d704e5dba70f9d87  <CLUSTER_HOME>/nlcc-<CLUSTER>/snnu_dft_cp_avdz.py
+006293e602abb4cac78957850b5a9b217584eb9c0ad9fadda366fa9cb91e9393  <CLUSTER_HOME>/nlcc-<CLUSTER>/.publish/nlcsplit/nlcsplit/step_h_s22.py
+== running @ 2026-10-03T07:40:53Z ==
+   rc=1 lines=5 @ 2026-10-03T07:42:05Z
+== omegaB97X-V counterpoise at two bases, level 2 ==
+  DFT_SET=small -> 3 systems: 水二聚体, 氨二聚体, 甲烷二聚体
+  basis from NCBAS=6-31g* ; module reads it at import, so the guard below is the only place the small basis is used
+    复合物(反泊松参照)   N= 38944  E_xc(其余)=-11757.5328  E_NLC=  +52.9345  其中β∫ρ= +60.8295  E_coul= +70255.0515  NLC两实现差=5.3e-06 闭合=0.0e+00 kcal/mol
+guard  水二聚体     6-31g* nao=36 DFT=-6.1526 vs archived -6.1290 -> 0.0236 FAIL
+0f9207204e323a1cece914f0519e0473973b4b195ccaaceb07623b7fd0c57640  dft_cp_avdz.log
+
+===== out_dftavdz/dft_cp_avdz.log (509 bytes) =====
+== omegaB97X-V counterpoise at two bases, level 2 ==
+  DFT_SET=small -> 3 systems: 水二聚体, 氨二聚体, 甲烷二聚体
+  basis from NCBAS=6-31g* ; module reads it at import, so the guard below is the only place the small basis is used
+    复合物(反泊松参照)   N= 38944  E_xc(其余)=-11757.5328  E_NLC=  +52.9345  其中β∫ρ= +60.8295  E_coul= +70255.0515  NLC两实现差=5.3e-06 闭合=0.0e+00 kcal/mol
+guard  水二聚体     6-31g* nao=36 DFT=-6.1526 vs archived -6.1290 -> 0.0236 FAIL

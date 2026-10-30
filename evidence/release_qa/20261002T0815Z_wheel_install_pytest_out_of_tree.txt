@@ -1,0 +1,9 @@
+== wheel: dist/nlcsplit-0.1.0-py3-none-any.whl
+== sha256:
+d52e4ca0e9d8f2e72908d8c29b57855da1711620c833d529d0dab416773c726e  <REPO>/dist/nlcsplit-0.1.0-py3-none-any.whl
+== install: pip install --no-deps --target /tmp/nlc_install (outside the source tree)
+== run: cd /tmp && PYTHONPATH=/tmp/nlc_install python3 -m pytest --pyargs nlcsplit -q
+
+...................s.............................                        [100%]
+48 passed, 1 skipped in 361.28s (0:06:01)
+exit=0

@@ -1,0 +1,21 @@
+# W4 满 S22 单格证书  文件夹 S22_12.xyz
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# nlcsplit.__file__ <REPO>/nlcsplit/partition.py
+# sha256 S22_12.xyz                               = d166e65b33969ee9eee4c63014b408be07d1d527c74b9e74066b1de8f0515695
+# sha256 nlcsplit/partition.py                     = ec6c0c569241fc7df1f842cce3474f329ba81254c8872a8f5057ca94be4fdc73
+# sha256 nlcsplit/certificate.py                   = 13f371cfe2ec12991bef70b3ba5322fae9be076b874a0a7a90a55ea75106e2d3
+# level=1 xc=wb97x_v basis=6-31g*  原子 20  片间最短 3.27 A  片段 C4H4N2 + C4H4N2
+# npts=69216  usable=becke,becke-becke-rad,becke-treutler,stratmann,voronoi,hirshfeld
+   becke            E_AB =   -4.1909  E_NL =   -55.5751
+   becke-becke-rad  E_AB =   -4.1878  E_NL =   -55.5751
+   becke-treutler   E_AB =   -4.1811  E_NL =   -55.5751
+   stratmann        E_AB =   -4.1900  E_NL =   -55.5751
+   voronoi          E_AB =   -4.1729  E_NL =   -55.5751
+   hirshfeld        E_AB =   -4.2422  E_NL =   -55.5751
+   -> 家族内跨度 = 0.0098 kcal/mol（四方案，同一网格同一权重）
+   -> 含两个家族外构造的总跨度 = 0.0694 kcal/mol
+   -> 界 lo = -4.2422 (hirshfeld)  hi = -4.1729 (voronoi)
+   护栏：E_NLC 跨方案极差 = 5.684e-14（门 1e-9 相对）OK
+VERDICT DONE
+# 用时 6054.4 s
+# exit=0 at 2026-10-13T17:43:21Z

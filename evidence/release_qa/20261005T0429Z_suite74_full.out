@@ -1,0 +1,49 @@
+== ARCHIVE: full 74-test suite run on the tree that carries the 2026-10-05 re-audit ==
+
+    $ PYTHONUTF8=1 python3 -m pytest -q -rs      (WSL, python 3.10.12, pyscf 2.12.1, numpy 2.2.6,
+      host <OPERATOR>, git HEAD 8906165ba2e6ea6840539fe18f529c54ee9fe51c + the uncommitted changes listed below)
+    74 passed in 347.92s (0:05:47)
+    EXIT=0
+
+Why this run exists. The collection grew from the 69 tests of `20260930T233800Z_suite69_full.out`
+to 74, and every one of those added tests is an invariant written during the 2026-10-05 re-audit
+(the benzene geometry labels in `nlcsplit/tests/test_geometry.py`, the CC-convention and regression
+rows that came in with the ghost-function fix). The paragraph in `paper/software.md` that said
+"all 69 have been executed" was therefore about a tree that no longer exists; this archive is the
+execution of the tree the paper now describes. The count itself is not taken from this file: it is
+produced by `test_count_census.py` (`20261005T0404Z_test_count_census.out`: 74 collected, 53 non-slow
++ 21 slow), so the collection and the execution are two separate records.
+
+The run is of the working tree, so the tree is named rather than asserted clean:
+
+M MAIN-skeleton.md
+ M README.md
+A  evidence/ccsdt/20261005T0414Z_cp_rebuild_compare_labels_fixed.out
+ M evidence/ccsdt/README.md
+M  evidence/ccsdt/cp_rebuild_compare.py
+A  evidence/fastpair_ab/20261005T0354Z_fastpair_ab_agreement.out
+A  evidence/fastpair_ab/fastpair_ab_agreement.py
+ M evidence/orca_widen/cross_program_table.txt
+ M evidence/orca_widen/generator_cross_program_table.py
+A  evidence/recompute/20261005T0340Z_benzene_dimer_label_measure.out
+A  evidence/recompute/20261005T0410Z_additivity_census.out
+A  evidence/recompute/additivity_census.py
+A  evidence/recompute/benzene_dimer_label_measure.py
+A  evidence/release_qa/20261005T0404Z_test_count_census.out
+ M nlcsplit/tests/test_fastpair.py
+ M nlcsplit/tests/test_geometry.py
+ M paper/main.md
+ M paper/p2.md
+ M paper/software.md
+ M tools/claim-allowlist.tsv
+ M tools/hooks/comment_sentinel.js
+?? evidence/release_qa/20261005T0429Z_suite74_full.out
+
+Nothing was skipped (`-rs` would have listed any skip line) and no test was deselected: the 74
+include the 21 marked slow. Wall clock is reported because pytest printed it, not as a measured
+quantity - this machine was carrying the additivity census for part of the window.
+
+--- verbatim output follows ---
+........................................................................ [ 97%]
+..                                                                       [100%]
+74 passed in 347.92s (0:05:47)

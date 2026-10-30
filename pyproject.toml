@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nlcsplit"
+version = "0.1.0"
+description = "按片段归属分解 VV10/rVV10 非局域关联能（PySCF 后端，显式成对双重和）"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+keywords = ["DFT", "VV10", "nonlocal correlation", "fragment decomposition", "pyscf"]
+# 第二作者与通讯邮箱由本人 2026-09-30 指定。PEP 621 的作者表只认 name/email 两个键，
+# 单位写在 README 与 CITATION.cff 里；邮箱只填他给的那一条，其余不代填。
+authors = [
+    { name = "Angran Xia", email = "haangyeon@snnu.edu.cn" },
+    { name = "Changwei Wang" },
+]
+dependencies = [
+    "numpy>=1.22",
+    "pyscf>=2.12",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+# figures.py 顶层就 import matplotlib，而核心三模块（nlc/partition/geomlib）不需要它。
+# 所以画图能力单列成 extra，而不是塞进 dependencies 让所有人都多装一个 GUI 库。
+plot = ["matplotlib>=3.5"]
+# step_c_relaxation.py 在函数内部 import scipy.optimize 做几何优化；核心与主表都不走这条路，
+# 所以也放 extra。闸门 E（tools/make_public_repo.js）会盯住这类"用了但没声明"。
+relax = ["scipy>=1.8"]
+
+[tool.setuptools]
+packages = ["nlcsplit", "nlcsplit.tests", "nlcsplit.examples"]
+
+[tool.setuptools.exclude-package-data]
+nlcsplit = ["logs/*", "*.out", "*.pyc", "__pycache__/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["nlcsplit/tests"]
+addopts = "-ra"
+markers = [
+    "slow: 需要跑自洽场与 O(N^2) 双重和的回归测试（deselect with -m 'not slow'）",
+]

@@ -1,0 +1,13 @@
+== 水二聚体（GMTKN55 官方几何 S22_02）β·N_A 布居表 ==
+  PySCF 2.12.1  host=<OPERATOR>  basis=6-31g*  xc=wb97x_v  level=3  片间最短 1.952 A  E_SCF=-152.7663277851 Ha  load1=6.65
+  β = 0.004847 Ha/电子 = 3.0415 kcal/mol/电子   N_e = 20
+
+  scheme            N_A(硬/owner)      β·ΔN_A vs becke
+  becke            10.155926/ 9.844070     +0.0000 kcal/mol
+  becke-becke-rad  10.047819/ 9.952173     -0.3288 kcal/mol
+  becke-treutler   10.097865/ 9.902136     -0.1766 kcal/mol
+  stratmann        10.153730/ 9.846258     -0.0067 kcal/mol
+
+  片段 0 的四方案布居跨度 ΔN_A = 1.081e-01 e  ⇒ β·ΔN_A = 0.3288 kcal/mol
+  片段 1 = 20 − 片段 0，跨度与片段 0 相同（电子数守恒，恒等式而非估算）
+  读法：这是**一切用 Becke 布居的分解法共有的**性质，不是本方法的贡献；差值（ΔE_NLC）里 β∫ρ 精确抵消，只有绝对片段能带上这条不确定度。

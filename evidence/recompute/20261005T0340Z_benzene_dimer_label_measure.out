@@ -1,0 +1,14 @@
+# 苯二聚体几何判别：只看坐标，不看文件名里的说法
+# python 3.10.12  numpy 2.2.6  pyscf 2.12.1
+# sha256 nlcsplit/geomlib.py = 1573e4d8c008dd62256a7b92dd04b35b6203e56f656d7d6592be525a41ea48f6
+# sha256 nlcsplit/tests/test_geometry.py = 016b66aee15fec6d0e8bcf2c62cd3e2ed4e4893346715143897e62761b6b792d
+# git HEAD 8906165ba2e6ea6840539fe18f529c54ee9fe51c
+# S22 目录 <REPO>/scratch/lit/s22 : True
+
+  苯二聚体(A) = S22_11.xyz（官方 S22）                   质心距=  3.765 环面夹角=  0.0° 垂直层距=  3.361 平面内滑移=  1.698  => 平行位移（面对面、有滑移）
+  苯二聚体(B) = S22_20.xyz（官方 S22）                   质心距=  4.909 环面夹角= 90.0° 垂直层距=  0.000 平面内滑移=  4.909  => T 型（环面近垂直）
+  benzene_sandwich(d=3.81) 构造几何 (C6H6)2          质心距=  3.810 环面夹角=  0.0° 垂直层距=  3.810 平面内滑移=  0.000  => 夹心 sandwich（面对面、零滑移）
+
+# 结论：S22 的两个苯二聚体是「平行位移」与「T 型」；「夹心」是我们自己构造的第三个几何。
+# 反向验证见 test_geometry.py::test_benzene_dimer_geometries_are_the_two_named_kinds
+#   与 evidence/recompute/ 同名归档：把 (A) 当 T 型、把 (B) 当平行位移都会 AssertionError。

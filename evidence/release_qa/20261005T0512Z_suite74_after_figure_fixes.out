@@ -1,0 +1,61 @@
+== ARCHIVE: full 74-test suite, second run of 2026-10-05 (supersedes 20261005T0429Z for the tree as it ships) ==
+
+    $ PYTHONUTF8=1 python3 -m pytest -q -rs      (WSL, python 3.10.12, pyscf 2.12.1, numpy 2.2.6,
+      host <OPERATOR>, git HEAD 8906165ba2e6ea6840539fe18f529c54ee9fe51c + the uncommitted changes listed below)
+    74 passed in 328.87s (0:05:28)
+    EXIT=0
+
+Why a second run: between the two, `nlcsplit/figures.py` lost three over-claiming figure titles
+(the ratio 0.07 on ammonia is 14.7x, not "the same order"), figs/fig4-fig5-toc were regenerated from it,
+and one pytest skip message was corrected to name the fetch script by its real path. None of that is
+imported by a test, but the archive must describe the tree the paper ships, so the suite was run again
+rather than argued about. The earlier run stays on disk as the record of the intermediate tree.
+
+Working tree at run time (named, not asserted clean):
+
+M  MAIN-skeleton.md
+M  README.md
+A  evidence/ccsdt/20261005T0414Z_cp_rebuild_compare_labels_fixed.out
+M  evidence/ccsdt/MANIFEST.sha256
+M  evidence/ccsdt/README.md
+M  evidence/ccsdt/cp_rebuild_compare.py
+A  evidence/fastpair_ab/20261005T0354Z_fastpair_ab_agreement.out
+M  evidence/fastpair_ab/MANIFEST.sha256
+A  evidence/fastpair_ab/fastpair_ab_agreement.py
+M  evidence/orca_widen/MANIFEST.sha256
+M  evidence/orca_widen/cross_program_table.txt
+M  evidence/orca_widen/generator_cross_program_table.py
+A  evidence/recompute/20261005T0340Z_benzene_dimer_label_measure.out
+A  evidence/recompute/20261005T0410Z_additivity_census.out
+M  evidence/recompute/MANIFEST.sha256
+A  evidence/recompute/additivity_census.py
+A  evidence/recompute/benzene_dimer_label_measure.py
+A  evidence/release_qa/20261005T0404Z_test_count_census.out
+A  evidence/release_qa/20261005T0429Z_suite74_full.out
+M  evidence/release_qa/MANIFEST.sha256
+ M figs/fig4_anchor_crosschecks.png
+ M figs/fig5_six_system_spans.png
+ M figs/toc_graphic.png
+ M nlcsplit/figures.py
+A  nlcsplit/logs/.gitignore
+M  nlcsplit/tests/test_fastpair.py
+MM nlcsplit/tests/test_geometry.py
+MM paper/main.md
+ M paper/main.tex
+MM paper/p2.md
+ M paper/p2.tex
+M  paper/software.md
+ M paper/software.tex
+ M paper/tex_audit-p2.md
+ M paper/tex_audit-software.md
+ M paper/tex_audit.md
+M  tools/claim-allowlist.tsv
+M  tools/hooks/comment_sentinel.js
+?? evidence/release_qa/20261005T0442Z_test_count_census.out
+?? evidence/release_qa/20261005T0442Z_wheel_census.out
+?? evidence/release_qa/20261005T0446Z_wheel_out_of_tree.out
+
+--- verbatim output follows ---
+........................................................................ [ 97%]
+..                                                                       [100%]
+74 passed in 328.87s (0:05:28)

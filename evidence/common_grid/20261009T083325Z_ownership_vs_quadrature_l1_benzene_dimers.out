@@ -1,0 +1,47 @@
+cpu4
+1
+2026-10-09T08:34:54Z
+Python 3.10.19
+pyscf 2.12.1
+# 归属效应 vs 求积效应：公共网格上只换归属
+# python 3.10.19  pyscf 2.12.1  numpy 2.2.5
+# git HEAD 
+# sha256 nlcsplit/partition.py      = d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+# sha256 nlcsplit/nlc.py            = 2817acd6fd37a2f68bd40540e7a094c004b4de5e67449621bdfb6e425e1c2f79
+# sha256 nlcsplit/step_h_s22.py     = 9bccd14baff0e86b16d7ae3a78b8aac8ba8eb1844df33e9088a8d78fc91d5482
+# level = 1  b = 6  C = 0.01  quad=True swap=False
+
+== 苯二聚体(A)  level=1  原子 24  公共网格 N=77072  片间min 3.37 Å
+   ∫ρ = 84.000090 / 84   离散 Δ(β∫ρ) = +0.0003 kcal/mol（公共网格上四方案恒同）
+   归属 becke            E_AB =   -4.0334   E_NL(总) =   -57.4068
+   归属 becke-becke-rad  E_AB =   -4.0105   E_NL(总) =   -57.4068
+   归属 becke-treutler   E_AB =   -4.0060   E_NL(总) =   -57.4068
+   归属 stratmann        E_AB =   -4.0321   E_NL(总) =   -57.4068
+   → 纯归属跨度（同一网格同一权重） = 0.0274 kcal/mol
+   控制 nearest(公共网格) E_NL(直接) = -57.4068
+   求积 becke            N= 89088 ∫ρ= 84.00026  E_NL(总) =   -57.4185
+   求积 becke-becke-rad  N= 89088 ∫ρ= 83.99976  E_NL(总) =   -57.4105
+   求积 becke-treutler   N= 89088 ∫ρ= 84.00031  E_NL(总) =   -57.4123
+   求积 stratmann        N= 89088 ∫ρ= 84.00067  E_NL(总) =   -57.4187
+   → 求积侧总量跨度（各方案自带网格） = 0.0082 kcal/mol
+   → 归属/求积 = 3.32
+   [3850 s]
+== 苯二聚体(B)  level=1  原子 24  公共网格 N=77464  片间min 2.80 Å
+   ∫ρ = 83.999562 / 84   离散 Δ(β∫ρ) = -0.0013 kcal/mol（公共网格上四方案恒同）
+   归属 becke            E_AB =   -2.3699   E_NL(总) =   -55.4262
+   归属 becke-becke-rad  E_AB =   -2.1503   E_NL(总) =   -55.4262
+   归属 becke-treutler   E_AB =   -2.2204   E_NL(总) =   -55.4262
+   归属 stratmann        E_AB =   -2.3642   E_NL(总) =   -55.4262
+   → 纯归属跨度（同一网格同一权重） = 0.2195 kcal/mol
+   控制 nearest(公共网格) E_NL(直接) = -55.4262
+   求积 becke            N= 89088 ∫ρ= 84.00052  E_NL(总) =   -55.4348
+   求积 becke-becke-rad  N= 89088 ∫ρ= 84.00225  E_NL(总) =   -55.4373
+   求积 becke-treutler   N= 89088 ∫ρ= 83.99929  E_NL(总) =   -55.4288
+   求积 stratmann        N= 89088 ∫ρ= 84.00108  E_NL(总) =   -55.4347
+   → 求积侧总量跨度（各方案自带网格） = 0.0085 kcal/mol
+   → 归属/求积 = 25.81
+   [3877 s]
+
+全部体系护栏通过。判决规则见文件头预登记：归属/求积 ≈ 1 以上 → 结局 A；≈ 0 → 结局 B 停下先报。
+run_utc=20261009T083325Z (host-provided)  wsl_clock=2026-10-09T10:43:43Z  host=cpu4
+rc=0

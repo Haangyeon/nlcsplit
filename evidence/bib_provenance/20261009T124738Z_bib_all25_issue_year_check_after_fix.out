@@ -1,0 +1,33 @@
+# refs.bib 年份口径清点（判定用纸质卷期年）
+# 文件：<REPO>\paper\references.bib
+# 条目：@article 25 条
+# 无 DOI 的条目：0
+kruse2019dna | 稿库 year=2019 | Crossref 纸质=2019 | 在线=2018 | 卷(库/Cr)=15/15 | published-print | MATCH
+sinha2015fdevdw | 稿库 year=2015 | Crossref 纸质=2015 | 在线=2015 | 卷(库/Cr)=143/143 | published-print | MATCH
+hujo2011hbond | 稿库 year=2011 | Crossref 纸质=2011 | 在线=- | 卷(库/Cr)=13/13 | published-print | MATCH
+hamada2011c60au | 稿库 year=2011 | Crossref 纸质=- | 在线=2011 | 卷(库/Cr)=83/83 | issued(仅在线) | MATCH
+becke1988 | 稿库 year=1988 | Crossref 纸质=1988 | 在线=- | 卷(库/Cr)=88/88 | published-print | MATCH
+treutler1995 | 稿库 year=1995 | Crossref 纸质=1995 | 在线=- | 卷(库/Cr)=102/102 | published-print | MATCH
+stratmann1996 | 稿库 year=1996 | Crossref 纸质=1996 | 在线=- | 卷(库/Cr)=257/257 | published-print | MATCH
+dion2004 | 稿库 year=2004 | Crossref 纸质=- | 在线=2004 | 卷(库/Cr)=92/92 | issued(仅在线) | MATCH
+mardirossian2014wb97xv | 稿库 year=2014 | Crossref 纸质=2014 | 在线=- | 卷(库/Cr)=16/16 | published-print | MATCH
+mardirossian2016wb97mv | 稿库 year=2016 | Crossref 纸质=2016 | 在线=2016 | 卷(库/Cr)=144/144 | published-print | MATCH
+lazic2010junolo | 稿库 year=2010 | Crossref 纸质=2010 | 在线=- | 卷(库/Cr)=181/181 | published-print | MATCH
+dasgupta2023 | 稿库 year=2024 | Crossref 纸质=2024 | 在线=2023 | 卷(库/Cr)=20/20 | published-print | MATCH
+calbo2015vv10review | 稿库 year=2015 | Crossref 纸质=2015 | 在线=- | 卷(库/Cr)=11/ | published-print | MATCH
+goerigk2017gmtkn55 | 稿库 year=2017 | Crossref 纸质=- | 在线=2017 | 卷(库/Cr)=19/19 | issued(仅在线) | MATCH
+vydrov2009vv10 | 稿库 year=2009 | Crossref 纸质=- | 在线=2009 | 卷(库/Cr)=103/103 | issued(仅在线) | MATCH
+vydrov2010simple | 稿库 year=2010 | Crossref 纸质=2010 | 在线=2010 | 卷(库/Cr)=133/133 | published-print | MATCH
+hyldgaard2014interp | 稿库 year=2014 | Crossref 纸质=- | 在线=2014 | 卷(库/Cr)=90/90 | issued(仅在线) | MATCH
+hesselmann2013nldft | 稿库 year=2013 | Crossref 纸质=2013 | 在线=2012 | 卷(库/Cr)=9/9 | published-print | MATCH
+harris2020numpy | 稿库 year=2020 | Crossref 纸质=2020 | 在线=2020 | 卷(库/Cr)=585/585 | published-print | MATCH
+sun2018pyscf | 稿库 year=2018 | Crossref 纸质=2018 | 在线=2017 | 卷(库/Cr)=8/8 | published-print | MATCH
+sun2020pyscf | 稿库 year=2020 | Crossref 纸质=2020 | 在线=2020 | 卷(库/Cr)=153/153 | published-print | MATCH
+lehtola2018libxc | 稿库 year=2018 | Crossref 纸质=2018 | 在线=- | 卷(库/Cr)=7/7 | published-print | MATCH
+jurecka2006s22 | 稿库 year=2006 | Crossref 纸质=- | 在线=2006 | 卷(库/Cr)=8/8 | issued(仅在线) | MATCH
+takatani2010s22 | 稿库 year=2010 | Crossref 纸质=2010 | 在线=2010 | 卷(库/Cr)=132/132 | published-print | MATCH
+altun2018dlpno | 稿库 year=2018 | Crossref 纸质=- | 在线=2018 | 卷(库/Cr)=14/14 | issued(仅在线) | MATCH
+
+# 计数：MATCH 25 / DEVIATION 0 / 未能判定 0（共 25）
+# 负控：把 kruse2019dna 的 year 改成 1901（参照纸质年 2019）-> 判定应为 DEVIATION，实得 DEVIATION（抓住）
+VERDICT OK —— 全部 25 条的 year 与纸质卷期年一致

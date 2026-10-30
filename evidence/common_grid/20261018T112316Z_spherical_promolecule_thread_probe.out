@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "<REPO>/evidence/common_grid/probe_spherical_promolecule_thread.py", line 40, in <module>
+    WORKER = r'''
+TypeError: not enough arguments for format string
+# exit=1 at 2026-10-18T11:23:17Z
