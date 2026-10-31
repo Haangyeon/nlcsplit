@@ -97,7 +97,7 @@ All S22 dimer geometries are taken verbatim from the official GMTKN55 repository
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figs/fig0_systems.png}
+\includegraphics[width=0.98\textwidth]{figs/fig0_systems.png}%
 \setcounter{figure}{0}
 \caption{The eight S22 dimers behind the main tables, drawn from the same official GMTKN55 geometries the tables use, not from re-optimised or hand-built structures. The two strong-overlap controls of section 3.4 are separate non-S22 structures and are not shown. Panels (a)-(c) are the three small dimers: two hydrogen-bonded and one dispersion-bound. Panels (d)-(f) put one aromatic ring against water, ammonia or methane; in each case the small molecule sits above the ring plane, not inside it. Panels (g)-(h) are the same pair of benzene molecules in two relative orientations: parallel-displaced and T-shaped. The dashed line in (a) marks the water-dimer hydrogen bond. The (g)-(h) pair is the paper's argument in one line: the orientation, not the size or the interaction class, is what sets both the size of the nonlocal term and how much of it each fragment can be assigned.}
 \label{fig:1}
@@ -125,7 +125,7 @@ Table 1 reports $\omega$B97X-V/6-31G* results for eight S22 systems at the offic
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figs/fig1_xc_split.png}
+\includegraphics[width=0.98\textwidth]{figs/fig1_xc_split.png}%
 \setcounter{figure}{1}
 \caption{The same quantity two ways, per system: the VV10 term $\Delta$E\_NLC and the remainder $\Delta$E\_xc - $\Delta$E\_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. Axis labels are abbreviated: A and B are the two benzene-dimer geometries (parallel-displaced and T-shaped), Bz is benzene, and (H2O)2, (NH3)2 and (CH4)2 are the corresponding dimers. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of $\Delta$E\_xc belongs to the VV10 term. Data: the archived sidecar, produced by \texttt{step\_h\_s22.py}; drawn by \texttt{figures.py} \prov{S2}.}
 \label{fig:2}
@@ -195,7 +195,7 @@ The same runs exposed a second nuisance parameter of comparable size. Raising on
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figs/fig4a_small_dimer_ladders.png}
+\includegraphics[width=0.98\textwidth]{figs/fig4a_small_dimer_ladders.png}%
 \setcounter{figure}{2}
 \caption{(a)-(c) The MP2/CCSD/CCSD(T) counterpoise ladders of the three small dimers of this section, at 6-31G* (solid) and aug-cc-pVDZ (dashed), with this work's $\omega$B97X-V/6-31G* level-2 counterpoise value (PySCF 2.12.1, \prov{S31}) as the dotted rule (-6.153 / -3.728 / -0.376 kcal/mol for water / ammonia / methane). The point is a comparison of two spans, and \texttt{figures.py} refuses to draw the figure unless the two fall within a factor of 20 of each other on every system - a side-by-side figure is claiming comparability, and that is the claim it checks. Per system the correlated value's move between the two bases (0.547 / 0.081 / 0.499 kcal/mol for water / ammonia / methane) against the functional's deviation from the frozen-core CCSD(T) at the smaller basis (1.274 / 1.190 / 0.450) gives 0.43 / 0.07 / 1.11 - within a factor of 2.4 on water and methane, and 14.7 apart on ammonia, so the two quantities are comparable on this figure's own terms but not ordered the same way twice. Both numbers are read from the archived runs, not transcribed. The three $\pi$ complexes of the paragraph above are drawn in Figure 5 rather than here, so that this figure keeps one comparison per panel [S26, S27, S31]. $\Delta$E\_CP is in kcal/mol.}
 \label{fig:3}
@@ -203,7 +203,7 @@ The same runs exposed a second nuisance parameter of comparable size. Raising on
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figs/fig4b_cross_program_checks.png}
+\includegraphics[width=0.98\textwidth]{figs/fig4b_cross_program_checks.png}%
 \setcounter{figure}{3}
 \caption{Two cross-program checks. (a) The nonlocal term for all eight systems (Bz = benzene), as a percentage of the term, against the 1\% guide (\S{}4.2); (b) the counterpoise anchor of the three small dimers recomputed in ORCA 6.0.1, against the 0.001 kcal/mol bar \prov{S24}. Axis abbreviations: |$\Delta$| = |ORCA $-$ PySCF|, in per cent of the term in (a) and in 10$^{-3}$ kcal/mol in (b); W, A and M are water, ammonia and methane; 631 = 6-31G*, avdz = aug-cc-pVDZ; fc/ae = frozen-core/all-electron; CC(T) = CCSD(T).}
 \label{fig:4}
@@ -211,7 +211,7 @@ The same runs exposed a second nuisance parameter of comparable size. Raising on
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figs/fig5_six_system_spans.png}
+\includegraphics[width=0.98\textwidth]{figs/fig5_six_system_spans.png}%
 \setcounter{figure}{4}
 \caption{(a)-(c) Counterpoise ladders of the three $\pi$ complexes (Bz...H2O, Bz...NH3, Bz...CH4) at both bases, with this work's level-2 value as the dotted rule; solid circles are 6-31G* and dashed squares aug-cc-pVDZ. (d) For all six complexes where both quantities exist, the reference's basis move and the functional's deviation from it at 6-31G*, as paired bars and as their ratio. The ratios are 0.07 to 1.11: on five of the six systems the two quantities are within a factor of 2.4, and the one system where they are not is ammonia, where the reference's basis move is 14.7 times smaller than the functional's deviation. No system puts either quantity more than a factor of 20 from the other - which is the bound the drawing script enforces - and the ordering differs from system to system, so neither term is the other's error bar. The two benzene dimers are outside this panel by design - the figure carries six systems, two hydrogen-bonded, one dispersion-bound and three pi - and their own aug-cc-pVDZ anchors now exist for the parallel-displaced dimer (ratio 1.02, read from the same archive) but not for the T-shaped geometry, which was never run at that basis. Same archives as Figure 3, drawn by the same script, which refuses to draw if any ratio leaves the 20-fold window [S26, S27, S30, S31]. Bz = benzene; $\Delta$E\_CP is in kcal/mol; in the bottom-right panel blue is the correlated reference's basis move (6-31G* $\rightarrow$ aug-cc-pVDZ) and orange the functional's deviation from that reference at 6-31G*; CC(T) = CCSD(T).}
 \label{fig:5}
@@ -243,8 +243,8 @@ benzene...methane & -1.442 & 0.213 & 14.8\% & 0.2143 & 0.0018 & 121.66 \\
 benzene...ammonia & -1.393 & 0.224 & 16.1\% & 0.2219 & 0.0026 & 84.44 \\
 benzene...water & -1.360 & 0.247 & 18.2\% & 0.2468 & 0.0002 & 1046.15 \\
 \bottomrule
-\end{tabular}
-}%
+\end{tabular}%
+}
 \caption{Attribution spread and quadrature spread reported separately: the first on one common grid, the second from each scheme regenerating its own grid. The span is a variance of the fragment-resolved descriptor; the total E\_NL and the total binding energy are partition-invariant.}
 \label{tab:3}
 \end{table}
@@ -257,7 +257,7 @@ The third column is what Table 3 publishes: the spread over the four schemes, ea
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{figs/fig2_scheme_sensitivity.png}
+\includegraphics[width=0.98\textwidth]{figs/fig2_scheme_sensitivity.png}%
 \setcounter{figure}{5}
 \caption{How much of the reported pair term is a choice about where grid points belong: the spread of P\_frz over the four partition schemes of section 2.3, divided by the Becke-scheme value, per system, sorted. The two geometries of the same 24-atom benzene dimer sit at 0.8\% and 9.2\% and benzene...water at 18.2\%, so the percentage is a property of the arrangement rather than of the pair of molecules and cannot be collapsed into one blanket error bar. Data as in Figure 2 \prov{S2}. The percentage is the scheme spread divided by |P\_frz|; the number in parentheses is the absolute spread in kcal/mol; Bz = benzene.}
 \label{fig:6}
@@ -281,7 +281,7 @@ Keeping the (i, j) index means the double sum is evaluated rather than folded, s
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figs/fig3_screening_cost.png}
+\includegraphics[width=0.98\textwidth]{figs/fig3_screening_cost.png}%
 \setcounter{figure}{6}
 \caption{The cost of keeping the (i, j) index, and why the provable bound does not pay for it. Panel (a): for each system and grid level, the wall clock of the screened path is plotted against the number of far-field point pairs it actually evaluated, paired by connector with the exact double sum on the same system - every connector goes from less work to more time, the statement "none of the 33 pairs ran faster" in picture form; the connectors drawn are the 1e-12 subset (11 of the 33 timed pairs), and the rest are tabulated in section 3.6. Every timing here passed the contention gate: at each sampling instant the number of external runnable tasks was zero, so the ratio is a same-system comparison and not a claim about an idle machine. Panel (b): the fraction of far-field pairs retained against the achieved error, with the 10$^{-7}$ to 10$^{-6}$ kcal/mol band that contains the accuracy the paper needs shaded green; the retained share stays high precisely where the tolerance has to be tight. Circles are grid level 0 and squares level 1; a hollow marker is an exact-double-sum point of the archived window, every screened point is filled, and the two windows are told apart by position rather than by style; each connector joins the exact evaluation to the screened one on the same system, so a single figure carries both windows rather than the favourable one. Drawn by \texttt{figures.py} from the archived timing sidecar and the re-run timing sidecar, which are the same two artefacts \prov{S25} quotes; the script prints the per-window contention-gate tally before drawing, and refuses to draw at all when fewer than two samples pass.}
 \label{fig:7}
@@ -323,8 +323,8 @@ benzene...methane (S22 \#10) & -1.3912 & -1.4040 & 0.0128 (0.91\%) & 0.2130 & 0.
 benzene dimer B (S22 \#20) & -2.3685 & -2.3880 & 0.0195 (0.82\%) & 0.2189 & 0.089 \\
 benzene dimer A (S22 \#11) & -4.3252 & -4.3668 & 0.0416 (0.95\%) & 0.0320 & \textbf{1.301} \\
 \bottomrule
-\end{tabular}
-}%
+\end{tabular}%
+}
 \caption{The nonlocal term computed in PySCF compared against ORCA 6.0.1 for the same systems, read against the attribution span as the yardstick.}
 \label{tab:4}
 \end{table}

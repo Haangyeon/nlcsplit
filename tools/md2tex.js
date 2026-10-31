@@ -334,7 +334,10 @@ function table(block, cap) {
     // and do not get stretched to the text block the way a tabularx would stretch them.
     lines.push('\\resizebox{\\ifdim\\width>\\linewidth\\linewidth\\else\\width\\fi}{!}{%');
     lines.push(...inner);
-    lines.push('}%');
+    // `\end{tabular}` 与闭合的 `}` 之间的换行会在盒子里留下一个空格：自然宽度本来就
+    // 贴着版心时，这个空格把盒子撑到 \linewidth，居中后可见的表格就退成左对齐。
+    lines[lines.length - 1] += '%';
+    lines.push('}');
   }
   // A float with no caption has no number, and a paper whose tables cannot be numbered is a
   // paper where "Table 1" means whatever the reader guesses. The caption text comes from a
@@ -503,7 +506,7 @@ while (i < lines.length) {
     // `p` is back in the placement list: without it a page-tall figure cannot be placed
     // anywhere near its section and every large float is deferred to the end of the paper.
     target.push('\\begin{figure}[!htbp]\n\\centering\n'
-      + '\\includegraphics[width=' + figW.toFixed(2) + '\\textwidth]{' + m[2] + '}\n'
+      + '\\includegraphics[width=' + figW.toFixed(2) + '\\textwidth]{' + m[2] + '}%\n'
       + (figNum ? '\\setcounter{figure}{' + (figNum - 1) + '}\n' : '')
       + '\\caption{' + inline(capBody) + '}\n\\label{fig:' + label + '}\n\\end{figure}');
     continue;

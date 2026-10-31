@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nlcsplit import geomlib
+from nlcsplit import figstyle as st
 
 EN = lambda r: geomlib.S22_EN.get(r["name"], r["name"])
 
@@ -49,50 +50,63 @@ def load_cited(rel):
 
 
 def fig1(rows):
+    st.rc()
     labels = [EN(r) for r in rows]
     nlc = [r["dnlc"] for r in rows]
     rest = [r["dxc"] - r["dnlc"] for r in rows]
     x = range(len(rows))
-    fig, ax = plt.subplots(figsize=(6.4, 3.6))
-    w = 0.38
+    fig, ax = plt.subplots(figsize=(6.3, 3.1))
+    w = 0.34
     ax.bar([i - w / 2 for i in x], nlc, w, label=r"$\Delta E_{\rm NLC}$ (VV10 term)",
-           color="#2b6cb0")
+           color=st.BLUE, edgecolor="none", zorder=2)
     ax.bar([i + w / 2 for i in x], rest, w,
-           label=r"$\Delta E_{\rm xc}$ rest (semilocal + exact exch.)", color="#c05621")
-    ax.axhline(0, color="k", lw=0.8)
+           label=r"$\Delta E_{\rm xc}$ rest (semilocal + exact exch.)", color=st.ORANGE,
+           edgecolor="none", zorder=2)
+    ax.axhline(0, color=st.INK, lw=0.7, zorder=3)
+    # 零线贴着上边缘时读者会把它当成上边框。上方留出可见空隙，它才是一条参照线。
+    lo, hi = ax.get_ylim()
+    ax.set_ylim(lo, hi + 0.12 * (hi - lo))
     ax.set_xticks(list(x))
     # 作者："横轴标签非要搞那么长么，建议缩写，在图题下面解释。"
     # A/B = 两个苯二聚体几何；Bz = benzene；其余即相应二聚体的化学式。解释写进图注。
     SHORT = {"benzene dimer A": "A", "benzene dimer B": "B",
              "benzene···H2O": "Bz·H2O", "benzene···NH3": "Bz·NH3",
              "benzene···CH4": "Bz·CH4"}
-    ax.set_xticklabels([SHORT.get(l, l) for l in labels], fontsize=9, rotation=0)
+    SCRIPT = {"(H2O)2": "(H$_2$O)$_2$", "(NH3)2": "(NH$_3$)$_2$",
+              "(CH4)2": "(CH$_4$)$_2$"}
+    ax.set_xticklabels([SHORT.get(l, SCRIPT.get(l, l)) for l in labels], rotation=0)
     ax.set_ylabel("kcal/mol")
     ax.set_title("Attraction vs repulsion inside $E_{\\rm xc}$ (superposition, no BSSE)",
-                 fontsize=9)
-    ax.legend(fontsize=8)
+                 loc="left", fontsize=8.8)
+    st.tidy(ax)
+    st.legend(ax, loc="lower right", ncol=1)
     fig.tight_layout()
     f = os.path.join(OUT, "fig1_xc_split.png")
-    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
+    fig.savefig(f, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
 def fig2(rows):
+    st.rc()
     rows = [r for r in rows if r["pint"].get("becke")]
     SHORT = {"benzene dimer A": "Bz dimer A", "benzene dimer B": "Bz dimer B",
              "benzene···CH4": "Bz···CH4", "benzene···NH3": "Bz···NH3",
-             "benzene···H2O": "Bz···H2O"}
+             "benzene···H2O": "Bz···H2O",
+             "(H2O)2": "(H$_2$O)$_2$", "(NH3)2": "(NH$_3$)$_2$", "(CH4)2": "(CH$_4$)$_2$"}
     order = sorted(((SHORT.get(EN(r), EN(r)), r["span"] / abs(r["pint"]["becke"]) * 100, r["span"])
                     for r in rows), key=lambda t: -t[1])
-    fig, ax = plt.subplots(figsize=(5.6, 4.0))
-    ax.barh([o[0] for o in order], [o[1] for o in order], color="#4a5568")
+    fig, ax = plt.subplots(figsize=(6.2, 3.7))
+    ax.barh([o[0] for o in order], [o[1] for o in order], color=st.SLATE,
+            height=0.56, edgecolor="none", zorder=2)
     for i, o in enumerate(order):
-        ax.text(o[1] + 0.15, i, f"{o[1]:.1f}% ({o[2]:.3f})", va="center", fontsize=7)
-    ax.set_xlabel("spread (%)")
-    ax.set_xlim(0, max(o[1] for o in order) * 1.2)
+        ax.text(o[1] + 0.25, i, f"{o[1]:.1f}% ({o[2]:.3f})", va="center", fontsize=7.2,
+                color=st.INK)
+    ax.set_xlabel("spread (% of the Becke $|P_{\\rm frz}|$)")
+    ax.set_xlim(0, max(o[1] for o in order) * 1.22)
+    st.tidy(ax)
     fig.tight_layout()
     f = os.path.join(OUT, "fig2_scheme_sensitivity.png")
-    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
+    fig.savefig(f, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -119,8 +133,9 @@ def fig3(windows):
     if len(good) < 2:
         sys.exit(f"通过争用闸门的样本只有 {len(good)} 个，不出图（宁可不出，也别出错图）")
     n_win = len({r["_win"] for r in good})
-    fig, (axA, axB) = plt.subplots(1, 2, figsize=(6.6, 3.4))
-    mark = {0: ("o", "#3b6ea5"), 1: ("s", "#c0504d")}
+    st.rc()
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(6.6, 3.2))
+    mark = {0: ("o", st.BLUE), 1: ("s", st.ORANGE)}
     # 同一体系在两个窗口里同色同形，只换线型：多加一种形状会让读者把"第二次测量"
     # 读成第三个体系。空心=归档窗口，实心=重跑窗口。
     order = sorted({r["_win"] for r in good})
@@ -149,10 +164,8 @@ def fig3(windows):
     axA.set_xscale("log"); axA.set_yscale("log")
     axA.set_xlabel("far point pairs actually evaluated")
     axA.set_ylabel("wall clock (s)")
-    axA.text(-0.12, 1.03, "(a)", transform=axA.transAxes, fontsize=8.5,
-             va="bottom", ha="left")
-    axA.text(0.0, 1.03, "Cost vs pairs", transform=axA.transAxes, fontsize=8.5,
-             fontweight="bold", va="bottom", ha="left")
+    st.panel(axA, "a", "Cost vs pairs")
+    st.tidy(axA)
 
     for r in good:
         for tau, v in r["runs"].items():
@@ -161,16 +174,14 @@ def fig3(windows):
             axB.plot(v["abs_dE_kcal"], 100.0 * v["work_frac_evaluated"],
                      mark[r["level"]][0], color=mark[r["level"]][1], ms=5,
                      alpha=.85)
-    axB.axvspan(1e-7, 1e-6, color="#2e7d32", alpha=.12)
+    axB.axvspan(1e-7, 1e-6, color=st.GREEN, alpha=.12, lw=0)
     axB.set_xscale("log"); axB.set_xlabel("actual error (kcal/mol)")
     axB.set_ylabel("far pairs still evaluated (%)")
-    axB.text(-0.12, 1.03, "(b)", transform=axB.transAxes, fontsize=8.5,
-             va="bottom", ha="left")
-    axB.text(0.0, 1.03, "Retained fraction", transform=axB.transAxes, fontsize=8.5,
-             fontweight="bold", va="bottom", ha="left")
+    st.panel(axB, "b", "Retained fraction")
+    st.tidy(axB)
     fig.tight_layout()
     f = os.path.join(OUT, "fig3_screening_cost.png")
-    fig.savefig(f, dpi=200, bbox_inches="tight", pad_inches=0.03)
+    fig.savefig(f, bbox_inches="tight", pad_inches=0.03)
     return f
 
 
@@ -304,8 +315,7 @@ def parse_nlc(rel):
 
 def fig4(ladders, xc, nlc, dft):
     from matplotlib.lines import Line2D
-    plt.rcParams.update({"font.family": "serif", "font.serif": ["DejaVu Serif"],
-                         "mathtext.fontset": "cm"})
+    st.rc()
     systems = ("水二聚体", "氨二聚体", "甲烷二聚体")
     # 图标题是一句可证伪的话，所以让生成器自己先核一遍。核的内容在 2026-10-03 换过一次：
     # 旧标题主张"每个体系上基组跨度都大于泛函偏差"，而鬼函数修正之后这个说法在数据上反了
@@ -329,42 +339,37 @@ def fig4(ladders, xc, nlc, dft):
     # Figure 3 = the three ladders; Figure 4 = the two checks.
     xs = list(range(len(RUNGS)))
 
-    # 2026-10-29: the three-across strip was an outlier in this manuscript's figure family
-    # (aspect 3.02 against 1.0-2.3 for the other six) and every panel came out taller than it
-    # was wide.  A 2x2 grid with the key in the fourth cell gives near-square panels and a
-    # near-square figure; the span/deviation guard above still runs before anything is written.
-    fig = plt.figure(figsize=(6.7, 6.2))
-    gs = fig.add_gridspec(2, 2, left=0.085, right=0.985, top=0.965, bottom=0.06,
-                          wspace=0.18, hspace=0.30)
+    # 2026-10-30 作者反馈：图例塞在第 4 格"右下角"像块补丁；每个子图那条 0 线在数据全在
+    # 同侧时没有任何信息量。改成 (a)(b) 上排、(c) 整行跨栏，图例做成整图页脚；
+    # 0 线只在数据跨越 0 的面板上画（甲烷那格），其余面板不画。
+    fig = plt.figure(figsize=(7.0, 2.9))
+    gs = fig.add_gridspec(1, 3, left=0.075, right=0.99, top=0.90, bottom=0.285,
+                          wspace=0.30)
+    axes_by = [fig.add_subplot(gs[0, i]) for i in range(3)]
     for si, cn in enumerate(systems):
-        ax = fig.add_subplot(gs[si // 2, si % 2])
-        all_neg = True
+        ax = axes_by[si]
+        ys_all = []
         for bi, (basis, rows) in enumerate(ladders):
             ys = [rows[cn][conv][meth] for meth, conv in RUNGS]
-            all_neg = all_neg and all(v <= 0 for v in ys)
+            ys_all.extend(ys)
             ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=SYS_COL[cn], ms=4.2, lw=1.3)
-        ax.axhline(dft[cn], color="#c05621", ls=":", lw=1.2)
-        ax.axhline(0, color="k", lw=0.6)
-        # 数据全在 0 以下时，y=0 线就是面板上边界；再画顶框会在它上方多一条平行线。
-        if all_neg:
-            ax.set_ylim(top=0)
-            ax.spines["top"].set_visible(False)
+        ax.axhline(dft[cn], color=st.ORANGE, ls=":", lw=1.3)
+        if min(ys_all) < 0 < max(ys_all):
+            ax.axhline(0, color=st.INK, lw=0.6)
         ax.set_xticks(xs)
-        ax.set_xticklabels(["MP2", "CCSD", "CC(T)\nfc", "CC(T)\nae"], fontsize=7.5)
-        ax.set_title("(%s) %s dimer" % ("abc"[si], SYS_EN[cn].capitalize()),
-                     fontsize=9.0, fontweight="normal", fontfamily="serif", pad=6.0)
-        if si % 2 == 0:
-            ax.set_ylabel("$\\Delta E_{\\rm CP}$", fontsize=8.5)
-        ax.tick_params(axis="y", labelsize=7.5)
-    key = fig.add_subplot(gs[1, 1])
-    key.axis("off")
-    key.legend([Line2D([], [], color="0.35", marker="o", ls="-"),
-                Line2D([], [], color="0.35", marker="s", ls="--"),
-                Line2D([], [], color="#c05621", ls=":")],
-               ["6-31G*", "aug-cc-pVDZ", "ωB97X-V level 2"], loc="center",
-               fontsize=8.0, frameon=False, handlelength=2.2, labelspacing=1.2)
+        ax.set_xticklabels(["MP2", "CCSD", "CC(T)\nfc", "CC(T)\nae"])
+        st.panel(ax, "abc"[si], "%s dimer" % SYS_EN[cn].capitalize())
+        if si == 0:
+            ax.set_ylabel("$\\Delta E_{\\rm CP}$")
+        st.tidy(ax)
+    fig.legend(handles=[Line2D([], [], color="0.35", marker="o", ls="-"),
+                        Line2D([], [], color="0.35", marker="s", ls="--"),
+                        Line2D([], [], color=st.ORANGE, ls=":")],
+               labels=["6-31G*", "aug-cc-pVDZ", "ωB97X-V level 2"],
+               loc="lower center", ncol=3, bbox_to_anchor=(0.5, 0.015),
+               handlelength=2.0, columnspacing=1.8)
     f3 = os.path.join(OUT, "fig4a_small_dimer_ladders.png")
-    fig.savefig(f3, dpi=300, bbox_inches="tight", pad_inches=0.04)
+    fig.savefig(f3, bbox_inches="tight", pad_inches=0.04)
     plt.close(fig)
 
     # 两条跨程序核对线，各自单位、各自一条通过线。单独成一图，不再和梯子挤在一张。
@@ -377,14 +382,12 @@ def fig4(ladders, xc, nlc, dft):
              "benzene...methane": "Bz...CH4", "benzene dimer (A)": "Bz dimer A",
              "benzene dimer (B)": "Bz dimer B"}
     ax2.barh([short.get(n, n) for n, _ in nlc][::-1], [r for _, r in nlc][::-1],
-             color="#2b6cb0", height=0.62)
-    ax2.axvline(1.0, color="#c05621", ls="--", lw=1.0)
-    ax2.set_xlabel("|$\\Delta$| (%)", fontsize=8.5)
+             color=st.BLUE, height=0.58, edgecolor="none", zorder=2)
+    ax2.axvline(1.0, color=st.ORANGE, ls="--", lw=1.0, zorder=3)
+    ax2.set_xlabel("|$\\Delta$| (%)")
     ax2.set_xlim(0, 1.18)
-    ax2.tick_params(axis="y", labelsize=7.5)
-    ax2.tick_params(axis="x", labelsize=7.5)
-    ax2.set_title("(a) NLC deviation", fontsize=9.5, fontweight="normal",
-                  fontfamily="serif", pad=5.0)
+    st.panel(ax2, "a", "NLC deviation")
+    st.tidy(ax2)
 
     ax3 = fig.add_subplot(gs[0, 1])
     SYS1 = {"water": "W", "ammonia": "A", "methane": "M"}
@@ -392,16 +395,14 @@ def fig4(ladders, xc, nlc, dft):
                          "631" if b.startswith("6-31") else "avdz",
                          "fc" if c == "frozen" else "ae") for s, b, c, _, _, _ in xc]
     ax3.barh(lab[::-1], [1000 * abs(d) for *_, d in xc][::-1],
-             color="#4a5568", height=0.62)
-    ax3.axvline(1.0, color="#c05621", ls="--", lw=1.0)
-    ax3.set_xlabel("|$\\Delta$| ($10^{-3}$)", fontsize=8.0)
+             color=st.SLATE, height=0.58, edgecolor="none", zorder=2)
+    ax3.axvline(1.0, color=st.ORANGE, ls="--", lw=1.0, zorder=3)
+    ax3.set_xlabel("|$\\Delta$| ($10^{-3}$)")
     ax3.set_xlim(0, 1.2)
-    ax3.tick_params(axis="y", labelsize=7.5)
-    ax3.tick_params(axis="x", labelsize=7.5)
-    ax3.set_title("(b) ORCA anchor", fontsize=9.5, fontweight="normal",
-                  fontfamily="serif", pad=5.0)
+    st.panel(ax3, "b", "ORCA anchor")
+    st.tidy(ax3)
     f4 = os.path.join(OUT, "fig4b_cross_program_checks.png")
-    fig.savefig(f4, dpi=300, bbox_inches="tight", pad_inches=0.04)
+    fig.savefig(f4, bbox_inches="tight", pad_inches=0.04)
     plt.close(fig)
     return f3, f4
 
@@ -512,8 +513,7 @@ def parse_pi_dft():
 
 def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     from matplotlib.lines import Line2D
-    plt.rcParams.update({"font.family": "serif", "font.serif": ["DejaVu Serif"],
-                         "mathtext.fontset": "cm"})
+    st.rc()
     # 一、先核这句话本身，六个体系全过才画。
     rows6 = []
     for cn in SYSTEMS:
@@ -535,43 +535,36 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
         ratios6.append(r)
         print("  fig5 核验 %-15s span %.3f / dev %.3f = %.2f" % (nm, span, dev, r))
 
-    fig = plt.figure(figsize=(6.0, 5.8))
-    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.0], hspace=0.35, wspace=0.42,
-                          left=0.14, right=0.97, top=0.95, bottom=0.09)
+    fig = plt.figure(figsize=(6.2, 6.0))
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.0], hspace=0.42, wspace=0.40,
+                          left=0.14, right=0.97, top=0.955, bottom=0.155)
     PIT = {"benzene-water": "Bz···H$_2$O", "benzene-ammonia": "Bz···NH$_3$",
            "benzene-methane": "Bz···CH$_4$"}
     xs = list(range(len(RUNGS)))
     for si, cn in enumerate(PI_SYS):
         ax = fig.add_subplot(gs[si // 2, si % 2])
-        all_neg = True
+        ys_all = []
         for bi, (basis, rows) in enumerate(pi_ladders):
             ys = []
             for meth, conv in RUNGS:
                 nm2 = cn
                 ys.append(rows[nm2][conv][meth])
-            all_neg = all_neg and all(v <= 0 for v in ys)
-            ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=PI_COL[cn], ms=3.6, lw=1.2)
-        ax.axhline(pi_dft[cn], color="#c05621", ls=":", lw=1.2)
-        ax.annotate("DFT %.2f" % pi_dft[cn], (0.0, pi_dft[cn]), fontsize=6.8,
-                    color="#c05621", xytext=(2, 4), textcoords="offset points",
+            ys_all.extend(ys)
+            ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=PI_COL[cn], ms=3.4, lw=1.1,
+                    mec="white", mew=0.6)
+        ax.axhline(pi_dft[cn], color=st.ORANGE, ls=":", lw=1.3, zorder=3)
+        ax.annotate("DFT %.2f" % pi_dft[cn], (0.0, pi_dft[cn]), fontsize=6.7,
+                    color=st.ORANGE, xytext=(2, 3), textcoords="offset points",
                     bbox=dict(facecolor="white", edgecolor="none", pad=0.6))
-        ax.axhline(0, color="k", lw=0.6)
-        if all_neg:
-            ax.set_ylim(top=0)
-            ax.spines["top"].set_visible(False)
+        # 零线只在数据跨越 0 时才有信息量；数据全在同侧时不画（作者 2026-10-30 反馈）。
+        if min(ys_all) < 0 < max(ys_all):
+            ax.axhline(0, color=st.INK, lw=0.6)
         ax.set_xticks(xs)
-        ax.set_xticklabels(["MP2", "CCSD", "CC(T)\nfc", "CC(T)\nae"], fontsize=7.0)
-        ax.set_title("(%s) %s" % ("abcd"[si], PIT.get(PI_EN[cn], PI_EN[cn])),
-                     fontsize=9.0, fontweight="normal", fontfamily="serif", pad=5.0)
+        ax.set_xticklabels(["MP2", "CCSD", "CC(T)\nfc", "CC(T)\nae"])
+        st.panel(ax, "abcd"[si], PIT.get(PI_EN[cn], PI_EN[cn]))
         if si == 0:
-            ax.set_ylabel("$\\Delta E_{\\rm CP}$", fontsize=8.5)
-            ax.legend([Line2D([], [], color="0.35", marker="o", ls="-"),
-                       Line2D([], [], color="0.35", marker="s", ls="--")],
-                      ["6-31G*", "aug-cc-pVDZ"], loc="upper left",
-                      bbox_to_anchor=(0.0, 1.0), borderaxespad=0.25,
-                      fontsize=7.0, frameon=False, handlelength=1.6,
-                      borderpad=0.2)
-        ax.tick_params(axis="y", labelsize=7.5)
+            ax.set_ylabel("$\\Delta E_{\\rm CP}$")
+        st.tidy(ax)
 
     axb = fig.add_subplot(gs[1, 1])
     BOT = {"water dimer": "water", "ammonia dimer": "ammonia",
@@ -583,24 +576,43 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     span = [s for _, s, _ in rows6]
     dev = [d for _, _, d in rows6]
     y = range(len(lab))
-    h = 0.36
-    axb.barh([i + h / 2 for i in y], span, height=h, color="#2b6cb0",
-             label="correlated reference (6-31G* → aug)")
-    axb.barh([i - h / 2 for i in y], dev, height=h, color="#c05621",
-             label="DFT vs correlated (6-31G*)")
+    h = 0.34
+    axb.barh([i + h / 2 for i in y], span, height=h, color=st.BLUE, edgecolor="none",
+             zorder=2, label="correlated reference (6-31G* → aug)")
+    axb.barh([i - h / 2 for i in y], dev, height=h, color=st.ORANGE, edgecolor="none",
+             zorder=2, label="DFT vs correlated (6-31G*)")
     for i, (s, d) in enumerate(zip(span, dev)):
-        axb.text(s + 0.03, i + h / 2, "%.2f" % s, va="center", fontsize=7.0, color="#2b6cb0")
-        axb.text(d + 0.03, i - h / 2, "%.2f" % d, va="center", fontsize=7.0, color="#c05621")
-        axb.text(2.52, i, "x%.1f" % (s / d), va="center", fontsize=7.0, color="0.25")
+        axb.text(s + 0.035, i + h / 2, "%.2f" % s, va="center", fontsize=6.9, color=st.BLUE)
+        axb.text(d + 0.035, i - h / 2, "%.2f" % d, va="center", fontsize=6.9, color=st.ORANGE)
     axb.set_yticks(list(y))
-    axb.set_yticklabels(lab, fontsize=7.5)
-    axb.set_xlim(0, 2.95)
-    axb.set_xlabel("kcal/mol", fontsize=8.5)
-    axb.set_title("(d) Six complexes", fontsize=9.0, fontweight="normal",
-                  fontfamily="serif", pad=5.0)
+    axb.set_yticklabels(lab)
+    axb.set_xlim(0, 1.62)
+    axb.set_xlabel("kcal/mol")
+    st.panel(axb, "d", "Six complexes")
+    st.tidy(axb)
+    axr = axb.twinx()
+    axr.set_ylim(axb.get_ylim())
+    axr.set_yticks(list(y))
+    axr.set_yticklabels(["×%.1f" % (s / d) for s, d in zip(span, dev)])
+    axr.tick_params(axis="y", length=0, pad=2.0, labelsize=6.9, colors=st.SLATE)
+    for sp in axr.spines.values():
+        sp.set_visible(False)
+    axr.annotate("span/dev", xy=(1.0, 1.0), xycoords="axes fraction", xytext=(0, 2),
+                 textcoords="offset points", ha="right", va="bottom", fontsize=6.7,
+                 color=st.SLATE)
+    # 线型键与 (d) 的条形键都放到整图页脚：放在子图里会压住零线或突出到下边界外。
+    from matplotlib.patches import Patch
+    fig.legend(handles=[Line2D([], [], color="0.35", marker="o", ls="-"),
+                        Line2D([], [], color="0.35", marker="s", ls="--"),
+                        Patch(facecolor=st.BLUE, edgecolor="none"),
+                        Patch(facecolor=st.ORANGE, edgecolor="none")],
+               labels=["6-31G*", "aug-cc-pVDZ", "reference basis move",
+                       "DFT deviation"],
+               loc="lower center", ncol=2, bbox_to_anchor=(0.5, 0.005),
+               handlelength=1.8, columnspacing=2.2)
     # 同一原因：六体系的比值结论在正文里，图内不再放多行 suptitle。
     f = os.path.join(OUT, "fig5_six_system_spans.png")
-    fig.savefig(f, dpi=300, bbox_inches="tight", pad_inches=0.05)
+    fig.savefig(f, bbox_inches="tight", pad_inches=0.05)
     return f
 
 
@@ -627,29 +639,37 @@ def toc_graphic(pi_ladders, pi_dft, hb_ladders, hb_dft):
             raise SystemExit("toc: %s 上 span %.3f 与 dev %.3f 相差超过两个数量级，"
                              "与 fig5/正文的主张不符" % (nm, span, dev))
     fig = plt.figure(figsize=(3.25, 1.75))
-    ax = fig.add_axes([0.15, 0.185, 0.82, 0.645])
-    lim = 1.55
+    # 画布本身就是 ACS 要的 3.25 x 1.75 in，存盘不再 tight：tight 会把画布撑到 2.1:1，
+    # 超出规定的 1.86:1，投稿系统按宽度缩放后图里的小字就掉到 5 pt 以下。
+    ax = fig.add_axes([0.155, 0.205, 0.825, 0.575])
+    lim = 1.58
     ax.plot([0, lim], [0, lim], "--", color="0.55", lw=0.8)
-    ax.text(0.62, 0.30, "equal size:\nneither term is\nthe other's error",
-            fontsize=5.4, color="0.4")
+    ax.text(0.04, 1.46, "equal size:\nneither term is\nthe other's error",
+            fontsize=5.0, color="0.4", va="top", ha="left")
     for nm, span, dev in rows:
-        ax.plot(dev, span, "o", ms=4.2, color="#2b6cb0")
+        ax.plot(dev, span, "o", ms=3.6, color=st.BLUE, mec="white", mew=0.4)
+    # 左侧留白的点标签靠右写，靠右的三个点标签靠左写：旧版把 benzene-methane 写到画布外，
+    # 存图时被裁掉半截。
+    LEFT = {"benzene-ammonia", "benzene-methane", "water"}
     for nm, span, dev in rows:
-        if nm in ("benzene-ammonia", "benzene-methane", "water", "methane"):
-            ax.annotate(nm, (dev, span), fontsize=5.4, color="0.25",
-                        xytext=(3, -1), textcoords="offset points")
+        if nm in LEFT | {"methane"}:
+            right = nm not in LEFT
+            ax.annotate(nm, (dev, span), fontsize=5.0, color="0.25",
+                        xytext=(4 if right else -4, -1), textcoords="offset points",
+                        ha="left" if right else "right", va="center",
+                        bbox=dict(facecolor="white", edgecolor="none", pad=0.6))
     ax.set_xlim(0, lim); ax.set_ylim(0, lim)
-    ax.set_xlabel("functional deviation at 6-31G* (kcal/mol)", fontsize=6.0)
-    ax.set_ylabel("reference move, 1 basis (kcal/mol)", fontsize=6.0)
-    ax.tick_params(labelsize=5.8)
+    ax.set_xlabel("functional deviation at 6-31G* (kcal/mol)", fontsize=5.6, labelpad=2)
+    ax.set_ylabel("reference move,\n1 basis (kcal/mol)", fontsize=5.4, labelpad=2)
+    ax.tick_params(labelsize=5.2, length=2.2, pad=1.5)
+    st.tidy(ax)
     worst_toc = max(max(s / d for _, s, d in rows),
                     1.0 / min(s / d for _, s, d in rows))
-    ax.set_title("VV10 pair attribution: the reference's basis move and the functional's\n"
-                 "deviation stay within %.0fx - so fixed-basis binding verdicts are unearned"
-                 % worst_toc,
-                 fontsize=6.0)
+    fig.suptitle("VV10 pair attribution: the reference's basis move and the functional's\n"
+                 "deviation stay within %.0fx, so fixed-basis binding verdicts are unearned"
+                 % worst_toc, fontsize=5.8, y=0.975)
     f = os.path.join(OUT, "toc_graphic.png")
-    fig.savefig(f, dpi=300, bbox_inches="tight", pad_inches=0.03)
+    fig.savefig(f)
     return f
 
 

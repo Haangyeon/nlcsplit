@@ -1,0 +1,34 @@
+Dear Editors,
+
+Please consider our manuscript, "Pair Attribution of the VV10 Nonlocal-Correlation Term
+and Its Grid-Partition Dependence", for publication as an Article in JCTC.
+
+Production codes evaluate the VV10 term as a folded per-point energy. The pair index that
+defines the double sum is gone by the time the kernel returns, and we could not find a
+published implementation that resolves the term into fragment pairs. We kept the index,
+summed the pairs explicitly, and assigned each grid point to a fragment through a real-space
+partition. At omega B97X-V/6-31G* on the eight S22 complexes, the inter-fragment block
+carries 0.92-1.08 of the frozen-density superposition difference. The attribution itself
+depends on the partition, though: the four Becke-family schemes spread by 0.004-0.247
+kcal/mol, or 0.8-18.2% of the Becke value, with no ordering by interaction type. For the two
+benzene-dimer orientations the fragment-resolved percentage differs by a factor of eleven,
+while the total interaction energies rank one way before counterpoise and the other way
+after it. We report both that partition dependence and a way to estimate it per system.
+
+We also report a negative result in the main text. A certified blocking scheme for the pair
+sum was timed against the exact sum: across 33 screened/exact pairs in two independent
+windows, none ran faster, because the certificate available at atom-pair granularity is
+loose by about 2.4e5 relative to the quantity it screens.
+
+ORCA 6.0.1 reproduces the nonlocal differences to under 1% of the term on all eight
+systems, binding energies are checked against CCSD(T)/6-31G*, and every number quoted in
+the paper is mapped to an archived output. The code (nlcsplit, Apache-2.0) is public at
+https://github.com/Haangyeon/nlcsplit.
+
+The manuscript is original and is not under consideration elsewhere.
+
+Sincerely,
+Angran Xia
+School of Chemistry & Chemical Engineering, Shaanxi Normal University, Xi'an 710119, China
+haangyeon@snnu.edu.cn
+ORCID 0009-0006-3366-6054

@@ -2030,3 +2030,9 @@
       A  evidence/common_grid/20261023T0527Z_grid_convergence_negctl.out
       A  evidence/common_grid/20261023T0527Z_grid_convergence_negctl.out.rc
       A  evidence/common_grid/20261023T0527Z_grid_convergence_scoped.out
+2026-10-30T16:23:45.336Z stop-bypass（收工前仍有未了结项）
+  未提交的实质改动 4 个（列前 8 个）：
+      M nlcsplit/figures.py
+      M paper/VV10-pair-attribution.pdf
+      M paper/main.tex
+      ?? nlcsplit/figstyle.py
