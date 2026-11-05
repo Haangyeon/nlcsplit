@@ -58,8 +58,12 @@ def rc():
 
 
 def panel(ax, letter, title, pad=5.0):
-    """Panel tag and short title as one left-aligned string above the axes."""
-    ax.set_title("(%s) %s" % (letter, title), loc="left", pad=pad)
+    """Panel tag and short title as one centred string above the axes.
+
+    Left-aligned until 2026-11-01, when the author asked for centred panel titles; the
+    change lives here so all seven figures move together.
+    """
+    ax.set_title("(%s) %s" % (letter, title), loc="center", pad=pad)
 
 
 def tidy(ax):

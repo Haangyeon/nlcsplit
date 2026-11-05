@@ -7,6 +7,7 @@
       对本方不利的数。只有单窗可用时退回单窗并打印警告，不静默。
 """
 import json
+import math
 import os
 import re
 import sys
@@ -313,6 +314,54 @@ def parse_nlc(rel):
     return out
 
 
+def _yframe(ax, vals, steps=(0.02, 0.05, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0)):
+    """Pad the vertical range by hand and put the topmost labelled tick inside the frame.
+
+    Two author complaints on 2026-11-01: the upper curve sat on the top spine, and panel
+    (a) read as if its highest tick label had gone missing.  Autoscale gives ~5% headroom
+    and lets the top tick land wherever it likes, so both happen by default.  Here the
+    headroom is fixed, the reference line is part of the range (it used to be glued to the
+    bottom spine), and a tick that would touch the top edge is dropped instead.
+
+    The step comes from the 1-2-5 family and is the one that lands nearest five ticks:
+    a 0.25 step makes one panel print "-2.50" while its neighbour prints "-4.5", and the
+    author reads that as two different figures.
+    """
+    lo, hi = min(vals), max(vals)
+    rng = (hi - lo) or abs(hi) or 1.0
+    top, bot = hi + 0.13 * rng, lo - 0.09 * rng
+    span = top - bot
+    cands = [s for s in steps if 2.0 <= span / s <= 8.0] or list(steps)
+    step = min(cands, key=lambda s: abs(span / s - 5.0))
+    first = math.ceil(round(bot / step, 9)) * step
+    ticks = []
+    t = first
+    while t <= top + 1e-9:
+        ticks.append(round(t, 10))
+        t += step
+    while len(ticks) > 2 and top - ticks[-1] < 0.04 * span:
+        ticks.pop()
+    ax.set_ylim(bot, top)
+    ax.set_yticks(ticks)
+
+
+def _refline(ax, y, fmt="%.2f"):
+    """The functional's value as a dotted rule with its number above the rule's right end.
+
+    The number used to sit above the rule's left end, which is exactly where the MP2 point
+    and the rising dashed curve are (author, 2026-11-01: "DFT 那几个字压着折线了").  Opus
+    suggested hanging it on the right spine instead; that was measured and dropped, because
+    in the one-row geometry the inter-panel gap is 0.53 in while a spine-hung number plus the
+    neighbour's tick labels need 0.65 in - the number of one panel landed on top of the y-axis
+    labels of the next.  Inside, above the rule's right end, is clear in both geometries and
+    is the same treatment in both figures.
+    """
+    ax.axhline(y, color=st.ORANGE, ls=":", lw=1.3, zorder=3)
+    ax.annotate(fmt % y, xy=(0.985, y), xycoords=ax.get_yaxis_transform(),
+                xytext=(0, 2.2), textcoords="offset points",
+                ha="right", va="bottom", fontsize=6.4, color=st.ORANGE)
+
+
 def fig4(ladders, xc, nlc, dft):
     from matplotlib.lines import Line2D
     st.rc()
@@ -342,10 +391,23 @@ def fig4(ladders, xc, nlc, dft):
     # 2026-10-30 作者反馈：图例塞在第 4 格"右下角"像块补丁；每个子图那条 0 线在数据全在
     # 同侧时没有任何信息量。改成 (a)(b) 上排、(c) 整行跨栏，图例做成整图页脚；
     # 0 线只在数据跨越 0 的面板上画（甲烷那格），其余面板不画。
-    fig = plt.figure(figsize=(7.0, 2.9))
-    gs = fig.add_gridspec(1, 3, left=0.075, right=0.99, top=0.90, bottom=0.285,
-                          wspace=0.30)
-    axes_by = [fig.add_subplot(gs[0, i]) for i in range(3)]
+    # 2026-11-01 作者反馈：1x3 太扁，改倒品字。三格用 add_axes 手摆而不是 gridspec——
+    # 4 列 gridspec 里下格居中会把上两格的间距压成 1/4 栏，(b) 的刻度标签会顶到 (a) 的
+    # 右框上。手摆能保证三格等宽、下格真正居中、上两格之间留得下刻度标签。
+    # 2026-11-01 作者反馈：1x3 太扁，试排倒品字（上两下一）。两种版式都走同一套 _yframe /
+    # _refline，所以换版式不动任何数据；版式留给作者二选一，FIG3_LAYOUT=pyramid 出倒品字。
+    # Opus 同日评审建议留 1x3：跨面板比形状不该逼读者上下扫视。
+    pyramid = os.environ.get("FIG3_LAYOUT", "row") == "pyramid"
+    if pyramid:
+        size = (6.2, 4.35)
+        rects = [(0.115, 0.615, 0.360, 0.280), (0.565, 0.615, 0.360, 0.280),
+                 (0.340, 0.175, 0.360, 0.280)]
+    else:
+        size = (7.0, 2.9)
+        rects = [(0.075, 0.285, 0.254, 0.615), (0.406, 0.285, 0.254, 0.615),
+                 (0.736, 0.285, 0.254, 0.615)]
+    fig = plt.figure(figsize=size)
+    axes_by = [fig.add_axes(r) for r in rects]
     for si, cn in enumerate(systems):
         ax = axes_by[si]
         ys_all = []
@@ -353,7 +415,9 @@ def fig4(ladders, xc, nlc, dft):
             ys = [rows[cn][conv][meth] for meth, conv in RUNGS]
             ys_all.extend(ys)
             ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=SYS_COL[cn], ms=4.2, lw=1.3)
-        ax.axhline(dft[cn], color=st.ORANGE, ls=":", lw=1.3)
+        _refline(ax, dft[cn])
+        _yframe(ax, ys_all + [dft[cn]])
+        ax.set_xlim(-0.18, len(RUNGS) - 1 + 0.18)
         if min(ys_all) < 0 < max(ys_all):
             ax.axhline(0, color=st.INK, lw=0.6)
         ax.set_xticks(xs)
@@ -365,7 +429,8 @@ def fig4(ladders, xc, nlc, dft):
     fig.legend(handles=[Line2D([], [], color="0.35", marker="o", ls="-"),
                         Line2D([], [], color="0.35", marker="s", ls="--"),
                         Line2D([], [], color=st.ORANGE, ls=":")],
-               labels=["6-31G*", "aug-cc-pVDZ", "ωB97X-V level 2"],
+               labels=["6-31G* (solid)", "aug-cc-pVDZ (dashed)",
+                       "ωB97X-V level 2 (dotted)"],
                loc="lower center", ncol=3, bbox_to_anchor=(0.5, 0.015),
                handlelength=2.0, columnspacing=1.8)
     f3 = os.path.join(OUT, "fig4a_small_dimer_ladders.png")
@@ -552,10 +617,8 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
             ys_all.extend(ys)
             ax.plot(xs, ys, "-o" if bi == 0 else "--s", color=PI_COL[cn], ms=3.4, lw=1.1,
                     mec="white", mew=0.6)
-        ax.axhline(pi_dft[cn], color=st.ORANGE, ls=":", lw=1.3, zorder=3)
-        ax.annotate("DFT %.2f" % pi_dft[cn], (0.0, pi_dft[cn]), fontsize=6.7,
-                    color=st.ORANGE, xytext=(2, 3), textcoords="offset points",
-                    bbox=dict(facecolor="white", edgecolor="none", pad=0.6))
+        _refline(ax, pi_dft[cn])
+        _yframe(ax, ys_all + [pi_dft[cn]])
         # 零线只在数据跨越 0 时才有信息量；数据全在同侧时不画（作者 2026-10-30 反馈）。
         if min(ys_all) < 0 < max(ys_all):
             ax.axhline(0, color=st.INK, lw=0.6)
@@ -604,11 +667,13 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     from matplotlib.patches import Patch
     fig.legend(handles=[Line2D([], [], color="0.35", marker="o", ls="-"),
                         Line2D([], [], color="0.35", marker="s", ls="--"),
+                        Line2D([], [], color=st.ORANGE, ls=":"),
                         Patch(facecolor=st.BLUE, edgecolor="none"),
                         Patch(facecolor=st.ORANGE, edgecolor="none")],
-               labels=["6-31G*", "aug-cc-pVDZ", "reference basis move",
-                       "DFT deviation"],
-               loc="lower center", ncol=2, bbox_to_anchor=(0.5, 0.005),
+               labels=["6-31G* (solid)", "aug-cc-pVDZ (dashed)",
+                       "ωB97X-V level 2 (dotted rule)",
+                       "reference basis move", "DFT deviation"],
+               loc="lower center", ncol=3, bbox_to_anchor=(0.5, 0.005),
                handlelength=1.8, columnspacing=2.2)
     # 同一原因：六体系的比值结论在正文里，图内不再放多行 suptitle。
     f = os.path.join(OUT, "fig5_six_system_spans.png")
