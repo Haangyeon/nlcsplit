@@ -284,7 +284,16 @@ if (fs.existsSync(OUT)) {
   cp.execSync(`rm -rf "${OUT}"`);
 }
 fs.mkdirSync(OUT, { recursive: true });
-fs.writeFileSync(path.join(OUT, STAMP), new Date().toISOString() + '\n');
+// 记录"这个公开树是从哪个母仓 commit 导出来的"——否则两条 lineage（母仓开发史 vs
+// origin/main 的 release orphan）只能在仓外凭记忆对齐。详见 2026-11-05 修正。
+let srcHead;
+try {
+  srcHead = cp.execSync('git rev-parse HEAD', { cwd: SRC, stdio: 'pipe', encoding: 'utf8' }).trim();
+} catch (e) {
+  srcHead = 'unknown (git rev-parse HEAD failed in ' + SRC + ')';
+}
+fs.writeFileSync(path.join(OUT, STAMP),
+  new Date().toISOString() + '\n' + 'source_commit: ' + srcHead + '\n');
 
 const copied = [];
 function write(rel, text) {
