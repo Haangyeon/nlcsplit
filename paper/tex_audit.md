@@ -2,7 +2,7 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 184500 chars, 1757 lines
+- source `paper/main.md`: 184242 chars, 1758 lines
 - output `paper/main.tex`: title from the level-1 heading, 10 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)

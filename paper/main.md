@@ -26,7 +26,7 @@ range-separated forms used here [[becke1993b3lyp]] [[lee1988lyp]]
 [[perdew1996pbe]] [[tao2003tpss]] [[zhao2008m06]]. The nonlocal term is a two-electron-density
 double integral over all pairs of grid points,
 
-E_NL = ½ ∫∫ ρ(r) ρ(r′) Φ(r, r′) d³r d³r′,
+$$E_{\mathrm{NL}} = \frac{1}{2}\iint \rho(r)\,\rho(r')\,\Phi(r,r')\,d^{3}r\,d^{3}r',$$
 
 and every production quantum-chemistry package we have examined evaluates it in a
 way that destroys the pair index: PySCF's `nr_nlc_vxc` calls its own C kernel
@@ -48,8 +48,8 @@ B?" has no answer inside that evaluation.
 
 We provide that answer. `nlcsplit` evaluates the same double sum explicitly,
 keeping the (i, j) pair index, and attributes each grid point to a fragment
-through a real-space partition, so that E_NL decomposes into intra-fragment
-blocks E_AA and inter-fragment pair blocks E_AB. Evaluating the sum explicitly is
+through a real-space partition, so that $E_{\mathrm{NL}}$ decomposes into intra-fragment
+blocks $E_{AA}$ and inter-fragment pair blocks $E_{AB}$. Evaluating the sum explicitly is
 not itself new: JuNoLo post-processed a converged density from another code with
 the nonlocal term, at the same N² cost, in order to obtain an improved *total*
 energy on massively parallel hardware [S14]. What is absent from that work, and
@@ -69,7 +69,7 @@ not in how the sum is grouped [[andres2019ninequestions]]. We therefore quantify
 published real-space partitions, Becke, Becke with the radius adjustment,
 Becke–Treutler, and Stratmann's, on eight S22 complexes, and report it as a
 per-system uncertainty rather than asserting one scheme as correct. The spread
-is 0.004–0.247 kcal/mol in absolute terms at grid level 1 and 0.8–18.2% relative to |E_AB|,
+is 0.004–0.247 kcal/mol in absolute terms at grid level 1 and 0.8–18.2% relative to |$E_{AB}$|,
 and it shows no systematic ordering by interaction type: the parallel-displaced benzene dimer
 sits at 0.8% while benzene–water sits at 18.2% [S2]. Nor does a better
 one-electron basis remove it: on the official water-dimer geometry the spread
@@ -81,19 +81,19 @@ report it system by system.
 
 The second, and chemically the more consequential, is **what the term actually
 is**. Within a hybrid functional the exchange-correlation contribution to an
-interaction energy splits as ΔE_xc = ΔE_xc^rest + ΔE_NLC, where "rest" collects
+interaction energy splits as $\Delta E_{\mathrm{xc}} = \Delta E_{\mathrm{xc}}^{\mathrm{rest}} + \Delta E_{\mathrm{NLC}}$, where "rest" collects
 the semi-local exchange-correlation and the fraction of exact exchange, and the
 local piece β∫ρ drops out of any superposition difference identically: β is a
 constant and ∫ρ equals the electron count, so Δβ∫ρ vanishes to 3.7×10⁻⁵
 kcal/mol in our level-1 test [S3]. That leaves the double sum as the only part
 of the nonlocal term that can carry inter-fragment structure, and measuring it
 shows that treating it as "the dispersion" is unsafe. For the water dimer it
-supplies 16% of ΔE_xc. For the two benzene dimer configurations of S22 the
+supplies 16% of $\Delta E_{\mathrm{xc}}$. For the two benzene dimer configurations of S22 the
 same quantity ranges from 52% to 97% [S4], and those two structures differ
 only in the relative orientation of the same pair of molecules, so the failure
 of the identification is visible within one chemical system, without any
 cross-system comparison. In the methane dimer the nonlocal term exceeds the
-whole of ΔE_xc (ΔE_NLC = −0.517 against ΔE_xc = −0.232), i.e. the rest of the
+whole of $\Delta E_{\mathrm{xc}}$ ($\Delta E_{\mathrm{NLC}}$ = −0.517 against $\Delta E_{\mathrm{xc}}$ = −0.232), i.e. the rest of the
 exchange-correlation is net repulsive there.
 
 Our positioning relative to the closest prior work is specific, and the title is
@@ -101,7 +101,7 @@ written to be specific rather than to sound broader: this is one already-paramet
 double sum, in one implementation, asked where its own grid says the pieces belong.
 Dasgupta and Paesani [[dasgupta2023]] decompose interaction
 energies of dispersion-corrected functionals with second-generation ALMO-EDA [[khaliullin2007]]
-(E_Int = E_Pol + E_Frz + E_CT + E_Disp) and obtain E_Disp as a difference against a
+($E_{\mathrm{Int}} = E_{\mathrm{Pol}} + E_{\mathrm{Frz}} + E_{\mathrm{CT}} + E_{\mathrm{Disp}}$) and obtain $E_{\mathrm{Disp}}$ as a difference against a
 dispersion-free reference: they treat the VV10 correction as one undivided block and ask
 whether that block is accurate. We work inside that block. Heßelmann
 [[hesselmann2013nldft]] partitions his own nonlocal scheme's correlation energy into
@@ -114,7 +114,7 @@ separable cases elsewhere. Hyldgaard, Berland and Schröder [[hyldgaard2014inter
 same quantity as a coupling of zero-point energies of semilocal exchange-correlation holes.
 That is a real-space *interpretation*, and it is the strongest available objection to calling
 the term unanalyzable, so we keep the distinction explicit. They interpret the kernel and the
-holes; we take an already-evaluated E_NLC and *bookkeep* it against named fragments and atom
+holes; we take an already-evaluated $E_{\mathrm{NLC}}$ and *bookkeep* it against named fragments and atom
 pairs, then report how much the bookkeeping itself moves the answer.
 
 What survives that comparison is specific: taking an existing, already-parameterised VV10
@@ -173,12 +173,13 @@ that it retains the pair index, nothing more.
 
 With ρ the electron density and σ = |∇ρ|²,
 
-w0(r) = √( C σ²/ρ⁴ + (4π/3) ρ ),  κ(r) = b (3π/2) (ρ/9π)^{1/6},
-g = w0(r_i) R² + κ(r_i),  g′ = w0(r_j) R² + κ(r_j),  Φ = −3 / (2 g g′ (g+g′)),
+$$w_0(r) = \sqrt{\,C\sigma^{2}/\rho^{4} + (4\pi/3)\rho\,},\qquad \kappa(r) = b\,(3\pi/2)\,(\rho/9\pi)^{1/6},$$
 
-with (b, C) = (6.0, 0.01) for ωB97X-V, and E_NLC = E_NL + β∫ρ,
-β = (1/32)(3/b²)^{3/4}. The pairing of ω and κ in g and g′ is a genuine choice,
-and the cross pairing g = w0(r_j) R² + κ(r_i), which an earlier implementation
+$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -3/(2gg'(g+g')),$$
+
+with (b, C) = (6.0, 0.01) for ωB97X-V, and $E_{\mathrm{NLC}} = E_{\mathrm{NL}} + \beta\!\int\!\rho$,
+$\beta = (1/32)(3/b^{2})^{3/4}$. The pairing of ω and κ in g and g′ is a genuine choice,
+and the cross pairing $g = w_{0}(r_{j})R^{2} + \kappa(r_{i})$, which an earlier implementation
 of ours used, is wrong: it raises monomer energies by +0.1379 kcal/mol for water,
 +0.4182 for argon and +0.1346 for methane at grid level 1, and +0.9057 for benzene at
 level 0, and the offset is itself
@@ -223,8 +224,8 @@ compares the block sum against that independent number, and `closure_check=True`
 same inside the package - off by default, because the reference doubles the summation and the
 production sweep does not pay for it. The test suite keeps the guard honest: one cross term is
 counted twice, then dropped, and the check must fire both times [S33]. What the check still
-cannot see has to be stated with it, because it shares its inputs with the quantity it audits
-- the pair kernel, the density floor that decides which points are kept, and the owner array
+cannot see has to be stated with it, because it shares its inputs with the quantity it audits -
+the pair kernel, the density floor that decides which points are kept, and the owner array
 itself are common mode, so a wrong far-field kernel or a mis-assigned owner moves both sides
 together and leaves the residual at zero. Those are attacked where they are not shared: the
 kernel against PySCF's own and against ORCA (§4.2), the assignment against a partition
@@ -261,7 +262,7 @@ independent schemes, and it is not: three of the four are one product formula of
 with a different radius table, so the sweep turns two switches (which radial mapping, which
 partition kernel), and only the second of them is a different published method. What that
 costs in diversity is visible in the side-by-side run of §3.4: on one grid, one weight set
-and one density, the four variants give E_AB = -1.3598, -1.1129, -1.1962 and -1.3595
+and one density, the four variants give $E_{AB}$ = -1.3598, -1.1129, -1.1962 and -1.3595
 kcal/mol on benzene...water, and the whole term is -31.4256 kcal/mol in every one of those
 four rows [S33]. The last part is the structural point rather than a coincidence: on a fixed
 grid an ownership choice redistributes the double sum between blocks, it cannot move the
@@ -272,7 +273,7 @@ The grid side of that sentence is not incidental: standard DFT grids differ in
 exactly this radial and angular resolution [[gill1993]] [[chien2006sg0]]. Points with ρ below
 `rho_floor` (default 10⁻¹²) are excluded from the double sum; across the sweep this
 drops 10.7–22.6% of the points, and the points it drops carry at most 2.3×10⁻⁶
-electrons. Over the floor interval the sweep accepts ($10^{-10}$ to $10^{-14}$) E_AB moves by
+electrons. Over the floor interval the sweep accepts ($10^{-10}$ to $10^{-14}$) $E_{AB}$ moves by
 2.1×10⁻¹¹ Ha at grid level 1 and 4.2×10⁻¹¹ Ha at level 2; adding the two outer rungs
 at 10⁻⁸ and 10⁻¹⁶ still leaves the reported value unchanged at six decimals in
 kcal/mol [S7]. The local term β∫ρ is a one-body functional of the density and is not
@@ -329,7 +330,7 @@ what sets both the size of the nonlocal term and how much of it each fragment ca
 
 ### 2.5 Verification
 
-Two routes to E_NLC are computed and compared at run time, with a hard failure if
+Two routes to $E_{\mathrm{NLC}}$ are computed and compared at run time, with a hard failure if
 they disagree: our explicit pair sum, and PySCF's native kernel
 (`numint.nr_nlc_vxc`). These are independent implementations of the kernel but
 share a library, so agreement between them validates the arithmetic and not the
@@ -338,7 +339,7 @@ no quantity in Table 1 rests on agreement between two implementations of the sam
 alone. Energy
 accounting is checked independently: for a hybrid functional the exact-exchange
 energy is folded into `vhf.exc` by `get_veff` and is absent from `nr_rks`, so
-we close e_tot = e_nuc + e₁ + e_coul + e_xc to ≤1.1×10⁻¹⁰ kcal/mol rather than
+we close $e_{\mathrm{tot}} = e_{\mathrm{nuc}} + e_{1} + e_{\mathrm{coul}} + e_{\mathrm{xc}}$ to ≤1.1×10⁻¹⁰ kcal/mol rather than
 assuming any particular partition of the XC terms.
 
 Cross-version reproducibility was first checked on one system run twice:
@@ -367,12 +368,12 @@ It is not: both counts are on 2.12.1, and the same probe prints 20248 for the co
 monomers (16752 against 20248), which is the thing §3.2's release statement is actually
 about.
 
-The energies themselves are what the comparison is about: on that official geometry the two releases print E_NLC = +52.9345 and E_xc - E_NLC =
+The energies themselves are what the comparison is about: on that official geometry the two releases print $E_{\mathrm{NLC}}$ = +52.9345 and $E_{\mathrm{xc}} - E_{\mathrm{NLC}}$ =
 -11757.5276 kcal/mol identically, with a 5.7e-06 discrepancy between the two implementations
 of the kernel on each side. That is why the agreement is stated quantity by quantity rather
-than as a blanket "digit for digit". ΔE_NLC agrees to 3.3e-4 kcal/mol (-1.404667 vs -1.405),
-ΔE_xc to 4e-4 (-2.324590 vs -2.325), ΔE_int to 4.5e-5 (-1.780045 vs -1.780), the attribution span
-to 2e-4 (0.213163 vs 0.213) and P_frz[becke] to 1e-3 (-1.441416 vs -1.441), each inside the
+than as a blanket "digit for digit". $\Delta E_{\mathrm{NLC}}$ agrees to 3.3e-4 kcal/mol (-1.404667 vs -1.405),
+$\Delta E_{\mathrm{xc}}$ to 4e-4 (-2.324590 vs -2.325), $\Delta E_{\mathrm{int}}$ to 4.5e-5 (-1.780045 vs -1.780), the attribution span
+to 2e-4 (0.213163 vs 0.213) and $P_{\mathrm{frz}}$[becke] to 1e-3 (-1.441416 vs -1.441), each inside the
 0.001 kcal/mol to which the second run prints. Those five full-precision pairs are not transcribed:
 the cross-version script reads the two harvest sidecars and prints the table, which is
 archived [S8]. The one quantity that does not agree is the
@@ -416,19 +417,19 @@ Table 1 reports ωB97X-V/6-31G* results for eight S22 systems at the official
 GMTKN55 geometries. The S22 set is the standard noncovalent benchmark, and reference
 interaction energies for it are compiled in [[rezac2016bench]], with the wider benchmark
 literature supplying the reference values and counterpoise-convergence practice
-[[goerigk2011benchmark]] [[rezac2011s66]] [[burns2017bfdb]] [[marshall2011]]. The quantity of interest is dE_NLC, the change in the
+[[goerigk2011benchmark]] [[rezac2011s66]] [[burns2017bfdb]] [[marshall2011]]. The quantity of interest is $dE_{\mathrm{NLC}}$, the change in the
 nonlocal correlation energy on bringing two fragments together from infinity at
-fixed density, and its ratio to the total dE_xc for the same process. The
-remainder, dE_xc^rest = dE_xc - dE_NLC, is the semi-local exchange-correlation plus
+fixed density, and its ratio to the total $dE_{\mathrm{xc}}$ for the same process. The
+remainder, $dE_{\mathrm{xc}}^{\mathrm{rest}} = dE_{\mathrm{xc}} - dE_{\mathrm{NLC}}$, is the semi-local exchange-correlation plus
 the fraction of exact exchange; it is tabulated explicitly in
 the same paper's provenance appendix (S2) and is recoverable from these two columns by subtraction.
 
 ![Per-system split of the superposition exchange-correlation change into the VV10 term and the rest of ΔE_xc minus ΔE_NLC](figs/fig1_xc_split.png)
 
-**Figure 2.** The same quantity two ways, per system: the VV10 term ΔE_NLC and the remainder ΔE_xc - ΔE_NLC (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. Axis labels are abbreviated: A and B are the two benzene-dimer geometries (parallel-displaced and T-shaped), Bz is benzene, and (H2O)2, (NH3)2 and (CH4)2 are the corresponding dimers. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of ΔE_xc belongs to the VV10 term. Data: the archived sidecar, produced by `step_h_s22.py`; drawn by `figures.py` [S2].
+**Figure 2.** The same quantity two ways, per system: the VV10 term $\Delta E_{\mathrm{NLC}}$ and the remainder $\Delta E_{\mathrm{xc}} - \Delta E_{\mathrm{NLC}}$ (semilocal exchange-correlation plus the exact-exchange fraction), both for the superposition difference at grid level 1 and uncorrected density. Axis labels are abbreviated: A and B are the two benzene-dimer geometries (parallel-displaced and T-shaped), Bz is benzene, and (H2O)2, (NH3)2 and (CH4)2 are the corresponding dimers. The remainder is negative for seven of the eight systems but positive for the methane dimer (+0.285 against a VV10 term of -0.517 kcal/mol), the one case where the semi-local remainder is itself repulsive and the nonlocal term alone provides the binding. The other seven span -0.119 to -3.115 kcal/mol, so no single fraction of $\Delta E_{\mathrm{xc}}$ belongs to the VV10 term. Data: the archived sidecar, produced by `step_h_s22.py`; drawn by `figures.py` [S2].
 
 
-| System | atoms | dE_int | dE_xc (total) | dE_NLC | share of dE_xc (only where it is defined) |
+| System | atoms | $dE_{\mathrm{int}}$ | $dE_{\mathrm{xc}}$ (total) | $dE_{\mathrm{NLC}}$ | share of $dE_{\mathrm{xc}}$ (only where it is defined) |
 |---|---|---|---|---|---|
 | benzene dimer (A, parallel-displaced) | 24 | -3.580 | -4.486 | -4.367 | 97% |
 | benzene dimer (B, T-shaped) | 24 | -3.188 | -4.555 | -2.388 | 52% |
@@ -441,9 +442,9 @@ the same paper's provenance appendix (S2) and is recoverable from these two colu
 **Table 1.** Superposition differences for eight S22 systems at ωB97X-V/6-31G* on the official GMTKN55 geometries, all at grid level 1.
 
 
-All entries in kcal/mol, all at grid level 1. The two benzene rows were tabulated at level 0 in an earlier version of this table; moving them to level 1 shifts dE_NLC by 0.081 (A) and 0.013 (B) kcal/mol. Level 0 is therefore not adequate for a 24-atom aromatic dimer, unlike the six-atom water dimer where levels 1 and 2 agree to the last digit (section 3.2).
+All entries in kcal/mol, all at grid level 1. The two benzene rows were tabulated at level 0 in an earlier version of this table; moving them to level 1 shifts $dE_{\mathrm{NLC}}$ by 0.081 (A) and 0.013 (B) kcal/mol. Level 0 is therefore not adequate for a 24-atom aromatic dimer, unlike the six-atom water dimer where levels 1 and 2 agree to the last digit (section 3.2).
 
-**Why the methane row has no share.** Its ratio is |dE_NLC|/|dE_xc| = 2.2, which trips the
+**Why the methane row has no share.** Its ratio is |$dE_{\mathrm{NLC}}$|/|$dE_{\mathrm{xc}}$| = 2.2, which trips the
 cancellation test that ships with the code (`step_f_dispersion.py`: above 2, the
 denominator is reported as two signed terms, never as a percentage - here -0.517 plus a
 semi-local remainder of +0.285). Quoting that ratio as a share - it is 2.2, so more than
@@ -458,7 +459,7 @@ i.e. the VV10 term exceeds the net binding by 37% of it. That excess is 0.141 kc
 0.051 while this cell still carried the other release's counterpoise value, which is what a
 one-environment column changes - and it is 141x the cross-program residual
 of the nonlocal term for this very system (0.0010
-kcal/mol, the cross-program table) and about 3x10^3 the
+kcal/mol, the cross-program table) and about $3\times10^{3}$ the
 cross-release reproducibility of the *uncorrected* interaction energy (4.5e-5 kcal/mol, §2.5) - so the
 excess is a measurement rather than noise, even though the ratio of the two numbers
 behind it is still not something we may print as a share. It is, however, only 1.6x the
@@ -468,7 +469,7 @@ The final column is the reason this decomposition is worth having: the nonlocal
 term ranges from one sixth to more than the whole of the rest of XC, and in the
 methane dimer it exceeds it, so that the remainder of the XC contribution is
 *repulsive* while the nonlocal term alone provides the binding. No single
-fraction of dE_xc can be assigned to VV10 across a benchmark set, and the two
+fraction of $dE_{\mathrm{xc}}$ can be assigned to VV10 across a benchmark set, and the two
 geometries of the same 24-atom benzene dimer (97% vs 52%) show that the ratio
 is a property of the arrangement, not of the pair of molecules.
 
@@ -478,7 +479,7 @@ the eight; the two benzene-dimer geometries have no level-2 *row of this table*,
 benzene...methane needed a separate run after its first attempt was cut off by a
 four-hour wall-clock budget [S10]. What does exist for the two benzene dimers at level 2 is
 their counterpoise-corrected binding energy, computed for §3.2 [S28, S29]: a narrower quantity,
-which is why the two statements are kept apart here rather than merged into one coverage count. Between levels 1 and 2 neither dE_NLC nor the
+which is why the two statements are kept apart here rather than merged into one coverage count. Between levels 1 and 2 neither $dE_{\mathrm{NLC}}$ nor the
 interfragment pair term moves by more than 1.0e-3 kcal/mol, but that number is a
 statement about storage precision, not a measurement. Every level-2 row in the sidecar is
 kept to three decimals, so no level-1 to level-2 difference below 5e-4 kcal/mol is
@@ -502,13 +503,13 @@ that batch prints), but it now holds on its own evidence. Those numbers are also
 themselves: the same three cells used to read 1.687, 1.491 and 0.196, taken from a batch computed
 in a different PySCF, and §3.2's last paragraph gives the size and the cause of the difference. The core
 quantities of this method are therefore converged
-one grid level before the total binding energy is; a user who only wants dE_NLC
+one grid level before the total binding energy is; a user who only wants $dE_{\mathrm{NLC}}$
 can stop at level 1.
 
 **Is -6.1526 the right answer?** Not a question about the nonlocal term, but it is a
 question the paper invited, and it now has a measurement instead of a caveat. At the same
 official S22 geometry, the same 6-31g\* basis and the same counterpoise convention,
-coupled cluster gives dE_int = -4.8789 kcal/mol at CCSD(T) with frozen oxygen 1s
+coupled cluster gives $dE_{\mathrm{int}}$ = -4.8789 kcal/mol at CCSD(T) with frozen oxygen 1s
 (-4.8821 all-electron, so the frozen-core choice is worth 0.003 here), and -3.6986, -4.3316,
 -4.3474 and -4.7287 at cc-pVDZ, aug-cc-pVDZ, cc-pVTZ and aug-cc-pVTZ respectively [S24, S30].
 Every rung of that ladder is the frozen-core value: the archive also prints the all-electron
@@ -527,7 +528,7 @@ the larger one, 1.18 - which is comparable to - not twice the
 size of - the deviation being judged: a verdict of the form "the functional overbinds" obtained
 by comparing one small-basis density-functional number with one CBS reference remains
 unsupportable, but for a different reason than this draft originally gave. That is a caution
-about the total binding energy, not about dE_NLC, which is
+about the total binding energy, not about $dE_{\mathrm{NLC}}$, which is
 what every claim in this paper is made of, and which is grid-converged a level earlier
 (above) and agrees with a second program to 0.0004 kcal/mol on this same complex
 [S18]. A related definitional point, learned from a retraction: the S22 tables report
@@ -541,7 +542,7 @@ above previously reported -6.856 for the 6-31g\* anchor and read the functional 
 kcal/mol *too shallow*. Both numbers were computed in this repository; neither was a
 counterpoise number. The coupled-cluster script built each monomer from that fragment's own
 atoms, so the monomers were evaluated in a smaller one-particle basis than the complex, which
-is the one thing a Boys-Bernardi correction must not do; the column heading said dE_CP and the
+is the one thing a Boys-Bernardi correction must not do; the column heading said $dE_{\mathrm{CP}}$ and the
 quantity underneath it was the uncorrected difference. The functional column it was being
 subtracted from had always used ghost functions, so every deviation in this section was the
 difference of two conventions. The size of that mismatch is now measured rather than assumed,
@@ -568,7 +569,7 @@ Set against the ωB97X-V/6-31G\* level-2 counterpoise values - all eight now com
 PySCF 2.12.1, the same version and the same grid level as the coupled-cluster side - the eight
 deviations are collected in **Table 2**:
 
-| complex | CCSD(T) dE_CP | ωB97X-V dE_CP | deviation | correlated BSSE |
+| complex | CCSD(T) $dE_{\mathrm{CP}}$ | ωB97X-V $dE_{\mathrm{CP}}$ | deviation | correlated BSSE |
 |---|---|---|---|---|
 | water | -4.8789 | -6.1526 | -1.2737 | 1.9770 |
 | ammonia | -2.5380 | -3.7277 | -1.1897 | 1.9174 |
@@ -708,7 +709,7 @@ convention fix and is worth keeping anyway: before it, three of the five then-me
 anchor every deviation is negative at both grid levels and no step flips a sign - the sign flips
 were the mismatch, not the grid. What the grid still does is move quantities of the size that was
 going to serve as evidence, by up to 1.217 kcal/mol against deviations of 0.45 to 3.41, without
-anyone deciding anything. This is the third reason the section judges dE_NLC and not the
+anyone deciding anything. This is the third reason the section judges $dE_{\mathrm{NLC}}$ and not the
 functional.
 
 **A fourth nuisance parameter, found by a guard that refused to pass.** The eight DFT values in
@@ -755,7 +756,7 @@ from the frozen-core CCSD(T) at the smaller basis (1.274 / 1.190 / 0.450) gives 
 quantities are comparable on this figure's own terms but not ordered the same way twice. Both numbers are read from
 the archived runs, not transcribed. The three π complexes of the paragraph above are drawn in
 Figure 5 rather than here, so that this figure keeps one comparison per panel [S26, S27, S31].
-ΔE_CP is in kcal/mol.
+$\Delta E_{\mathrm{CP}}$ is in kcal/mol.
 
 ![Two cross-program checks: the nonlocal deviation and the ORCA anchor](figs/fig4b_cross_program_checks.png)
 
@@ -782,7 +783,7 @@ design - the figure carries six systems, two hydrogen-bonded, one dispersion-bou
 aug-cc-pVDZ anchors now exist for the parallel-displaced dimer (ratio 1.02, read from the same archive) but not
 for the T-shaped geometry, which was never run at that basis. Same archives
 as Figure 3, drawn by the same script, which refuses to draw if any ratio leaves the 20-fold
-window [S26, S27, S30, S31]. Bz = benzene; ΔE_CP is in kcal/mol; in the bottom-right panel
+window [S26, S27, S30, S31]. Bz = benzene; $\Delta E_{\mathrm{CP}}$ is in kcal/mol; in the bottom-right panel
 blue is the correlated reference's basis move (6-31G* → aug-cc-pVDZ) and orange the
 functional's deviation from that reference at 6-31G*; CC(T) = CCSD(T).
 
@@ -823,7 +824,7 @@ intra-fragment nonlocal correlation of each relaxed monomer contributing the
 balance [S2, S10].
 
 This is where the explicit sum earns its cost. A point-value kernel evaluation
-returns dE_NLC and nothing else; the (i, j) index structure retained by the
+returns $dE_{\mathrm{NLC}}$ and nothing else; the (i, j) index structure retained by the
 double sum is what makes 0.92-1.08 a statement that can be checked at all. The
 corresponding dispersion component published for the benzene dimer is -3.34 to
 -3.80 kcal/mol at the PBE0-VV10 [[adamo1999pbe0]], revPBE-D3 [[zhang1998revpbe]] [[grimme2010d3]] and related levels of an ALMO-EDA
@@ -835,7 +836,7 @@ because Pauli repulsion cancels most of it.
 
 ### 3.4 Attribution-scheme sensitivity is system-dependent
 
-Repeating dE_NLC for the four partition schemes of section 2.3 gives absolute spans
+Repeating $dE_{\mathrm{NLC}}$ for the four partition schemes of section 2.3 gives absolute spans
 of 0.004-0.247 kcal/mol and relative spans - measured against the Becke-scheme
 interfragment term - of 0.8-18.2%. Neither ordering follows system size: the
 24-atom parallel-displaced benzene dimer has one of the smallest absolute spans
@@ -843,7 +844,7 @@ interfragment term - of 0.8-18.2%. Neither ordering follows system size: the
 gives the largest (0.247). What separates them is the arrangement, not the atom
 count or the interaction class:
 
-| System | P_frz (Becke) | span, own grids | relative | attribution only, one grid | quadrature only, totals | attribution / quadrature |
+| System | $P_{\mathrm{frz}}$ (Becke) | span, own grids | relative | attribution only, one grid | quadrature only, totals | attribution / quadrature |
 |---|---|---|---|---|---|---|
 | methane dimer | -0.474 | 0.004 | 0.9% | 0.0034 | 0.0026 | 1.29 |
 | benzene dimer (A) | -4.038 | 0.032 | 0.8% | 0.0274 | 0.0082 | 3.32 |
@@ -853,9 +854,9 @@ count or the interaction class:
 | benzene...methane | -1.442 | 0.213 | 14.8% | 0.2143 | 0.0018 | 121.66 |
 | benzene...ammonia | -1.393 | 0.224 | 16.1% | 0.2219 | 0.0026 | 84.44 |
 | benzene...water | -1.360 | 0.247 | 18.2% | 0.2468 | 0.0002 | 1046.15 |
-**Table 3.** Attribution spread and quadrature spread reported separately: the first on one common grid, the second from each scheme regenerating its own grid. The span is a variance of the fragment-resolved descriptor; the total E_NL and the total binding energy are partition-invariant.
+**Table 3.** Attribution spread and quadrature spread reported separately: the first on one common grid, the second from each scheme regenerating its own grid. The span is a variance of the fragment-resolved descriptor; the total $E_{\mathrm{NL}}$ and the total binding energy are partition-invariant.
 
-**What the span is, and is not.** The total E_NL and the total counterpoise binding energy are partition-invariant; only the fragment-resolved descriptor changes. The span in Table 3 is therefore a descriptor variance, not an error bar on the binding energy. It does not order with atom count: the 24-atom benzene dimer (A) has a 0.032 kcal/mol span, below the 6-atom water dimer at 0.043, while the 17-atom benzene-methane has 0.213. No ratio to a binding energy is quoted: the spans are level 1 and the counterpoise binding energies are level 2, so such a ratio would mix levels; the percentage column is relative to the Becke-scheme E_AB at the same level.
+**What the span is, and is not.** The total $E_{\mathrm{NL}}$ and the total counterpoise binding energy are partition-invariant; only the fragment-resolved descriptor changes. The span in Table 3 is therefore a descriptor variance, not an error bar on the binding energy. It does not order with atom count: the 24-atom benzene dimer (A) has a 0.032 kcal/mol span, below the 6-atom water dimer at 0.043, while the 17-atom benzene-methane has 0.213. No ratio to a binding energy is quoted: the spans are level 1 and the counterpoise binding energies are level 2, so such a ratio would mix levels; the percentage column is relative to the Becke-scheme $E_{AB}$ at the same level.
 
 **Full S22 survey.** A separate run of the same four family-internal schemes over
 all 22 S22 complexes gives spans from 0.0034 to 0.3030 kcal/mol at level 1
@@ -886,7 +887,7 @@ the four-scheme spans of the two benzene dimers, each scheme on its own grid, ar
 **outside** the 0.004-0.247 interval this section quotes (and on the common grid, where the
 quadrature is held fixed, the same step still puts benzene...water at 0.2545, likewise outside
 it [S34]), and at that level the quadrature alone moves the
-whole term: the four schemes give E_NL = -56.7887, -56.6574, -56.6202 and -56.8369 kcal/mol on
+whole term: the four schemes give $E_{\mathrm{NL}}$ = -56.7887, -56.6574, -56.6202 and -56.8369 kcal/mol on
 a constructed benzene sandwich geometry whose point count is **identical in all four rows**
 (19752), while the discrete electron number wanders from 83.95201 to 84.06088 against 84
 the census archive. That is the mechanism the split
@@ -898,14 +899,14 @@ are not unique to this kernel is documented for several recent functionals
 paper - Table 1, the abstract, §6 - is the level-1 one, and the level-0 readings above are
 labelled as level-0 where they are used. Neither qualification changes the ranking's scope:
 these ratios compare attribution with quadrature on one grid, and §6 records the methane cell
-where the dE_NLC superposition error is 1.87 times the attribution span, so "attribution
+where the $dE_{\mathrm{NLC}}$ superposition error is 1.87 times the attribution span, so "attribution
 dominates" is a counted result, two of the three cells where both were measured, not a
 property of the quantity.
 
 ![Attribution spread of the interfragment pair term over the four partition schemes, as a percentage of the Becke-scheme value](figs/fig2_scheme_sensitivity.png)
 
-**Figure 6.** How much of the reported pair term is a choice about where grid points belong: the spread of P_frz over the four partition schemes of section 2.3, divided by the Becke-scheme value, per system, sorted. The two geometries of the same 24-atom benzene dimer sit at 0.8% and 9.2% and benzene...water at 18.2%, so the percentage is a property of the arrangement rather than of the pair of molecules and cannot be collapsed into one blanket error bar. Data as in Figure 2 [S2]. The percentage
-is the scheme spread divided by |P_frz|; the number in parentheses is the absolute spread
+**Figure 6.** How much of the reported pair term is a choice about where grid points belong: the spread of $P_{\mathrm{frz}}$ over the four partition schemes of section 2.3, divided by the Becke-scheme value, per system, sorted. The two geometries of the same 24-atom benzene dimer sit at 0.8% and 9.2% and benzene...water at 18.2%, so the percentage is a property of the arrangement rather than of the pair of molecules and cannot be collapsed into one blanket error bar. Data as in Figure 2 [S2]. The percentage
+is the scheme spread divided by |$P_{\mathrm{frz}}$|; the number in parentheses is the absolute spread
 in kcal/mol; Bz = benzene.
 
 
@@ -922,12 +923,12 @@ attribution property rather than a one-particle-basis property. On the official
 S22 water-dimer geometry - the same geometry the rest of this section's tables are
 computed on - re-running the four schemes at level 1 across five basis sets gives
 spans of 0.0299 (STO-3G), 0.0435 (6-31G\*), 0.0413 (aug-cc-pVDZ), 0.0421 (def2-SVP)
-and 0.0423 (def2-TZVP) kcal/mol while P_frz itself moves from -0.458
+and 0.0423 (def2-TZVP) kcal/mol while $P_{\mathrm{frz}}$ itself moves from -0.458
 (STO-3G) to -0.633 (aug-cc-pVDZ) [S12]: the quantity of interest drifts by
 0.18 kcal/mol across the basis ladder while the scheme spread stays inside
 0.0413-0.0435 for the four basis sets beyond the minimal one - a band no wider than 4% of
 the 0.042 it is usually quoted against - at 0.030 in STO-3G. The last
-two rungs move P_frz by 0.026 kcal/mol, below the 0.05 the ladder's own criterion
+two rungs move $P_{\mathrm{frz}}$ by 0.026 kcal/mol, below the 0.05 the ladder's own criterion
 asks for, so the basis is near its limit while the span is not shrinking - the
 drift and the spread are different phenomena. The same ladder on the constructed
 geometry (0.0249/0.0400/0.0382/0.0390/0.0398, drift -0.386 to -0.554) reproduces
@@ -951,19 +952,19 @@ the two geometries.
 
 Two controls outside S22 test the strong-overlap limit rather than adding another
 weak dimer. In H3N-BH3 (B-N 1.6677 A, wB97X-V/6-31G*; both fragments treated as
-closed-shell singlets), the four schemes give P_frz = -2.0039/-2.0728/-2.0322/-2.0018
+closed-shell singlets), the four schemes give $P_{\mathrm{frz}}$ = -2.0039/-2.0728/-2.0322/-2.0018
 kcal/mol at level 1 and a span of 0.0710 kcal/mol; level 2 changes each scheme by
-0.0003-0.00055 and leaves the span at 0.0710. The ORCA 6.0.1 anchor gives dE_NLC =
+0.0003-0.00055 and leaves the span at 0.0710. The ORCA 6.0.1 anchor gives $dE_{\mathrm{NLC}}$ =
 -1.9711 kcal/mol against -1.9748 (level 1) and -1.9753 (level 2), a 0.19-0.21%
 difference. In the ionic F-...H2O complex (F-O 2.4604 A, wB97X-V/aug-cc-pVDZ; F- and
 water treated as charge -1 and 0), the corresponding span is 0.0828 at level 1 and
-0.0825 at level 2, with P_frz(Becke) = -1.0895/-1.0892 kcal/mol; ORCA gives dE_NLC =
+0.0825 at level 2, with $P_{\mathrm{frz}}$(Becke) = -1.0895/-1.0892 kcal/mol; ORCA gives $dE_{\mathrm{NLC}}$ =
 -0.9850 against -0.9875/-0.9877, a 0.26-0.28% difference. In both, the span is below
 the level-2 counterpoise correction (3.2 kcal/mol for the dative complex and 0.30
 kcal/mol for the ionic one) and below 0.1 kcal/mol in absolute terms. Strong density
 sharing therefore does not by itself widen the four-scheme band; the largest relative
-span in the S22 set is benzene...water, where |P_frz| is 1.36 kcal/mol rather than
-the strongly bound benzene dimer (|P_frz| = 4.04 kcal/mol), consistent with a
+span in the S22 set is benzene...water, where |$P_{\mathrm{frz}}$| is 1.36 kcal/mol rather than
+the strongly bound benzene dimer (|$P_{\mathrm{frz}}$| = 4.04 kcal/mol), consistent with a
 small-denominator effect rather than a strong-binding effect. These two controls are
 not merged into Table 3
 or S2 because their basis sets differ; their inputs, four-scheme outputs, and ORCA
@@ -982,7 +983,7 @@ geometry, a spread of 0.108 electrons which is 0.329 kcal/mol; on the constructe
 geometry the same spread is 0.09865 electrons, i.e. 0.300 kcal/mol [S20].
 Two consequences deserve stating explicitly. In a superposition difference the
 term cancels in the continuum, where the electron number is conserved; on a grid it
-cancels only up to the quadrature error in that number, so every dE_NLC value here
+cancels only up to the quadrature error in that number, so every $dE_{\mathrm{NLC}}$ value here
 carries the residual measured in section 3.3 and no more. But any table reporting *absolute* fragment energies
 inherits an uncertainty of this size from a quantity (atomic population) that the
 method does not control. This is a property of Becke partitioning that every EDA
@@ -1069,18 +1070,18 @@ that survive all of it (§4.5).
 
 **A fragment-resolved value requires more than the total density.** The
 VV10 kernel is built from the total density and its gradient; it contains no fragment
-label. Two real-space partitions can leave the total E_NL unchanged while moving E_AB
-(Table 3). No partition-independent scalar E_AB follows from the functional alone. Once
+label. Two real-space partitions can leave the total $E_{\mathrm{NL}}$ unchanged while moving $E_{AB}$
+(Table 3). No partition-independent scalar $E_{AB}$ follows from the functional alone. Once
 a partition class is specified, the range over that class is well-defined; that range,
 not a single scheme, is the object this paper reports.
 
-**This is not an energy decomposition analysis.** We split dE_xc into the
+**This is not an energy decomposition analysis.** We split $dE_{\mathrm{xc}}$ into the
 nonlocal term and everything else, and we resolve the nonlocal term into
 fragment pairs. We do not separate electrostatics, exchange-repulsion,
 polarisation or charge transfer, and the resulting components are therefore not
 comparable term-by-term with ALMO-EDA or SAPT(DFT) output. Counterpoise-corrected
 interaction energies are reported in section 3.2 for all eight systems.
-The nonlocal term is not among those corrections. Table 1's dE_NLC is a
+The nonlocal term is not among those corrections. Table 1's $dE_{\mathrm{NLC}}$ is a
 superposition-position difference whose monomers were solved in their own basis,
 because the production path sums total energies and never takes the nonlocal term
 of a ghost monomer [S2]. That is a convention, not a theorem: the ghost
@@ -1090,15 +1091,15 @@ dimers. The correction comes out -0.0074 (water), -0.0031 (ammonia) and +0.0075
 kcal/mol (methane) [S32], against those cells' own four-scheme attribution spans
 of 0.0435, 0.0290 and 0.0040 kcal/mol: 0.17, 0.11 and 1.87 times the attribution
 effect. Two things that used to be said here are withdrawn. Basis-set
-flexisation does enter dE_NLC, measured on three systems rather than argued; and
+flexisation does enter $dE_{\mathrm{NLC}}$, measured on three systems rather than argued; and
 its absence was not "precisely why" the term converges a grid level earlier than
-dE_int does [S10] - on the methane dimer the basis-set effect is the *larger* of
+$dE_{\mathrm{int}}$ does [S10] - on the methane dimer the basis-set effect is the *larger* of
 the two uncertainties quantified for that cell, which is the one place in this
 paper where the ordering of those two is not ours to claim. What makes the
 nonlocal term settle a grid level earlier is not explained here.
 
 **The nonlocal term is not the dispersion energy.** Section 3.2 is the evidence:
-dE_NLC accounts for anywhere between 16% and 97% of dE_xc across the seven complexes
+$dE_{\mathrm{NLC}}$ accounts for anywhere between 16% and 97% of $dE_{\mathrm{xc}}$ across the seven complexes
 where that share is defined by our own cancellation test (Table 1) - and note that this
 is not a smooth ladder: the two geometries of the same benzene dimer give 97% and 52%.
 The eighth complex, the methane dimer, is the case a percentage cannot describe at all:
@@ -1126,7 +1127,7 @@ give the comparison in **Table 4** and in Figure 4, for the superposition differ
 the residual with the partition-scheme span of the same row (§3.4), which is the
 quantity a referee has to be smaller than to be informative:
 
-| system | ΔE_NLC ORCA | ΔE_NLC PySCF | difference | span | residual/span |
+| system | $\Delta E_{\mathrm{NLC}}$ ORCA | $\Delta E_{\mathrm{NLC}}$ PySCF | difference | span | residual/span |
 |---|---|---|---|---|---|
 | water dimer (S22 #2) | -0.5931 | -0.5935 | 0.0004 (0.07%) | 0.0435 | 0.009 |
 | ammonia dimer (S22 #1) | -0.6745 | -0.6780 | 0.0035 (0.51%) | 0.0290 | 0.120 |
@@ -1140,7 +1141,7 @@ quantity a referee has to be smaller than to be informative:
 
 
 All eight agree to better than 1% of the term, and the residual tracks the magnitude of
-ΔE_NLC rather than the size of the system, which is what a quadrature difference looks
+$\Delta E_{\mathrm{NLC}}$ rather than the size of the system, which is what a quadrature difference looks
 like. Three things must be said about it rather than glossed. First, the grids are
 not matched - ORCA uses its own nonlocal quadrature (Lebedev-110 [[lebedev1976]], IntAcc 4.004) against
 PySCF's `grids.level=1` - so the residual is the joint grid-plus-implementation
@@ -1329,7 +1330,7 @@ trend with atom count or binding strength is a statement about these systems, no
 that no such trend exists outside them.
 
 **Absolute fragment energies inherit a population uncertainty.** As shown in
-section 3.5, the local term of a fragment is exactly beta*N_A, so the
+section 3.5, the local term of a fragment is exactly $\beta N_{A}$, so the
 0.108-electron spread of the attributed population over the four schemes is a
 0.329 kcal/mol spread in the
 reported fragment energy - larger than the scheme spread of the pair term itself
@@ -1345,7 +1346,7 @@ that PySCF ships remains both cheaper and accurate to ~1e-8 Ha on its own grid
 (section 3.1). The cost is not prohibitive in itself - JuNoLo ran the same N² sum
 over massively parallel hardware for surface calculations [S14] - but it is a real
 constraint, and it is worth naming the trade honestly. We are therefore not claiming that this
-method computes dE_NLC better. What it buys is the (i, j) index structure: the
+method computes $dE_{\mathrm{NLC}}$ better. What it buys is the (i, j) index structure: the
 0.92-1.08 frozen-density result of section 3.3, and the per-pair numbers behind
 Table 1, are not recoverable from a scheme that collapses the pair sum to point
 values first.
@@ -1418,7 +1419,7 @@ confined to 0.0413-0.0435 across the four basis sets beyond STO-3G
 and to within 0.0013 kcal/mol between grid levels 1 and 2, with
 no pattern by interaction type that would let a single percentage be quoted.
 That ranking does not hold on a third axis: on the methane dimer the superposition
-error of dE_NLC itself is +0.0075 kcal/mol, 1.87 times that cell's own attribution
+error of $dE_{\mathrm{NLC}}$ itself is +0.0075 kcal/mol, 1.87 times that cell's own attribution
 span [S32], so among the three cells where both have been measured it holds on two,
 and "dominant" is a counted result, not a property of the quantity.
 
@@ -1538,7 +1539,7 @@ run log left there is a working note and not evidence.
 | S9 | `nlcsplit/step_i_gridrepr.py`, `evidence/recompute/20260929T_step_i_gridrepr.out` | the two discrepancies that were previously reported as one number |
 | S10 | `evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out`, `evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out`, `nlcsplit/logs/step_h_l2cp.json` | level-2 with counterpoise, all six S22 subsystems complete, including the `p_over_ds` column behind the 0.92-1.08 ratio |
 | S11 | `RESEARCH-20260929-lit.md` §6.2-6.3 | published comparison value for JCTC 3c00903 (full text via ChemRxiv green OA 10.26434/chemrxiv-2023-nc64t) |
-| S12 | `evidence/recompute/20260930T191014Z_stepg-official.out` (official S22 geometry, the numbers quoted in sections 2 and 3.4), `evidence/recompute/20260929T003144Z_stepg-recompute.out` (constructed geometry, quoted as the cross-check), both produced by `nlcsplit/step_g_basis.py`, cross-checked against `evidence/centos/20260928T165857Z_centos-step2.out` | five-basis ladder of P_frz and of the four-scheme span at level 1, run once per geometry by the same script (`NCOFF` selects the official one). The two ladders agree to 5-8% on every span and to within 0.008 kcal/mol on the STO-3G-to-aug-cc-pVDZ drift, so the reading is geometry-insensitive; the script's own criterion (last-two-rung drift < 0.05) is satisfied on both geometries, which is what licenses calling the basis near-converged while the scheme span is not shrinking |
+| S12 | `evidence/recompute/20260930T191014Z_stepg-official.out` (official S22 geometry, the numbers quoted in sections 2 and 3.4), `evidence/recompute/20260929T003144Z_stepg-recompute.out` (constructed geometry, quoted as the cross-check), both produced by `nlcsplit/step_g_basis.py`, cross-checked against `evidence/centos/20260928T165857Z_centos-step2.out` | five-basis ladder of $P_{\mathrm{frz}}$ and of the four-scheme span at level 1, run once per geometry by the same script (`NCOFF` selects the official one). The two ladders agree to 5-8% on every span and to within 0.008 kcal/mol on the STO-3G-to-aug-cc-pVDZ drift, so the reading is geometry-insensitive; the script's own criterion (last-two-rung drift < 0.05) is satisfied on both geometries, which is what licenses calling the basis near-converged while the scheme span is not shrinking |
 | S13 | `evidence/centos/20260928T165857Z_centos-step2.out` lines 17-20, per-level values at lines 2-15 | cross-grid spread per basis (sto-3g 0.0010, 6-31G* 0.0081, aug-cc-pVDZ 0.0067); the 0.0002 for 6-31G\* over level 1 to 2 is the difference of lines 8 and 9 |
 | S14 | Lazić, Atodiresei, Alaei, Caciuc, Blügel and Brako, *Comput. Phys. Commun.* **181**, 371-379 (2010), DOI 10.1016/j.cpc.2009.09.016; open preprint arXiv:0810.2273v1; judgement in `RESEARCH-20260929-lit.md` §10 | the closest published decomposition of a nonlocal term, read in full text |
 | S15 | `evidence/retrieval_calibration/oa_stab.js`, `evidence/retrieval_calibration/openalex_stability.json`, `evidence/retrieval_calibration/xref_calib2.js`, `evidence/retrieval_calibration/xref_r3.js` | measured recall of the open indexes: 4/4 known titles at rank 0, 0/4 and 1/3 for legitimate topical strings |
@@ -1553,7 +1554,7 @@ run log left there is a working note and not evidence.
 | S24 | `nlcsplit/step_m_ccsdt.py`, `evidence/ccsdt/20260930T224400Z_stepm_ladder_after_refactor.out`, `evidence/ccsdt/20260930T235900Z_stepm_three_systems_631g.out`, `evidence/ccsdt/20261001T000400Z_stepm_three_systems_avdz.out`, `evidence/ccsdt/20260930T212300Z_stepm_ladder.out`, `evidence/ccsdt/20261001T044833Z_orca_crosscheck.out`, `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out`, `evidence/ccsdt/orca_crosscheck.py`, `evidence/ccsdt/README.md`, `evidence/ccsdt/MANIFEST.sha256`, `nlcsplit/tests/test_cc_convention.py`, `evidence/ccsdt/20261003T0703Z_stepm_water_fivebases_ghostcp_local.out` | the coupled-cluster anchor for the water-dimer binding energy: same official S22 geometry, same basis, same counterpoise convention, RHF reference, MP2/CCSD/CCSD(T) from PySCF's own modules, each rung reported both frozen-core and all-electron. The archive also records the mixed-convention bug this run nearly shipped with: freezing the monomers while switching only the dimer's convention printed -23.16 kcal/mol for the water dimer, which is impossible, and the impossibility was 17 kcal of oxygen 1s correlation counted on one side of the difference only. Two runs are kept because the second one exists to prove the first is still valid: after the frozen-core selection was refactored into a single call feeding both sides of the difference, the ladder was re-run with the script as it now ships, and stripped of wall-clock columns the two files differ in five lines, all of them one print statement whose wording changed - no energy moved. `nlcsplit/tests/test_cc_convention.py` pins that invariant, and one of its seven tests rebuilds the broken pairing on purpose to show the guard can fail. `evidence/ccsdt/orca_crosscheck.py` is the third-program check: ORCA 6.0.1, same geometries, same basis, same convention, on three systems and both conventions (eight rows, 24 single points), worst difference 0.0002 kcal/mol on the interaction energy and 1.2e-07 Ha between executions on the absolute energies. **What that check validated has to be restated:** it built its monomers the way the script of the day built them, so both programs were computing the *uncorrected* difference and agreeing about it - a cross-program check on a convention proves nothing about the convention when both sides share the same omission, which is why the corrected check is constructed from the definition instead of mirrored from the other script. The corrected comparison, with ghost functions on both sides and the basis dimension read back per part, is [S30]. `evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out` is the one to cite for it; it also carries the correction of an earlier claim in this directory, which is why the basis check is stated the way it is. The first version of that check read ORCA's `Number of basis functions` field against PySCF's orbital count and reported agreement at 18 for a water monomer in 6-31G\* - true, but not a criterion: for the same monomer in aug-cc-pVDZ the field prints 47 while ORCA's own SCF and coupled-cluster sections print `Basis Dimension Dim .... 41` and `Number of AO's ... 41`, which is PySCF's number. So the script now reads back the AO dimension per part and compares it with the PySCF nao for the same geometry and basis (24/24 equal), and its verdict refuses to print "agree" unless the energy test and the basis test hold at the same time. The 47 itself is recorded as unexplained rather than rationalised: 25 shells with maximum angular momentum 2 admits no s/p/d/sp bookkeeping that yields both 47 and 41. The frozen-core convention of each ORCA run is likewise read from its own output (`chemical core (4 el)` on a dimer, `(2 el)` on a monomer, `NO frozen core` on the all-electron rungs) rather than assumed from the input keyword. **Dated correction, 2026-10-03:** the column headed `dE_CP` in the four ladder archives named above is *not* a counterpoise value - the monomers were built in their own basis, so the partner's functions were absent. [S30] gives the corrected ladders, the row-by-row proof that only the monomer side moved between the two sets of archives, and the size of what the mismatch was worth (0.2518-2.9711 kcal/mol per complex). The row is kept because it is the record of what those runs computed, and because the correction is the point of §3.2's second paragraph |
 | S30 | `nlcsplit/step_m_ccsdt.py`, `nlcsplit/tests/test_cc_convention.py`, `evidence/ccsdt/README.md`, `evidence/ccsdt/20261002T1230Z_cp_defect_diagnosis.out`, `evidence/ccsdt/snnu_cp_defect_diagnosis.py`, `evidence/ccsdt/20261003T0616Z_orca_ghost_probe.out`, `evidence/ccsdt/orca_ghost_probe.py`, `evidence/ccsdt/20261003T0620Z_orca_vs_pyscf_ghost_cp.out`, `evidence/ccsdt/orca_ghost_cc_probe.py`, `evidence/ccsdt/20261003T0605Z_stepm_dimers_ghostcp_local.out`, `evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out`, `evidence/ccsdt/snnu_cp_rebuild_631.sh`, `evidence/ccsdt/20261003T0700Z_snnu_cp_rebuild_compare.out`, `evidence/ccsdt/cp_rebuild_compare.py`, `evidence/ccsdt/ladder_parse.py`, `evidence/ccsdt/ladder_parse_selftest.py`, `evidence/ccsdt/20261003T0653Z_ghost_monomer_scf_check.out`, `evidence/ccsdt/ghost_monomer_scf_check.py`, `evidence/ccsdt/MANIFEST.sha256` | the counterpoise correction itself, and the evidence chain that holds it up. `20261002T1230Z` is the 10-second diagnosis that found it (a water monomer at 18 basis functions against the complex's 36, -6.8559 against -4.8789). `20261003T0616Z` decides ORCA's ghost-atom spelling by the basis dimension rather than by the manual, and keeps two rejected spellings plus the dropped-partner case as negative controls, because without them "the colon form gives Dim=36" would not be evidence of anything. `20261003T0620Z` computes the corrected anchor in two programs and reports 0.0001 kcal/mol on the counterpoise difference and on the uncorrected one at both conventions, with the ghost construction carried into the correlation space (Dim 36 on every part) and the frozen-core field read back as `chemical core (2 el)` on a monomer whose second oxygen has basis functions but no charge. `20261003T0652Z` is the corrected ladder for all eight complexes at 6-31G*, Slurm job 51023 (COMPLETED, ExitCode 0:0, 42 min 30 s, 16 CPUs on cpu1), whose two pre-run guards compare the *complex's* RHF reference - the side the fix does not touch - against the archived values (4.31e-11 and 1.14e-11 Ha). `evidence/ccsdt/cp_rebuild_compare.py` then reads the old and new archives side by side and refuses to print a table unless every complex CCSD(T) energy is identical to 1e-7 Ha: 22 of 22 comparable rows agree to 0.0e+00, so the whole change in the `dE_CP` column is attributable to the monomer construction and not to the machine, the thread count or the geometry parse. The same script emits the eight deviations quoted in §3.2 and the two-grid-level table, reading both sides from archives rather than from this row. `20261003T0653Z` closes the remaining way a ghost monomer could be wrong without being noticed: every ghost and bare SCF converged, and every ghost energy lies *below* its bare counterpart, which is the variational direction a counterpoise construction must have - a check independent of the convergence flag itself. `evidence/ccsdt/ladder_parse.py` is the single parser both consumers use, and `evidence/ccsdt/ladder_parse_selftest.py` is its eight-case self-test; four of those cases are fed deliberately broken rows, and the one that matters here is a positive interaction energy, which an earlier version of the parser dropped silently because its regex spelled the sign as `-?` |
 | S31 | `evidence/ccsdt/20261003T1212Z_snnu_sandwich_avdz_ghostcp.out`, `evidence/ccsdt/20261004T0135Z_cp_rebuild_compare_derived7.out`, `evidence/l2cp/20261004T0120Z_snnu51025_dft_avdz_ASSERT.out`, `evidence/l2cp/20261003T1747Z_snnu51052-dft_cp_avdz_pi.out`, `evidence/l2cp/20261003T1747Z_snnu51052-sbatch.out`, `evidence/l2cp/20261004T0328Z_snnu51083-dft_cp_avdz_small.out`, `evidence/l2cp/20261004T0328Z_snnu51083-sbatch.out`, `evidence/l2cp/20261004T0903Z_wsl2121-small_crosscheck.out`, `evidence/l2cp/20261003T1721Z_snnu51050_dft_avdz_small_interleaved.out`, `evidence/l2cp/cp_version_runner.py`, `evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out`, `evidence/l2cp/20261003T0911Z_wsl2140-cp_levels.out`, `evidence/l2cp/20261003T0804Z_snnu51028-guard_FAIL.out`, `evidence/l2cp/cp_version_probe.py`, `evidence/l2cp/20261003T0928Z_cp_version_probe.out`, `evidence/l2cp/dtot_2121_aromatic.py`, `evidence/l2cp/20261003T1025Z_wsl2121-dtot_aromatic.out`, `evidence/ccsdt/20261003T0925Z_cp_rebuild_compare_2121.out`, `evidence/ccsdt/20261004T0110Z_cp_rebuild_compare_derived.out`, `evidence/l2cp/20261003T1025Z_wsl2121-dtot_aromatic.out`, `evidence/l2cp/dtot_2121_aromatic.py` | the counterpoise column of the functional side, and the fact that it was two columns. `20261003T0804Z` is the guard that found it: a cluster job that must reproduce a level-2 counterpoise value before spending time on aug-cc-pVDZ got -6.1526 where it was told to expect -6.1290 and stopped with rc=1, which is the whole point of a pre-spend guard. `evidence/l2cp/cp_version_runner.py` is then run twice on one machine - same file, same geometry, same basis, same OMP thread count, same numpy and python, only `PYTHONPATH` differentiating PySCF 2.12.1 from 2.14.0 - and its two outputs are `20261003T0907Z` and `20261003T0911Z`. The 2.14.0 run reproduces the 2026-09-28 batch (-6.129446 against the archived -6.129, -3.675086 against -3.6750, -0.465680 against -0.4660), so nothing in that batch was miscalculated: the paper had put two implementations in one column. `evidence/l2cp/cp_version_probe.py` reads both logs and refuses to print unless (i) every complex and bare-monomer grid is point-for-point identical between the versions, (ii) the production counterpoise and the script's own re-derivation of the ghost monomer agree to 1e-6, and (iii) all six (system, level) cells are present in both; its verdict is that the ghost atom grids are the only thing that differs, in six of six cells, and that the uncorrected interaction energies agree to 1e-6 kcal/mol. That last point was, at first, the only thing licensing 3.1's BSSE list, three of whose cells subtracted a 2.12.1 counterpoise value from a 2.14.0 uncorrected one. Borrowing that justification was not good enough, so the uncorrected side of the five aromatic cells is now measured in the same release (`evidence/l2cp/dtot_2121_aromatic.py` -> `evidence/l2cp/20261003T1025Z_wsl2121-dtot_aromatic.out`: -4.340866, -2.928830, -1.780045, -3.578184 and -3.185938 kcal/mol), which reproduces the older batch to the three decimals it prints and makes 3.1's list eight same-release numbers rather than six mixed ones. `20261003T0925Z` is the same comparison's output for the eight-row deviation table of 3.2: the table is now generated by `deviation_table()` rather than carried across by hand, the identity check has grown from 22 to 28 rows (worst complex-energy difference 2.0e-10 Ha across two days and two Slurm jobs), and the grid-level table has grown from five systems to eight. `20261003T1212Z` closes the last counterpoise anchor of the correlated side (the sandwich at aug-cc-pVDZ, both frozen-core conventions, Slurm job 51024 finished 12:12:57Z), which is what lets 3.2 quote a span and a ratio for that complex; `20261004T0135Z` is the regenerated derived table for seven systems. `20261004T0120Z` is a failure kept on purpose: the functional-side aug-cc-pVDZ job died on the counterpoise function's own dimension assert because that function built ghost monomers in the *module default* basis rather than the complex's - correct for every 6-31G* run in this paper, wrong the moment a caller passed another basis. The fix and its negative-control test are in `nlcsplit/step_h_s22.py` and `nlcsplit/tests/test_regression.py`. The re-submitted job 51052 is what closes the functional side's matched basis: its sbatch header records `3.10.19 pyscf 2.12.1` plus the SHA-256 of both the runner and the *fixed* module, it reproduces the two archived 6-31G\* guard values to 0.0000 before spending cluster time, and it prints the three π aug-cc-pVDZ counterpoise values used in 3.2. Its companion `20261003T1721Z` is the same rung's earlier attempt on the small dimers, kept because the bytes show two jobs writing one path: a `DFT_SET=pi` header over a `DONE DFT_SET=small` trailer, and guard rows whose closure field disagrees with the clean archive while every other printed field on that row is identical |
-| S32 | `evidence/nlc_cp/nlc_bsse_measure.py`, `evidence/nlc_cp/20261006T0657Z_nlc_bsse_three_small_dimers.out`, `nlcsplit/step_h_s22.py`, `nlcsplit/logs/step_h.json`, `evidence/nlc_cp/MANIFEST.sha256` | the basis-set superposition error of dE_NLC itself, which §4.1 used to exempt by assertion instead of measuring it. The script evaluates the same nonlocal term twice on one frozen superposed density - monomers in their own basis, then monomers carrying the partner's functions with no charge (the ghost water monomer is printed at N=13832 grid points against 9192 for the bare one, which is what a ghost basis costs here) - and reports the difference at level 1, 6-31G\*, for water, ammonia and methane: -0.0074, -0.0031 and +0.0075 kcal/mol. Its denominator is not chosen at readout: the `span` column is read from the production sidecar `nlcsplit/logs/step_h.json`, the same four-scheme attribution span §2.3 publishes for that cell (0.0435, 0.0290, 0.0040 kcal/mol), so the ratios 0.17, 0.11 and 1.87 are two archived numbers divided, not a new estimate. Before any of it ran, the no-ghost side had to reproduce the archived dnlc values it claims to be the same quantity as, at a 0.001 kcal/mol gate: 8.660e-15, 6.443e-05 and 3.898e-04 kcal/mol. Three cells are the whole coverage of this row - the three aromatic complexes and both benzene dimers carry no measured dE_NLC superposition error, and this row names that gap instead of leaving the reader to find it |
+| S32 | `evidence/nlc_cp/nlc_bsse_measure.py`, `evidence/nlc_cp/20261006T0657Z_nlc_bsse_three_small_dimers.out`, `nlcsplit/step_h_s22.py`, `nlcsplit/logs/step_h.json`, `evidence/nlc_cp/MANIFEST.sha256` | the basis-set superposition error of $dE_{\mathrm{NLC}}$ itself, which §4.1 used to exempt by assertion instead of measuring it. The script evaluates the same nonlocal term twice on one frozen superposed density - monomers in their own basis, then monomers carrying the partner's functions with no charge (the ghost water monomer is printed at N=13832 grid points against 9192 for the bare one, which is what a ghost basis costs here) - and reports the difference at level 1, 6-31G\*, for water, ammonia and methane: -0.0074, -0.0031 and +0.0075 kcal/mol. Its denominator is not chosen at readout: the `span` column is read from the production sidecar `nlcsplit/logs/step_h.json`, the same four-scheme attribution span §2.3 publishes for that cell (0.0435, 0.0290, 0.0040 kcal/mol), so the ratios 0.17, 0.11 and 1.87 are two archived numbers divided, not a new estimate. Before any of it ran, the no-ghost side had to reproduce the archived dnlc values it claims to be the same quantity as, at a 0.001 kcal/mol gate: 8.660e-15, 6.443e-05 and 3.898e-04 kcal/mol. Three cells are the whole coverage of this row - the three aromatic complexes and both benzene dimers carry no measured $dE_{\mathrm{NLC}}$ superposition error, and this row names that gap instead of leaving the reader to find it |
 | S33 | `evidence/common_grid/ownership_vs_quadrature.py`, `evidence/common_grid/20261006T085207Z_ownership_vs_quadrature_l1_small.out`, `evidence/common_grid/20261006T090714Z_ownership_vs_quadrature_l1_benzenex.out`, `evidence/common_grid/20261009T083325Z_ownership_vs_quadrature_l1_benzene_dimers.out`, `evidence/common_grid/20261009T083325Z_ownership_vs_quadrature_l1_benzene_dimers.out.rc`, `evidence/common_grid/NOTE-clock-skew.md`, `nlcsplit/partition.py`, `nlcsplit/nlc.py`, `nlcsplit/tests/test_nlc_closure.py`, `evidence/common_grid/MANIFEST.sha256` | the measurement that separates the two things a "partition scheme" changes at once. One SCF, one grid and one set of weights are held fixed while only the ownership factors vary: the package's own multi-centre factor is evaluated on the common grid's coordinates, normalised point-by-point to sum to one over atoms, and handed to the decomposition function through its soft= path - so the quadrature cannot move and the reported spread is attribution alone. The quadrature side is then read separately, as the totals each scheme produces on its own grid with the same density matrix. Four guards are in the file: every point's soft weights must sum to 1 within 1e-8 or the run exits; the hard nearest-atom assignment on the common grid must reproduce the published census control value (water, -7.8950 kcal/mol, gate 0.005 - the archive prints a difference of 0.0000); the closure check is on throughout, so each block sum is compared against one monolithic evaluation over the same kept points rather than against itself; and the soft= path itself is pinned by nlcsplit/tests/test_nlc_closure.py, whose negative controls regroup the blocks so that one cross term is double-counted and then dropped, and require the guard to fire. The same runs print the discrete residual of the local term, beta times (sum W rho minus the electron number), which is the quantity the abstract's cancellation statement is about: -0.0013 to +0.0011 kcal/mol over eight cells at grid level 1. The verdict the file pre-registered before it was run was a two-way one - attribution comparable to or larger than quadrature keeps the name "attribution uncertainty", attribution near zero would have taken that name away - and all eight cells came out on the first side, with the printed ratios spanning 1.29 (methane) to 1046.15 (benzene...water). Two provenance details are kept in the archive rather than smoothed over. The two 24-atom cells ran on a cluster node under a Slurm job, so the header line that records the repository commit is **empty** - the uploaded tree carries no git metadata - and the commit that produced them is recorded outside the file instead, together with the byte-identical hashes of the three modules the run prints for itself (`nlcsplit/partition.py`, `nlcsplit/nlc.py`, `nlcsplit/step_h_s22.py`), which match the ones now shipped and the ones that produced the six smaller cells; what makes those eight cells one comparison is those hashes, not the commit string. And the run's own exit code is kept in a separate rc file because a shared marker got overwritten by a later kill once before. Two things this archive is not. Its water cell reads a pure-attribution span of 0.0433 kcal/mol against the 0.0435 published for the same cell in Table 1, and the difference is the grid, not the density - one number is measured on the common grid with the weights held fixed, the other across the four schemes' own grids. And both filenames carry a host-supplied timestamp rather than the machine's own clock, because the Linux clock on the machine that produced them was three days behind when the first archive was named; `evidence/common_grid/NOTE-clock-skew.md` records which name was stamped by which clock and why the bytes were not renamed afterwards |
 | S34 | `evidence/common_grid/grid_level_convergence.py`, `evidence/common_grid/grid_level_convergence_negative_control.py`, `evidence/common_grid/run_grid_convergence_archive.sh`, `evidence/common_grid/20261023T0527Z_grid_convergence_full_set.out`, `evidence/common_grid/20261023T0527Z_grid_convergence_full_set.out.rc`, `evidence/common_grid/20261023T0527Z_grid_convergence_scoped.out`, `evidence/common_grid/20261023T0527Z_grid_convergence_scoped.out.rc`, `evidence/common_grid/20261023T0527Z_grid_convergence_negctl.out`, `evidence/common_grid/20261023T0527Z_grid_convergence_negctl.out.rc`, `evidence/common_grid/20261021T091653Z_hirshfeld_crossfamily_l2_water.out`, `evidence/common_grid/20261021T094326Z_hirshfeld_crossfamily_l2_benzwater.out`, `evidence/common_grid/20261021T140445Z_hirshfeld_crossfamily_l2_three_cells.out`, `evidence/common_grid/20261022T085504Z_hirshfeld_crossfamily_l2_three_pi_cells.out`, `evidence/common_grid/20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out`, `evidence/common_grid/20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out`, `evidence/common_grid/20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out`, `evidence/common_grid/hirshfeld_crossfamily.py`, `nlcsplit/partition.py`, `evidence/common_grid/MANIFEST.sha256` | the grid-convergence ladder of the attribution spread, read-only and recomputed from the archives rather than transcribed. Every archive the ladder admits, excludes or splits is named inside the reading file itself, one line each with its byte count and digest, so this column names only the ASCII-spelled ones - seven of the eight level-1 rungs carry the system name in Chinese in their own filenames and pdflatex cannot set them; the reader reaches them from the reading file rather than from here. The gate is 0.005 kcal/mol, the same value the census guardrail prints inside these archives, and it is a constant in the script, not a function of the grid level being tested. Nothing here is trusted on its notification: an archive is admitted only if its own sidecar exit-code file, an in-file exit line, and a success code all agree, which is why 18 archives glob into the directory, 15 are admitted and 3 are excluded and named with the reason (one predates the grid-coordinate fix, two have a sidecar but no in-file exit line). Rungs are grouped by partition-file digest prefix and system, so a coarse reading from one revision of the code can never be joined to a fine reading from another and the pair that produced Table 3's two benzene rows under the pre-merge hash shows up as single-rung, i.e. not measured. Repeated runs at the *same* level are printed as a repeatability line and are explicitly not a convergence rung. Every span the table recomputes is tied out against the span printed in the same file, allowing one unit of the last printed digit: 52 comparisons, maximum deviation 1, none over tolerance - the residual is rounding, and the prose quotes the printed value. Two claims are reported and cannot be quoted for each other. The registered primary one asks whether each ladder is stable over its whole span of levels and answers **rc=3**, because two ladders exceed the gate on their coarse step (benzene...water 0.0076, benzene dimer (A) 0.0154 from level 0 to 1); that exit code is not softened, and level 0 is not dropped from the ladder to make the table pass. The secondary claim, added after the coarse steps were seen and printed as such, restricts the same gate to the top two rungs and only when both are at or above the published level - a level established by census of the certificate headers in the same directory, every one of which declares the same one, rather than a number typed by whoever wrote the script - and of the eight cells five have such a pair and all five are stable (0.0000, 0.0000, 0.0001, 0.0009, 0.0001); the other three are counted as NOT MEASURED rather than as passes, because their best pair reaches down to level 0 and therefore cannot answer the question. `evidence/common_grid/grid_level_convergence_negative_control.py` is the must-fail half of this row: ten cases, each with the exit code the script is required to produce, covering an in-gate ladder, an out-of-gate ladder, a rung with no sidecar exit code, a sidecar exit code that disagrees with its own archive, a truncated archive, a span inconsistent with its own columns, a cross-hash pair, and an empty input set; the last case is an invariant (the verdict code must agree with the number of unstable ladders it printed, and a ladder must exist at all) rather than an expected value read off today's archive set, because a data-dependent expectation implodes the moment a legitimate new rung lands. What this row does **not** support: any direction word about the spread moving up or down off a coarse grid (the level-0 spans of [S33]'s own-grid construction are a different quantity, and on the common grid the level-0-to-1 move goes both ways), the reproducibility of the two out-of-family columns, which are thread-count sensitive and are archived separately as `evidence/common_grid/20261013T181611Z_thread1_hirshfeld_equivalence.out`, `evidence/common_grid/20261013T181611Z_thread2_hirshfeld_equivalence.out`, `evidence/common_grid/20261013T181611Z_thread4_hirshfeld_equivalence.out`, `evidence/common_grid/20261013T181611Z_thread8_hirshfeld_equivalence.out` and `evidence/common_grid/20261013T181611Z_thread_sweep_summary.out`, and any claim that level 2 is a converged reference - it is only ever compared with level 1 |
 | S25 | `nlcsplit/fastpair.py`, `nlcsplit/step_j_scaling.py`, `evidence/scaling/step_j.json`, `evidence/scaling/20260929T1340Z_step_j_scaling.out`, `evidence/scaling/step_j_rerun_20260930.json`, `evidence/scaling/step_j_rerun_20260930.txt`, `evidence/fastpair_ab/fastpair_ab_compare.json`, `evidence/fastpair_ab/fastpair_ide_validation.json`, `nlcsplit/tests/test_fastpair.py`, `evidence/scaling/MANIFEST.sha256` | the wall-clock and certificate numbers in §3.6, recomputed from these sidecars rather than transcribed into the prose: 33 screened/exact pairs over two windows, 1.08-10.28x (archived, 18 pairs) and 1.37-13.29x (re-run, 15 pairs), none faster than exact; the minimum block-pair certificate 197.96 Ha against the -8.34e-4 Ha quantity it would decide on, with n_pairs_bound_below_value = 0 and dropped_pairs = []. Two windows are kept because the second was measured on a different day and the two must not be merged into one interval. Each row carries two different error quantities and conflating them changes the headline: cert_err_ha is the guarantee the traversal can actually use, abs_dE_kcal is the measured deviation from the exact sum. Restricted to tau = 1e-12, exactly 8 of the 11 rows have abs_dE_kcal <= 1e-6 kcal/mol and those span 84.4-95.4% of far-field point pairs evaluated; only 4 rows have a *certificate* that small, and those span 93.7-95.4%. The 84.4% figure is therefore the usable-accuracy statement, not a mistake, and the looser certificate is precisely the result being reported. The monotone accept rule and the box separation are pinned by nlcsplit/tests/test_fastpair.py, which fails if a leaf pair is accepted out of order |
@@ -1561,8 +1562,8 @@ run log left there is a working note and not evidence.
 | S28 | `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`, `evidence/ccsdt/snnu_benzene_dimer.sh`, `evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out`, `evidence/ccsdt/snnu_dft_cp_dimer.py`, `evidence/ccsdt/MANIFEST.sha256` | the parallel-displaced benzene dimer (S22_11, 192 AO) as the seventh anchored complex: the correlated side and the functional side under one basis and one convention. Both archives named in this row, and the runner script beside them, call that geometry "sandwich"; the word predates the measurement now kept in `evidence/recompute/20261005T0340Z_benzene_dimer_label_measure.out` (interplanar angle 0.0 deg, in-plane slip 1.698 A, which is what parallel-displaced means), and the archived bytes stay as they are because their hashes are registered - the dated note recording the correction is `evidence/ccsdt/README.md`. CCSD(T) is Slurm job 50945 (COMPLETED, ExitCode 0:0, 11 min 48 s, 32 CPUs), the DFT counterpoise values are job 50969 (COMPLETED, ExitCode 0:0, 38 min 07 s, 16 CPUs), and both runs first re-derived an archived value before spending the rest of their wall-clock - 50945 reproduced the water-dimer anchor to 0.0001 and the benzene-methane one to 0.0000 kcal/mol, 50969 reproduced benzene-methane at level 2 to 0.0000. Frozen-core counterpoise as those two jobs printed it: CCSD(T) -1.4999, ωB97X-V/6-31G* level 2 -1.9403 (deviation -0.440) and level 1 -0.7233 (deviation +0.777). Those two deviations are superseded rather than dropped: that CC row came from monomers solved in their own basis, and under the ghost-function construction of [S30] the same complex energy gives +1.4712, so the deviations become -3.4115 and -2.1945, which is what the table in section 3.2 carries. The same caveat applies to the rung-by-rung sentence after it: the corrected rebuild re-ran the CCSD(T) rung on this complex but did not print MP2 or CCSD for it, so those two rungs are on record only under the old monomer construction. The ladders also carry a result about correlation order that the deviation column cannot show: CCSD alone gives -0.6831 and the perturbative triples supply 0.817 of the -1.4999 total, while MP2 overbinds by a factor of two at -3.1059, so the two cheaper rungs err in opposite directions on the same system. Neither archive claims a CBS limit, a relaxed geometry, or that level 2 is grid-converged. This complex did get its second basis afterwards (`evidence/ccsdt/20261003T1212Z_snnu_sandwich_avdz_ghostcp.out`, named in [S31]), so its basis move and its ratio of 1.02 are quoted in section 3.2; what still has no correlated anchor of any kind is the third geometry, the one built by the benzene_sandwich() constructor of `nlcsplit/geomlib.py`, and Figure 5's lower panel stays at the six systems it was drawn with |
 | S29 | `evidence/ccsdt/20261002T1030Z_snnu_benzene_dimer_B.out`, `evidence/ccsdt/snnu_benzene_B.sh`, `evidence/ccsdt/snnu_dft_cp_dimer_B.py`, `evidence/ccsdt/MANIFEST.sha256` | the eighth and last complex, the T-shaped benzene dimer (S22_20, 192 AO), which closes the counterpoise coverage of §3.2 at all eight systems - that archive's own header labels this geometry parallel-displaced, the same inverted pair of words the row above documents, and the measured interplanar angle of 90.0 deg is what makes it T-shaped. One Slurm job (50980, COMPLETED, ExitCode 0:0, 1 h 02 min 23 s, 16 CPUs) ran both sides: CCSD(T)/6-31G* frozen-core -2.5506 and all-electron -2.6300, and ωB97X-V/6-31G* counterpoise -2.4297 at level 2 (deviation +0.121) against -2.6953 at level 1 (deviation -0.145). Two guards ran first and are quoted in the archive: the water-dimer anchor to 0.0001 kcal/mol and the sandwich's own CCSD(T) value to 0.0000, the latter being another cross-job reproduction of `evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out`. The grid step on this complex is 0.266 kcal/mol and changes the sign of the deviation, which is why the grid paragraph counts three sign changes out of the five systems measured at both levels. No CBS limit, no relaxed geometry, and no claim that level 2 is grid-converged: the archive states all three as non-claims |
 | S26 | `evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out`, `evidence/ccsdt/snnu_benzene_runner.sh`, `evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out`, `evidence/ccsdt/snnu_dft_cp_levels.py`, `evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out`, `evidence/ccsdt/snnu_dft_cp_methane_l2.py`, `evidence/ccsdt/MANIFEST.sha256` | the benzene-complex ladder behind §3.2's third and fourth paragraphs, computed on a second cluster after the first one saturated. The CCSD(T) side is `nlcsplit/step_m_ccsdt.py` unchanged, run under Slurm on partition `cpu` (job 50937, COMPLETED, ExitCode 0, 4 min 08 s) through the same call path as the water/ammonia/methane ladder of [S24], which is what makes the two comparable rather than merely similar; the producer script is archived verbatim beside the output. Before any benzene wall-clock was spent, the runner re-derives the already-archived water-dimer value from the same code and refuses to proceed otherwise (`guard: \|-6.8559 - (-6.856)\| = 0.0001 <= 0.0015 -> PASS`), and the archive records the two ways that guard first failed in ways that both looked like success: a 0-byte uploaded script that the scheduler reported as COMPLETED with exit 0 in one second, and a guard that parsed a summary table the script does not print for a single system. The DFT side deliberately imports the counterpoise routine of `nlcsplit/step_h_s22.py` instead of running that module, because its output path is hardcoded to `nlcsplit/logs/step_h.json`, the carrier of the main table - three numbers are not worth overwriting a published archive. The level-2 grid claim rests on three archives, not two: the first DFT run (job 50938) was cancelled by a 30-minute limit and declares itself partial in its own header, and the missing benzene-methane row came from job 50943, whose archive also records that its level-1 line reproduces the earlier job byte for byte. The producer scripts were copied only after their sha256 matched the remote originals. None of the three archives claims a CBS limit (one basis, no extrapolation) or relaxed geometries (official S22 initial structures, unrelaxed), and the benzene dimer at 192 AO is in none of them |
-| S35 | `evidence/chemical_controls/dative/run_ab.py`, `evidence/chemical_controls/dative/ab_nlc.json`, `evidence/chemical_controls/dative/ab_opt.xyz`, `evidence/chemical_controls/dative/ab_opt.out`, `evidence/chemical_controls/dative/ab_complex.out`, `evidence/chemical_controls/dative/ab_nh3.out`, `evidence/chemical_controls/dative/ab_bh3.out`, `evidence/chemical_controls/dative/ab_run.log` | the dative H3N-BH3 control: B-N 1.6677 A, four-scheme span 0.0710 kcal/mol at levels 1 and 2, and the ORCA 6.0.1 dE_NLC -1.9711 kcal/mol against the PySCF -1.9748/-1.9753 values |
-| S36 | `evidence/chemical_controls/ionic/run_fw.py`, `evidence/chemical_controls/ionic/fw_nlc.json`, `evidence/chemical_controls/ionic/fw_opt.xyz`, `evidence/chemical_controls/ionic/fw_opt.out`, `evidence/chemical_controls/ionic/fw_complex.out`, `evidence/chemical_controls/ionic/fw_f.out`, `evidence/chemical_controls/ionic/fw_water.out`, `evidence/chemical_controls/ionic/fw_run.log` | the ionic F-...H2O control: F-O 2.4604 A, four-scheme spans 0.0828/0.0825 kcal/mol at levels 1/2, and the ORCA 6.0.1 dE_NLC -0.9850 kcal/mol against the PySCF -0.9875/-0.9877 values |
+| S35 | `evidence/chemical_controls/dative/run_ab.py`, `evidence/chemical_controls/dative/ab_nlc.json`, `evidence/chemical_controls/dative/ab_opt.xyz`, `evidence/chemical_controls/dative/ab_opt.out`, `evidence/chemical_controls/dative/ab_complex.out`, `evidence/chemical_controls/dative/ab_nh3.out`, `evidence/chemical_controls/dative/ab_bh3.out`, `evidence/chemical_controls/dative/ab_run.log` | the dative H3N-BH3 control: B-N 1.6677 A, four-scheme span 0.0710 kcal/mol at levels 1 and 2, and the ORCA 6.0.1 $dE_{\mathrm{NLC}}$ -1.9711 kcal/mol against the PySCF -1.9748/-1.9753 values |
+| S36 | `evidence/chemical_controls/ionic/run_fw.py`, `evidence/chemical_controls/ionic/fw_nlc.json`, `evidence/chemical_controls/ionic/fw_opt.xyz`, `evidence/chemical_controls/ionic/fw_opt.out`, `evidence/chemical_controls/ionic/fw_complex.out`, `evidence/chemical_controls/ionic/fw_f.out`, `evidence/chemical_controls/ionic/fw_water.out`, `evidence/chemical_controls/ionic/fw_run.log` | the ionic F-...H2O control: F-O 2.4604 A, four-scheme spans 0.0828/0.0825 kcal/mol at levels 1/2, and the ORCA 6.0.1 $dE_{\mathrm{NLC}}$ -0.9850 kcal/mol against the PySCF -0.9875/-0.9877 values |
 | S37 | `evidence/release_qa/20261003T1901Z_quickstart_readme_example.out`, `evidence/release_qa/20261013T150059Z_shipping_wheel_census.out`, `evidence/release_qa/20261013T150059Z_shipping_wheel_census.out.rc`, `evidence/release_qa/20261013T153804Z_test_count_census.out`, `evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out`, `evidence/release_qa/MANIFEST.sha256`, `nlcsplit/examples/quickstart.py`, `tools/make_public_repo.js`, `CITATION.cff` | the release record of the package, which is what the appendix "The nlcsplit package" is written against: the quickstart worked example run verbatim, with the interpreter version and the SHA-256 of the four modules that produced it; the wheel census, which prints the member categories beside their sum and records that the `nlcsplit/partition.py` inside the wheel is byte-identical to the one in the working tree; the test-count census, which sums to its own total and names the modules that stay out of the wheel instead of leaving them silent; the licence scan, which walks the files an install actually produced rather than grepping the source for a word, and lists its three named exemptions at exit 0; and the two generators those archives come from. The counts quoted in that appendix are the counts of these archives at the revision each header records; the census re-runs at every export, so a reader comparing a later wheel should expect the shipped list to have grown rather than to disagree. What this row does not support: anything about the peer's frozen reference implementation, which is named in the export tool's internal-only list and is not distributed, and anything about a tagged release or deposit DOI, which do not exist yet. |
 **Table 5.** Provenance appendix: what each [S#] tag resolves to, and which claim in the text it fixes.
 
