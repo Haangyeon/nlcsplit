@@ -9,7 +9,7 @@ Xi'an 710119, Shaanxi, China
 
 ## Abstract
 
-Production kernels for the VV10 nonlocal-correlation term in range-separated hybrid functionals fold the double sum over grid-point pairs into per-point values; the pair index is gone by the time the kernel returns, and even with it a fragment-resolved value requires an external partition and is not fixed by the total density alone. We evaluate the sum explicitly, keep the (i, j) index, and assign each grid point to atoms and fragments through a real-space partition, which splits the term into intra-fragment and inter-fragment blocks. In the continuum the split is exact; on a grid the cancellation of the local part, beta times the electron number, leaves a measured residual of -0.0013 to +0.0011 kcal/mol over eight cells at level 1, and on a fixed density the explicit sum reproduces PySCF's kernel to 5.7e-06 kcal/mol. At ωB97X-V/6-31G* on the eight S22 complexes, association-time nonlocal correlation is carried predominantly by pairs that straddle the fragments: the inter-fragment block is 0.92-1.08 of the uncorrected frozen-density superposition difference in the six systems for which a counterpoise reference is also available, while the partition choice moves the attribution by 0.004-0.247 kcal/mol at level 1 in the eight-system detailed subset (0.0034-0.3030 over all 22 S22 complexes) with no pattern by interaction type, so a fragment-resolved nonlocal descriptor needs a per-system attribution uncertainty; in the two benzene-dimer orientations the fragment-resolved percentage differs by a factor of eleven while the total interaction energies order one way before and the other way after counterpoise correction, making the deliverable a protocol rather than a single descriptor; no published implementation we found resolves this term into fragment pairs, and the ORCA 6.0.1 anchor agrees with our superposition differences to under 1% of the term for all eight complexes, though on the parallel-displaced benzene dimer that residual is 1.3 times the attribution span it would have to resolve.
+The production kernel we audited, PySCF's, folds the double sum over grid-point pairs for the VV10 nonlocal-correlation term into per-point values; the pair index is gone by the time the kernel returns, and even with it a fragment-resolved value requires an external partition and is not fixed by the total density alone. We evaluate the sum explicitly, keep the (i, j) index, and assign each grid point to atoms and fragments through a real-space partition, which splits the term into intra-fragment and inter-fragment blocks. In the continuum the split is exact; on a grid the cancellation of the local part, beta times the electron number, leaves a measured residual of -0.0013 to +0.0011 kcal/mol over eight cells at level 1, and on a fixed density the explicit sum reproduces PySCF's kernel to 5.7e-06 kcal/mol. At ωB97X-V/6-31G* on the eight S22 complexes, association-time nonlocal correlation is carried predominantly by pairs that straddle the fragments: the inter-fragment block is 0.92-1.08 of the uncorrected frozen-density superposition difference in the six systems for which a counterpoise reference is also available, while the partition choice moves the attribution by 0.004-0.247 kcal/mol at level 1 in the eight-system detailed subset (0.0034-0.3030 over all 22 S22 complexes) with no pattern by interaction type, so a fragment-resolved nonlocal descriptor needs a per-system attribution uncertainty; in the two benzene-dimer orientations the fragment-resolved percentage differs by a factor of eleven while the total interaction energies order one way before and the other way after counterpoise correction, making the deliverable a protocol rather than a single descriptor; no published implementation we found resolves this term into fragment pairs, and the ORCA 6.0.1 anchor agrees with our superposition differences to under 1% of the term for all eight complexes, though on the parallel-displaced benzene dimer that residual is 1.3 times the attribution span it would have to resolve.
 
 ## 1. Introduction
 
@@ -1180,7 +1180,7 @@ this confusion - but we are stating the present agreement, not a diagnosis of th
 number, so the section 3.5 identity is covered by this anchor without needing that story
 to be true.
 
-### 4.3 A referee for attribution, which no other program can supply
+### 4.3 A referee for attribution, which we did not find in other programs
 
 A second program checks
 the value of the term; it cannot check how the term is *owned*, because it does not
@@ -1313,8 +1313,9 @@ detailed set and the survey remain S22-only. Two strong-overlap controls outside
 reported in section 3.4: the dative H3N-BH3 complex and the ionic F-...H2O complex. Their
 four-scheme spans are 0.071 and 0.083 kcal/mol, with ORCA anchors within 0.3%, so strong
 density sharing does not by itself enlarge the band; they are not merged into the
-0.004-0.247/0.0034-0.3030 ranges because their basis sets differ. No charge-transfer or
-metal-containing complex, and no multiply bonded covalent complex, is tested. The
+0.004-0.247/0.0034-0.3030 ranges because their basis sets differ. Beyond that dative
+control, no donor-acceptor complex, no metal-containing complex, and no multiply bonded
+covalent complex is tested. The
 0.004-0.247 kcal/mol band is a measured range for the detailed set, and the full survey
 gives 0.0034-0.3030; neither is a universal bound. The absence of a
 trend with atom count or binding strength is a statement about these systems, not evidence
