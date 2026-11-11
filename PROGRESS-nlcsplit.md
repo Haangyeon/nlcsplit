@@ -6145,3 +6145,14 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 复验：`sh tools/build_pdf.sh main` → **37 页 / 0 LaTeX 错 / 0 overfull / 93 \citation**；`... si` → **23 页 / 0 错 / 0 overfull**；md2tex 审计 37 标签、7 张表全带编号、附录无孤儿行；`claim_gate --stop` clean（2 carriers, 30079 numbers）；`audit_share_rule`、`audit_p2` PASS。构建中被闸门真拦过两次（自造的 -7.8131/53.0173 两个"算出来的数"、以及 `partition.py` 少写目录），都是改文字通过而非放行。
 - `paper/software.md` 顶部加 **Disposition** 段：不投稿、内容去向、上面两条作废数字点名写出，防止下一个窗口再搬。`paper/joss/paper.md` 保留不投。
 - 未提交、未推送、未投稿。投稿仍需作者当次明确同意；出货前 `.publish/`、`dist/` 仍要重生成（任务 13）。
+
+## [2026-11-11 23:46] [agent=intl-qoder] [done] 参考文献作者/页码补核 92/92；修两条人名并同步 PDF/DOCX
+- 上轮 92/92 只比 DOI/标题/年份/卷；本轮补作者序列+页码（作者问"都认真查过了吧"触发）。
+- v1：62 OK / 16 超时 / 14 归一化伪差（LaTeX 重音、复合姓、团体作者）；页码零真差。
+- v2 归一化（latex2ascii+Unicode 分解+全名 token 集）自测 15/15 含负控；重跑揪出 2 条真错：
+  takatani2010s22（Taku/Krzysztof/Michael W./Charles D. → Tait/Massimo/Michael S./C. David）、
+  altun2018dlpno（Zekeriya/Agnieszka → Ahmet/Giovanni），按 Crossref 出版商存缴修正。
+- main PDF 重建 37 页 0 错 0 overfull；DOCX 仅改两段（备份 scratch/mathify/VV10_backup_before_authorfix.docx）。
+- 终跑 92/92 OK；v1/v2 脚本+结果归档 evidence/bib_provenance/；MANIFEST 最后重生成 35 条全新鲜；commit 30596db。
+- 引用口径：main 88 + software 20，并集 92；unsrtnat 按首引编号；SI 附录故意无 bib 引用；[[key]] 是代码_span 解释。
+- 交接包已刷新（新 PDF/DOCX/bib + 核验状态行）。仍待作者：ACS 重置登录、Figure 3 版式、Submit。
