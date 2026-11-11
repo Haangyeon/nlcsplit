@@ -26,7 +26,7 @@ range-separated forms used here [[becke1993b3lyp]] [[lee1988lyp]]
 [[perdew1996pbe]] [[tao2003tpss]] [[zhao2008m06]]. The nonlocal term is a two-electron-density
 double integral over all pairs of grid points,
 
-$$E_{\mathrm{NL}} = \frac{1}{2}\iint \rho(r)\,\rho(r')\,\Phi(r,r')\,d^{3}r\,d^{3}r', \qquad (1)$$
+$$E_{\mathrm{NL}} = \frac{1}{2}\iint \rho(r)\,\rho(r')\,\Phi(r,r')\,d^{3}r\,d^{3}r', \tag{1}$$
 
 and every production quantum-chemistry package we have examined evaluates it in a
 way that destroys the pair index: PySCF's `nr_nlc_vxc` calls its own C kernel
@@ -173,9 +173,9 @@ that it retains the pair index, nothing more.
 
 With ρ the electron density and σ = |∇ρ|²,
 
-$$w_0(r) = \sqrt{\,C\sigma^{2}/\rho^{4} + (4\pi/3)\rho\,},\qquad \kappa(r) = b\,(3\pi/2)\,(\rho/9\pi)^{1/6}, \qquad (2)$$
+$$w_0(r) = \sqrt{\,C\sigma^{2}/\rho^{4} + (4\pi/3)\rho\,},\qquad \kappa(r) = b\,(3\pi/2)\,(\rho/9\pi)^{1/6}, \tag{2}$$
 
-$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -3/(2gg'(g+g')), \qquad (3)$$
+$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -3/(2gg'(g+g')), \tag{3}$$
 
 with (b, C) = (6.0, 0.01) for ωB97X-V, and $E_{\mathrm{NLC}} = E_{\mathrm{NL}} + \beta\!\int\!\rho$,
 $\beta = (1/32)(3/b^{2})^{3/4}$. The pairing of ω and κ in g and g′ is a genuine choice,
@@ -211,7 +211,7 @@ that the inter-fragment term reported by `fragment_decomposition` is
 $E_{AB} = 2\,\mathrm{pair\_energy}(A,B)$, and the nonlocal energy of the whole molecule is the
 sum of its blocks:
 
-$$E_{\mathrm{NL}} = \sum_A E_{AA} + \sum_{A<B} E_{AB} \qquad (4)$$
+$$E_{\mathrm{NL}} = \sum_A E_{AA} + \sum_{A<B} E_{AB} \tag{4}$$
 
 
 holds by construction. The block language is the one used by energy-decomposition
