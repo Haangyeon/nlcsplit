@@ -656,7 +656,9 @@ def fig5(pi_ladders, pi_dft, hb_ladders, hb_dft):
     axr = axb.twinx()
     axr.set_ylim(axb.get_ylim())
     axr.set_yticks(list(y))
-    axr.set_yticklabels(["×%.1f" % (s / d) for s, d in zip(span, dev)])
+    # 2026-11-12 审计项：一位小数把氨的 0.07 印成 ×0.1，与正文 "0.07 to 1.11" 不符。
+    # 两位小数与正文同口径；数据与绘图逻辑不动。
+    axr.set_yticklabels(["×%.2f" % (s / d) for s, d in zip(span, dev)])
     axr.tick_params(axis="y", length=0, pad=2.0, labelsize=6.9, colors=st.SLATE)
     for sp in axr.spines.values():
         sp.set_visible(False)

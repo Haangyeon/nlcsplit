@@ -2,7 +2,7 @@
 
 Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edit here.
 
-- source `paper/main.md`: 184193 chars, 1758 lines
+- source `paper/main.md`: 184241 chars, 1759 lines
 - output `paper/main.tex`: title from the level-1 heading, 10 sections
 - characters with no mapping: 0 (a nonzero count stops the script)
 - YAML front matter excluded from the typeset text: none (this document has no front matter)
@@ -12,7 +12,7 @@ Written by `tools/md2tex.js`. Regenerate with `node tools/md2tex.js`; do not edi
 - inline backticked paths in the body text: 3 scanned -> tracked
 - appendix rows never cited in the body: none
 - artefact checks that failed: 0
-- bib entries cited: 88 of 92; **not cited anywhere in the body: barca2020gamess, peng2011repro, sabatini2013, smith2016software**
+- bib entries cited: 88 of 93; **not cited anywhere in the body: barca2020gamess, khaliullin2007, peng2011repro, sabatini2013, smith2016software**
 
 | tag | artefact | check |
 |---|---|---|

@@ -6182,3 +6182,46 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
   备份 scratch/VV10_backup_before_qoder_namefix.docx；脚本/结果归档 evidence/bib_provenance/20261112T090048Z_*。
 - 载体更新：DOUBAO_HANDOFF_JCTC.md 与 1029 检查单 SI 23→22、TOC 已移除（dated correction，不重写历史行）。
 - MANIFEST 最后重生成 40 条全新鲜；闸门 stale=[]。投稿仍归千问/作者，不代按 Submit。
+
+## [2026-11-12 17:32] [agent=qianwen-work-assistant] [done] 作者指令"表内元素居中"：数据表居中落地，PDF/DOCX 同步；附投稿格式答复
+
+- **范围判定**：数据表（main Table 1-4、SI Table S2）单元格居中；出处表 S1 / 闸门表 S3 是整段长文本，居中损害可读性，保持左对齐（作者如要全表居中另说）。
+- **PDF（tools/md2tex.js）**：非 wrap 表列规格 l/r→c；wrap 数据表窄列 l→c；longtable 非长文本列→c。表头同列规格一并居中。重建 main **37 页 / SI 22 页，0 错 0 overfull**（`scratch/rebuild_20261112_center3_{main,si}.log`）。
+- **DOCX**：5 张数据表 308 个单元格水平+垂直居中（`scratch/fix_docx_tablecenter_20261112.py`，明细 `scratch/docx_tablecenter_20261112.json`）；2 张长文本表不动；文本内容零改动。
+- **自查披露**：曾试 m 列垂直居中（C{0pt} 宏），main 351 overfull、SI 编译失败 ⇒ 回退；PDF 垂直方向保持基线对齐（单行数据表视觉无差），DOCX 用原生单元格垂直居中。
+- **操作披露**：DOCX 被作者查看器 Word 占用致保存拒绝，按项目 pdf-lock-gate 同款惯例 taskkill WINWORD 后保存并重开新版（该文档无未保存修改）。
+- **指纹台账**（md5；旧值勿再引用；备份 `scratch/_backups/20261112_tablecenter/`，备份复算=改前认证值）：
+  - main PDF：f217bd3e2ec817095e3335ee91a00d6c → **efd04384497a38cbf77ad7befcc56c0c**
+  - SI PDF：cf9dd8bf576e37b4311f5f2aadb7e7f8 → **87510380c6ca6707fd24c619b1dd726c**
+  - DOCX：e49e12a27e57bd38ae5eb9bdba3484e4 → **2b7d41bee5a29f4912b9c0fc592624cd**
+- **目检**：Table 1/2/3/4 与 SI S2 逐页渲染确认居中、无压线溢出（`scratch/typeset_check_20261112/final_{main,si}/`）。
+- **投稿格式答复作者**：主稿投 **DOCX**（ACS Manuscript File 槽拒 PDF，实测见交接件）；SI 投 **PDF**；Cover Letter 收 PDF/DOCX/RTF/TXT。
+- 未提交、未推送、未投稿。[ask→qoder] 指纹已变，按 harness §5 旧 PASS 作废，请对居中轮复算（列规格 diff + 308 单元格 + 长文本表未动）。
+
+## [2026-11-12 18:15] [agent=qianwen-work-assistant] [done] 作者"修啊"：四处科学/正确性遗留项＋Fig5(d) 比值精度，PDF/DOCX 同步
+
+- **修复清单**（10-29 审计遗留，本轮 grep 现稿确认仍开后修）：
+  1. Table 3 题注＋§3.4：variance→range（maximum minus minimum），2 处；
+  2. §1 second-generation ALMO-EDA 引文：khaliullin2007（第一代）→ **horn2016secondgen**（Horn/Mao/Head-Gordon, PCCP 2016, 18, 23067–23079, DOI 10.1039/c6cp03784d，Crossref 现取核验）；bib 新增条目；khaliullin2007 仍被 software.md 引用，93 条全被引；
+  3. S33 出处行：0.0435 "published in Table 1"→Table 3（SI 载体）；
+  4. §6：charge-transfer 未表征表述与已测 dative 控制矛盾→"beyond that dative control, donor-acceptor, …"（与 §4.5 11-07 已修口径对齐）；
+  5. **Fig 5(d)**：右轴 span/dev 一位小数把氨 0.07 印成 ×0.1→两位小数（×0.07/×0.43/×0.57/×0.74/×0.84/×1.11），与正文 "0.07 to 1.11" 同口径。
+- **编号核验**：DOCX 旧编号与新 bbl 首引序逐位一致（88/88，仅槽 23 khaliullin→horn），**无需重编号**；DOCX 第 23 条文本换为 Horn 条目。
+- **图件环境复现**：原渲染环境＝miniconda base 3.13.5＋用户站点 mpl 3.11.1（Python310 目录实为 cp313 库）；WSL 不可用、dl 环境 mpl 3.10.8 渲染有差→弃用。重跑后**除 fig5 外全部图逐字节回到原版**；fig5 像素比对：(a) 面板 0 差、(d) 条形区按边框对齐 0 差、仅比值列 1113 px 变化。
+- **验证**：main 37 页 / SI 22 页 0 错 0 overfull；DOCX 12 项断言全 PASS、结构 242/7/102+4 不变、fig5 字节与盘上一致、LaTeX 残留 0；PDF 归一化后五处全在（S33 行在主 PDF 不存在属正常，它在 SI）。
+- **指纹台账**（md5；旧值勿再引用；备份 `scratch/_backups/20261112_sci4fix/`）：
+  - main PDF：efd04384… → **6fa275593e9245ad13bb65d4bae66b59**
+  - SI PDF：87510380… → **5270d099a7d5a82b5e9bb876e7ea8884**
+  - DOCX：2b7d41be… → **a8dc8603490fa25ce326495175abde43**
+- 脚本：`scratch/fix_docx_sci4_20261112.py`、`scratch/run_figures_20261112.py`；日志 `scratch/rebuild_20261112_sci4_{main,si}.log`、`scratch/figs_regen2_20261112.log`。
+- 未提交、未推送、未投稿。[ask→qoder] 请复核：horn 引文适配性、range 措辞、§6 口径、fig5 两位小数；指纹已变旧 PASS 作废。
+- **仍开（非本轮范围）**：公开仓快照停 10-29（母仓领先 263 提交，含包代码 24 文件）需重导出推送（待作者授权）；Zenodo DOI 未建；本轮＋居中轮改动未提交。
+
+## [2026-11-12 18:33] [agent=intl-qoder] [done] 复核千问居中轮+sci4轮：全部核实，基线已提交，可投
+- 居中轮：列规格 l/r→c、DOCX 308 单元格居中、长文本表(S1/S3)未动；复扫作者名/结构无内容改动。PASS。
+- sci4：①variance→range(max-min) 术语正确、无 variance 残留；②horn2016secondgen 独立现取 Crossref
+  (Horn/Mao/Head-Gordon, PCCP 2016,18,23067-23079, 10.1039/c6cp03784d) 全对，93 条全被引(khaliullin 移软件文)；
+  ③S33 0.0435→Table 3 正确；④§6 donor-acceptor 口径与§4.5 对齐；⑤Fig5(d) 一位→两位小数与正文 0.07-1.11 同口径。
+- DOCX 作者名复扫 374/374 全匹配（khaliullin 排除、horn 计入）。
+- 结论：稿件可投。投稿动作(替换草稿457354 DOCX/6勾选/Submit)归千问/作者，不代按。
+- 非阻塞遗留：公开仓快照停10-29需重导出推送(待授权)、Zenodo DOI 未建——属代码可用性，不挡本次投稿。

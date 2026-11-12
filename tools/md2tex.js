@@ -257,8 +257,10 @@ function table(block, cap) {
     const num = cells.filter(c => /^[-+\u2212]?\d+(?:\.\d+)?$/.test(c) || /^n\/a/.test(c));
     return num.length / cells.length >= 0.7;
   });
-  const spec = wrap ? wide.map(w => w ? 'X' : 'l').join('')
-    : head.map((_, j) => numeric[j] ? 'r' : 'l').join('');
+  // 2026-11-12 作者要求"表内元素居中"：短内容数据表所有列水平居中（表头同列规格，
+  // 一并居中）。wrap 表是整段长文本（出处表/闸门表），居中会损害可读性，保持左对齐。
+  const spec = wrap ? wide.map(w => w ? 'X' : 'c').join('')
+    : head.map(() => 'c').join('');
   // A table that cannot fit on one page has to be allowed to break. As a float it ran
   // 7677 pt past the page in the companion paper and 180-240 pt in this one; the overflow is
   // not on the page at all, so the rows that fall off are simply unreadable. Above twelve
@@ -280,7 +282,8 @@ function table(block, cap) {
       if (wide[j]) {
         return '>{\\raggedright\\arraybackslash}p{' + each.toFixed(3) + '\\textwidth}';
       }
-      return numeric[j] ? 'r' : 'l';
+      // 2026-11-12 作者要求"表内元素居中"：非长文本列（体系名/原子数/数值）水平居中。
+      return 'c';
     }).join('');
     const headRow = head.map(c => '\\textbf{' + inline(c) + '}').join(' & ') + ' \\\\ \\midrule';
     let capTex = null;
