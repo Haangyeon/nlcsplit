@@ -60,8 +60,8 @@ fragments of the bonded system" [S14]; the present paper works precisely in the
 regime where they are. The decomposition is exact by
 construction: the sum of the blocks reproduces the total to machine precision.
 Exactness is not the point, and we do not sell it as such: grouping the
-summation indices is trivially additive. Two things are not trivial, and they
-are the content of this paper.
+summation indices is trivially additive. What is not trivial, and what this
+paper is about, is the following.
 
 The first is **attribution**. The non-uniqueness lives in which fragment owns
 each grid point (and, in the same spirit, how the local term β∫ρ is assigned),
@@ -515,7 +515,7 @@ coupled cluster gives $dE_{\mathrm{int}}$ = -4.8789 kcal/mol at CCSD(T) with fro
 Every rung of that ladder is the frozen-core value: the archive also prints the all-electron
 numbers, which differ by 0.003-0.019 kcal/mol (largest at cc-pVTZ), and an earlier version of
 this sentence took the cc-pVDZ rung from that column by mistake.
-Three things follow. At fixed basis our functional binds 1.27 kcal/mol *more* strongly than
+The comparison has three consequences. At fixed basis our functional binds 1.27 kcal/mol *more* strongly than
 correlation does in the same basis - not less, which is what an earlier version of this
 paragraph said, and the reason it said so is the subject of the next paragraph. As the
 correlated calculation moves up its own basis ladder it becomes -4.73 at aug-cc-pVTZ, still
@@ -627,7 +627,7 @@ to 28 and the section could say the discrepancy was mostly the basis. It was not
 the old reading looked that way is measurable in the same tables: the correlated BSSE itself
 changes with the basis (1.9770 kcal/mol on water at 6-31g\*, 0.9162 at aug-cc-pVDZ), so an
 uncorrected two-point ladder was comparing two different amounts of the same error, and calling
-the difference a basis effect. Two things still cannot be concluded from these three ratios.
+the difference a basis effect. These three ratios still leave two questions open.
 Part of each deviation may be the anchor not being converged rather than the functional being
 wrong - 6-31g\* has no diffuse functions - and on the corrected ladder the direction of that
 deficiency is not even consistent: going from 6-31g\* to aug-cc-pVDZ makes the water anchor
@@ -746,8 +746,8 @@ the system.
 small dimers of this section, at 6-31G\* (solid) and aug-cc-pVDZ
 (dashed), with this work's
 ωB97X-V/6-31G\* level-2 counterpoise value (PySCF 2.12.1, [S31]) as the dotted rule
-(-6.153 / -3.728 / -0.376 kcal/mol for water / ammonia / methane). The point is a comparison
-of two spans, and `figures.py` refuses to draw the figure unless the two fall within
+(-6.153 / -3.728 / -0.376 kcal/mol for water / ammonia / methane). The figure compares
+two spans, and `figures.py` refuses to draw it unless the two fall within
 a factor of 20 of each other on every system - a side-by-side figure is claiming comparability, and that
 is the claim it checks. Per system the correlated value's move between the two bases
 (0.547 / 0.081 / 0.499 kcal/mol for water / ammonia / methane) against the functional's deviation
@@ -1061,7 +1061,7 @@ solving it.
 
 ## 4. Scope, independent verification, and limitations
 
-This section keeps four things apart that are easy to read past one another: what the
+This section separates four questions that are easy to conflate: what the
 reported quantity is not (§4.1), the two checks that were run against something outside our
 own library (§4.2 and §4.3), the instrument behind the novelty claim (§4.4), and the limits
 that survive all of it (§4.5).
@@ -1090,7 +1090,7 @@ charge does not - so we ran it, at level 1 and the same basis, on the three smal
 dimers. The correction comes out -0.0074 (water), -0.0031 (ammonia) and +0.0075
 kcal/mol (methane) [S32], against those cells' own four-scheme attribution spans
 of 0.0435, 0.0290 and 0.0040 kcal/mol: 0.17, 0.11 and 1.87 times the attribution
-effect. Two things that used to be said here are withdrawn. Basis-set
+effect. Two earlier claims are withdrawn here. Basis-set
 flexisation does enter $dE_{\mathrm{NLC}}$, measured on three systems rather than argued; and
 its absence was not "precisely why" the term converges a grid level earlier than
 $dE_{\mathrm{int}}$ does [S10] - on the methane dimer the basis-set effect is the *larger* of
@@ -1142,7 +1142,7 @@ quantity a referee has to be smaller than to be informative:
 
 All eight agree to better than 1% of the term, and the residual tracks the magnitude of
 $\Delta E_{\mathrm{NLC}}$ rather than the size of the system, which is what a quadrature difference looks
-like. Three things must be said about it rather than glossed. First, the grids are
+like. Three caveats apply. First, the grids are
 not matched - ORCA uses its own nonlocal quadrature (Lebedev-110 [[lebedev1976]], IntAcc 4.004) against
 PySCF's `grids.level=1` - so the residual is the joint grid-plus-implementation
 difference and we do not attribute it to either side. Second, in seven of the eight systems
@@ -1346,7 +1346,7 @@ is loose by a factor of 2.4e5 at its tightest real case. The point-value kernel
 that PySCF ships remains both cheaper and accurate to ~1e-8 Ha on its own grid
 (section 3.1). The cost is not prohibitive in itself - JuNoLo ran the same N² sum
 over massively parallel hardware for surface calculations [S14] - but it is a real
-constraint, and it is worth naming the trade honestly. We are therefore not claiming that this
+constraint, and the trade should be stated plainly. We are therefore not claiming that this
 method computes $dE_{\mathrm{NLC}}$ better. What it buys is the (i, j) index structure: the
 0.92-1.08 frozen-density result of section 3.3, and the per-pair numbers behind
 Table 1, are not recoverable from a scheme that collapses the pair sum to point
@@ -1401,8 +1401,8 @@ the functional carries no fragment label, so a fragment-resolved value is define
 relative to a chosen partition. The range over partitions is the well-defined object,
 and that is what we report.
 
-Three things follow from applying it to the eight-system detailed set and a
-four-scheme survey of all 22 S22 complexes at official geometries. The VV10 term is not a fixed share of the exchange-correlation
+Applying it to the eight-system detailed set and a four-scheme survey of all
+22 S22 complexes at official geometries yields three findings. The VV10 term is not a fixed share of the exchange-correlation
 contribution: 16% for the water dimer, 97% and 52% for two geometries of the same
 benzene dimer, and no quotable share at all for the methane dimer, where the two parts
 carry opposite signs and the denominator is their small residue (the package refuses to
@@ -1424,8 +1424,7 @@ error of $dE_{\mathrm{NLC}}$ itself is +0.0075 kcal/mol, 1.87 times that cell's 
 span [S32], so among the three cells where both have been measured it holds on two,
 and "dominant" is a counted result, not a property of the quantity.
 
-What the method does not do is equally important, and we would rather the reader
-learn it here than in a review. The S22 benchmark contains only neutral noncovalent
+The method's limits deserve the same attention as its results. The S22 benchmark contains only neutral noncovalent
 complexes. Two strong-overlap controls outside it, the dative H3N-BH3 complex and
 the ionic F-...H2O complex, keep the four-scheme span at 0.071 and 0.083 kcal/mol
 with ORCA anchors within 0.3% (section 3.4); they therefore extend the measured
@@ -1501,7 +1500,7 @@ and contains no GAMESS source. The dimer structures are the published S22 sets
 [[goerigk2017gmtkn55]] and are not redistributed
 here; `geomlib.py` reads them from the file names it ships with.
 
-**Supporting information.** The Supporting Information file carries three things: the
+**Supporting information.** The Supporting Information file contains the
 provenance table (Table S1), the tag-to-file and line-number record behind every quoted
 value; the family-internal attribution span over all 22 S22 complexes (Table S2), which
 section 3.4 uses to show that the detailed eight are representative of the set; and an

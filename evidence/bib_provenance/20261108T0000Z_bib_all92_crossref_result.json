@@ -362,7 +362,7 @@
  {
   "key": "mitoraj2009",
   "status": "OK",
-  "detail": "doi=10.1021/ct800503d year=2009 vol=5"
+  "detail": "2026-11-12 re-fetch after timeout: Crossref 10.1021/ct800503d title 'A Combined Charge and Energy Decomposition Scheme for Bond Analysis' similarity 1.000; authors Mitoraj/Michalak/Ziegler; 2009; vol 5; pages 962-975; J. Chem. Theory Comput. — all match references.bib"
  },
  {
   "key": "neese2012orca",

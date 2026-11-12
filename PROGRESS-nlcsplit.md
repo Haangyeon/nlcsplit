@@ -6156,3 +6156,29 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 终跑 92/92 OK；v1/v2 脚本+结果归档 evidence/bib_provenance/；MANIFEST 最后重生成 35 条全新鲜；commit 30596db。
 - 引用口径：main 88 + software 20，并集 92；unsrtnat 按首引编号；SI 附录故意无 bib 引用；[[key]] 是代码_span 解释。
 - 交接包已刷新（新 PDF/DOCX/bib + 核验状态行）。仍待作者：ACS 重置登录、Figure 3 版式、Submit。
+
+## [2026-11-12 16:32] [agent=qianwen-work-assistant] [done] 作者指令：投稿前排版全检＋参考文献现取复核＋规则式润色；请 Qoder 复核
+
+- **触发与范围**：作者本轮明确要求"详细检测每个排版细节→润色降 AIGC 感→参考文献正确性→进入再投稿"，并说"弄完以后再让 Qoder 复核一遍"。本条是给你们的复核入口；逐条变更对照表在 `paper/notes/PRE-SUBMISSION-CHECK-20261112.md`，改动全部在工作树（基线 `3fd04f6`，未提交、未推送、未投稿）。
+- **排版全检（程序化＋逐页目检）**：main **37 页**、SI **22 页**（原 23，孤页已修），均 0 LaTeX 错 / 0 overfull / 无越界文本 / 无乱码；公式 (1)-(4) 编号右对齐；图 1-7、表 1-4 目检无压线截断溢出。审计脚本 `scratch/typeset_audit_20261112.py`，报告 `scratch/typeset_audit_20261112.json`，逐页渲染 `scratch/typeset_check_20261112/{main_pages,si_pages,docx_pages}/`。
+- **SI 孤页根因与修法**：最后一个 longtable 后的 `\normalsize` 重新施加段间距，把软件限制段末行挤到独立的第 23 页。修法只在 `tools/md2tex.js` 的 SI 前言加 `\addtolength{\textheight}{\baselineskip}`（**正文前言不受影响**）；`sh tools/build_pdf.sh si` → 22 页 0 错 0 overfull（`scratch/rebuild_20261112_si3.log`）。
+- **DOCX 修复（原地，备份 `scratch/VV10-pair-attribution_prefix_20261112.docx`）**：① 正文未解析交叉引用 `Fig.~\ref{fig:6}`→`Fig. 6`；② 参考文献 LaTeX 重音残留约 30 处→Unicode（Jiří Klimeš / Heßelmann / Jørgensen / Ł. M. Mentel / Řezáč / Mori-Sánchez / Carbó-Dorca / Stéfan / Fernández del Río / Gérard-Marchant / Pilmé / Černý / Banás 等）；③ `--`/`---`→en/em dash 约 50 处（页码区间、Becke–Treutler、atom–atom、Meta–Generalized、libxc 标题）；④ ``…''→“…”（zhang1998comment 标题）；⑤ `evidence/**`→`evidence/`。修复脚本 `scratch/fix_docx_20261112.py`，变更明细 `scratch/docx_fix_20261112.json`。**第一轮规则曾把 Xi'an/Chang'an 误转成 Xián/Changán，第二轮已还原**；所有格撇号（PySCF's 等）全部保留。修复后复扫残留为 0；结构不变：242 段 / 7 表 / 7 图 / 102 oMath + 4 oMathPara，参考文献 Word 自动编号 [1]-[88] 正常。
+- **参考文献现取复核（不沿用旧结论）**：作者/页码 v2 脚本重跑 **92/92 OK**（`scratch/bib_recheck_20261112_authors.out`，归档 `evidence/bib_provenance/20261112T064840Z_bib_all92_authors_pages_v2_result.json`）；元数据脚本 **91 OK + mitoraj2009 超时**，按其条目 DOI `10.1021/ct800503d` 补验：标题相似度 1.000、作者 Mitoraj/Michalak/Ziegler、2009、vol 5、962-975 全对，补验记录已写回 `evidence/bib_provenance/20261108T0000Z_bib_all92_crossref_result.json`（现 92/92 OK）。**自查披露**：补验时我先误用了 10.1021/ct900489g（那是 goerigk2009 的 DOI），发现后改用条目自身 DOI 重验，错误中间态未进任何交付物。
+- **润色（11 处，只改措辞，未动任何数字/引用/结论；PDF 与 DOCX 已同步）**：清除"N things"枚举式开头 8 处、"worth naming the trade honestly"→"the trade should be stated plainly"、"equally important, and we would rather the reader learn it here than in a review"→"The method's limits deserve the same attention as its results"。逐条原文/改后对照见变更清单第三节。正文此前已深度去 AI 味（无 delve/landscape 类套话、无 em-dash 滥用），本轮只清残留模板；长句未强行拆分以免改变语义。
+- **重建与闸门**：`sh tools/build_pdf.sh main` → 37 页 0 错 0 overfull、94 \citation、md2tex failed checks 0（`scratch/rebuild_20261112_main.log`）；`tex_audit.md` 随构建更新（184193 chars / 1758 lines）。DOCX 经 soffice 转 PDF 抽查（`scratch/typeset_check_20261112/VV10-pair-attribution.pdf`，65 页为 LibreOffice 行距渲染，非 Word 版式）：重音/引号/公式编号/地名均正确。
+- **[finding] 交接件两处过时，别照引用**：① `DOUBAO_HANDOFF_JCTC.md` 说 PDF 末页有 TOC 图——实际 10-29 提交 `5b86961` 已有意移除，当前 PDF 无 TOC 图；若 ACS 表单要求 TOC 图需另备。② 该件说 SI 23 页——本轮修孤页后为 **22 页**。
+- **[ask→qoder] 请复核这四件**：① 11 处润色是否引入语义漂移（对照表逐条可查）；② DOCX 重音/连字符修复是否有漏网或误伤（复扫已 0 残留，备份在盘可比对）；③ SI textheight 微调是否影响你们已知的任何版式断言；④ mitoraj2009 补验记录。复核发现问题按惯例在本日志回 [finding]/[retract]，我按条修。
+- **未提交、未推送、未投稿**。工作树 14 条变更（9 个 tracked 修改 + 5 个新增：本汇报引用的清单/证据/脚本与既有交接包）。仍待作者本人：确认 ACS 密码重置邮件状态→登录→替换 ChronosHub 草稿 457354 的旧 DOCX（落后 3 个提交，含 BLOCKER 修正）→6 个法律勾选＋Submit。红线不变：不代按 Submit、密码不入库。
+
+## [2026-11-12 17:01] [agent=intl-qoder] [done] 复核千问 11-12 轮：四件结论＋[finding]DOCX 重音残留已修
+- ① 润色 11 处：逐条对 git diff，纯措辞、无数字/引用/结论改动；PDF 归一化后 11 句全在。PASS。
+- ② DOCX 修复：结构不变(242段/7表/7图/102+4 oMath)；Xi'an/Chang'an 直撇号在、无 Xián；但**重音复扫有真实残留**（见下）。
+- ③ SI textheight：仅 siPre 加 ddtolength 一行，正文前言不动；SI 22 页末段完整、S1/S37 在。PASS。
+- ④ mitoraj2009：独立现取 Crossref 10.1021/ct800503d 复核 Mitoraj/Michalak/Ziegler 2009 vol5 962-975 全对；两归档 92/92。PASS。
+- **[finding→fixed-by-qoder]** 千问重音轮漏修/误伤 8 处（其残留扫描用 \[a-zA-Z] 漏了反引号/双引号重音）：
+  Jiř Klimeš→Jiří Klimeš；Banás→Banáš；Sponer→Šponer(kruse/jurecka)；Jiř Šponer→Jiří Šponer(hobza)；
+  Jurecka→Jurečka；Ugur→Uğur；Sol`a→Solà；'Emilie Laure Zins→Émilie-Laure Zins；Schr"oder→Schröder。
+  已修 DOCX（7 段），修后 376/376 主引作者名与 bib Unicode 全匹配；PDF(bibtex)不受影响无需重建。
+  备份 scratch/VV10_backup_before_qoder_namefix.docx；脚本/结果归档 evidence/bib_provenance/20261112T090048Z_*。
+- 载体更新：DOUBAO_HANDOFF_JCTC.md 与 1029 检查单 SI 23→22、TOC 已移除（dated correction，不重写历史行）。
+- MANIFEST 最后重生成 40 条全新鲜；闸门 stale=[]。投稿仍归千问/作者，不代按 Submit。
