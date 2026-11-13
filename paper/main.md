@@ -508,7 +508,7 @@ can stop at level 1.
 
 **Is -6.1526 the right answer?** Not a question about the nonlocal term, but it is a
 question the paper invited, and it now has a measurement instead of a caveat. At the same
-official S22 geometry, the same 6-31g\* basis and the same counterpoise convention,
+official S22 geometry, the same 6-31G\* basis and the same counterpoise convention,
 coupled cluster gives $dE_{\mathrm{int}}$ = -4.8789 kcal/mol at CCSD(T) with frozen oxygen 1s
 (-4.8821 all-electron, so the frozen-core choice is worth 0.003 here), and -3.6986, -4.3316,
 -4.3474 and -4.7287 at cc-pVDZ, aug-cc-pVDZ, cc-pVTZ and aug-cc-pVTZ respectively [S24, S30].
@@ -538,7 +538,7 @@ basis-set-consistent keeps doing exactly that [[takatani2010s22]], so no
 quoted one.
 
 **How this section was wrong before, and what the error is worth.** The paragraph immediately
-above previously reported -6.856 for the 6-31g\* anchor and read the functional as 0.73
+above previously reported -6.856 for the 6-31G\* anchor and read the functional as 0.73
 kcal/mol *too shallow*. Both numbers were computed in this repository; neither was a
 counterpoise number. The coupled-cluster script built each monomer from that fragment's own
 atoms, so the monomers were evaluated in a smaller one-particle basis than the complex, which
@@ -547,7 +547,7 @@ quantity underneath it was the uncorrected difference. The functional column it 
 subtracted from had always used ghost functions, so every deviation in this section was the
 difference of two conventions. The size of that mismatch is now measured rather than assumed,
 as the basis-set superposition error of the correlated ladder itself: 1.977 kcal/mol on the
-water dimer at 6-31g\*, and 0.252 to 2.971 across the eight complexes [S30]. Two properties of
+water dimer at 6-31G\*, and 0.252 to 2.971 across the eight complexes [S30]. Two properties of
 that error are why it survived: it is always of the sign that makes the complex look more
 strongly bound, so it inflated the anchor instead of deflating it, and both sides of the
 subtraction are individually plausible energies - only the difference is impossible. The
@@ -564,7 +564,7 @@ the comparison run [S30].
 three hydrogen-bonded dimers above are not the whole set, and testing the rest required a second
 cluster: the same ladder was run for benzene-water, benzene-ammonia and benzene-methane
 (114-118 AO), for the parallel-displaced benzene dimer (192 AO) and for the T-shaped one
-(192 AO), all at official S22 geometries, 6-31g\*, counterpoise, frozen core [S26, S28, S29, S30].
+(192 AO), all at official S22 geometries, 6-31G\*, counterpoise, frozen core [S26, S28, S29, S30].
 Set against the ωB97X-V/6-31G\* level-2 counterpoise values - all eight now computed in
 PySCF 2.12.1, the same version and the same grid level as the coupled-cluster side - the eight
 deviations are collected in **Table 2**:
@@ -596,7 +596,7 @@ and the reason for the difference is the mismatch described above rather than a 
 scheme. The magnitudes rank roughly with size and dispersion content, from 0.45 on the methane
 dimer to 3.41 on the parallel-displaced benzene dimer. Two entries are worth reading twice because they are not small
 numbers of the same kind: on the methane dimer and on benzene-methane the counterpoise
-CCSD(T)/6-31g\* interaction is *positive* (+0.0734 and +0.0816, i.e. unbound at this geometry and
+CCSD(T)/6-31G\* interaction is *positive* (+0.0734 and +0.0816, i.e. unbound at this geometry and
 basis) while ωB97X-V binds them by 0.38 and 1.34. That is the regime in which the previous
 version of this paragraph found "deeper by 0.29", and it is the reason a small-basis anchor of
 this kind cannot carry a verdict about a dispersion functional by itself.
@@ -625,12 +625,12 @@ of the two. That is the opposite of what this paragraph reported before the conv
 was fixed, when the same comparison gave ratios of 1.4
 to 28 and the section could say the discrepancy was mostly the basis. It was not, and the reason
 the old reading looked that way is measurable in the same tables: the correlated BSSE itself
-changes with the basis (1.9770 kcal/mol on water at 6-31g\*, 0.9162 at aug-cc-pVDZ), so an
+changes with the basis (1.9770 kcal/mol on water at 6-31G\*, 0.9162 at aug-cc-pVDZ), so an
 uncorrected two-point ladder was comparing two different amounts of the same error, and calling
 the difference a basis effect. These three ratios still leave two questions open.
 Part of each deviation may be the anchor not being converged rather than the functional being
-wrong - 6-31g\* has no diffuse functions - and on the corrected ladder the direction of that
-deficiency is not even consistent: going from 6-31g\* to aug-cc-pVDZ makes the water anchor
+wrong - 6-31G\* has no diffuse functions - and on the corrected ladder the direction of that
+deficiency is not even consistent: going from 6-31G\* to aug-cc-pVDZ makes the water anchor
 0.5473 kcal/mol *less* bound while it makes the ammonia and methane anchors 0.0808 and 0.4987
 more bound, so the three small dimers do not share a common basis bias whose size could be
 subtracted. And the same comparison now extends past the hydrogen-bonded set: the three
@@ -828,7 +828,7 @@ returns $dE_{\mathrm{NLC}}$ and nothing else; the (i, j) index structure retaine
 double sum is what makes 0.92-1.08 a statement that can be checked at all. The
 corresponding dispersion component published for the benzene dimer is -3.34 to
 -3.80 kcal/mol at the PBE0-VV10 [[adamo1999pbe0]], revPBE-D3 [[zhang1998revpbe]] [[grimme2010d3]] and related levels of an ALMO-EDA
-study [[dasgupta2023]], and -3.69 at omegaB97M-V [S11]; our -4.367 (Table 1, level 1; the level-0
+study [[dasgupta2023]], and -3.69 at ωB97M-V [S11]; our -4.367 (Table 1, level 1; the level-0
 value was -4.448) is the same kind of quantity to within functional-generation and
 basis-set differences, and it is *not* comparable with our own uncorrected
 interaction energy for that dimer, -3.580 at the same level, which is smaller
@@ -951,12 +951,12 @@ support. What is stable across all four schemes is the sign of the block, not an
 the two geometries.
 
 Two controls outside S22 test the strong-overlap limit rather than adding another
-weak dimer. In H3N-BH3 (B-N 1.6677 A, wB97X-V/6-31G*; both fragments treated as
+weak dimer. In H3N-BH3 (B-N 1.6677 Å, ωB97X-V/6-31G*; both fragments treated as
 closed-shell singlets), the four schemes give $P_{\mathrm{frz}}$ = -2.0039/-2.0728/-2.0322/-2.0018
 kcal/mol at level 1 and a span of 0.0710 kcal/mol; level 2 changes each scheme by
 0.0003-0.00055 and leaves the span at 0.0710. The ORCA 6.0.1 anchor gives $dE_{\mathrm{NLC}}$ =
 -1.9711 kcal/mol against -1.9748 (level 1) and -1.9753 (level 2), a 0.19-0.21%
-difference. In the ionic F-...H2O complex (F-O 2.4604 A, wB97X-V/aug-cc-pVDZ; F- and
+difference. In the ionic F-...H2O complex (F-O 2.4604 Å, ωB97X-V/aug-cc-pVDZ; F- and
 water treated as charge -1 and 0), the corresponding span is 0.0828 at level 1 and
 0.0825 at level 2, with $P_{\mathrm{frz}}$(Becke) = -1.0895/-1.0892 kcal/mol; ORCA gives $dE_{\mathrm{NLC}}$ =
 -0.9850 against -0.9875/-0.9877, a 0.26-0.28% difference. In both, the span is below
@@ -1238,7 +1238,7 @@ the consistency this section wanted.
 Two limits travel with that result. The densities are synthetic (no nuclei, no cusps, no
 orbital structure), so what is refereed is the attribution machinery as a mathematical
 operation on a density, not a chemical statement. The positive control - the
-documented-wrong pairing of section 3.5 - moves the whole term on these densities by
+documented-wrong pairing of section 2.1 - moves the whole term on these densities by
 0.0052 kcal/mol, which is larger than most of the offsets tabulated above: it therefore
 shows the referee can see a kernel-definition error, but it also shows that this apparatus
 resolves attribution conventions, not kernels. Extending it to heteronuclear pairs is not a
@@ -1676,7 +1676,7 @@ are reported separately and are thread-count sensitive, which is recorded in the
 for the grid ladder [S34], and the ranges the text publishes are family-internal by construction.
 
 **The worked example, run verbatim.** `nlcsplit/examples/quickstart.py` on the water dimer at
-omegaB97X-V/6-31G*, grid level 1, with the Becke partition, prints
+ωB97X-V/6-31G*, grid level 1, with the Becke partition, prints
 
 `inter[(0,1)] = -0.5237   intra = -3.5457 -3.7437   E_nl = -7.8130   E_loc = 60.8303   E_total = 53.0172`
 
@@ -1692,7 +1692,7 @@ fixed density and a fixed grid [S5].
 
 **Two checks that ship with the package.** Neither is about this paper's conclusions; both are
 about whether the quantity is what the label says. The first recomputes the nonlocal term for the
-eight complexes in an external program, ORCA 6.0.1, together with an omegaB97X control that must
+eight complexes in an external program, ORCA 6.0.1, together with an ωB97X control that must
 not print the nonlocal label at all - a gate on the reporting convention rather than on a number
 [S18]. The second re-evaluates the cross term of a two-Gaussian model density by three
 independent routes and reports its own error bar, so the attribution can be audited on a system

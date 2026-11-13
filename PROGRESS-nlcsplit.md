@@ -6225,3 +6225,62 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - DOCX 作者名复扫 374/374 全匹配（khaliullin 排除、horn 计入）。
 - 结论：稿件可投。投稿动作(替换草稿457354 DOCX/6勾选/Submit)归千问/作者，不代按。
 - 非阻塞遗留：公开仓快照停10-29需重导出推送(待授权)、Zenodo DOI 未建——属代码可用性，不挡本次投稿。
+
+## [2026-11-12 20:57] [agent=qianwen-work-assistant] [done] 作者"可以投"＋computer-use：草稿457354三件已换新版，停在 Submit 前
+
+- **通道**：browser-agent 云端浏览器过不了 OS 文件对话框（旧主稿被它 Remove 后新件传不上，草稿一度主稿槽空）；改用 computer-use 操控**本机 Chrome**（已存 haangyeon 凭据，一次登录成功）完成上传。教训：文件选择对话框只能走桌面通道。
+- **登录口径更正**：ACS ID = **haangyeon**（用户名），不是邮箱；填邮箱报 code=1000「login value is not valid」。密码为 11-12 重置后新密码，Chrome 已保存。
+- **草稿 457354 现状（Last Saved 20:57，Review Submission and Submit 页）**：
+  - Manuscript File：`VV10-pair-attribution.docx`（18:14 版＝sci4 修复后，md5 a8dc8603…）
+  - Cover Letter：`cover-letter-jctc.txt`（20:35 重写版，humanizer 英文规则，446 词）
+  - Other Files：`VV10-pair-attribution-SI.pdf`（18:04 版，22 页）designation=**Supporting Information for Publication**
+  - 上传时选「Upload file only」保留既有表单数据（标题/摘要/作者/ORCID 未被 AI 抽取覆盖）
+  - Article / JCTC / Quantum Electronic Structure；OA=No、COI=No、Previous Submission=No（作者本轮确认无资助，Funding 留空）
+- **红线遵守**：6 个法律勾选**未勾**、**Submit 未点**，留给作者本人。
+- **两处待作者定**：① 表单作者邮编 **710062** 与稿件 **710119**（长安校区）不一致，未擅改；② 表单显示名 "Angren Xia"（ACS 账号名）与稿件 "Angran Xia" 拼写不同，稿件署名正确。
+- 未提交 git、未推送、未投稿。[ask→qoder] 如需复核请只读草稿页，勿动勾选与 Submit。
+
+## [2026-11-12 21:20] [agent=qianwen] [finding] 长安校区邮编：稿件侧无需改；ACS 表单邮编被机构认证记录锁定
+- 用户选定长安校区。核对 paper/main.md、main.tex、cover-letter-jctc.txt、SI：署名与通讯地址均为 Xi'an 710119，稿件侧零改动。
+- ACS 草稿 457354 作者单位邮编 710062 来自 ChronosHub 机构库 Verified 记录：编辑弹窗中 postal/city/state 为 disabled；重键机构名可短暂解锁，但任何后续输入触发重新匹配即回锁，replace_text/set_value/batch 均无法落值。判定为平台限制，非操作问题。
+- 已取消全部编辑，表单恢复原状（Last Saved 21:07，作者信息未变）。710062 与 710119 同为西安邮编， mail 可达；如须严格一致，只能走 ACS 支持改机构记录或校样阶段更正，不阻塞 Submit。
+- 复核状态 recap 已口头交付；最终稿 DOCX/PDF/SI 已重新打开供用户目检。勾选六项法律声明与 Submit 仍归用户。
+
+## [2026-11-12 21:30] [agent=qianwen] [done] 封面信改传 PDF（用户纠正：txt 不合规）
+- 新建 paper/cover-letter-jctc.pdf：单页 US Letter、11pt Times New Roman 嵌入、抬头+日期+落款署名块；源 txt 仅一处字符级修正 omegaB97X-V→ωB97X-V（PDF 与 txt 同步）。
+- 生成脚本 scratch/build_coverletter_pdf_20261112.py（HTML 排版，无软连字符，URL 不折行）；回读核验逐段一致。
+- ACS 草稿 457354：移除 cover-letter-jctc.txt，上传 cover-letter-jctc.pdf，Save 确认（Last Saved 21:26）。主稿 DOCX 与 SI 未动。
+- 主稿逐字校读进行中（todo #7-#10）。
+
+## [2026-11-12 21:45] [agent=qianwen] [done] 逐字逐句校读轮：22 处缺陷修复，三件重建，DOCX 重传
+- 校读范围：DOCX 349 段/7 表全量 + 主稿 37 页 + SI 22 页逐页；探针区分提取假象与真实缺陷（scratch/probe_defects_20261112.py）。
+- 修复（源 main.md/references.bib/md2tex.js + DOCX XML 双通道）：the the×1、&#39;×2、[23]() 空括号×1、引文后缺空格×20、omega/wB97X→ω×5、Å 单位×2、6-31g*→6-31G*×8、§4.3 误引 section 3.5→2.1×1、R.Eric→R. Eric、M.W Gill→M. W. Gill 等×3、Rezác→Řezáč、ωb97m-v/meta-gga/vv10 标题大小写、C60 下标（PDF 7.97pt 验证）、ΔCCSD(T) 上标。
+- 重建：main 37pp / SI 22pp，0 错误 0 overfull；DOCX 102 oMath 完好；备份 scratch/_backups/20261112_proof/。
+- 新指纹：DOCX 7364cefaa21bbe6d11e703f556dffe2b；main c1ed2be1e7d14d0070d8357c0c981dcd；SI 2e08e82282750b1cf84467dce1a83d4e；cover a3f3658dc391c720dcc7651141632960。旧指纹勿再引用。
+- ACS 457354：主稿槽换修复版 DOCX（Upload file only，表单保留），Last Saved 21:37。封面信 PDF 与 SI 不变。
+- 排版审计复跑：无出界/无替换字符/图注表注 JUSTIFY 一致；首页/图页/参考文献页目视通过。
+
+## [2026-11-12 22:10] [agent=qianwen] [done] Word 同源重建：与 LaTeX 渲染一一对应
+- 根因：旧 DOCX 是历史手工补丁件，与 main.md→md2tex→PDF 管线脱钩。现重建链：main.md → make_docx_source.py（引文编号取最新 bbl、附录标题/S 表号对齐 SI、重音解码、--- 转水平线）→ pandoc → 后处理（公式编号(1)-(4)右对齐、图表注加粗两端对齐、数据表居中、正文两端对齐）。
+- md2tex 署名硬编码补长安校区+Shaanxi，与 main.md/Word 一致；主稿改堆叠署名、SI 单位两行，overfull 清零（37/22pp）。
+- 机器比对（compare_docx_pdf_20261112.py）：散文子序列+数字多重集对主稿/SI 全过；残余 MISS 均为提取顺序/字形表示（署名* vs 脚注符、公式线性化、C₆₀ Unicode 下标 vs 排版下标），非内容差异。
+- 新 DOCX md5 4def703ec62a0a240c79f444105a3a14；旧件备份 scratch/_backups/20261112_proof/VV10-pair-attribution_pre_regen.docx。
+- ACS 457354 主稿槽已换重建版（Upload file only），Last Saved 22:07。封面信 PDF/SI 不变。
+
+## [2026-11-12 22:40] [agent=qianwen] [done] Word 版式镜像 LaTeX：用户反馈"不如 latex 渲染"后的逐项对齐
+- 版式基准取主稿/SI PDF 实测字号：标题17.22 作者11.96 单位9.96斜体两行 节14.35粗 子节11.96粗 正文10.91 表格8.97表头粗 脚注8.97；页边1in、页码居中、正文单倍行距两端对齐、Times New Roman。
+- 源级修复（make_docx_source.py）：引文 [N] 后补空格（镜像 md2tex L207，修 [2]and 类粘连）；[73](different… 伪链接加空格破解析；独立 --- 按 md2tex 行为丢弃（不再画水平线）；单位断两行斜体；参考文献改 [N] 悬挂格式（bibsep 2pt）。
+- 后处理 v3：三线表（top/bottom 粗+表头下细线，镜像 booktabs）、列对齐逐表镜像 tex 列规格（cccccX/Xcccc/ccccccc/cccccc/cpp/cccc/lpp）、表头跨页重复、图宽=0.98*textwidth 居中、\thanks 脚注（Word 原生脚注部件）、等宽字符样式。
+- 比对复跑：表值 0 缺失、88 条参考文献全锚定；残余 MISS 仅 OMML 线性化顺序/C₆₀ 下标等表示层。
+- 新 DOCX md5 6820e53ad5c7c88df3a3ea66ed0878cc；旧件备份 scratch/_backups/20261112_proof/VV10-pair-attribution_pre_layout.docx。
+- ACS 457354 主稿槽换版式对齐版（Upload file only，表单保留），Last Saved 22:38。封面信/SI 不变。Submit 仍留作者。
+
+## [2026-11-13 00:56] [agent=qianwen] [done] 公式逐像素核查与同源渲染重建
+- 用户要求公式按 PDF 逐像素排版。核查法：Word COM 导出真实渲染 vs LaTeX PDF，150dpi 模板匹配+几何断言。
+- 发现：OMML 行内公式被 Word 数学引擎强制 Cambria Math（对照实验证实 Latin Modern Math 声明被回退）；显示公式编号位置/居中与 PDF 不符。
+- 方案：全部公式改同源渲染——4 条显示公式=公式体 PNG(居中制表位234pt)+编号 PNG(右制表位468pt)；101 个行内公式=逐 span 同源 600dpi PNG，基线标记法测下沉量，run position 对齐基线。渲染导言区与 main.tex 完全相同（lmodern）。
+- 几何断言：公式体中心 306.0/305.8/305.9/305.9（PDF 306），编号右缘 540.0（PDF 540.0）；目检首页公式与 PDF 同字形同布局。
+- 内容复验：表值 0 缺失、88 参考文献全锚定、散文子序列全过（公式以图承载，文本层不含公式属预期）。
+- 新 DOCX md5 3f0d45f3183c2d99f78f4320087b2c71；旧件备份 scratch/_backups/20261112_proof/VV10-pair-attribution_pre_eqpixel.docx。
+- ACS 457354 主稿槽换公式像素版（Upload file only，表单保留），Last Saved 13 Nov 00:55/00:56。封面信/SI 不变。Submit 仍留作者。
+- 环境：用户级安装 Latin Modern Math 字体（虽最终走同源图路线，字体留存备用）；Word COM 导出脚本 scratch/export_word_pdf.ps1。

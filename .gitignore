@@ -46,3 +46,6 @@ paper/build_log.txt
 /.chatgpt-binding.json
 /scratch_*.png
 /audit_round0/
+
+# Word 打开文档时的临时锁文件（2026-11-13 公式像素轮目检时产生）：不入库。
+~$*

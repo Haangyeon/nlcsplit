@@ -1,31 +1,46 @@
-Dear Editors,
+Dear Editor,
 
-Please consider our manuscript, "Pair Attribution of the VV10 Nonlocal-Correlation Term
-and Its Grid-Partition Dependence", for publication as an Article in JCTC.
+We would like to submit our manuscript "Pair Attribution of the VV10 Nonlocal-Correlation
+Term and Its Grid-Partition Dependence" as an Article in JCTC.
 
-Production codes evaluate the VV10 term as a folded per-point energy. The pair index that
-defines the double sum is gone by the time the kernel returns, and we could not find a
-published implementation that resolves the term into fragment pairs. We kept the index,
-summed the pairs explicitly, and assigned each grid point to a fragment through a real-space
-partition. At omega B97X-V/6-31G* on the eight S22 complexes, the inter-fragment block
-carries 0.92-1.08 of the frozen-density superposition difference. The attribution itself
-depends on the partition, though: the four Becke-family schemes spread by 0.004-0.247
-kcal/mol, or 0.8-18.2% of the Becke value, with no ordering by interaction type. For the two
-benzene-dimer orientations the fragment-resolved percentage differs by a factor of eleven,
-while the total interaction energies rank one way before counterpoise and the other way
-after it. We report both that partition dependence and a way to estimate it per system.
+The question behind it is a narrow one. When a VV10 calculation gives you a number for a
+dimer, how much of that number belongs to the interaction between the two fragments?
+Production kernels cannot answer it. They fold the double sum over grid-point pairs into
+per-point values before returning, so the pair index is already gone. We looked for a
+published implementation that keeps it and did not find one.
 
-We also report a negative result in the main text. A certified blocking scheme for the pair
-sum was timed against the exact sum: across 33 screened/exact pairs in two independent
-windows, none ran faster, because the certificate available at atom-pair granularity is
-loose by about 2.4e5 relative to the quantity it screens.
+So we kept the index and summed the pairs explicitly, assigning each grid point to a
+fragment through a real-space partition. On the eight S22 complexes at ωB97X-V/6-31G*,
+the inter-fragment block accounts for 0.92-1.08 of the frozen-density superposition
+difference. Almost all of the nonlocal correlation that changes on association sits
+between the fragments, not inside them.
 
-ORCA 6.0.1 reproduces the nonlocal differences to under 1% of the term on all eight
-systems, binding energies are checked against CCSD(T)/6-31G*, and every number quoted in
-the paper is mapped to an archived output. The code (nlcsplit, Apache-2.0) is public at
-https://github.com/Haangyeon/nlcsplit.
+The part we think matters more is what happens when you change the partition. The four
+Becke-family schemes disagree by 0.004-0.247 kcal/mol, which is 0.8-18.2% of the Becke
+value, and the disagreement does not order by interaction type. Two orientations of the
+same benzene dimer differ by a factor of eleven in the fragment-resolved percentage. Their
+total interaction energies also rank one way before counterpoise correction and the other
+way after it. A single fragment-resolved dispersion number is therefore not a well-defined
+quantity, and we would rather say so than publish one scheme's value as if it were. The
+paper reports the range and gives a way to estimate it per system.
 
-The manuscript is original and is not under consideration elsewhere.
+We also kept a negative result in the main text. We built a certified screening scheme for
+the pair sum and timed it against the exact sum. None of the 33 screened/exact pairs,
+measured in two independent windows, ran faster. The certificate available at atom-pair
+granularity is loose by about 2.4e5 relative to what it would have to decide, so the
+traversal cannot recover the cost. Readers planning a similar optimization should know
+this before they spend time on it.
+
+On verification: ORCA 6.0.1 reproduces our nonlocal differences to under 1% of the term on
+all eight systems, binding energies are checked against CCSD(T)/6-31G*, and every number
+in the paper is mapped to an archived output in the repository. The code, nlcsplit, is
+Apache-2.0 and public at https://github.com/Haangyeon/nlcsplit. It contains no GAMESS
+source.
+
+The work is original, has not been published, and is not under consideration elsewhere.
+Both authors have approved the submission and declare no competing financial interest.
+
+Thank you for considering it.
 
 Sincerely,
 Angran Xia
