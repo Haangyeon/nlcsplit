@@ -45,6 +45,9 @@ version: 0.1.0
 date-released: 2026-09-30
 license: Apache-2.0
 repository-type: code
+# 2026-11-13：GitHub-Zenodo 存档已建立（Release export-20261113 自动摄取）。
+# 权威标识用概念 DOI（指向所有版本）；本版本 DOI 为 10.5281/zenodo.24187761。
+doi: 10.5281/zenodo.24187760
 keywords:
   - nonlocal correlation
   - VV10
