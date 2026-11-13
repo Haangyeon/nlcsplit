@@ -6284,3 +6284,10 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 新 DOCX md5 3f0d45f3183c2d99f78f4320087b2c71；旧件备份 scratch/_backups/20261112_proof/VV10-pair-attribution_pre_eqpixel.docx。
 - ACS 457354 主稿槽换公式像素版（Upload file only，表单保留），Last Saved 13 Nov 00:55/00:56。封面信/SI 不变。Submit 仍留作者。
 - 环境：用户级安装 Latin Modern Math 字体（虽最终走同源图路线，字体留存备用）；Word COM 导出脚本 scratch/export_word_pdf.ps1。
+
+## [2026-11-13 13:3x] [agent=qianwen] [done] 仓库收尾：提交/盘外快照/导出闸门/私有镜像推送
+- 提交 5071e9a（版式镜像+公式像素轮 125 文件，含封面信 PDF 与 paper/eqs 109 件）+ tag jctc-submission-20261113；提交 80c0adf（ship 工具链修复）。.gitignore 补 ~$* 锁文件。handoff_doubao/ 有意不入库。
+- 盘外快照 D:\GAMESS-snapshot-20261113：robocopy rc=1 + 嵌套 ref 补拷；evidence/paper/nlcsplit/tools 1634 份双边 sha256 missing=0 differing=0。日志 D:\GAMESS-snapshot-20261113_robocopy.log / _ref_supplement.log。
+- 导出闸门复跑：首跑 7 命中（figstyle 未进 PKG；threading/concurrent 标准库名单缺；docx 发行名映射缺）→ 按既定机制修 make_public_repo.js（PKG+figstyle、STDLIB+2、DIST_OF docx→python-docx）与 pyproject（docx extra）→ 复跑 rc=0、shipped、24 闸门数组空；新 wheel 含 figstyle，旧 10-29 wheel 归档 dist/archive-*。audit_p2/claim_gate/audit_share_rule 全 PASS。
+- 推送：母仓 master 镜像已推 origin（凭据管理器，网络恢复）；公开默认分支 main 仍停 10-29 导出（d1267a6）。新导出 bundle 已备于 .publish/nlcsplit（独立 main 历史），常规 push 被 non-fast-forward 拒（设计绝不 force）→ 更新 main 的方式留作者裁决（force 替换 / 新仓+Zenodo / 暂不更新）。
+- Zenodo：未建；依赖公开快照更新后开 GitHub-Zenodo 存档开关打 tag，或人工存款；作者侧。
