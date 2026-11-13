@@ -29,6 +29,9 @@ plot = ["matplotlib>=3.5"]
 # step_c_relaxation.py 在函数内部 import scipy.optimize 做几何优化；核心与主表都不走这条路，
 # 所以也放 extra。闸门 E（tools/make_public_repo.js）会盯住这类"用了但没声明"。
 relax = ["scipy>=1.8"]
+# 2026-11-13：随包发布的 bib_provenance 证据脚本用 python-docx 做 DOCX 人名核查；
+# 核心与主表不走这条路，单列 extra。闸门 E 盯"用了但没声明"。
+docx = ["python-docx>=1.1"]
 
 [tool.setuptools]
 packages = ["nlcsplit", "nlcsplit.tests", "nlcsplit.examples"]

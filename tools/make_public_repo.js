@@ -69,7 +69,10 @@ const PKG = ['__init__.py', 'nlc.py', 'partition.py', 'geomlib.py', 'figures.py'
   'fastpair.py',
   // certificate.py（2026-10-13）：正文跨构造那一列的**入口**，也是 §5 "implements … every table"
   // 唯一能被一条命令复现的地方。不进清单 ⇒ 闸门 V 报 stray，出货直接失败。
-  'certificate.py'];
+  'certificate.py',
+  // figstyle.py（2026-11-13）：figures.py 顶层 `from nlcsplit import figstyle`，
+  // 是包内硬依赖。不进清单 ⇒ 闸门 U/V 报闭包缺口，wheel 装出来跑不了图。
+  'figstyle.py'];
 const STEPS = ['step1_validate.py', 'step2_convergence.py', 'step_b_scan.py', 'step_c_relaxation.py',
   'step_d_floor.py', 'step_e_kernel.py', 'step_f_dispersion.py', 'step_g_basis.py',
   'step_h_s22.py', 'step_i_gridrepr.py', 'step_k_population.py',
@@ -867,11 +870,15 @@ const STDLIB = new Set(['os', 'sys', 'json', 'time', 'math', 'ctypes', 'socket',
   // 2026-10-01：证据脚本随包发布后，闸门 E 第一次扫到它们的 import。`multiprocessing`
   // 是发行版标准库，不是第三方发行包——缺它同样是这张名单不完整，不是谁的代码有问题。
   'multiprocessing', 'statistics', 'copy', 'string', 'unittest', 'logging', 'enum',
+  // 2026-11-13：bib_provenance 的并行核验脚本用 threading/concurrent.futures，皆标准库。
+  'threading', 'concurrent',
   // 2026-10-23：证据脚本用到的下面这些也全是标准库；名单漏一个就报一个"未声明依赖"。
   'ast', 'contextlib', 'fnmatch', 'inspect', 'urllib', 'resource']);
 const DECLARED = new Set([...read(path.join(SRC, 'pyproject.toml'))
   .matchAll(/"([A-Za-z][A-Za-z0-9_.\-]*)[<>=!~\[]?/g)].map(m => m[1].toLowerCase()));
-const DIST_OF = { matplotlib: 'matplotlib', scipy: 'scipy', pyscf: 'pyscf', numpy: 'numpy', pytest: 'pytest' };
+const DIST_OF = { matplotlib: 'matplotlib', scipy: 'scipy', pyscf: 'pyscf', numpy: 'numpy', pytest: 'pytest',
+  // 2026-11-13：import 名与发行名不同者必须在这张表里，否则闸门 E 拿 import 名去对发行名。
+  docx: 'python-docx' };
 function undeclaredImports(pyTree, readAt) {
   const byDir = new Map();
   for (const rel of pyTree) {
