@@ -6294,3 +6294,21 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - [13:4x] 作者裁决 force 替换 main：公开 main d1267a6→29d0b7a（forced update），tag export-20261113 已推。旧 10-29 历史保留于母仓 release 分支与 export-20261029 tag。
 - Zenodo 剩作者侧一步：GitHub→Zenodo 存档开关对 Haangyeon/nlcsplit 开启后，在 GitHub 发 export-20261113 的 Release 即触发 DOI；或 zenodo.org 手动存款该 tag。CITATION.cff 的 DOI 占位待 DOI  mint 后回填。
 - [15:3x] Zenodo 闭环（内置浏览器+作者人工登录）：集成开关 Haangyeon/nlcsplit=ON；GitHub Release export-20261113 已发布；Zenodo 自动摄取 record 24187761，版本 DOI 10.5281/zenodo.24187761、概念 DOI 10.5281/zenodo.24187760（公开 API 核验）。CITATION.cff 回填概念 DOI（af9fb45）。母仓推送遇间歇网络重置，待重试；公开 main 的 CITATION 为导出时点状态，下次导出自然带 DOI。
+
+## [2026-11-13 16:0x] [agent=qianwen] [done] 落实 Opus 封面信建议 + 科学正确性新一轮独立复核
+- 封面信：按 Opus 20261031 建议删去原创性/未一稿多投/作者批准段（表单已强制声明），8 段→7 段；PDF 重生成单页 11pt，新 md5 c802ac5f74b4edfeaf0432d49455bcdf。
+- 独立重算（全部从 evidence/ 与 logs/ 原件现算，不抄稿件）：
+  · 22 体系家族内跨度 0.0034–0.3030 ✓（证书表 22/22 格解析）
+  · Table 1 份额 97/52/31/46/60/16/77%、甲烷 |NLC|/|XC|=2.228→2.2 ✓
+  · "factor of eleven" = Table 3 相对列 9.2%/0.8%=11.50 ✓（非 Table 1 份额比 1.86；稿件 L916 已注明读自相对列）
+  · Table 3 八行相对跨度逐行重算与印值一致（≤0.06pp 舍入）✓
+  · 水 BSSE = -6.1526-(-7.816)=1.6634→1.663 ✓
+  · CCSD(T) 阶梯跨度 1.0301→1.03、6-31G*→cc-pVDZ 步长 1.1803→1.18、泛函-锚差 1.2737→1.27 ✓
+  · β=(1/32)(3/b²)^0.75 与 nlc.py:113 BETA_EXP=0.75 一致 ✓；1 Ha=627.5095 kcal/mol ✓
+  · ORCA 八体系全精度重算 rel 0.067–0.952%（<1%）、max res/span=1.301→1.3×、7/8<1 ✓
+  · 0.92–1.08 = step_h_l2cp.json 的 p_over_ds 六行 min/max ✓（level-2+CP 批次，非 level-1）
+  · 化学控制 dative 0.0710/0.0710、ionic 0.0828/0.0825、ORCA 差 0.19/0.21% 与 0.26/0.28% ✓
+  · 闭合普查残差 0.000e+00–5.551e-17 Ha，最大值在 S22_11 becke-treutler 行 ✓
+- 闸门：claim_gate clean；audit_table_row_provenance VERDICT OK；audit_p2/audit_share_rule PASS。
+- SCIENTIFIC_AUDIT(10-29) 的"未修"清单已全部清零（five of the eight/variance/fig:2 误引/which no other program/No charge-transfer 均已不存在；七图七表都有正文引用；Figure 7 图注已写明 11/33 子集与空心=archived exact）。
+- 未闭合（如实记）：① audit_original_exitcodes 全仓 252 份中 30 份无自报退出码/.rc，其中若干在附录溯源表被列名——属证据登记完整性，非数值错误，表行溯源闸门已 OK；② verify_evidence_manifests.sh 硬编码 WSL 路径 /mnt/e，本机未跑（各目录 MANIFEST.sha256 在导出闸门 C 已比过）；③ Figure 4 基组区分用图例而非 Opus 建议的图内直标（信息不丢，可辩护偏离）；④ Opus 第四轮 ACCEPT 时点为 10-29，之后改动为表述/排版/公式渲染，未动数值主张。

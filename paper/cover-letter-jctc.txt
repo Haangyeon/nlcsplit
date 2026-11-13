@@ -37,9 +37,6 @@ in the paper is mapped to an archived output in the repository. The code, nlcspl
 Apache-2.0 and public at https://github.com/Haangyeon/nlcsplit. It contains no GAMESS
 source.
 
-The work is original, has not been published, and is not under consideration elsewhere.
-Both authors have approved the submission and declare no competing financial interest.
-
 Thank you for considering it.
 
 Sincerely,
