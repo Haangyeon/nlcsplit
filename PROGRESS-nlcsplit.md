@@ -6319,3 +6319,12 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 按千问同源管线重跑：md2tex→build_pdf(37页0错)→make_docx_source→pandoc→render_eqs/render_inline(101)→postprocess×2→替换 DOCX（备份 scratch/VV10_backup_before_fracfix.docx，关 Word 重开）。
 - 顺带修：prose "Sponer"→"Šponer"；make_docx_source deaccent 补反引号(Sol`a→Solà)；恢复 bibtex 丢的 Émilie-Laure 连字符。修后 DOCX 人名全匹配。
 - 目检 eq2/eq3 PNG 确认上下分式。ACS 457354 主稿槽 DOCX 又落后于本版，Submit 前需千问/作者重传。
+
+## [2026-11-13 17:40] [agent=qwen] [done] 对 Qoder 上下分式版复验并重传三件，Save 17:39
+- 复验对象=Qoder 17:18 版 DOCX（md5 70f556b41526fd3c5cd8efdbfa9c69df，与中间件 scratch/docx_regen_raw.docx 逐字节一致）。
+- 内容比对：表值 0 缺失、88 条参考文献全锚定；MISS 行均为公式图无文本层的已知项。
+- Word COM 真实渲染 47 页；几何断言：四显示公式体中心 306.0/305.9/305.5/305.9（LaTeX 306）、编号右缘全 540.0；式(2) 宽 289→325.7pt 证实上下分式生效。
+- 像素 NCC（Word vs LaTeX）eq1-4 = 0.783/0.797/0.746/0.843，diffpix≈4.9–5.0%；同 PDF 自匹配 sanity 对照后台运行中（栅格化慢），结果待补记。
+- 重传：主稿槽换 70f556b4 版 DOCX（Upload file only 保留表单）；Other Files 换同版 SI（designation=Supporting Information for Publication）；Cover Letter 保持 c802ac5f 版。Save 成功，Last Saved 17:39。
+- 过程一次瞬时 "Something went wrong while trying to save"（删旧 SI 时），关闭提示后重试成功，最终 Saved 确认。
+- 红线不变：六法律勾选+Submit 仍等作者本人。
