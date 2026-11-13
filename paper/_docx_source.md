@@ -120,7 +120,7 @@ Collection (58,664,816 records, 2026-09-29) found no precedent for that [S17]: t
 strings written closest to our own claim both return zero records, and the non-zero strings
 were enumerated in full through the database's own record endpoint, so every returned record
 was read rather than the top one. The nearest neighbours are each attributable in one
-clause. Kruse, Banáš and Sponer [27] benchmark VV10 among 29 functionals and
+clause. Kruse, Banáš and Šponer [27] benchmark VV10 among 29 functionals and
 decompose the *total* interaction energy by SAPT [28] [29] [30]. Hujo and Grimme [31] benchmark
 VV10 for hydrogen bonds. Sinha and Pavanello [32] construct a *new*
 subsystem-based nonlocal functional rather than resolving an existing one. Hamada and Tsukada
@@ -167,12 +167,12 @@ that it retains the pair index, nothing more.
 
 With ρ the electron density and σ = |∇ρ|²,
 
-$$w_0(r) = \sqrt{\,C\sigma^{2}/\rho^{4} + (4\pi/3)\rho\,},\qquad \kappa(r) = b\,(3\pi/2)\,(\rho/9\pi)^{1/6}, \tag{2}$$
+$$w_0(r) = \sqrt{\,\frac{C\sigma^{2}}{\rho^{4}} + \frac{4\pi}{3}\rho\,},\qquad \kappa(r) = b\,\frac{3\pi}{2}\,\left(\frac{\rho}{9\pi}\right)^{1/6}, \tag{2}$$
 
-$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -3/(2gg'(g+g')), \tag{3}$$
+$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -\frac{3}{2gg'(g+g')}, \tag{3}$$
 
 with (b, C) = (6.0, 0.01) for ωB97X-V, and $E_{\mathrm{NLC}} = E_{\mathrm{NL}} + \beta\!\int\!\rho$,
-$\beta = (1/32)(3/b^{2})^{3/4}$. The pairing of ω and κ in g and g′ is a genuine choice,
+$\beta = \frac{1}{32}\left(\frac{3}{b^{2}}\right)^{3/4}$. The pairing of ω and κ in g and g′ is a genuine choice,
 and the cross pairing $g = w_{0}(r_{j})R^{2} + \kappa(r_{i})$, which an earlier implementation
 of ours used, is wrong: it raises monomer energies by +0.1379 kcal/mol for water,
 +0.4182 for argon and +0.1346 for methane at grid level 1, and +0.9057 for benzene at
@@ -1788,7 +1788,7 @@ decomposition is not before section 4.2 lets the reader use it.
 
 [20] Daniel G. A. Smith, Lori A. Burns, Andrew C. Simmonett, Robert M. Parrish, Matthew C. Schieber, Raimondas Galvelis, Peter Kraus, Holger Kruse, Roberto Di Remigio, Asem Alenaizan, Andrew M. James, Susi Lehtola, Jonathon P. Misiewicz, Maximilian Scheurer, Robert A. Shaw, Jeffrey B. Schriber, Yi Xie, Zachary L. Glick, Dominic A. Sirianni, Joseph Senan O'Brien, Jonathan M. Waldrop, Ashutosh Kumar, Edward G. Hohenstein, Benjamin P. Pritchard, Bernard R. Brooks, Henry F. Schaefer, Alexander Yu. Sokolov, Konrad Patkowski, A. Eugene DePrince, Uğur Bozkaya, Rollin A. King, Francesco A. Evangelista, Justin M. Turney, T. Daniel Crawford, and C. David Sherrill. Psi4 1.4: Open-source software for high-throughput quantum chemistry. J. Chem. Phys., 152:184108, 2020. doi: 10.1063/5.0006002.
 
-[21] Juan Andrés, Paul W. Ayers, Roberto A. Boto, Ramon Carbó-Dorca, Henry Chermette, Jerzy Cioslowski, Julia Contreras-García, David L. Cooper, Gernot Frenking, Carlo Gatti, Farnaz Heidar-Zadeh, Laurent Joubert, Ángel Martín Pendás, Eduard Matito, István Mayer, Alston J. Misquitta, Yirong Mo, Julien Pilmé, Paul L. A. Popelier, Martin Rahm, Eloy Ramos-Cordoba, Pedro Salvador, W. H. Eugen Schwarz, Shant Shahbazian, Bernard Silvi, Miquel Sol\`a, Krzysztof Szalewicz, Vincent Tognetti, Frank Weinhold, and Émilie Laure Zins. Nine questions on energy decomposition analysis. J. Comput. Chem., 40:2248--2283, 2019. doi: 10.1002/jcc.26003.
+[21] Juan Andrés, Paul W. Ayers, Roberto A. Boto, Ramon Carbó-Dorca, Henry Chermette, Jerzy Cioslowski, Julia Contreras-García, David L. Cooper, Gernot Frenking, Carlo Gatti, Farnaz Heidar-Zadeh, Laurent Joubert, Ángel Martín Pendás, Eduard Matito, István Mayer, Alston J. Misquitta, Yirong Mo, Julien Pilmé, Paul L. A. Popelier, Martin Rahm, Eloy Ramos-Cordoba, Pedro Salvador, W. H. Eugen Schwarz, Shant Shahbazian, Bernard Silvi, Miquel Solà, Krzysztof Szalewicz, Vincent Tognetti, Frank Weinhold, and Émilie-Laure Zins. Nine questions on energy decomposition analysis. J. Comput. Chem., 40:2248--2283, 2019. doi: 10.1002/jcc.26003.
 
 [22] Saswata Dasgupta, Etienne Palos, Yuanhui Pan, and Francesco Paesani. Balance between Physical Interpretability and Energetic Predictability in Widely Used Dispersion-Corrected Density Functionals. J. Chem. Theory Comput., 20:49--67, 2024. doi: 10.1021/acs.jctc.3c00903.
 

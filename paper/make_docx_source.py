@@ -16,6 +16,8 @@ _ACC = {
     'c': {'c': 'ç', 'C': 'Ç', 's': 'ş', 'S': 'Ş'},
     '~': {'n': 'ñ', 'N': 'Ñ', 'a': 'ã', 'o': 'õ'},
     '=': {'a': 'ā', 'e': 'ē', 'o': 'ō'},
+    '`': {'a': 'à', 'e': 'è', 'i': 'ì', 'o': 'ò', 'u': 'ù',
+          'A': 'À', 'E': 'È', 'O': 'Ò'},
 }
 
 
@@ -64,6 +66,9 @@ def plain(t):
     t = t.replace('{', '').replace('}', '')
     t = re.sub(r'\x01(.)\x02([A-Za-z])\x03', lambda m: '\\' + m.group(1) + '{' + m.group(2) + '}', t)
     t = deaccent(t)
+    # bibtex drops the hyphen in the compound given name Émilie-Laure (bbl writes
+    # "Émilie Laure~Zins"); restore it so Word matches the bib/Crossref form.
+    t = t.replace('Émilie Laure Zins', 'Émilie-Laure Zins')
     t = re.sub(r'\x00(\d+)\x00', lambda m: spans[int(m.group(1))], t)
     # `\rm X` is plain TeX; pandoc's math reader rejects it ("unexpected control
     # sequence \rm") and falls back to printing the source TeX. Convert the restored

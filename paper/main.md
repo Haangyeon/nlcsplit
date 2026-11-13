@@ -125,7 +125,7 @@ Collection (58,664,816 records, 2026-09-29) found no precedent for that [S17]: t
 strings written closest to our own claim both return zero records, and the non-zero strings
 were enumerated in full through the database's own record endpoint, so every returned record
 was read rather than the top one. The nearest neighbours are each attributable in one
-clause. Kruse, Banáš and Sponer [[kruse2019dna]] benchmark VV10 among 29 functionals and
+clause. Kruse, Banáš and Šponer [[kruse2019dna]] benchmark VV10 among 29 functionals and
 decompose the *total* interaction energy by SAPT [[jeziorski1994]]
 [[szalewicz2012]] [[hohenstein2010df]]. Hujo and Grimme [[hujo2011hbond]] benchmark
 VV10 for hydrogen bonds. Sinha and Pavanello [[sinha2015fdevdw]] construct a *new*
@@ -173,12 +173,12 @@ that it retains the pair index, nothing more.
 
 With ρ the electron density and σ = |∇ρ|²,
 
-$$w_0(r) = \sqrt{\,C\sigma^{2}/\rho^{4} + (4\pi/3)\rho\,},\qquad \kappa(r) = b\,(3\pi/2)\,(\rho/9\pi)^{1/6}, \tag{2}$$
+$$w_0(r) = \sqrt{\,\frac{C\sigma^{2}}{\rho^{4}} + \frac{4\pi}{3}\rho\,},\qquad \kappa(r) = b\,\frac{3\pi}{2}\,\left(\frac{\rho}{9\pi}\right)^{1/6}, \tag{2}$$
 
-$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -3/(2gg'(g+g')), \tag{3}$$
+$$g = w_0(r_i)R^{2} + \kappa(r_i),\quad g' = w_0(r_j)R^{2} + \kappa(r_j),\quad \Phi = -\frac{3}{2gg'(g+g')}, \tag{3}$$
 
 with (b, C) = (6.0, 0.01) for ωB97X-V, and $E_{\mathrm{NLC}} = E_{\mathrm{NL}} + \beta\!\int\!\rho$,
-$\beta = (1/32)(3/b^{2})^{3/4}$. The pairing of ω and κ in g and g′ is a genuine choice,
+$\beta = \frac{1}{32}\left(\frac{3}{b^{2}}\right)^{3/4}$. The pairing of ω and κ in g and g′ is a genuine choice,
 and the cross pairing $g = w_{0}(r_{j})R^{2} + \kappa(r_{i})$, which an earlier implementation
 of ours used, is wrong: it raises monomer energies by +0.1379 kcal/mol for water,
 +0.4182 for argon and +0.1346 for methane at grid level 1, and +0.9057 for benzene at

@@ -6313,3 +6313,9 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - SCIENTIFIC_AUDIT(10-29) 的"未修"清单已全部清零（five of the eight/variance/fig:2 误引/which no other program/No charge-transfer 均已不存在；七图七表都有正文引用；Figure 7 图注已写明 11/33 子集与空心=archived exact）。
 - 未闭合（如实记）：① audit_original_exitcodes 全仓 252 份中 30 份无自报退出码/.rc，其中若干在附录溯源表被列名——属证据登记完整性，非数值错误，表行溯源闸门已 OK；② verify_evidence_manifests.sh 硬编码 WSL 路径 /mnt/e，本机未跑（各目录 MANIFEST.sha256 在导出闸门 C 已比过）；③ Figure 4 基组区分用图例而非 Opus 建议的图内直标（信息不丢，可辩护偏离）；④ Opus 第四轮 ACCEPT 时点为 10-29，之后改动为表述/排版/公式渲染，未动数值主张。
 - [16:19] 复核中发现并修正一处真实不一致：投稿表单 Abstract 字段仍是旧版宽断言开头（"Production kernels … fold"），而稿件已按科学审计 C-F8 收窄为"The production kernel we audited, PySCF's, …"。已把表单摘要整段替换为稿件当前摘要（2009 字符，逐字一致），封面信槽换为删套话后的新 PDF，Last Saved 16:19。三件与表单口径现已统一。
+
+## [2026-11-13 17:18] [agent=intl-qoder] [done] 作者指分数仍斜杠：式(2)(3)+β 改上下分式，同源重跑 PDF/DOCX；另修3处人名
+- 式(2) Cσ²/ρ⁴、4π/3、3π/2、ρ/9π 与式(3) -3/(2gg'(g+g'))、行内 β=(1/32)(3/b²)^{3/4} 全部改 rac 上下分式（式1/4 原本已是）。
+- 按千问同源管线重跑：md2tex→build_pdf(37页0错)→make_docx_source→pandoc→render_eqs/render_inline(101)→postprocess×2→替换 DOCX（备份 scratch/VV10_backup_before_fracfix.docx，关 Word 重开）。
+- 顺带修：prose "Sponer"→"Šponer"；make_docx_source deaccent 补反引号(Sol`a→Solà)；恢复 bibtex 丢的 Émilie-Laure 连字符。修后 DOCX 人名全匹配。
+- 目检 eq2/eq3 PNG 确认上下分式。ACS 457354 主稿槽 DOCX 又落后于本版，Submit 前需千问/作者重传。
