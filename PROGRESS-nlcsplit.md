@@ -6291,3 +6291,5 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 导出闸门复跑：首跑 7 命中（figstyle 未进 PKG；threading/concurrent 标准库名单缺；docx 发行名映射缺）→ 按既定机制修 make_public_repo.js（PKG+figstyle、STDLIB+2、DIST_OF docx→python-docx）与 pyproject（docx extra）→ 复跑 rc=0、shipped、24 闸门数组空；新 wheel 含 figstyle，旧 10-29 wheel 归档 dist/archive-*。audit_p2/claim_gate/audit_share_rule 全 PASS。
 - 推送：母仓 master 镜像已推 origin（凭据管理器，网络恢复）；公开默认分支 main 仍停 10-29 导出（d1267a6）。新导出 bundle 已备于 .publish/nlcsplit（独立 main 历史），常规 push 被 non-fast-forward 拒（设计绝不 force）→ 更新 main 的方式留作者裁决（force 替换 / 新仓+Zenodo / 暂不更新）。
 - Zenodo：未建；依赖公开快照更新后开 GitHub-Zenodo 存档开关打 tag，或人工存款；作者侧。
+- [13:4x] 作者裁决 force 替换 main：公开 main d1267a6→29d0b7a（forced update），tag export-20261113 已推。旧 10-29 历史保留于母仓 release 分支与 export-20261029 tag。
+- Zenodo 剩作者侧一步：GitHub→Zenodo 存档开关对 Haangyeon/nlcsplit 开启后，在 GitHub 发 export-20261113 的 Release 即触发 DOI；或 zenodo.org 手动存款该 tag。CITATION.cff 的 DOI 占位待 DOI  mint 后回填。
