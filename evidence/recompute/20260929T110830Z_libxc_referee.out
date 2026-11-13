@@ -1,0 +1,221 @@
+==========================================================================
+libxc 能不能当 VV10 E_NLC 的"第三裁判" —— 本机实测
+session start (UTC): 20260929T110830Z
+host: WSL Ubuntu, python3.10.12, PySCF 2.12.1;  repo <REPO>
+probe script (kept OUTSIDE the repo, one-off):
+  C:\Users\Administrator\AppData\Local\Temp\libxc_referee_probe.py
+  (WSL path /mnt/c/Users/Administrator/AppData/Local/Temp/libxc_referee_probe.py)
+  run: cd <REPO> && PYTHONPATH=. OMP_NUM_THREADS=3 \
+       python3 -u <script> abc
+--------------------------------------------------------------------------
+结论（三态）: NOT_APPLICABLE
+  libxc 给不出 E_NLC 这个数 —— 它在本问题上唯一的非局域入口是 xc_nlc_coef -> (b, C)。
+  实测 (b, C) 对 hyb_gga_xc_wb97x_v = (6.0, 0.01)，与本仓库 nlcsplit/nlc.py 用的值一致。
+  附一条 BLOCKED 事实：本机装不上任何 libxc Python 绑定（原始报错见第 1 节）。
+==========================================================================
+
+1. 绑定与安装路径（原始报错；安装尝试 2 次即停，未动系统 site-packages，未用 apt）
+--------------------------------------------------------------------------
+$ python3 -c "import xc4"
+  ModuleNotFoundError: No module named 'xc4'
+$ python3 -c "import libxc"
+  ModuleNotFoundError: No module named 'libxc'
+$ python3 -c "from pyscf import lib; lib.load_library('xc')"
+  Exception: no file with expected extension        # 系统里没有可按 soname 解析的 libxc
+$ python3 -m venv /tmp/xc_probe
+  You may need to use sudo with that command.  After installing the python3-venv
+  package, recreate your virtual environment.
+  Failing command: /tmp/xc_probe/bin/python3          # python3-venv 缺失 -> venv 路线放弃
+$ https_proxy=http://<your-proxy> python3 -m pip install --target /tmp/xc4site \
+      --only-binary=:all: xc4
+  ERROR: Could not find a version that satisfies the requirement xc4 (from versions: none)
+  ERROR: No matching distribution found for xc4
+$ python3 -m pip index versions xc4            -> ERROR: No matching distribution found for xc4
+$ python3 -m pip index versions libxc4python   -> ERROR: No matching distribution found for libxc4python
+PyPI 侧核对（代理可达：/simple/ = 200，/simple/numpy/ = 200，故非网络故障）：
+  /pypi/xc4/json           404     /pypi/libxc4python/json   404
+  /pypi/libxc/json         404     /pypi/libxc-python/json   404
+  /pypi/python-libxc/json  404     /pypi/pylibxc/json        404
+
+2. 本机两份 libxc 动态库 + 上游最新头文件的非局域接口审计
+--------------------------------------------------------------------------
+$ ldconfig -p | grep -i libxc      -> 无系统级 libxc（只有 libxcvt / libxcb 等无关命中）
+$ find /usr/lib /usr/local/lib ~/.local /opt <CLUSTER_HOME> -name "libxc.so*"
+  <CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so   (7.0.0)
+  <CLUSTER_HOME>/miniconda3/envs/psi4env/lib/libxc.so.9                            (5.2.3, conda-forge)
+  <CLUSTER_HOME>/miniconda3/pkgs/libxc-5.2.3-hfebba4c_0/lib/libxc.so.9             (同一份)
+两份库运行时 ctypes 查符号（程序输出见下面 A 节）：非局域网格接口一个都没有，
+唯一活着的相关符号是 xc_nlc_coef，而它只回传参数 b/C。
+上游核对（libxc tag 7.1.2 的 src/xc.h，经 gitlab files API 取回 30759 字节）：
+  line 344  double nlc_b;   /* Non-local correlation, b parameter */
+  line 345  double nlc_C;   /* Non-local correlation, C parameter */
+  line 598  /* Returns the b and C coefficients for a non-local VV10 correlation kernel */
+  line 599  void xc_nlc_coef(const xc_func_type *p, double *nlc_b, double *nlc_C);
+  grep -E "xc_nld|xc_nlc_vxc|xc_nlc_xc|XC_NLD" src/xc.h  -> 0 命中
+libxc 官方文档原话（https://libxc.gitlab.io/ ，dispersion corrections 段）：
+  "... several functionals are available in Libxc that were parametrized with either
+   semiclassical dispersion corrections a la Grimme, or various van der Waals
+   functionals; neither of these can be evaluated with the local density information
+   provided to Libxc, and must be handled by the calling program. The necessary
+   parameters for VV10-type correlation kernels are, however, provided by Libxc as
+   part of the functional definition."
+=> 与符号审计一致：那个双重积分不归 libxc 算，归调用方算（PySCF 的 _vv10nlc、
+   ORCA 的 DFT-NL、本仓库的 nlcsplit/nlc.py）。ORCA 锚点里已记着同一件事：
+   logs/orca_anchor.json 的 program 字段写 "VV10 handled by ORCA's own DFT-NL, not libXC"。
+
+3. 程序原始输出（A 符号审计 / B 参数实测 / C 对照锚表）
+--------------------------------------------------------------------------
+==============================================================================
+0. python-level libxc bindings (live import probe)
+==============================================================================
+  import xc4            FAIL ModuleNotFoundError: No module named 'xc4'
+  import libxc          FAIL ModuleNotFoundError: No module named 'libxc'
+  import libxc4python   FAIL ModuleNotFoundError: No module named 'libxc4python'
+  import pylibxc        FAIL ModuleNotFoundError: No module named 'pylibxc'
+
+==============================================================================
+A. libxc shared libraries on this box: non-local (NLC/NLD) API audit
+==============================================================================
+
+  conda-forge libxc 5.2.3 (psi4env: the libxc PSI4 1.7 links against)
+    path   : <CLUSTER_HOME>/miniconda3/envs/psi4env/lib/libxc.so.9
+    version: xc_version_string() = 5.2.3
+    non-local symbols EXPORTED : ['xc_nlc_coef']
+    non-local symbols ABSENT   : xc_nlc_vxc, xc_nlc_xc, xc_nlc_func_from_id, xc_nlc_func_init, xc_nlc_func_alloc, xc_nlc_func_end, xc_nld_vxc, xc_nld_kernel_from_id, xc_nld_func_from_id, xc_nld_init, xc_nld_end, xc_run
+
+  PySCF-bundled libxc
+    path   : <CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/lib/deps/lib/libxc.so
+    version: xc_version_string() = 7.0.0
+    non-local symbols EXPORTED : ['xc_nlc_coef']
+    non-local symbols ABSENT   : xc_nlc_vxc, xc_nlc_xc, xc_nlc_func_from_id, xc_nlc_func_init, xc_nlc_func_alloc, xc_nlc_func_end, xc_nld_vxc, xc_nld_kernel_from_id, xc_nld_func_from_id, xc_nld_init, xc_nld_end, xc_run
+
+==============================================================================
+B. What libxc actually offers for VV10: xc_nlc_coef(func) -> (b, C) only.
+   Every VV10/rVV10-carrying functional in each build, and omega-B97X-V.
+==============================================================================
+
+  conda-forge libxc 5.2.3 (psi4env: the libxc PSI4 1.7 links against)  version=5.2.3  xc_number_of_functionals()=615  names read back=615
+    VV10/WB97* functional names known to this build: ['gga_xc_vv10', 'hyb_gga_xc_lc_vv10', 'hyb_gga_xc_wb97', 'hyb_gga_xc_wb97x', 'hyb_gga_xc_wb97x_d', 'hyb_gga_xc_wb97x_d3', 'hyb_gga_xc_wb97x_v', 'hyb_mgga_xc_wb97m_v', 'mgga_c_revscan_vv10', 'mgga_c_scan_rvv10', 'mgga_c_scan_vv10', 'mgga_c_scanl_rvv10', 'mgga_c_scanl_vv10']
+     gga_xc_vv10                      id=255   init_rc=0  b=5.9        C=0.0093    
+     hyb_gga_xc_lc_vv10               id=469   init_rc=0  b=6.3        C=0.0089    
+     hyb_gga_xc_wb97                  id=463   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x                 id=464   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x_d               id=471   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x_d3              id=399   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x_v               id=466   init_rc=0  b=6          C=0.01         <== the functional this project splits
+     hyb_mgga_xc_wb97m_v              id=531   init_rc=0  b=6          C=0.01      
+     mgga_c_revscan_vv10              id=585   init_rc=0  b=9.8        C=0.0093    
+     mgga_c_scan_rvv10                id=292   init_rc=0  b=15.7       C=0.0093    
+     mgga_c_scan_vv10                 id=584   init_rc=0  b=14         C=0.0093    
+     mgga_c_scanl_rvv10               id=703   init_rc=0  b=15.7       C=0.0093    
+     mgga_c_scanl_vv10                id=704   init_rc=0  b=14         C=0.0093    
+    does this build even carry omega-B97X-V? YES
+
+  PySCF-bundled libxc  version=7.0.0  xc_number_of_functionals()=679  names read back=679
+    VV10/WB97* functional names known to this build: ['gga_xc_vv10', 'hyb_gga_xc_lc_vv10', 'hyb_gga_xc_wb97', 'hyb_gga_xc_wb97x', 'hyb_gga_xc_wb97x_d', 'hyb_gga_xc_wb97x_d3', 'hyb_gga_xc_wb97x_v', 'hyb_mgga_xc_wb97m_v', 'mgga_c_revscan_vv10', 'mgga_c_scan_rvv10', 'mgga_c_scan_vv10', 'mgga_c_scanl_rvv10', 'mgga_c_scanl_vv10', 'mgga_xc_vcml_rvv10']
+     gga_xc_vv10                      id=255   init_rc=0  b=5.9        C=0.0093    
+     hyb_gga_xc_lc_vv10               id=469   init_rc=0  b=6.3        C=0.0089    
+     hyb_gga_xc_wb97                  id=463   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x                 id=464   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x_d               id=471   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x_d3              id=399   init_rc=0  b=0          C=0         
+     hyb_gga_xc_wb97x_v               id=466   init_rc=0  b=6          C=0.01         <== the functional this project splits
+     hyb_mgga_xc_wb97m_v              id=531   init_rc=0  b=6          C=0.01      
+     mgga_c_revscan_vv10              id=585   init_rc=0  b=9.8        C=0.0093    
+     mgga_c_scan_rvv10                id=292   init_rc=0  b=15.7       C=0.0093    
+     mgga_c_scan_vv10                 id=584   init_rc=0  b=14         C=0.0093    
+     mgga_c_scanl_rvv10               id=703   init_rc=0  b=15.7       C=0.0093    
+     mgga_c_scanl_vv10                id=704   init_rc=0  b=14         C=0.0093    
+     mgga_xc_vcml_rvv10               id=652   init_rc=0  b=15.35      C=0.0093    
+    does this build even carry omega-B97X-V? YES
+
+==============================================================================
+C. Anchor table any third referee must land on
+   water dimer, 6-31g*, omega-B97X-V; this repo's explicit O(N^2) double sum
+   (same-centre) + E_loc   vs   PySCF native kernel (which is NOT libxc)
+==============================================================================
+
+  level 1: N=18368 grid pts, dropped(rho<=1e-12)=50   E_SCF=-152.76374672   b=6.0  C=0.01  beta=0.0048469003
+    integral rho = 19.999947  (N_elec = 20)
+    this repo  E_loc                 =    +60.82936 kcal/mol
+    this repo  E_NL (explicit 2-sum) =     -7.81368 kcal/mol
+    this repo  E_NLC = E_loc + E_NL  =    +53.01568 kcal/mol
+    PySCF native nr_nlc_vxc total    =    +53.01567 kcal/mol
+    diff (repo - PySCF native)       = +6.353e-06 kcal/mol   rel = 0.00001%
+    [159 s]
+
+  level 2: N=39008 grid pts, dropped(rho<=1e-12)=75   E_SCF=-152.76376460   b=6.0  C=0.01  beta=0.0048469003
+    integral rho = 19.999996  (N_elec = 20)
+    this repo  E_loc                 =    +60.82951 kcal/mol
+    this repo  E_NL (explicit 2-sum) =     -7.81377 kcal/mol
+    this repo  E_NLC = E_loc + E_NL  =    +53.01574 kcal/mol
+    PySCF native nr_nlc_vxc total    =    +53.01573 kcal/mol
+    diff (repo - PySCF native)       = +5.327e-06 kcal/mol   rel = 0.00001%
+    [346 s]
+PROBE_EXIT=0
+
+
+==========================================================================
+4. 三态判定
+==========================================================================
+NOT_APPLICABLE（主判定）—— libxc 的"nlc 接口"与本项目的口径根本不对应：
+  * 本机两份 libxc（conda-forge 5.2.3、PySCF 自带 7.0.0）导出的非局域相关符号
+    只有 xc_nlc_coef，它只回传 (b, C)；"给它网格 + 密度，它还你 E_NLC"那种入口
+    不存在（13 个候选符号逐个 ctypes 探测，见 A 节输出）。
+  * 上游最新 tag 7.1.2 的公开头文件 src/xc.h 同样只有 xc_nlc_coef（第 2 节的 grep
+    证据），且官方文档明说 van der Waals 项"cannot be evaluated with the local
+    density information provided to Libxc, and must be handled by the calling
+    program"。所以这不是"本机这份编译时被砍掉了"，而是 libxc 的接口设计如此。
+    -> 论文里可以引用这一条作为口径澄清；不能引用"libxc 算出来等于我们"。
+BLOCKED（副事实）—— 想经 Python 绑定走 libxc 也走不通：无 xc4 / libxc /
+  libxc4python / pylibxc 可导入；python3-venv 缺失；PyPI 上这几个名字 404。
+  要真拿到带非局域网格接口的 libxc（若存在），得自己从源码编一份（本机有
+  gcc / make / cmake / gfortran，缺 libtool）。超出本次授权范围，未做。
+
+5. 逐档差值表
+==========================================================================
+  档位                         本仓库 nlcsplit/nlc.py      libxc 给的同量        差
+  ---------------------------------------------------------------------------
+  E_NLC (water dimer, level 1)     +53.01568 kcal/mol       无此量（见第 4 节）  n/a
+  E_NLC (water dimer, level 2)     +53.01574 kcal/mol       无此量              n/a
+  b  (omega-B97X-V 用)                  6.0                 6.0  (xc_nlc_coef)   0
+  C  (omega-B97X-V 用)                 0.01                 0.01 (xc_nlc_coef)   0
+     （libxc 5.2.3 与 7.0.0 两份独立构建给同一对值；顺带实测 libxc 原生
+      gga_xc_vv10 = b 5.9 / C 0.0093、mgga_c_scan_rvv10 = 15.7 / 0.0093，
+      说明 xc_nlc_coef 是真按泛函取参，不是把任何 VV10 都填成 6 / 0.01。）
+  ---------------------------------------------------------------------------
+  同一张网格上本仓库 vs PySCF 原生核（同一程序库里的另一套实现，不算独立程序，
+  仅内部一致性）：
+    level 1: 绝对差 +6.353e-06 kcal/mol（相对 1.2e-5 %），N=18368
+    level 2: 绝对差 +5.327e-06 kcal/mol（相对 1.0e-5 %），N=39008
+  跨程序对照用的仍是 ORCA：水二聚体 SSP 差 4.0e-04 kcal/mol（logs/orca_anchor.json）。
+  注意绝对值不可跨程序比：本仓库 level 1 绝对值 +53.0157 对 ORCA 的
+  "NL Energy, E(C,NL)" +52.9356 差 0.080 kcal/mol，这是网格不同造成的（ORCA 用自己的
+  NL 网格 Lebedev-110/IntAcc 4.004，我们 grids.level=1），只有在做 dimer - monomer
+  超位置差时 β∫ρ 与网格误差才相消。
+
+6. 任务点名要查的那件事：libxc 的 vv10 给的是完整 E_NLC（含 β∫ρ）还是只有双重和？
+==========================================================================
+本机不可测 —— 两份 libxc 都不返回任何 VV10 能量，"两个不同归一化的密度"那个区分
+实验没有对象可跑，故未执行。不猜。
+（已实测的是 PySCF 原生核的口径：nr_nlc_vxc 的第二返回值 = E_loc + 双重和 = 完整项，
+ 见 C 节两档 6e-6 / 5e-6 的一致。ORCA 的 E(C,NL) 也是完整项这一条来自
+ logs/orca_anchor.json 的 sign_convention_note，是上一轮 agent 的记录，本轮未复验，
+ 标 UNVERIFIED。）
+
+7. 本轮未测 / 不成立的表述（一律 UNVERIFIED，别进论文）
+==========================================================================
+  * "libxc 的某个版本/某个构建里有 xc_nld_vxc 这样的非局域网格接口" —— 未证实。
+    我用 gitlab API 探测 7.1.2 的 src/ 树时分页与文件路径可能不完整，只确证了
+    公开头文件 src/xc.h 里没有。
+  * ORCA E(C,NL) 含 β∫ρ —— 沿用上轮记录，本轮未复验。
+  * 19936 那个点数（atom_partition 网格）—— 本轮未跑，未复验。
+
+8. 环境事实（本轮实测）
+==========================================================================
+  水二聚体 scf_grid(omega-B97X-V, 6-31g*)：level 1 -> 18368 点，level 2 -> 39008 点；
+  ∫rho = 19.999947 / 19.999996（N_elec = 20）；被 rho<=1e-12 门槛丢掉的点 50 / 75。
+  任务书里提到的 18368 已复现（level 1 常规网格）。
+  单档显式双重和耗时 159 s(level 1) / 346 s(level 2)（OMP_NUM_THREADS=3）。
+  脚本与日志：日志 = 本文件；一次性 probe 脚本未收进仓库（任务书要求"真跑通了才建
+  nlcsplit/examples/libxc_referee.py"，本轮没跑到 libxc 的能量，故未建），路径见文件头。

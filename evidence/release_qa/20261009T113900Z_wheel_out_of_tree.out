@@ -1,0 +1,30 @@
+# 树外验证 20261009T113900Z —— wheel 内容能否被一个装了它的解释器跑起来
+# git HEAD 39bba4840edc5179c014ab9a69df8521eef6a289   wheel sha256=7bdcb6f60ea8d7936a0966066e4cc99043d77c6877d52c7d70d57f580080bfd9   size=124606
+# 方法：pip install --no-deps --target /tmp/winst_20261009T113900Z  然后 cd /tmp 且 PYTHONPATH 只指该目录，
+#        用 python3 -m pytest --pyargs nlcsplit.tests -q。
+# 与 2026-10-05 那次不同的地方，写清楚而不是混过去：那次用的是新建 venv；本机现在
+#        python3 -m venv 直接失败（python3-venv/ensurepip 不在，见下面 venv 探测原文），
+#        三个历史 venv 目录里连 numpy 都没有。所以这次的隔离粒度是
+#        "+target 目录 + 仓库不在 sys.path"，不是独立解释器；它证明的是 wheel 自带内容可跑，
+#        不证明与系统 site-packages 无冲突。
+--- verbatim: venv probe (why not a venv) ---
+The virtual environment was not created successfully because ensurepip is not
+available.  On Debian/Ubuntu systems, you need to install the python3-venv
+package using the following command.
+
+    apt install python3.10-venv
+
+You may need to use sudo with that command.  After installing the python3-venv
+package, recreate your virtual environment.
+
+Failing command: /tmp/probe_v_20261009T113900Z/bin/python3
+
+--- verbatim: pip install --target ---
+Processing ./dist/nlcsplit-0.1.0-py3-none-any.whl
+Installing collected packages: nlcsplit
+Successfully installed nlcsplit-0.1.0
+import_path_seen_by_the_test_run=/tmp/winst_20261009T113900Z/nlcsplit/nlc.py
+--- verbatim: pytest --pyargs (out of tree) ---
+......s...............ss...................................              [100%]
+56 passed, 3 skipped in 404.44s (0:06:44)
+pip_rc=0 venv_probe_rc=1 pytest_rc=0

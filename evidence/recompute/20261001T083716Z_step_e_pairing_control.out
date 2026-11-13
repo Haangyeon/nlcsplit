@@ -1,0 +1,61 @@
+== ARCHIVE: definition-sensitivity control (step_e_kernel.py), cross pairing vs same-centre ==
+
+Why this file exists. paper/software.md row S5 said, of these very numbers, that "no tracked
+file in this repository holds these three values, so they are re-measurable but not checkable
+against stored stdout". This run closes that: it is the same script, the same four systems and
+the same grid levels, with its stdout now in a manifest-ed evidence directory.
+
+Command: OMP_NUM_THREADS=4 PYTHONPATH=. python3 -u nlcsplit/step_e_kernel.py
+Environment: WSL Linux, Python 3.10.12, PySCF 2.12.1 (~/.local), NumPy 2.2.6, basis 6-31g*,
+xc wb97x_v. The script's own driver picks the levels - H2O/Ar/CH4 at level 1, benzene at
+level 0 ("偏差不等网格收敛（step_b 已证），所以大分子用低 level 换可算性"), so the level is a
+property of each row, not one number for the whole table.
+
+Reading the table. "V0 现状" is the cross pairing g = w0(r_j)R^2 + kappa(r_i), which an
+earlier implementation of ours used; "V2 同点" is the same-centre pairing the package now
+defaults to. The column "与参照核差" is this package's explicit double sum minus PySCF's
+native libdft VV10 kernel on one grid and one density, in kcal/mol, for the monomer.
+V2 reproduces the native kernel to +0.0000 at the printed precision on all four systems,
+which is the sense in which same-centre is "the convention that reproduces the native kernel".
+
+What this run changed in the prose. Two claims did not survive it.
+
+  1. paper/software.md gave the benzene figure as 0.914 kcal/mol and labelled all three
+     values "at grid level 1". Measured here, benzene at level 0 is +0.9057, which is what
+     paper/main.md already said; 0.914 is not reproduced by any tracked artefact, and the
+     level-1 label was wrong for water and argon, which this script runs at level 1 alongside
+     a level-0 benzene. software.md now carries 0.906 with per-value levels.
+  2. Neither paper mentioned methane, which is in the same run: +0.1346 kcal/mol at level 1.
+
+The two papers had been disagreeing with each other about one number (0.914 vs 0.906) while
+both cited the same source row S5. That is what a missing carrier costs.
+
+--- verbatim stdout follows ---
+
+H2O  N=9184  参照核总=+26.7654  E_loc=+30.4146 kcal/mol
+   V0 现状                总=+26.9033  与参照核差=+0.1379  相对=0.515%   4s
+   V1 交换                总=+26.9033  与参照核差=+0.1379  相对=0.515%   4s
+   V2 同点                总=+26.7654  与参照核差=+0.0000  相对=0.000%   5s
+   V3 κ=(3π²/2)^1/3     总=+26.0369  与参照核差=-0.7285  相对=2.722%   3s
+   V4 κ=(3π²)^1/3       总=+27.8666  与参照核差=+1.1012  相对=4.114%   2s
+
+Ar  N=5112  参照核总=+48.4749  E_loc=+54.7466 kcal/mol
+   V0 现状                总=+48.8931  与参照核差=+0.4182  相对=0.863%   1s
+   V1 交换                总=+48.8931  与参照核差=+0.4182  相对=0.863%   1s
+   V2 同点                总=+48.4749  与参照核差=+0.0000  相对=0.000%   1s
+   V3 κ=(3π²/2)^1/3     总=+47.4633  与参照核差=-1.0116  相对=2.087%   2s
+   V4 κ=(3π²)^1/3       总=+50.4860  与参照核差=+2.0112  相对=4.149%   1s
+
+CH4  N=13352  参照核总=+25.9766  E_loc=+30.4157 kcal/mol
+   V0 现状                总=+26.1112  与参照核差=+0.1346  相对=0.518%   5s
+   V1 交换                总=+26.1112  与参照核差=+0.1346  相对=0.518%   4s
+   V2 同点                总=+25.9766  与参照核差=+0.0000  相对=0.000%   5s
+   V3 κ=(3π²/2)^1/3     总=+25.0928  与参照核差=-0.8838  相对=3.402%   9s
+   V4 κ=(3π²)^1/3       总=+27.2550  与参照核差=+1.2784  相对=4.921%   9s
+
+benzene  N=9352  参照核总=+101.2921  E_loc=+127.8532 kcal/mol
+   V0 现状                总=+102.1978  与参照核差=+0.9057  相对=0.894%   2s
+   V1 交换                总=+102.1978  与参照核差=+0.9057  相对=0.894%   1s
+   V2 同点                总=+101.2921  与参照核差=+0.0000  相对=0.000%   1s
+   V3 κ=(3π²/2)^1/3     总=+96.6678  与参照核差=-4.6243  相对=4.565%   1s
+   V4 κ=(3π²)^1/3       总=+108.5278  与参照核差=+7.2357  相对=7.143%   2s

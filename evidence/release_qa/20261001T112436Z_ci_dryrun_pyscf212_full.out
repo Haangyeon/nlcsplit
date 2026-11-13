@@ -1,0 +1,45 @@
+== ARCHIVE: local CI dry-run, matrix arm pyscf=2.12.1 ==
+
+Second matrix arm of the same local CI dry-run described in the 2.14.0 file. Steps 2 and 3
+of .github/workflows/ci.yml, full suite including -m slow, in-tree and then out-of-tree with
+--pyargs, against pip install --target ~/cilibs/p212 of pyscf==2.12.1 plus this tree.
+
+This is the version every archived number in this repository was produced under, so its
+purpose here is not to discover new behaviour but to show the suite has not quietly become
+version-exclusive: both arms of the CI matrix have to be green for the workflow to be worth
+pushing.
+
+--- dry-run log follows ---
+
+== ARM pyscf 2.12.1 | lib <CLUSTER_HOME>/cilibs/p212 ==
+-- 磁盘 --
+/dev/sdd       1007G  186G  771G  20% /
+-- 安装 pyscf==2.12.1 到 <CLUSTER_HOME>/cilibs/p212 --
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+tensorflow 2.21.0 requires h5py<3.15.0,>=3.11.0, but you have h5py 3.16.0 which is incompatible.
+torch 2.12.0+cu126 requires setuptools<82, but you have setuptools 84.0.0 which is incompatible.
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+install_rc=0
+-- 把本树装进同一个 target（模拟 CI 的 pip install .）--
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+tree_install_rc=0
+-- 实际解析到的模块 --
+python 3.10.12 | pyscf 2.12.1 <CLUSTER_HOME>/cilibs/p212/pyscf/__init__.py
+numpy 2.2.6
+nlcsplit <REPO>/nlcsplit/__init__.py
+
+== CI step 2: 树内全量（含 slow）==
+.....................................................................    [100%]
+69 passed in 673.47s (0:11:13)
+EXIT_STEP2=0
+
+== CI step 3: 树外 --pyargs 全量（含 slow）==
+.......................................s.............................    [100%]
+68 passed, 1 skipped in 545.01s (0:09:05)
+EXIT_STEP3=0
+
+DONE ARM 212

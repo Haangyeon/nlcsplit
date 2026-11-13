@@ -1,0 +1,58 @@
+== ARCHIVE: local CI dry-run, matrix arm pyscf=2.14.0 ==
+
+What this is. The GitHub workflow (.github/workflows/ci.yml) has never executed, because the
+repository is still private and public is the author's action to take. The three predictions
+about where it would go red were made earlier; this run tests two of them locally instead of
+waiting on the remote: (a) API drift in nlc_coeff / get_partition between PySCF 2.12.1 and
+2.14.0, and (c) the path assumptions of the out-of-tree step.
+
+It reproduces steps 2 and 3 of the job, verbatim, in the order the job runs them:
+  step 2  python -m pytest -q                  (working tree, full suite including -m slow)
+  step 3  python -m pytest -q --pyargs nlcsplit -p no:cacheprovider   (cwd /tmp)
+against an install built with pip install --target ~/cilibs/p214 of pyscf==2.14.0, numpy,
+pytest, plus this tree --no-deps.
+
+Result: step 2 69 passed in 576.08s with nothing skipped; step 3 68 passed and 1 skipped in
+824.43s. The skip is the S22 geometry fetch, which is by design and which only appears
+out of tree, because in the working tree the downloaded geometry is present. Prediction (a)
+did not materialise: 2.14.0 runs the whole suite, slow tests included, without an API error.
+
+Why ~/cilibs and not /tmp. An earlier attempt installed into /tmp/ci214lib; WSL restarted,
+/tmp was cleared, and the run silently fell back to the pyscf 2.12.1 in ~/.local while the
+log still said 2.14. The header line printed by the script resolves pyscf.__file__, which is
+what makes this claim checkable rather than asserted.
+
+--- dry-run log follows ---
+
+== ARM pyscf 2.14.0 | lib <CLUSTER_HOME>/cilibs/p214 ==
+-- 磁盘 --
+/dev/sdd       1007G  185G  771G  20% /
+-- 安装 pyscf==2.14.0 到 <CLUSTER_HOME>/cilibs/p214 --
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+tensorflow 2.21.0 requires h5py<3.15.0,>=3.11.0, but you have h5py 3.16.0 which is incompatible.
+torch 2.12.0+cu126 requires setuptools<82, but you have setuptools 84.0.0 which is incompatible.
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+install_rc=0
+-- 把本树装进同一个 target（模拟 CI 的 pip install .）--
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+tree_install_rc=0
+-- 实际解析到的模块 --
+python 3.10.12 | pyscf 2.14.0 <CLUSTER_HOME>/cilibs/p214/pyscf/__init__.py
+numpy 2.2.6
+nlcsplit <REPO>/nlcsplit/__init__.py
+
+== CI step 2: 树内全量（含 slow）==
+.....................................................................    [100%]
+69 passed in 576.08s (0:09:36)
+EXIT_STEP2=0
+
+== CI step 3: 树外 --pyargs 全量（含 slow）==
+.......................................s.............................    [100%]
+68 passed, 1 skipped in 824.43s (0:13:44)
+EXIT_STEP3=0
+
+DONE ARM 214

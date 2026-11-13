@@ -1,0 +1,44 @@
+# wheel 成员逐字节比对
+# A = <REPO>/dist/nlcsplit-0.1.0-py3-none-any.whl
+#     sha256=72e61ab5363f7ef9c5d4ef8420068d3f404d342ce1cf6051b76fab15cadc9260  size=124998
+# B = <REPO>/scratch/wheel_qa_20261013T142600Z/build/nlcsplit-0.1.0-py3-none-any.whl
+#     sha256=857188255645f5661b5a21cd5cd33af314c9bb0bf5964301377cd2dc36630708  size=180621
+
+A 成员数=39  B 成员数=46  两边都有=39  哈希相同=32  哈希不同=7  只在A=0  只在B=7
+  only-B  nlcsplit/examples/check_screen_bound_ide.py
+  only-B  nlcsplit/examples/coretail_bound.py
+  only-B  nlcsplit/examples/hybrid_nearfield.py
+  only-B  nlcsplit/examples/probe_bound_forms.py
+  only-B  nlcsplit/fastpair_ide.py
+  only-B  nlcsplit/tests/test_crossfamily_schemes.py
+  only-B  nlcsplit/tests/test_fastpair_ide.py
+  DIFF    nlcsplit-0.1.0.dist-info/METADATA
+          A=91ab3bc043e3c6cbc3cfb44cc0de9165cd4d0030ddffba7c9dd35d8c23ac9127
+          B=aed687a4210db9c696a9f0f7c10828b3e4e3d0bee0012273eeaaf1ea194f8c9b
+  DIFF    nlcsplit-0.1.0.dist-info/RECORD
+          A=37eee6205f1491623d169186cd098c6064d8f9fd73c9ba1f362cc22496cacce2
+          B=b1ddf07568b0bd0c8d0e250c47b76e0c20f3a90da9b406b9b0b6058186400d24
+  DIFF    nlcsplit-0.1.0.dist-info/WHEEL
+          A=95353a07a7887d8a224094d935cf9fc9a47a0692fa7a14f3537c466319f69fc9
+          B=61532836a2b3111b7ec23519c09df7c41180c27165fb872a6d8913b566b88ad1
+  DIFF    nlcsplit/figures.py
+          A=e63832e3c9c187b6b3f4e1eead343cb4b9c9b55f40213e0d1a2858856c928bc6
+          B=317997d4ca5a06fb4c3a3ed0216091a85da8ee0aa319dcfc0348c7ab96a330c2
+  DIFF    nlcsplit/partition.py
+          A=d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+          B=ec6c0c569241fc7df1f842cce3474f329ba81254c8872a8f5057ca94be4fdc73
+  DIFF    nlcsplit/step_m_ccsdt.py
+          A=0e55d808af3fae6432052ca2f5eee78aa24ca74d3ca4579f429a7462b83c6a33
+          B=b24d1100e034f1ff7d4d1d8a87401cedefb49bb0c76d5e134a4ffe6faf6728dd
+  DIFF    nlcsplit/tests/test_regression.py
+          A=157ec691a0ff1d0a8efffca10ef118960caf8b9aee4591815071cb7ec607e5d0
+          B=4ea5f76efac36d779e9b5a849d53ffcd9c7633f5c5191ae894141d62f14ad361
+
+被测内容成员（nlcsplit/**.py）=34，其中逐字节相同=30
+  被测内容变了: nlcsplit/figures.py
+  被测内容变了: nlcsplit/partition.py
+  被测内容变了: nlcsplit/step_m_ccsdt.py
+  被测内容变了: nlcsplit/tests/test_regression.py
+
+VERDICT REFUSED —— 除 METADATA/RECORD 之外还有 12 处差异，正文不许说'只动容器哈希'
+# exit=1 at 2026-10-13T14:26:09Z

@@ -1,0 +1,35 @@
+{
+ "artifact_kind": "chemical_controls_summary",
+ "dative": {
+  "BN_A": 1.6677,
+  "span_L1": 0.071,
+  "span_L2": 0.071,
+  "pint_L1": {
+   "becke": -2.0039,
+   "becke-becke-rad": -2.0728,
+   "becke-treutler": -2.0322,
+   "stratmann": -2.0018
+  },
+  "dnlc_L1": -1.9748,
+  "dnlc_L2": -1.9753,
+  "orca_dnlc": -1.9711,
+  "diff_pct_L1": 0.19,
+  "diff_pct_L2": 0.21
+ },
+ "ionic": {
+  "FO_A": 2.4604,
+  "span_L1": 0.0828,
+  "span_L2": 0.0825,
+  "pint_L1": {
+   "becke": -1.0895,
+   "becke-becke-rad": -1.0067,
+   "becke-treutler": -1.043,
+   "stratmann": -1.0771
+  },
+  "dnlc_L1": -0.9875,
+  "dnlc_L2": -0.9877,
+  "orca_dnlc": -0.985,
+  "diff_pct_L1": 0.26,
+  "diff_pct_L2": 0.28
+ }
+}

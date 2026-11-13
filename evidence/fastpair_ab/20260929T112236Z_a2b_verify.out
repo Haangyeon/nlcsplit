@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/Administrator/AppData/Local/Temp/a2b/verify2.py", line 252, in <module>
+    main()
+  File "/mnt/c/Users/Administrator/AppData/Local/Temp/a2b/verify2.py", line 223, in main
+    rec = system(tag, label, mol, frags, level, note)
+  File "/mnt/c/Users/Administrator/AppData/Local/Temp/a2b/verify2.py", line 129, in system
+    rec["ide_full"] = pack_ide(idef, frags)
+  File "/mnt/c/Users/Administrator/AppData/Local/Temp/a2b/verify2.py", line 88, in pack_ide
+    for (a, bb), v in r["blocks"].items():
+ValueError: too many values to unpack (expected 2)
+EXIT=1
+[(H2O)2 geomlib lvl1] lvl1 done  cert_ours=1.278e-04 act_ours=2.346e-05  ide tau1e-8 drop=0  ide tau1e2 cert=0.000e+00 act=0.000e+00  True
+  dnlc: A=-0.515327 B=-0.516360 ours=-0.515327 ide=-0.515327  ORCA=-4.325230445017797
+[水二聚体 S22_02 lvl1] lvl1 done  cert_ours=1.335e-04 act_ours=2.480e-05  ide tau1e-8 drop=0  ide tau1e2 cert=0.000e+00 act=0.000e+00  True
+  dnlc: A=-0.593673 B=-0.594569 ours=-0.593673 ide=-0.593673  ORCA=-0.593094309267413
+[苯二聚体(A) S22_11 lvl0] lvl0 done  cert_ours=5.051e-04 act_ours=7.357e-05  ide tau1e-8 drop=0  ide tau1e2 cert=0.000e+00 act=0.000e+00  True
+  dnlc: A=-4.438621 B=-4.023149 ours=-4.438621 ide=-4.438621  ORCA=-4.325230445017797
+WROTE <REPO>/nlcsplit/logs/fastpair_ab_compare.json
+EXIT=0

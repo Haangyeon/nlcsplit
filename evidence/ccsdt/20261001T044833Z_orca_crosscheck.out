@@ -1,0 +1,120 @@
+== CORRECTION, added 2026-10-01 after this file was written ==
+
+Two claims in the header below are superseded by
+20261001T052943Z_orca_crosscheck_three_systems.out, and both were ours, not the runs'.
+
+(1) The header says both programs "report 18 basis functions for a water monomer in 6-31G*,
+    so the d shells carry the same convention - the mismatch that would have produced a 1e-2
+    offset is not present, and this was checked rather than assumed". The field read for
+    that, ORCA's "Number of basis functions", is not an identity criterion: for the same
+    monomer in aug-cc-pVDZ that field prints 47, while ORCA's own SCF and coupled-cluster
+    sections print 41 - which is PySCF's nao. The 6-31G* numbers coinciding at 18 was a
+    property of that field in that basis, so the sentence over-described a real check. The
+    replacement reads ORCA's AO dimension against the PySCF nao for all 24 runs and reports
+    24/24 same space.
+(2) The plan here is water only. The anchor is now three systems - water at two bases,
+    ammonia and methane - and the worst cross-program difference over the wider plan is
+    still 0.0002 kcal/mol.
+
+Nothing in the stdout below is changed: both executions ran and their numbers stand. Only
+what was claimed about them moved.
+
+--- end of correction ---
+
+== ARCHIVE: ORCA 6.0.1 recomputes the CCSD(T) counterpoise anchor (two executions) ==
+
+Why this exists. Every CCSD(T) number in this directory came out of one program (PySCF's
+own cc/mp modules), and the paper compares them against our functional. This repository has
+already had to repair an argument of exactly that shape - "checked against a second
+implementation" that turned out to live inside the same library - so the same question is
+asked here with a genuinely different program: same geometries, same basis, same counterpoise
+convention, ORCA 6.0.1 instead of PySCF. Producer: `orca_crosscheck.py`.
+
+Execution 1 was taken with the script's first verdict bar, 0.02 kcal/mol. That bar was too
+loose to be a test: the difference a d-shell convention mismatch (6d vs 5d) would produce is
+0.01-0.1 kcal/mol, i.e. it would have passed without a word. The bar is now 0.001 kcal/mol -
+three decimal places in kcal/mol, which is what two programs sharing a basis are expected to
+reach on an interaction energy - and execution 2 is the same measurement under it.
+
+    execution 1:  worst |ORCA - PySCF| = 0.0002
+    execution 2:  worst |ORCA - PySCF| = 0.0003   (bar 0.001)  ->  agree to three decimals
+
+The two executions differ by ~1e-4 kcal/mol on one row (aug-cc-pVDZ all-electron), which is
+ORCA's own run-to-run repeatability on this quantity. That is worth stating rather than
+smoothing: the ORCA-PySCF difference is the same order as each program's own scatter, so
+"0.0002" should be read as "at the level of the noise these runs have", not as a
+calibrated two-program error bar.
+
+Two conditions make the agreement meaningful rather than lucky. Both programs report 18
+basis functions for a water monomer in 6-31G*, so the d shells carry the same convention -
+the mismatch that would have produced a 1e-2 offset is not present, and this was checked
+rather than assumed. And the frozen-core convention of each ORCA run is read back from its
+own output (`Frozen core treatment ... chemical core (4 el)` on the dimer, `(2 el)` on a
+monomer, `NO frozen core` for the all-electron rungs) instead of being assumed from the
+input keyword.
+
+Absolute energies are tighter than the interaction energies, as they should be: the dimer's
+CCSD(T) energy agrees between programs to 1.0-1.2e-07 Ha and the monomer sums to 2.8-4.6e-07
+Ha, across all four rungs of execution 1.
+
+--- execution 1 stdout below ---
+== ORCA cross-check of the CCSD(T) counterpoise anchor ==
+  ORCA: <CLUSTER_HOME>/orca6/orca   nprocs=4 maxcore=4000 MB   workdir=<REPO>/scratch/orca_ccsdt
+  水二聚体_6-31Gstar_fc_dimer.out              dimer  E=-152.4204260351  ok=True  frozen_core_electrons=4  correlated=16
+  水二聚体_6-31Gstar_fc_mono0.out              mono0  E=-76.2047712847  ok=True  frozen_core_electrons=2  correlated=8
+  水二聚体_6-31Gstar_fc_mono1.out              mono1  E=-76.2047289518  ok=True  frozen_core_electrons=2  correlated=8
+  --- 6-31G*  frozen core  ->  dE_CP = -6.8560 kcal/mol   (PySCF -6.8559  diff -0.0001)
+  水二聚体_6-31Gstar_ae_dimer.out              dimer  E=-152.4233209969  ok=True  frozen_core_electrons=0  correlated=20
+  水二聚体_6-31Gstar_ae_mono0.out              mono0  E=-76.2061938857  ok=True  frozen_core_electrons=0  correlated=10
+  水二聚体_6-31Gstar_ae_mono1.out              mono1  E=-76.2061519441  ok=True  frozen_core_electrons=0  correlated=10
+  --- 6-31G*  all-electron  ->  dE_CP = -6.8870 kcal/mol   (PySCF -6.8869  diff -0.0001)
+
+  水二聚体_aug-cc-pVDZ_fc_dimer.out            dimer  E=-152.5559706220  ok=True  frozen_core_electrons=4  correlated=16
+  水二聚体_aug-cc-pVDZ_fc_mono0.out            mono0  E=-76.2738127710  ok=True  frozen_core_electrons=2  correlated=8
+  水二聚体_aug-cc-pVDZ_fc_mono1.out            mono1  E=-76.2737946218  ok=True  frozen_core_electrons=2  correlated=8
+  --- aug-cc-pVDZ  frozen core  ->  dE_CP = -5.2480 kcal/mol   (PySCF -5.2478  diff -0.0002)
+  水二聚体_aug-cc-pVDZ_ae_dimer.out            dimer  E=-152.5606180040  ok=True  frozen_core_electrons=0  correlated=20
+  水二聚体_aug-cc-pVDZ_ae_mono0.out            mono0  E=-76.2760716785  ok=True  frozen_core_electrons=0  correlated=10
+  水二聚体_aug-cc-pVDZ_ae_mono1.out            mono1  E=-76.2760563389  ok=True  frozen_core_electrons=0  correlated=10
+  --- aug-cc-pVDZ  all-electron  ->  dE_CP = -5.3275 kcal/mol   (PySCF -5.3273  diff -0.0002)
+
+== summary ==
+  basis          convention         ORCA      PySCF       diff
+  6-31G*         frozen          -6.8560    -6.8559    -0.0001
+  6-31G*         all-e           -6.8870    -6.8869    -0.0001
+  aug-cc-pVDZ    frozen          -5.2480    -5.2478    -0.0002
+  aug-cc-pVDZ    all-e           -5.3275    -5.3273    -0.0002
+  worst |ORCA - PySCF| = 0.0002 kcal/mol
+  VERDICT: two programs agree
+EXIT=0
+
+--- execution 2 stdout below (same script, verdict bar now 0.001) ---
+== ORCA cross-check of the CCSD(T) counterpoise anchor ==
+  ORCA: <CLUSTER_HOME>/orca6/orca   nprocs=4 maxcore=4000 MB   workdir=<REPO>/scratch/orca_ccsdt
+  水二聚体_6-31Gstar_fc_dimer.out              dimer  E=-152.4204260330  ok=True  frozen_core_electrons=4  correlated=16
+  水二聚体_6-31Gstar_fc_mono0.out              mono0  E=-76.2047712838  ok=True  frozen_core_electrons=2  correlated=8
+  水二聚体_6-31Gstar_fc_mono1.out              mono1  E=-76.2047289509  ok=True  frozen_core_electrons=2  correlated=8
+  --- 6-31G*  frozen core  ->  dE_CP = -6.8560 kcal/mol   (PySCF -6.8559  diff -0.0001)
+  水二聚体_6-31Gstar_ae_dimer.out              dimer  E=-152.4233209948  ok=True  frozen_core_electrons=0  correlated=20
+  水二聚体_6-31Gstar_ae_mono0.out              mono0  E=-76.2061938851  ok=True  frozen_core_electrons=0  correlated=10
+  水二聚体_6-31Gstar_ae_mono1.out              mono1  E=-76.2061519435  ok=True  frozen_core_electrons=0  correlated=10
+  --- 6-31G*  all-electron  ->  dE_CP = -6.8870 kcal/mol   (PySCF -6.8869  diff -0.0001)
+
+  水二聚体_aug-cc-pVDZ_fc_dimer.out            dimer  E=-152.5559706265  ok=True  frozen_core_electrons=4  correlated=16
+  水二聚体_aug-cc-pVDZ_fc_mono0.out            mono0  E=-76.2738127649  ok=True  frozen_core_electrons=2  correlated=8
+  水二聚体_aug-cc-pVDZ_fc_mono1.out            mono1  E=-76.2737946158  ok=True  frozen_core_electrons=2  correlated=8
+  --- aug-cc-pVDZ  frozen core  ->  dE_CP = -5.2480 kcal/mol   (PySCF -5.2478  diff -0.0002)
+  水二聚体_aug-cc-pVDZ_ae_dimer.out            dimer  E=-152.5606180083  ok=True  frozen_core_electrons=0  correlated=20
+  水二聚体_aug-cc-pVDZ_ae_mono0.out            mono0  E=-76.2760716701  ok=True  frozen_core_electrons=0  correlated=10
+  水二聚体_aug-cc-pVDZ_ae_mono1.out            mono1  E=-76.2760563306  ok=True  frozen_core_electrons=0  correlated=10
+  --- aug-cc-pVDZ  all-electron  ->  dE_CP = -5.3276 kcal/mol   (PySCF -5.3273  diff -0.0003)
+
+== summary ==
+  basis          convention         ORCA      PySCF       diff
+  6-31G*         frozen          -6.8560    -6.8559    -0.0001
+  6-31G*         all-e           -6.8870    -6.8869    -0.0001
+  aug-cc-pVDZ    frozen          -5.2480    -5.2478    -0.0002
+  aug-cc-pVDZ    all-e           -5.3276    -5.3273    -0.0003
+  worst |ORCA - PySCF| = 0.0003 kcal/mol   (bar for agreement: 0.001)
+  VERDICT: two programs agree to three decimals
+EXIT=0

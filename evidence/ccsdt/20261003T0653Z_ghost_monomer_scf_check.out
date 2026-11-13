@@ -1,0 +1,55 @@
+== ARCHIVE: 每一个鬼单体的 SCF 都收敛了，而且都在自己的裸单体之下 ==
+
+为什么单独查这一件事。阶梯本身已经把反泊松需要的两条结构不变量断言了（单体的基组维数等于
+复合物、单体电子数少于复合物），但它打印的是**复合物**那一侧的 RHF/CCSD 收敛标志，鬼单体
+那一侧没印。一次没收敛的鬼单体 SCF 不会报错，只会让相互作用能偏掉——而这正是本目录
+2026-10-03 那份更正的形状：两个数各自都像一个能量，只有差暴露问题。
+
+判据不只是 converged 标志，还有一条方向性检查：鬼构造是"同样的核、更多的函数"，所以它的
+RHF 能量必须**不高于**裸单体；如果它更高，那两侧算的压根不是同一个态，反泊松数没有意义。
+这一条是独立于 SCF 迭代标志的第二种失败模式，所以两个都查。
+
+为什么这两行断言不直接加进 `nlcsplit/step_m_ccsdt.py`：那会让 51024（aug 批）用的代码与
+51023（6-31g\* 批）用的代码不是同一份，而原因只是诊断。所以检查放在 evidence 这一侧：
+构造用的还是包里那两条函数（`build` 与 `cp_frag_specs`），但 SCF 是这里自己起的——正因为
+阶梯没有把单体那一侧的收敛标志暴露出来，才需要另起一次。等两批都落地后再把那两行断言并进
+发布代码，本档案覆盖的是 b24d1100 那一版跑出来的数。
+
+机器与条件：本机 WSL，Python 3.10.12 / PySCF 2.12.1，OMP_NUM_THREADS=8，6-31g\*，
+八个体系（与正文 §3.2 同一套），官方 S22 初始几何。生产者 `ghost_monomer_scf_check.py`。
+表里复合物那一列的 RHF 参考与本目录各档案一致（例如水 −152.0272662226），
+即这份检查读的是同一批几何与基组。
+
+--- verbatim output follows ---
+
+== ghost-monomer SCF check for the counterpoise anchor ==
+  s22 dir=<REPO>/scratch/lit/s22   bases=['6-31g*']   rho threshold: an unconverged SCF is reported by PySCF's own converged flag, which is what this reads
+
+  system       basis        part        nao converged         E(RHF)    bare E(RHF) dHa(ghost-bare)
+  水二聚体         6-31g*       complex      36      True -152.0272662226              -          -
+  水二聚体         6-31g*       ghost0       36      True -76.0095173896 -76.0089534181  -0.000564
+  水二聚体         6-31g*       ghost1       36      True -76.0102185693 -76.0090611386  -0.001157
+  氨二聚体         6-31g*       complex      40      True -112.3718155506              -          -
+  氨二聚体         6-31g*       ghost0       40      True -56.1842500829 -56.1834228459  -0.000827
+  氨二聚体         6-31g*       ghost1       40      True -56.1842500829 -56.1834228459  -0.000827
+  甲烷二聚体        6-31g*       complex      44      True -80.3890989545              -          -
+  甲烷二聚体        6-31g*       ghost0       44      True -40.1948473306 -40.1947633766  -0.000084
+  甲烷二聚体        6-31g*       ghost1       44      True -40.1948473306 -40.1947633766  -0.000084
+  苯-水          6-31g*       complex     114      True -306.7145917326              -          -
+  苯-水          6-31g*       ghost0      114      True -230.7026155466 -230.7019412278  -0.000674
+  苯-水          6-31g*       ghost1      114      True -76.0096919774 -76.0088309590  -0.000861
+  苯-氨          6-31g*       complex     116      True -286.8865400133              -          -
+  苯-氨          6-31g*       ghost0      116      True -230.7026116979 -230.7019698593  -0.000642
+  苯-氨          6-31g*       ghost1      116      True -56.1838168910 -56.1833725307  -0.000444
+  苯-甲烷         6-31g*       complex     118      True -270.8957993175              -          -
+  苯-甲烷         6-31g*       ghost0      118      True -230.7026519503 -230.7019961507  -0.000656
+  苯-甲烷         6-31g*       ghost1      118      True -40.1949721510 -40.1948256101  -0.000147
+  苯二聚体(A)      6-31g*       complex     192      True -461.3980350170              -          -
+  苯二聚体(A)      6-31g*       ghost0      192      True -230.7037622469 -230.7019770331  -0.001785
+  苯二聚体(A)      6-31g*       ghost1      192      True -230.7037622469 -230.7019770331  -0.001785
+  苯二聚体(B)      6-31g*       complex     192      True -461.4030730686              -          -
+  苯二聚体(B)      6-31g*       ghost0      192      True -230.7022566706 -230.7019657638  -0.000291
+  苯二聚体(B)      6-31g*       ghost1      192      True -230.7031009046 -230.7019617046  -0.001139
+
+  VERDICT: every complex and every ghost/bare monomer pair converged, and every ghost energy lies BELOW its bare counterpart (the variational direction a counterpoise construction must have). Basis dimensions checked by assertion.
+SCFCHECK_EXIT=0

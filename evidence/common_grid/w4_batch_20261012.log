@@ -1,0 +1,19 @@
+# W4 本机批 起始 20261012T054743Z  host=<OPERATOR>
+  提交 甲烷二聚体 (3 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out
+  提交 水二聚体 (3 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out
+  提交 氨二聚体 (3 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out
+  提交 苯-甲烷 (3 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_苯-甲烷_after_unitfix.out
+  提交 苯-氨 (3 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out
+波一完成 2026-10-12T06:46:03Z
+  提交 苯二聚体(A) (8 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体A_after_unitfix.out
+  提交 苯二聚体(B) (8 线程) -> 20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体B_after_unitfix.out
+波二完成 2026-10-12T08:36:44Z
+## 汇总：各格退出码
+   20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out.rc = 0
+   20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out.rc = 0
+   20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out.rc = 0
+   20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out.rc = 0
+   20261012T054743Z_hirshfeld_crossfamily_l1_苯-甲烷_after_unitfix.out.rc = 0
+   20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体A_after_unitfix.out.rc = 0
+   20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体B_after_unitfix.out.rc = 0
+# exit=0 at 2026-10-12T08:36:44Z

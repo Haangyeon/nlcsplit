@@ -1,0 +1,169 @@
+Crossref 外部元数据核验 —— paper/references.bib 全 25 条   (rev2)
+stamp 20261009T122601Z (UTC, 宿主 Git Bash 时钟) | UA refcheck/1.0 (mailto:<通讯作者机构地址，来源 paper/main.md 第 8 行；2026-10-09 由调用方把字面量换成来源指针，导出闸门 B 不许公开副本出现登录名>) | rows=3 | 阈值 0.8 | API 调用 51 次
+
+====================================================================================================
+A. 字段解析率（先自证，再看结论 —— skill 核心纪律）
+====================================================================================================
+  条目解析出来：25 条 @article
+  title    25/25  (全)
+  author   25/25  (全)
+  journal  25/25  (全)
+  year     25/25  (全)
+  volume   25/25  (全)
+  pages    25/25  (全)
+  doi      25/25  (全)
+  解析器取值自检（防空转守卫，不只是"非空"）：PASS —— kruse2019dna OK, dion2004 OK, sun2018pyscf OK, vydrov2009vv10 OK, altun2018dlpno OK, hamada2011c60au OK
+  地板判定：PASS（解析率足够，下面的比对有意义）
+
+====================================================================================================
+B. 高置信匹配（题名相似度 ≥ 0.8 且真比过 ≥2 个硬字段）
+====================================================================================================
+  MATCH 25 / MISMATCH 0 / UNVERIFIED 0  （合计 25）
+  匹配来源：检索 21 条 / 存储DOI 4 条
+  存储 DOI 对象级回查：OK 25 / 异常 0（0 条 404、0 条指错对象、0 条字段不符、0 条取数失败）
+
+====================================================================================================
+C. MISMATCH —— 硬字段（年/卷/页）实质不符，或存储 DOI 指错对象/404
+====================================================================================================
+  （无）
+====================================================================================================
+D. UNVERIFIED —— Crossref 无高置信匹配 / 无可比字段。这不是"错"，多为新文未收录或仅预印本
+====================================================================================================
+  （无）
+====================================================================================================
+E. 全表（稿件值 vs Crossref 值；Y/V/P 列格式 = 稿件值 -> 库值，比对状态见末尾括号）
+====================================================================================================
+  key                      verdict     sim    year st->cr          vol st->cr   pages st->cr           nOK doi
+  kruse2019dna             MATCH       1.000  2018 -> 2018/2019    15 -> 15     95-115 -> 95-115       3   OK
+  sinha2015fdevdw          MATCH       1.000  2015 -> 2015/2015    143 -> 143   084120 -> 084120       3   OK
+  hujo2011hbond            MATCH       1.000  2011 -> 2011/2011    13 -> 13     13942 -> 13942         3   OK
+  hamada2011c60au          MATCH       1.000  2011 -> 2011/-       83 -> 83     245437 -> 245437       3   OK
+  becke1988                MATCH       1.000  1988 -> 1988/1988    88 -> 88     2547-2553 -> 2547-2553 3   OK
+  treutler1995             MATCH       1.000  1995 -> 1995/1995    102 -> 102   346-354 -> 346-354     3   OK
+  stratmann1996            MATCH       1.000  1996 -> 1996/1996    257 -> 257   213-223 -> 213-223     3   OK
+  dion2004                 MATCH       1.000  2004 -> 2004/-       92 -> 92     246401 -> 246401       3   OK
+  mardirossian2014wb97xv   MATCH       0.930  2014 -> 2014/2014    16 -> 16     9904 -> 9904           3   OK
+  mardirossian2016wb97mv   MATCH       0.930  2016 -> 2016/2016    144 -> 144   214110 -> 214110       3   OK
+  lazic2010junolo          MATCH       1.000  2010 -> 2010/2010    181 -> 181   371-379 -> 371-379     3   OK
+  dasgupta2023             MATCH       1.000  2023 -> 2023/2024    20 -> 20     49-67 -> 49-67         3   OK
+  calbo2015vv10review      MATCH       1.000  2015 -> 2015/2015    11 -> -      37-102 -> 37-102       2   OK
+  goerigk2017gmtkn55       MATCH       1.000  2017 -> 2017/-       19 -> 19     32184-32215 -> 32184-323   OK
+  vydrov2009vv10           MATCH       1.000  2009 -> 2009/-       103 -> 103   063004 -> 063004       3   OK
+  vydrov2010simple         MATCH       1.000  2010 -> 2010/2010    133 -> 133   244103 -> 244103       3   OK
+  hyldgaard2014interp      MATCH       1.000  2014 -> 2014/-       90 -> 90     075148 -> 075148       3   OK
+  hesselmann2013nldft      MATCH       1.000  2013 -> 2012/2013    9 -> 9       273-283 -> 273-283     3   OK
+  harris2020numpy          MATCH       1.000  2020 -> 2020/2020    585 -> 585   357-362 -> 357-362     3   OK
+  sun2018pyscf             MATCH       1.000  2018 -> 2017/2018    8 -> 8       e1340 -> e1340         3   OK
+  sun2020pyscf             MATCH       1.000  2020 -> 2020/2020    153 -> 153   024109 -> 024109       3   OK
+  lehtola2018libxc         MATCH       1.000  2018 -> 2018/2018    7 -> 7       1-5 -> 1-5             3   OK
+  jurecka2006s22           MATCH       1.000  2006 -> 2006/-       8 -> 8       1985-1993 -> 1985-1993 3   OK
+  takatani2010s22          MATCH       1.000  2010 -> 2010/2010    132 -> 132   144104 -> 144104       3   OK
+  altun2018dlpno           MATCH       1.000  2018 -> 2018/-       14 -> 14     919-929 -> 919-929     3   OK
+
+====================================================================================================
+F. 软提示 / 需人工定夺（未计入 MISMATCH）
+====================================================================================================
+  * kruse2019dna [MATCH]
+      - year/OK: 软提示：稿件年 2018 命中的是**在线首发/issued**年，而卷 15 所属正刊(print)年为 2019。两个写法都站得住，但"卷-年配对"按惯例应以 print 年为准，需人工定夺。
+      - pages/OK: 起末均一致（缩写已还原）
+  * sinha2015fdevdw [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * hujo2011hbond [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * hamada2011c60au [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * becke1988 [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * treutler1995 [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * stratmann1996 [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * dion2004 [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * mardirossian2014wb97xv [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * mardirossian2016wb97mv [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * lazic2010junolo [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * dasgupta2023 [MATCH]
+      - year/OK: 软提示：稿件年 2023 命中的是**在线首发/issued**年，而卷 20 所属正刊(print)年为 2024。两个写法都站得住，但"卷-年配对"按惯例应以 print 年为准，需人工定夺。
+      - pages/OK: 起末均一致（缩写已还原）
+  * calbo2015vv10review [MATCH]
+      - volume/NO-DATA: Crossref 未给卷号
+      - pages/OK: 起末均一致（缩写已还原）
+  * goerigk2017gmtkn55 [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * vydrov2009vv10 [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * vydrov2010simple [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * hyldgaard2014interp [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * hesselmann2013nldft [MATCH]
+      - year/OK: Crossref 存在多个年份（issued 2012 / print 2013 / online 2012），稿件值命中其一
+      - pages/OK: 起末均一致（缩写已还原）
+  * harris2020numpy [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * sun2018pyscf [MATCH]
+      - year/OK: Crossref 存在多个年份（issued 2017 / print 2018 / online 2017），稿件值命中其一
+      - pages/OK: 单值（文章号或起页）相等
+  * sun2020pyscf [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * lehtola2018libxc [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * jurecka2006s22 [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+  * takatani2010s22 [MATCH]
+      - pages/OK: 单值（文章号或起页）相等
+  * altun2018dlpno [MATCH]
+      - pages/OK: 起末均一致（缩写已还原）
+
+====================================================================================================
+G. 负控 / 自检（证明这套比对能失败，不是恒真守卫）
+====================================================================================================
+  [PASS] C0-baseline                        期望 无硬分歧且≥2字段可比 | 实得 hard=0 fieldsOK=3
+        说明: 同一条未篡改记录（证明 C1–C3 的差异只来自篡改）
+  [PASS] C1-year-1901                       期望 MISMATCH | 实得 MISMATCH
+        说明: 把 becke1988 的 year 改成 1901 后重跑比对
+        读数: year: 年 1901 不等于 Crossref 任一年份 [1988]
+  [PASS] C2-volume-9999                     期望 MISMATCH | 实得 MISMATCH
+        说明: 把 becke1988 的 volume 改成 9999
+        读数: volume: 卷 9999 vs 88
+  [PASS] C3-pages-1-2                       期望 MISMATCH | 实得 MISMATCH
+        说明: 把 becke1988 的 pages 改成 1-2
+        读数: pages: 起页 1 vs 2547
+  [PASS] C4-title-sim-rejects-wrong-object  期望 sim<0.8 | 实得 sim=0.0000
+        说明: harris2020numpy 题名 vs gnomAD 题名相似度必须 < 0.8
+        读数: gnomAD 题名：The mutational constraint spectrum quantified from variation in 141,456 humans
+  [PASS] C5-stored-doi-wrong-object         期望 WRONG-OBJECT | 实得 WRONG-OBJECT
+        说明: 把 gnomAD 记录冒充 harris2020numpy 的 DOI 回查结果，闸门必须报 WRONG-OBJECT 并印出真题名
+        读数: DOI 能解析，但题名不匹配（sim 0.000）。Crossref 在该 DOI 上的记录是：「The mutational constraint spectrum quantified from variation in 141,456 humans」Nature 581 434-443（2020）—— 正是历史踩坑 a/b 的形状。
+  [PASS] C6-candidate-ranking-beats-shells  期望 journal-article + 存储DOI | 实得 journal-article + stored-doi
+        说明: 给候选池同时喂 component(type空壳,sim=1.0) / peer-review(括引题名,sim=0.93) / 存储DOI的journal-article(sim=0.9)，必须选中后者
+        读数: 被选中的是 10.1021/acs.jctc.8b00643 [journal-article]
+  [PASS] C7-page-abbrev-expansion           期望 23583,4441,115 | 实得 23583,4441,115
+        说明: 缩写还原：23578-83 -> 23578/23583、4435--41 -> 4435/4441、95-115 -> 95/115
+  [PASS] C8-mathml-title-normalizes         期望 sim>=0.8 | 实得 sim=1.000 doiFlag=OK
+        说明: APS 题名里的 MathML 必须被剥掉：hamada2011c60au 相似度应 >= 0.8
+        读数: Adsorption ofC60on Au(111) revisited: A van der Waals density functional study
+  [PASS] C9-parse-floor                     期望 25/≥20/≥20/≥20 | 实得 25/25/25/25
+        说明: 条目数=25 且 year/volume/pages 解析数各 ≥20
+  [PASS] C10-parser-anchor-values           期望 all anchors ok | 实得 kruse2019dna:OK dion2004:OK sun2018pyscf:OK vydrov2009vv10:OK altun2018dlpno:OK hamada2011c60au:OK
+        说明: 解析器必须提出**正确的**字段值（不是只提出非空值）
+  负控总体: ALL PASS | 取数总体: 全部成功
+
+====================================================================================================
+H. 方法局限（明确写出，别把没验的说成验了）
+====================================================================================================
+  1) 比对只覆盖 年/卷/页 三个硬字段（skill 规定）。作者名单、题名拼写、期号只作证据列，未判错。
+  2) 期刊名用缩写感知匹配（首字母序列 / 词集重合 ≥0.6），只报 agree=true/false，不参与 verdict，因为 RSC/IOP 缩写 vs 全名是已知假警报。
+  3) ACS/Elsevier 的"在线首发年 ≠ 正刊(print)年"在 F 段给软提示，不自动判 MISMATCH —— 卷-年配对该写哪个年份是编辑决定，不是元数据错。
+  4) Crossref 的 type 过滤器不支持 OR（实测 filter=type:journal-article,book-chapter 返回 0 条），
+     所以只能拿 rows=3 原始检索结果 + 本地类型白名单；这导致部分条目（题名检索被 SI 空壳占满时）
+     的匹配来源是"存储 DOI 精确回查"而不是主题检索，matchedVia 列已逐条标明。
+  5) UNVERIFIED 是"未验证"而不是"错"；本核验也不构成"某文献不存在"的论证——只对这 25 条做已知条目核验。
+  6) 希腊字母（如 ωB97X-V 的 ω）在归一化两侧同时被丢弃（skill 的"去非字母数字"），不影响这 25 条的判定。
+  7) 本脚本只读 paper/references.bib，不修改任何稿件文件，不重生成 MANIFEST.sha256。
+
+[EXIT-MEANING] 0 = 方法学有效且无 MISMATCH

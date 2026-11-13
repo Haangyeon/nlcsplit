@@ -1,0 +1,8 @@
+# S22 文件夹号 ↔ 官方标签 核对（正文“体系”列的出处）
+# 官方参考值表 URL   https://raw.githubusercontent.com/grimme-lab/GMTKN55/v1/S22/.res
+# 本地副本           scratch/lit/gmtkn55_S22.res
+# sha256             a43c93f575d15233298275b473977d7755010a619809a3b6c720c4699c888bd7
+# 几何目录           <REPO>/scratch/lit/s22（与满批同一份，各格 sha 见 2026*_s22_full_certificate_*.out 抬头）
+# 分子式写法         复用生产者 `s22_full_certificate.formula`（Hill），不在这儿重新发明
+!! 官方表只解析出 0 行，预期 22 行 ⇒ 解析器与格式脱钩，先修正则
+# exit=1 at 2026-10-13T22:01:08Z

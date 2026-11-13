@@ -1,0 +1,23 @@
+# 盒界总量的跨跑一致性 + 密度下限推导，两件事一份档
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD 8906165ba2e6ea6840539fe18f529c54ee9fe51c
+# sha256 nlcsplit/fastpair.py = ade60ec8be13e2df46f585de0ed86cf870c012a00add478733751e3484a1ef45
+# sha256 nlcsplit/nlc.py      = ab6241e45571ef331faf18c0bf9ae70f585442b4c316022a02936d867e70a421
+# sha256 evidence/fastpair_ab/fastpair_ab_compare.json = 455a05f6ccb18603ae61ef6d455d5fd5d51429f6bf2fe1b040beb0eab8e381ad
+
+(1) 水二聚体（geomlib 自建几何）level 1 的 Σ盒界，全精度 Ha
+    交叉对数 = 15    rho_floor = 1e-12
+    A  本脚本现算 tot_box   = 21723.20649688099
+    B  归档 JSON ((H2O)2 geomlib lvl1) = 21723.206496881437
+    C  未入库 pytest 日志     = 21723.206496881914
+    逐位相同？A==B False   A==C False   B==C False
+    A-B  绝对差 4.4747e-10 Ha   相对差 2.0599e-14
+    A-C  绝对差 9.2405e-10 Ha   相对差 4.2537e-14
+    B-C  绝对差 4.7658e-10 Ha   相对差 2.1939e-14
+    盒界与球界是否逐位相同（p2 那句 root 退化）：True
+    换算成 kcal/mol：1.3632e+07
+
+(2) 由 nlc.vv10_fields 在 rho 取到密度下限时现算（不重抄公式）
+    注意 keep=False：密度下限这点按代码口径是被判掉的，但 vv10_fields 内部用 rho_floor 兜底，所以给出的是从下方趋近的极限值
+    rho_floor = 1e-12 , sigma = 0  ->  kappa_min = 0.161992   w0_min = 2.046653e-06
+    sqrt(kappa_min / w0_min) = 281.34 bohr = 148.88 Angstrom

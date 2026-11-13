@@ -1,0 +1,33 @@
+== ARCHIVE: the 37-member wheel (with step_m_ccsdt.py shipped), tested outside the source tree ==
+
+Object under test:
+  nlcsplit-0.1.0-py3-none-any.whl  SHA-256 7e7f9d7189ca2d87850fcee57f4c4a56c73210982eac47af6067566f5e5a2d29
+  nlcsplit-0.1.0.tar.gz            SHA-256 d5eec3c98b5eb963a7a7c34617070bbd3f585c60cf5c6c0370c9f1c7ef27460f
+  wheel members 37 (was 36 in the previous archive), zero .pyc, six test modules plus
+  conftest.py and __init__.py. The added member is nlcsplit/step_m_ccsdt.py - a measurement
+  script, not a test, which is why the collected count does not move.
+
+Install and invocation were the same as the previous archive: pip3 install --no-deps --target
+<dir>, then PYTHONPATH=<dir> pytest --pyargs nlcsplit with the working directory inside <dir>,
+so no repository path is on sys.path.
+
+Result: 44 passed, 1 skipped in 504.67 s. Same skip (test_geometry.py, the designed S22
+download skip), same pass count as the 36-member build.
+
+Why this run exists at all. The previous archive tested a 36-member wheel, and then
+step_m_ccsdt.py was added to the packaging whitelist, so "the published wheel has been
+tested out of tree" would have been a statement about an object that no longer existed. It
+is now about the object the exporter just produced.
+
+The two timings are 322.21 s (36 members) and 504.67 s (37 members) on the same box, both
+with the BLAS/OpenMP thread variables left unset, on wheels whose test modules are
+byte-identical. A 1.57x spread with no recorded cause in either log is exactly why this
+repository quotes wheel timings per log and never reduces them to one "wheel test time";
+the pass and skip counts, which do agree, are the comparable quantities.
+
+--- verbatim pytest output below ---
+...............s.............................                            [100%]
+=========================== short test summary info ============================
+SKIPPED [1] nlcsplit/tests/test_geometry.py:72: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+44 passed, 1 skipped in 504.67s (0:08:24)
+EXIT=0

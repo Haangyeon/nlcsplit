@@ -1,0 +1,1036 @@
+# 验收第 2 条：出货件 QA 流水线
+# 生成 2026-10-23T12:14:09Z   临时安装目录 /tmp/nlcsplit_shipqa_hM30zs
+
+## 步 1：从导出树出货
+running bdist_wheel
+running build
+running build_py
+creating build/lib/nlcsplit
+copying nlcsplit/certificate.py -> build/lib/nlcsplit
+copying nlcsplit/fastpair.py -> build/lib/nlcsplit
+copying nlcsplit/figures.py -> build/lib/nlcsplit
+copying nlcsplit/geomlib.py -> build/lib/nlcsplit
+copying nlcsplit/nlc.py -> build/lib/nlcsplit
+copying nlcsplit/partition.py -> build/lib/nlcsplit
+copying nlcsplit/step1_validate.py -> build/lib/nlcsplit
+copying nlcsplit/step2_convergence.py -> build/lib/nlcsplit
+copying nlcsplit/step_b_scan.py -> build/lib/nlcsplit
+copying nlcsplit/step_c_relaxation.py -> build/lib/nlcsplit
+copying nlcsplit/step_d_floor.py -> build/lib/nlcsplit
+copying nlcsplit/step_e_kernel.py -> build/lib/nlcsplit
+copying nlcsplit/step_f_dispersion.py -> build/lib/nlcsplit
+copying nlcsplit/step_g_basis.py -> build/lib/nlcsplit
+copying nlcsplit/step_h_s22.py -> build/lib/nlcsplit
+copying nlcsplit/step_i_gridrepr.py -> build/lib/nlcsplit
+copying nlcsplit/step_j_scaling.py -> build/lib/nlcsplit
+copying nlcsplit/step_k_population.py -> build/lib/nlcsplit
+copying nlcsplit/step_l_sweep_compare.py -> build/lib/nlcsplit
+copying nlcsplit/step_m_ccsdt.py -> build/lib/nlcsplit
+copying nlcsplit/__init__.py -> build/lib/nlcsplit
+creating build/lib/nlcsplit/tests
+copying nlcsplit/tests/conftest.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_cc_convention.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_certificate.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_crossfamily_schemes.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_fastpair.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_geometry.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_kernel.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_nlc_closure.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_partition_factors.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_regression.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/test_tolerance_probe.py -> build/lib/nlcsplit/tests
+copying nlcsplit/tests/__init__.py -> build/lib/nlcsplit/tests
+creating build/lib/nlcsplit/examples
+copying nlcsplit/examples/check_fast_pair.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/check_soft_partition.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/quickstart.py -> build/lib/nlcsplit/examples
+copying nlcsplit/examples/__init__.py -> build/lib/nlcsplit/examples
+running egg_info
+creating nlcsplit.egg-info
+writing nlcsplit.egg-info/PKG-INFO
+writing dependency_links to nlcsplit.egg-info/dependency_links.txt
+writing requirements to nlcsplit.egg-info/requires.txt
+writing top-level names to nlcsplit.egg-info/top_level.txt
+writing manifest file 'nlcsplit.egg-info/SOURCES.txt'
+reading manifest file 'nlcsplit.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'nlcsplit.egg-info/SOURCES.txt'
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/nlcsplit
+copying build/lib/nlcsplit/certificate.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+creating build/bdist.linux-x86_64/wheel/nlcsplit/examples
+copying build/lib/nlcsplit/examples/check_fast_pair.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/check_soft_partition.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/quickstart.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/examples/__init__.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/examples
+copying build/lib/nlcsplit/fastpair.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/figures.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/geomlib.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/nlc.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/partition.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step1_validate.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step2_convergence.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_b_scan.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_c_relaxation.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_d_floor.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_e_kernel.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_f_dispersion.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_g_basis.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_h_s22.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_i_gridrepr.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_j_scaling.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_k_population.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_l_sweep_compare.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+copying build/lib/nlcsplit/step_m_ccsdt.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+creating build/bdist.linux-x86_64/wheel/nlcsplit/tests
+copying build/lib/nlcsplit/tests/conftest.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_cc_convention.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_certificate.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_crossfamily_schemes.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_fastpair.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_geometry.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_kernel.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_nlc_closure.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_partition_factors.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_regression.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/test_tolerance_probe.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/tests/__init__.py -> build/bdist.linux-x86_64/wheel/./nlcsplit/tests
+copying build/lib/nlcsplit/__init__.py -> build/bdist.linux-x86_64/wheel/./nlcsplit
+running install_egg_info
+Copying nlcsplit.egg-info to build/bdist.linux-x86_64/wheel/./nlcsplit-0.1.0-py3.10.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/nlcsplit-0.1.0.dist-info/WHEEL
+creating '<REPO>/dist/.newartifacts/.tmp-n79vjpzf/nlcsplit-0.1.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'nlcsplit/__init__.py'
+adding 'nlcsplit/certificate.py'
+adding 'nlcsplit/fastpair.py'
+adding 'nlcsplit/figures.py'
+adding 'nlcsplit/geomlib.py'
+adding 'nlcsplit/nlc.py'
+adding 'nlcsplit/partition.py'
+adding 'nlcsplit/step1_validate.py'
+adding 'nlcsplit/step2_convergence.py'
+adding 'nlcsplit/step_b_scan.py'
+adding 'nlcsplit/step_c_relaxation.py'
+adding 'nlcsplit/step_d_floor.py'
+adding 'nlcsplit/step_e_kernel.py'
+adding 'nlcsplit/step_f_dispersion.py'
+adding 'nlcsplit/step_g_basis.py'
+adding 'nlcsplit/step_h_s22.py'
+adding 'nlcsplit/step_i_gridrepr.py'
+adding 'nlcsplit/step_j_scaling.py'
+adding 'nlcsplit/step_k_population.py'
+adding 'nlcsplit/step_l_sweep_compare.py'
+adding 'nlcsplit/step_m_ccsdt.py'
+adding 'nlcsplit/examples/__init__.py'
+adding 'nlcsplit/examples/check_fast_pair.py'
+adding 'nlcsplit/examples/check_soft_partition.py'
+adding 'nlcsplit/examples/quickstart.py'
+adding 'nlcsplit/tests/__init__.py'
+adding 'nlcsplit/tests/conftest.py'
+adding 'nlcsplit/tests/test_cc_convention.py'
+adding 'nlcsplit/tests/test_certificate.py'
+adding 'nlcsplit/tests/test_crossfamily_schemes.py'
+adding 'nlcsplit/tests/test_fastpair.py'
+adding 'nlcsplit/tests/test_geometry.py'
+adding 'nlcsplit/tests/test_kernel.py'
+adding 'nlcsplit/tests/test_nlc_closure.py'
+adding 'nlcsplit/tests/test_partition_factors.py'
+adding 'nlcsplit/tests/test_regression.py'
+adding 'nlcsplit/tests/test_tolerance_probe.py'
+adding 'nlcsplit-0.1.0.dist-info/licenses/LICENSE'
+adding 'nlcsplit-0.1.0.dist-info/METADATA'
+adding 'nlcsplit-0.1.0.dist-info/WHEEL'
+adding 'nlcsplit-0.1.0.dist-info/top_level.txt'
+adding 'nlcsplit-0.1.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+built: nlcsplit-0.1.0-py3-none-any.whl
+running sdist
+running egg_info
+writing nlcsplit.egg-info/PKG-INFO
+writing dependency_links to nlcsplit.egg-info/dependency_links.txt
+writing requirements to nlcsplit.egg-info/requires.txt
+writing top-level names to nlcsplit.egg-info/top_level.txt
+reading manifest file 'nlcsplit.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'nlcsplit.egg-info/SOURCES.txt'
+running check
+creating nlcsplit-0.1.0
+creating nlcsplit-0.1.0/nlcsplit
+creating nlcsplit-0.1.0/nlcsplit.egg-info
+creating nlcsplit-0.1.0/nlcsplit/examples
+creating nlcsplit-0.1.0/nlcsplit/tests
+copying files to nlcsplit-0.1.0...
+copying LICENSE -> nlcsplit-0.1.0
+copying README.md -> nlcsplit-0.1.0
+copying pyproject.toml -> nlcsplit-0.1.0
+copying nlcsplit/__init__.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/certificate.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/fastpair.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/figures.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/geomlib.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/nlc.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/partition.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step1_validate.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step2_convergence.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_b_scan.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_c_relaxation.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_d_floor.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_e_kernel.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_f_dispersion.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_g_basis.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_h_s22.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_i_gridrepr.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_j_scaling.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_k_population.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_l_sweep_compare.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit/step_m_ccsdt.py -> nlcsplit-0.1.0/nlcsplit
+copying nlcsplit.egg-info/PKG-INFO -> nlcsplit-0.1.0/nlcsplit.egg-info
+copying nlcsplit.egg-info/SOURCES.txt -> nlcsplit-0.1.0/nlcsplit.egg-info
+copying nlcsplit.egg-info/dependency_links.txt -> nlcsplit-0.1.0/nlcsplit.egg-info
+copying nlcsplit.egg-info/requires.txt -> nlcsplit-0.1.0/nlcsplit.egg-info
+copying nlcsplit.egg-info/top_level.txt -> nlcsplit-0.1.0/nlcsplit.egg-info
+copying nlcsplit/examples/__init__.py -> nlcsplit-0.1.0/nlcsplit/examples
+copying nlcsplit/examples/check_fast_pair.py -> nlcsplit-0.1.0/nlcsplit/examples
+copying nlcsplit/examples/check_soft_partition.py -> nlcsplit-0.1.0/nlcsplit/examples
+copying nlcsplit/examples/quickstart.py -> nlcsplit-0.1.0/nlcsplit/examples
+copying nlcsplit/tests/__init__.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/conftest.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_cc_convention.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_certificate.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_crossfamily_schemes.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_fastpair.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_geometry.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_kernel.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_nlc_closure.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_partition_factors.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_regression.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit/tests/test_tolerance_probe.py -> nlcsplit-0.1.0/nlcsplit/tests
+copying nlcsplit.egg-info/SOURCES.txt -> nlcsplit-0.1.0/nlcsplit.egg-info
+Writing nlcsplit-0.1.0/setup.cfg
+Creating tar archive
+removing 'nlcsplit-0.1.0' (and everything under it)
+built: nlcsplit-0.1.0.tar.gz
+{
+ "out": "<REPO>/dist/nlcsplit",
+ "files": 753,
+ "treeFiles": 755,
+ "artifacts": [
+  "nlcsplit-0.1.0-py3-none-any.whl",
+  "nlcsplit-0.1.0.tar.gz"
+ ],
+ "ledger": "<REPO>/dist/PATH-SCRUB-LEDGER.txt",
+ "gateA_gamess_source_artifacts": [
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:268  <- GAMESS 源码工件 模式#0 /\\$gnum/i | \"tools/make_public_repo.js:563  const gamessPats = [/\\\\$gnum/i, /\\\\bintgc\\\\b/, /\\\\bdiana\\\\b/, /rhfuhf/, /\\\\bga",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:269  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \"tools/make_public_repo.js:564  /ps\\\\/src\\\\//, /GAMESS\\\\.src/, /getscr|erscf[0-9]/];\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:229  <- GAMESS 源码工件 模式#0 /\\$gnum/i | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:268  <- GAMESS 源码工件 模式#0 /\\\\$gnum/i | \\\"tools/make_publ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:230  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:269  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \\\"tools/",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:461  <- GAMESS 源码工件 模式#0 /\\$gnum/i | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:268  \\\"tools/make_public_repo.js:563  const gamessPats ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:462  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:269  \\\"tools/make_public_repo.js:564  /ps\\\\\\\\/src\\\\\\\\//",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:523  <- GAMESS 源码工件 模式#0 /\\$gnum/i | \"tools/make_public_repo.js:571  const gamessPats = [/\\\\$gnum/i, /\\\\bintgc\\\\b/, /\\\\bdiana\\\\b/, /rhfuhf/, /\\\\bga",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:524  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \"tools/make_public_repo.js:572  /ps\\\\/src\\\\//, /GAMESS\\\\.src/, /getscr|erscf[0-9]/];\",",
+  "tools/make_public_repo.js:1039  <- GAMESS 源码工件 模式#0 /\\$gnum/i | const real = classifyGamess('evidence/release_qa/x_ship_qa_plan.out', 'E = $GNUM');"
+ ],
+ "gateB_intranet": [],
+ "gateB_exempt_ledger": [],
+ "gateB_email_exempt_ledger": [
+  "CITATION.cff:32  <- 具名豁免「作者本人的机构邮箱」地址=<OPERATOR>@<CLUSTER>.edu.cn；放过的是 账号串、校内标识串 | email: <OPERATOR>@<CLUSTER>.edu.cn   # 本人 2026-09-30 给的通讯地址（长安校区）",
+  "pyproject.toml:16  <- 具名豁免「作者本人的机构邮箱」地址=<OPERATOR>@<CLUSTER>.edu.cn；放过的是 账号串、校内标识串 | { name = \"Angran Xia\", email = \"<OPERATOR>@<CLUSTER>.edu.cn\" },"
+ ],
+ "gateB_email_selftest": {
+  "all_correct": true,
+  "ran": 8,
+  "public_cases": 2,
+  "mixed_line_control": true,
+  "failures": []
+ },
+ "gateA_exempt_ledger": [
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:91  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | \"tools/make_public_repo.js:563  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\\\$gnum/i | const gamessPats = [/\\\\$gnum/i, /\\\\bintg",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:92  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | \"tools/make_public_repo.js:564  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | /ps\\\\/src\\\\//, /GAMESS\\\\.src/, ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:227  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:91  <- GAMESS 源码工件 模式#0 /\\\\$gnum/i | \\\"tools/make_publi",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:228  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:92  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \\\"tools/m",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:246  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | \"tools/make_public_repo.js:571  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\\\$gnum/i | const gamessPats = [/\\\\$gnum/i, /\\\\bintg",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:247  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | \"tools/make_public_repo.js:572  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | /ps\\\\/src\\\\//, /GAMESS\\\\.src/, ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:369  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:91  \\\"tools/make_public_repo.js:563  <- 具名豁免「检测器自身的判据定义",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:370  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:92  \\\"tools/make_public_repo.js:564  <- 具名豁免「检测器自身的判据定义",
+  "tools/make_public_repo.js:571  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | const gamessPats = [/\\$gnum/i, /\\bintgc\\b/, /\\bdiana\\b/, /rhfuhf/, /\\bgameSS\\.src\\b/i,",
+  "tools/make_public_repo.js:572  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | /ps\\/src\\//, /GAMESS\\.src/, /getscr|erscf[0-9]/];",
+  "tools/make_public_repo.js:1038  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | '  \"tools/make_public_repo.js:563  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\\\$gnum/i | ...\"');"
+ ],
+ "note_detector_selfscan": {
+  "in_tree": [
+   "tools/make_public_repo.js",
+   "tools/audit_no_gamess.js"
+  ],
+  "intranet_exempt": 0,
+  "email_exempt": 2,
+  "gamess_exempt": 11,
+  "files_with_exempt": [
+   "evidence/release_qa/20261023T115505Z_ship_qa_plan.out",
+   "evidence/release_qa/20261023T120958Z_ship_qa_plan.out",
+   "tools/make_public_repo.js",
+   "CITATION.cff",
+   "pyproject.toml"
+  ]
+ },
+ "note_private_rules_loaded": 10,
+ "gateC_evidence_hashes_vs_published": [],
+ "gateC2_scrub_digit_invariance": [],
+ "gateD_cited_but_unshipped": [],
+ "gateE_undeclared_imports": [],
+ "gateE_selftest": {
+  "fired": true,
+  "sibling_and_stdlib_silent": true,
+  "reported": [
+   "evidence/x/run.py: import nosuchdistribution，但 pyproject 未声明 \"nosuchdistribution\""
+  ]
+ },
+ "gateF_wheel_sdist_members": [],
+ "gateG_license": [],
+ "gateR_tree_residue": [],
+ "gateT_not_in_export_manifest": [],
+ "gateU_import_closure": [],
+ "gateX_runner_coverage": [],
+ "gateX_selftest": {
+  "step_scripts": 14,
+  "fired": true,
+  "truncated_reports": 10,
+  "clean_input_silent": true,
+  "real_tree_missing": 0
+ },
+ "gateU_selftest": {
+  "fired": true,
+  "silent_on_valid": true,
+  "reported": [
+   "nlcsplit/step_z.py: 引用 nlcsplit.notshipped，但它不在导出树里"
+  ]
+ },
+ "gateV_install_vs_release": [],
+ "gateW_share_rule_in_docs": [],
+ "note_gateW_selftest": {
+  "fired": true,
+  "silent_on_valid": true
+ },
+ "gateY_joss_links": [],
+ "gateY_selftest": {
+  "fired": true,
+  "silent_on_valid": true
+ },
+ "gateV_selftest": {
+  "fired": true,
+  "silent_on_named": true,
+  "clean_input_silent": true,
+  "reported": [
+   "nlcsplit/ghost_module.py"
+  ]
+ },
+ "note_internal_only_modules": {
+  "nlcsplit/fastpair_ide.py": "同行(ide-qoder)的独立实现，冻结对照，故意不发布",
+  "nlcsplit/tests/test_fastpair_ide.py": "上面那份实现的测试，随它一起不发布",
+  "nlcsplit/examples/check_screen_bound_ide.py": "它的验算脚本（import fastpair_ide）",
+  "nlcsplit/examples/coretail_bound.py": "核/尾界判死测量，产出归档在 evidence/coretail/",
+  "nlcsplit/examples/hybrid_nearfield.py": "近场占比测量，产出归档在 evidence/bound_forms/",
+  "nlcsplit/examples/probe_bound_forms.py": "球界/盒界单调性探针，产出归档在 evidence/bound_forms/"
+ },
+ "note_word_only_gamess": [
+  ".github/workflows/ci.yml:26  # A 无 GAMESS 源码工件 / B 无内网串 / C 证据哈希双向闭合 /",
+  ".github/workflows/ci.yml:47  - run: node tools/audit_no_gamess.js --selftest",
+  "CONTRIBUTING.md:54  ## \"不含 GAMESS 代码\"这句话怎么守",
+  "CONTRIBUTING.md:56  README、`LICENSE` 段与软件文都写着**不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发）。",
+  "CONTRIBUTING.md:60  node tools/audit_no_gamess.js            # 独立目录 pip install --target 后逐文件扫装出来的东西",
+  "CONTRIBUTING.md:61  node tools/audit_no_gamess.js --selftest # 只验判据本身有没有分辨力，不安装",
+  "CONTRIBUTING.md:65  命中项一律具名记账：唯一合法的 GAMESS 出现是包 docstring 与 `dist-info/METADATA`",
+  "CONTRIBUTING.md:67  具名豁免 2 条、GAMESS 相关 0 条、GPL/AGPL 类冲突信号 0 条（`--selftest` 5/5，",
+  "CONTRIBUTING.md:69  `tools/audit_no_gamess.js` 自己随包发布，所以这三条命令对读者也是可跑的。",
+  "EXPORT-MANIFEST.txt:577  evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out",
+  "EXPORT-MANIFEST.txt:752  tools/audit_no_gamess.js",
+  "README.md:22  Pure Python and NumPy on top of [PySCF](https://pyscf.org). Apache-2.0. No GAMESS source is",
+  "docs/tables_and_provenance.md:433  包 `nlcsplit`（Apache-2.0，无 GAMESS 代码），每个表对应一个 `step_*.py`，",
+  "evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_result.out:37  barca2020gamess              OK                                            10.1063/5.0005188",
+  "evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_result.out:37  barca2020gamess              OK                                            10.1063/5.0005188",
+  "evidence/common_grid/verify_s22_xyz_upstream.sh:18  cd /e/Project/GAMESS 2>/dev/null || cd \"$(dirname \"$0\")/../..\" || exit 2",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:1  === node tools/audit_no_gamess.js --selftest ===",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:2  ok   nlcsplit/nlc.py | c  ported from GAMESS src/lib/libddis.F -> null (want null)",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:4  ok   nlcsplit/__init__.py | 不含任何 GAMESS 代码；依赖 PySCF。 -> \"免责声明：本包不含 GAMESS 代码\" (want \"免责声明：本包不含 GAMESS 代码\")",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:5  ok   x-0.1.0.dist-info/METADATA | **不含任何 GAMESS 代码** -> \"免责声明：本包不含 GAMESS 代码\" (want \"免责声明：本包不含 GAMESS 代码\")",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:6  ok   nlcsplit/__init__.py | helper parses GAMESS $VM1 / INTGC blocks -> null (want null)",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:10  === node tools/audit_no_gamess.js (real install scan) ===",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:15  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:16  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | **不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发），也不依赖 GA",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:17  GAMESS? nlcsplit-0.1.0.dist-info/direct_url.json:1  {\"dir_info\": {}, \"url\": \"file://<REPO>\"}",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:19  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:20  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:6  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | **不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发），也不依赖 GA",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:9  结论：具名豁免 3 条，GAMESS 相关 0 条，许可冲突信号 0 条",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:34  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:51  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:75  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:92  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:115  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:131  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:154  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:170  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:193  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:209  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:7  GAMESS? nlcsplit-0.1.0.dist-info/METADATA:43  Pure Python and NumPy on top of [PySCF](https://pyscf.org). Apache-2.0. No",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:9  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:68  \"gateA_gamess_source_artifacts\": [],",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:91  \"tools/make_public_repo.js:563  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\\\$gnum/i | const gamessPats = [/\\\\$gnum/i, /\\\\bintgc\\\\b/, /\\\\",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:92  \"tools/make_public_repo.js:564  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | /ps\\\\/src\\\\//, /GAMESS\\\\.src/, /getscr|er",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:97  \"tools/audit_no_gamess.js\"",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:101  \"gamess_exempt\": 2,",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:180  \"note_word_only_gamess\": [",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:181  \".github/workflows/ci.yml:26  # A 无 GAMESS 源码工件 / B 无内网串 / C 证据哈希双向闭合 /\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:182  \".github/workflows/ci.yml:47  - run: node tools/audit_no_gamess.js --selftest\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:183  \"CONTRIBUTING.md:54  ## \\\"不含 GAMESS 代码\\\"这句话怎么守\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:184  \"CONTRIBUTING.md:56  README、`LICENSE` 段与软件文都写着**不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发）。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:185  \"CONTRIBUTING.md:60  node tools/audit_no_gamess.js            # 独立目录 pip install --target 后逐文件扫装出来的东西\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:186  \"CONTRIBUTING.md:61  node tools/audit_no_gamess.js --selftest # 只验判据本身有没有分辨力，不安装\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:187  \"CONTRIBUTING.md:65  命中项一律具名记账：唯一合法的 GAMESS 出现是包 docstring 与 `dist-info/METADATA`\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:188  \"CONTRIBUTING.md:67  具名豁免 2 条、GAMESS 相关 0 条、GPL/AGPL 类冲突信号 0 条（`--selftest` 5/5，\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:189  \"CONTRIBUTING.md:69  `tools/audit_no_gamess.js` 自己随包发布，所以这三条命令对读者也是可跑的。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:190  \"EXPORT-MANIFEST.txt:577  evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:191  \"EXPORT-MANIFEST.txt:749  tools/audit_no_gamess.js\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:192  \"README.md:22  Pure Python and NumPy on top of [PySCF](https://pyscf.org). Apache-2.0. No GAMESS source is\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:193  \"docs/tables_and_provenance.md:433  包 `nlcsplit`（Apache-2.0，无 GAMESS 代码），每个表对应一个 `step_*.py`，\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:194  \"evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_result.out:37  barca2020gamess              OK               ",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:195  \"evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_result.out:37  barca2020gamess              OK               ",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:196  \"evidence/common_grid/verify_s22_xyz_upstream.sh:18  cd /e/Project/GAMESS 2>/dev/null || cd \\\"$(dirname \\\"$0\\\")/../..\\\" ",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:197  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:1  === node tools/audit_no_gamess.js --selftest ===\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:198  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:2  ok   nlcsplit/nlc.py | c  ported from GAMESS src/lib/libddis.",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:199  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:4  ok   nlcsplit/__init__.py | 不含任何 GAMESS 代码；依赖 PySCF。 -> \\\"免责声",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:200  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:5  ok   x-0.1.0.dist-info/METADATA | **不含任何 GAMESS 代码** -> \\\"免责声",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:201  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:6  ok   nlcsplit/__init__.py | helper parses GAMESS $VM1 / INTGC",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:202  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:10  === node tools/audit_no_gamess.js (real install scan) ===\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:203  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:15  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 ",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:204  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:16  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:205  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:17  GAMESS? nlcsplit-0.1.0.dist-info/direct_url.json:1  {\\\"dir_i",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:206  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:19  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:207  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:20  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:208  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:209  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:6  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- ",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:210  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:9  结论：具名豁免 3 条，GAMESS 相关 0 条，许可冲突信号 0 条\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:211  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:212  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:34  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:213  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:51  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:214  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:75  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:215  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:92  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:216  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:115  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:217  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:131  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:218  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:154  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:219  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:170  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:220  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:193  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:221  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:209  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:222  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAME",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:223  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:7  GAMESS? nlcsplit-0.1.0.dist-info/METADATA:43  Pure Py",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:224  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:9  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:225  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:226  \"evidence/release_qa/MANIFEST.sha256:9  ba3807804a34ac71d5077c89c46b2471924875abb174c1d3b2ac011f307a8ba7 *20260929T21355",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:227  \"evidence/release_qa/NOTE_wheel_rebuild_route_20261013.md:46  | GAMESS/许可泄漏闸门 | **rc=1**，命中 `dist-info/METADATA:43` 的 \\\"",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:228  \"evidence/release_qa/README.md:29  | `20260929T212552Z_gate_selftest.out` | `tools/audit_no_gamess.js` 自己 | `--selftest`",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:229  \"evidence/release_qa/README.md:30  | `20260929T213552Z_no_gamess_scan_after_allow.out` | 同上，加了第 2 条具名规则之后 | 同一次真装真扫 | 7/",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:230  \"evidence/release_qa/README.md:58  `tools/audit_no_gamess.js --selftest` 里有一条专门验\\\"同一个文件里的非免责句不放行\\\"。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:231  \"evidence/release_qa/gate_selftest_20260930.txt:2  对象：tools/make_public_repo.js 与 tools/audit_no_gamess.js 本轮改动后的实测状态。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:232  \"evidence/release_qa/gate_selftest_20260930.txt:31  == 3. 发布卫生扫描（tools/audit_no_gamess.js）==\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:233  \"evidence/release_qa/gate_selftest_20260930.txt:34  20260929T213552Z_no_gamess_scan_after_allow.out：加了第 2 条具名规则后重跑，\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:234  \"evidence/release_qa/run_audit_on_staged_wheel.sh:2  # 对**暂存 wheel** 跑 GAMESS/许可泄漏闸门并归档。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:235  \"evidence/release_qa/run_audit_on_staged_wheel.sh:3  # 为什么要单独一份：`node tools/audit_no_gamess.js` 自己会 `pip install --targe",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:236  \"evidence/release_qa/run_audit_on_staged_wheel.sh:14  node tools/audit_no_gamess.js --target \\\"$TDIR\\\" --src \\\"$WHL\\\" > ",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:237  \"nlcsplit/__init__.py:3  不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:238  \"paper/joss/paper.md:33  GAMESS source, and reproduces every number it documents from a single named script whose\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:239  \"tools/audit_no_gamess.js:1  /* 发布前硬检查：README、LICENSE 段与软件文都写着\\\"不含任何 GAMESS 代码\\\"。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:240  \"tools/audit_no_gamess.js:8  *   (2) 对装出来的**每一个文件**逐行扫 GAMESS 标识、GAMESS 专有量名与源码文件名；\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:241  \"tools/audit_no_gamess.js:13  *   node tools/audit_no_gamess.js                       # 装当前目录到 /tmp/nlcsplit_audit 再扫\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:242  \"tools/audit_no_gamess.js:14  *   node tools/audit_no_gamess.js --target DIR --src PATH\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:243  \"tools/audit_no_gamess.js:15  *   node tools/audit_no_gamess.js --selftest            # 只验判据本身有没有分辨力，不安装\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:244  \"tools/audit_no_gamess.js:30  // NEEDLE 是\\\"GAMESS 才有的东西\\\"：程序名、专有量名、源码文件名。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:245  \"tools/audit_no_gamess.js:31  // 命中不等于有罪（免责声明里就会出现 \\\"GAMESS\\\" 这个词），但也不能靠\\\"我看了一眼觉得没事\\\"。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:246  \"tools/audit_no_gamess.js:34  const NEEDLE = /gamess|ab initio|libddis\\\\.|inputst|outputst|dfl\\\\.h|gfile|intcos/i;\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:247  \"tools/audit_no_gamess.js:37  // 唯一的合法形态：我们在声明\\\"本包不含 GAMESS 代码\\\"。这句话出现在包 docstring，\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:248  \"tools/audit_no_gamess.js:42  { name: '免责声明：本包不含 GAMESS 代码',\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:249  \"tools/audit_no_gamess.js:44  line: /不含任何 ?GAMESS ?代码|no ?GAMESS code/i },\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:250  \"tools/audit_no_gamess.js:49  // 少了这一句，\\\"url 里恰好写着 GAMESS\\\"就会连带把同一行里别的 GAMESS 内容一起放过。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:251  \"tools/audit_no_gamess.js:71  // 真 GAMESS 工件：必须判违规\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:252  \"tools/audit_no_gamess.js:72  { rel: 'nlcsplit/nlc.py', line: 'c  ported from GAMESS src/lib/libddis.F', want: null },\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:253  \"tools/audit_no_gamess.js:75  { rel: 'nlcsplit/__init__.py', line: '不含任何 GAMESS 代码；依赖 PySCF。', want: '免责声明：本包不含 GAMESS 代",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:254  \"tools/audit_no_gamess.js:76  { rel: 'x-0.1.0.dist-info/METADATA', line: '**不含任何 GAMESS 代码**', want: '免责声明：本包不含 GAMESS 代",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:255  \"tools/audit_no_gamess.js:78  { rel: 'nlcsplit/__init__.py', line: 'helper parses GAMESS $VM1 / INTGC blocks', want: nul",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:256  \"tools/audit_no_gamess.js:81  line: '{\\\"dir_info\\\": {}, \\\"url\\\": \\\"file:///some/machine/Project/GAMESS\\\"}',\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:257  \"tools/audit_no_gamess.js:85  line: '{\\\"dir_info\\\": {}, \\\"url\\\": \\\"file:///tmp/x\\\", \\\"note\\\": \\\"reads GAMESS INPUTST\\\"}'",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:258  \"tools/audit_no_gamess.js:133  for (const h of hits) console.log('  GAMESS? ' + h);\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:259  \"tools/audit_no_gamess.js:135  console.log(`\\\\n结论：具名豁免 ${exempt.length} 条，GAMESS 相关 ${hits.length} 条，许可冲突信号 ${licHits.le",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:260  \"tools/audit_no_gamess.js:136  console.log('豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。');\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:261  \"tools/make_public_repo.js:12  *   A 无 GAMESS 源码工件        B 无密钥/内网串（含工作机绝对路径、集群端口、账号串）\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:262  \"tools/make_public_repo.js:116  const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js', 'audit_share_rule.js'];\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:263  \"tools/make_public_repo.js:121  const SELF_DETECT = ['tools/make_public_repo.js', 'tools/audit_no_gamess.js'];\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:264  \"tools/make_public_repo.js:559  // ---------------------------------------------------------------- 闸门 A：无 GAMESS **源码**",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:265  \"tools/make_public_repo.js:560  // 注意：/gamess/i 一律命中是**误报**——README/CONTRIBUTING/__init__ 里出现这个词，\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:266  \"tools/make_public_repo.js:561  // 正是因为我们在声明\\\"本包不含 GAMESS 代码\\\"。一个永远失败的门禁和一个不会失败的门禁一样没用。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:267  \"tools/make_public_repo.js:562  // 所以这里只抓真正的 GAMESS 源码工件；\\\"gamess\\\"这个词的出现另列为 info，人工过一眼即可。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:268  \"tools/make_public_repo.js:563  const gamessPats = [/\\\\$gnum/i, /\\\\bintgc\\\\b/, /\\\\bdiana\\\\b/, /rhfuhf/, /\\\\bgameSS\\\\.src",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:269  \"tools/make_public_repo.js:564  /ps\\\\/src\\\\//, /GAMESS\\\\.src/, /getscr|erscf[0-9]/];\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:270  \"tools/make_public_repo.js:565  // 逐行判一条GAMESS 判据命中，并决定它是\\\"检测器自己的判据定义\\\"还是\\\"真工件\\\"。\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:271  \"tools/make_public_repo.js:568  function classifyGamess(rel, line) {\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:272  \"tools/make_public_repo.js:569  for (const [j, re] of gamessPats.entries()) {\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:273  \"tools/make_public_repo.js:575  function checkGamessSource(root, treeList) {\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:274  \"tools/make_public_repo.js:583  const v = classifyGamess(rel, line);\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:275  \"tools/make_public_repo.js:585  const tag = v.exempt ? '<- 具名豁免「检测器自身的判据定义」' : '<- GAMESS 源码工件';\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:276  \"tools/make_public_repo.js:589  if (/gamess/i.test(line)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:277  \"tools/make_public_repo.js:594  const gA = checkGamessSource(OUT, tree);\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:278  \"tools/make_public_repo.js:647  // （与闸门 A 的 classifyGamess 同一标准）。只按文件名豁免 = 给这两个文件开空白支票，\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:279  \"tools/make_public_repo.js:691  gamess_exempt: gA.exempt.length,\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:280  \"tools/make_public_repo.js:695  && selfScan.gamess_exempt > 0 && emailSelftest.all_correct;\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:281  \"tools/make_public_repo.js:1008  const line = String(gamessPats[0]);                    // 真实的一条判据定义\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:282  \"tools/make_public_repo.js:1009  const inDetector = classifyGamess('tools/make_public_repo.js', line);\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:283  \"tools/make_public_repo.js:1010  const elsewhere = classifyGamess('nlcsplit/nlc.py', line);\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:284  \"tools/make_public_repo.js:1011  const innocent = classifyGamess('tools/make_public_repo.js', 'x = 1');\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:285  \"tools/make_public_repo.js:1275  gateA_gamess_source_artifacts: ga,\",",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:286  \"tools/make_public_repo.js:1301  note_word_only_gamess: wordOnly,\"",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out:339  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:226  \"gateA_gamess_source_artifacts\": [",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:227  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:91  <- GAMESS 源码工件 模式#0 /\\\\$gnum/i | \\\"tools/make_public_repo.js:",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:228  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:92  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \\\"tools/make_public",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:229  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:268  <- GAMESS 源码工件 模式#0 /\\\\$gnum/i | \\\"tools/make_public_repo.js",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:230  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:269  <- GAMESS 源码工件 模式#7 /getscr|erscf[0-9]/ | \\\"tools/make_publi",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:246  \"tools/make_public_repo.js:571  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\\\$gnum/i | const gamessPats = [/\\\\$gnum/i, /\\\\bintgc\\\\b/, /\\\\",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:247  \"tools/make_public_repo.js:572  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | /ps\\\\/src\\\\//, /GAMESS\\\\.src/, /getscr|er",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:252  \"tools/audit_no_gamess.js\"",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:256  \"gamess_exempt\": 2,",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:322  \"note_word_only_gamess\": [",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:323  \".github/workflows/ci.yml:26  # A 无 GAMESS 源码工件 / B 无内网串 / C 证据哈希双向闭合 /\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:324  \".github/workflows/ci.yml:47  - run: node tools/audit_no_gamess.js --selftest\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:325  \"CONTRIBUTING.md:54  ## \\\"不含 GAMESS 代码\\\"这句话怎么守\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:326  \"CONTRIBUTING.md:56  README、`LICENSE` 段与软件文都写着**不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发）。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:327  \"CONTRIBUTING.md:60  node tools/audit_no_gamess.js            # 独立目录 pip install --target 后逐文件扫装出来的东西\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:328  \"CONTRIBUTING.md:61  node tools/audit_no_gamess.js --selftest # 只验判据本身有没有分辨力，不安装\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:329  \"CONTRIBUTING.md:65  命中项一律具名记账：唯一合法的 GAMESS 出现是包 docstring 与 `dist-info/METADATA`\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:330  \"CONTRIBUTING.md:67  具名豁免 2 条、GAMESS 相关 0 条、GPL/AGPL 类冲突信号 0 条（`--selftest` 5/5，\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:331  \"CONTRIBUTING.md:69  `tools/audit_no_gamess.js` 自己随包发布，所以这三条命令对读者也是可跑的。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:332  \"EXPORT-MANIFEST.txt:577  evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:333  \"EXPORT-MANIFEST.txt:750  tools/audit_no_gamess.js\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:334  \"README.md:22  Pure Python and NumPy on top of [PySCF](https://pyscf.org). Apache-2.0. No GAMESS source is\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:335  \"docs/tables_and_provenance.md:433  包 `nlcsplit`（Apache-2.0，无 GAMESS 代码），每个表对应一个 `step_*.py`，\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:336  \"evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_result.out:37  barca2020gamess              OK               ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:337  \"evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_result.out:37  barca2020gamess              OK               ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:338  \"evidence/common_grid/verify_s22_xyz_upstream.sh:18  cd /e/Project/GAMESS 2>/dev/null || cd \\\"$(dirname \\\"$0\\\")/../..\\\" ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:339  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:1  === node tools/audit_no_gamess.js --selftest ===\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:340  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:2  ok   nlcsplit/nlc.py | c  ported from GAMESS src/lib/libddis.",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:341  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:4  ok   nlcsplit/__init__.py | 不含任何 GAMESS 代码；依赖 PySCF。 -> \\\"免责声",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:342  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:5  ok   x-0.1.0.dist-info/METADATA | **不含任何 GAMESS 代码** -> \\\"免责声",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:343  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:6  ok   nlcsplit/__init__.py | helper parses GAMESS $VM1 / INTGC",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:344  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:10  === node tools/audit_no_gamess.js (real install scan) ===\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:345  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:15  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:346  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:16  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:347  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:17  GAMESS? nlcsplit-0.1.0.dist-info/direct_url.json:1  {\\\"dir_i",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:348  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:19  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:349  \"evidence/release_qa/20260929T212552Z_gate_selftest.out:20  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:350  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:351  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:6  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:352  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:9  结论：具名豁免 3 条，GAMESS 相关 0 条，许可冲突信号 0 条\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:353  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:354  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:34  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:355  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:51  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:356  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:75  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:357  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:92  step 12  Run node tools/audit_no_gamess.js --sel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:358  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:115  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:359  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:131  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:360  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:154  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:361  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:170  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:362  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:193  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:363  \"evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:209  step 11  Run node tools/audit_no_gamess.js --se",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:364  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAME",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:365  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:7  GAMESS? nlcsplit-0.1.0.dist-info/METADATA:43  Pure Py",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:366  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:9  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:367  \"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:368  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:68  \\\"gateA_gamess_source_artifacts\\\": [],\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:369  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:91  \\\"tools/make_public_repo.js:563  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\\\",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:370  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:92  \\\"tools/make_public_repo.js:564  <- 具名豁免「检测器自身的判据定义」 模式#7 /ge",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:371  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:97  \\\"tools/audit_no_gamess.js\\\"\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:372  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:101  \\\"gamess_exempt\\\": 2,\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:373  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:180  \\\"note_word_only_gamess\\\": [\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:374  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:181  \\\".github/workflows/ci.yml:26  # A 无 GAMESS 源码工件 / B 无内网串 / ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:375  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:182  \\\".github/workflows/ci.yml:47  - run: node tools/audit_no_ga",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:376  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:183  \\\"CONTRIBUTING.md:54  ## \\\\\\\"不含 GAMESS 代码\\\\\\\"这句话怎么守\\\",\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:377  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:184  \\\"CONTRIBUTING.md:56  README、`LICENSE` 段与软件文都写着**不含任何 GAMESS",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:378  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:185  \\\"CONTRIBUTING.md:60  node tools/audit_no_gamess.js         ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:379  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:186  \\\"CONTRIBUTING.md:61  node tools/audit_no_gamess.js --selfte",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:380  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:187  \\\"CONTRIBUTING.md:65  命中项一律具名记账：唯一合法的 GAMESS 出现是包 docstring ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:381  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:188  \\\"CONTRIBUTING.md:67  具名豁免 2 条、GAMESS 相关 0 条、GPL/AGPL 类冲突信号 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:382  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:189  \\\"CONTRIBUTING.md:69  `tools/audit_no_gamess.js` 自己随包发布，所以这三",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:383  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:190  \\\"EXPORT-MANIFEST.txt:577  evidence/release_qa/20260929T2135",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:384  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:191  \\\"EXPORT-MANIFEST.txt:749  tools/audit_no_gamess.js\\\",\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:385  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:192  \\\"README.md:22  Pure Python and NumPy on top of [PySCF](http",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:386  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:193  \\\"docs/tables_and_provenance.md:433  包 `nlcsplit`（Apache-2.0",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:387  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:194  \\\"evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:388  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:195  \\\"evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:389  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:196  \\\"evidence/common_grid/verify_s22_xyz_upstream.sh:18  cd /e/",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:390  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:197  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:1  ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:391  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:198  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:2  ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:392  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:199  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:4  ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:393  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:200  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:5  ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:394  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:201  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:6  ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:395  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:202  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:10 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:396  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:203  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:15 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:398  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:205  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:17 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:399  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:206  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:19 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:400  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:207  \\\"evidence/release_qa/20260929T212552Z_gate_selftest.out:20 ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:401  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:208  \\\"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:402  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:209  \\\"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:403  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:210  \\\"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:404  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:211  \\\"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:405  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:212  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:406  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:213  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:407  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:214  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:408  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:215  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:409  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:216  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:410  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:217  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:411  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:218  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:412  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:219  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:413  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:220  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:414  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:221  \\\"evidence/release_qa/20261001T150706Z_github_actions_first_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:416  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:223  \\\"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:417  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:224  \\\"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:418  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:225  \\\"evidence/release_qa/20261013T143000Z_audit_on_staged_wheel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:420  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:227  \\\"evidence/release_qa/NOTE_wheel_rebuild_route_20261013.md:4",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:421  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:228  \\\"evidence/release_qa/README.md:29  | `20260929T212552Z_gate",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:422  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:229  \\\"evidence/release_qa/README.md:30  | `20260929T213552Z_no_g",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:423  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:230  \\\"evidence/release_qa/README.md:58  `tools/audit_no_gamess.j",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:424  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:231  \\\"evidence/release_qa/gate_selftest_20260930.txt:2  对象：tools",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:425  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:232  \\\"evidence/release_qa/gate_selftest_20260930.txt:31  == 3. 发",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:426  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:233  \\\"evidence/release_qa/gate_selftest_20260930.txt:34  2026092",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:427  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:234  \\\"evidence/release_qa/run_audit_on_staged_wheel.sh:2  # 对**暂",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:428  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:235  \\\"evidence/release_qa/run_audit_on_staged_wheel.sh:3  # 为什么要",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:429  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:236  \\\"evidence/release_qa/run_audit_on_staged_wheel.sh:14  node ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:430  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:237  \\\"nlcsplit/__init__.py:3  不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:431  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:238  \\\"paper/joss/paper.md:33  GAMESS source, and reproduces ever",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:432  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:239  \\\"tools/audit_no_gamess.js:1  /* 发布前硬检查：README、LICENSE 段与软件文",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:433  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:240  \\\"tools/audit_no_gamess.js:8  *   (2) 对装出来的**每一个文件**逐行扫 GAME",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:434  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:241  \\\"tools/audit_no_gamess.js:13  *   node tools/audit_no_games",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:435  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:242  \\\"tools/audit_no_gamess.js:14  *   node tools/audit_no_games",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:436  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:243  \\\"tools/audit_no_gamess.js:15  *   node tools/audit_no_games",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:437  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:244  \\\"tools/audit_no_gamess.js:30  // NEEDLE 是\\\\\\\"GAMESS 才有的东西\\\\",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:438  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:245  \\\"tools/audit_no_gamess.js:31  // 命中不等于有罪（免责声明里就会出现 \\\\\\\"GAME",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:439  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:246  \\\"tools/audit_no_gamess.js:34  const NEEDLE = /gamess|ab ini",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:440  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:247  \\\"tools/audit_no_gamess.js:37  // 唯一的合法形态：我们在声明\\\\\\\"本包不含 GAME",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:441  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:248  \\\"tools/audit_no_gamess.js:42  { name: '免责声明：本包不含 GAMESS 代码'",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:442  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:249  \\\"tools/audit_no_gamess.js:44  line: /不含任何 ?GAMESS ?代码|no ?G",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:443  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:250  \\\"tools/audit_no_gamess.js:49  // 少了这一句，\\\\\\\"url 里恰好写着 GAMESS",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:444  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:251  \\\"tools/audit_no_gamess.js:71  // 真 GAMESS 工件：必须判违规\\\",\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:445  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:252  \\\"tools/audit_no_gamess.js:72  { rel: 'nlcsplit/nlc.py', lin",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:446  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:253  \\\"tools/audit_no_gamess.js:75  { rel: 'nlcsplit/__init__.py'",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:447  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:254  \\\"tools/audit_no_gamess.js:76  { rel: 'x-0.1.0.dist-info/MET",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:448  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:255  \\\"tools/audit_no_gamess.js:78  { rel: 'nlcsplit/__init__.py'",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:449  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:256  \\\"tools/audit_no_gamess.js:81  line: '{\\\\\\\"dir_info\\\\\\\": {},",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:450  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:257  \\\"tools/audit_no_gamess.js:85  line: '{\\\\\\\"dir_info\\\\\\\": {},",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:451  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:258  \\\"tools/audit_no_gamess.js:133  for (const h of hits) consol",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:452  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:259  \\\"tools/audit_no_gamess.js:135  console.log(`\\\\\\\\n结论：具名豁免 ${",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:453  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:260  \\\"tools/audit_no_gamess.js:136  console.log('豁免账之外的命中都是违规：唯一",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:454  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:261  \\\"tools/make_public_repo.js:12  *   A 无 GAMESS 源码工件        B",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:455  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:262  \\\"tools/make_public_repo.js:116  const TOOLS = ['make_public",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:456  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:263  \\\"tools/make_public_repo.js:121  const SELF_DETECT = ['tools",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:457  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:264  \\\"tools/make_public_repo.js:559  // ------------------------",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:458  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:265  \\\"tools/make_public_repo.js:560  // 注意：/gamess/i 一律命中是**误报**",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:459  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:266  \\\"tools/make_public_repo.js:561  // 正是因为我们在声明\\\\\\\"本包不含 GAMESS",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:460  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:267  \\\"tools/make_public_repo.js:562  // 所以这里只抓真正的 GAMESS 源码工件；\\\\",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:461  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:268  \\\"tools/make_public_repo.js:563  const gamessPats = [/\\\\\\\\$g",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:462  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:269  \\\"tools/make_public_repo.js:564  /ps\\\\\\\\/src\\\\\\\\//, /GAMESS\\",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:463  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:270  \\\"tools/make_public_repo.js:565  // 逐行判一条GAMESS 判据命中，并决定它是\\\\",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:464  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:271  \\\"tools/make_public_repo.js:568  function classifyGamess(rel",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:465  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:272  \\\"tools/make_public_repo.js:569  for (const [j, re] of games",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:466  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:273  \\\"tools/make_public_repo.js:575  function checkGamessSource(",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:467  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:274  \\\"tools/make_public_repo.js:583  const v = classifyGamess(re",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:468  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:275  \\\"tools/make_public_repo.js:585  const tag = v.exempt ? '<- ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:469  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:276  \\\"tools/make_public_repo.js:589  if (/gamess/i.test(line)) w",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:470  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:277  \\\"tools/make_public_repo.js:594  const gA = checkGamessSourc",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:471  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:278  \\\"tools/make_public_repo.js:647  // （与闸门 A 的 classifyGamess ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:472  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:279  \\\"tools/make_public_repo.js:691  gamess_exempt: gA.exempt.le",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:473  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:280  \\\"tools/make_public_repo.js:695  && selfScan.gamess_exempt >",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:474  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:281  \\\"tools/make_public_repo.js:1008  const line = String(gamess",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:475  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:282  \\\"tools/make_public_repo.js:1009  const inDetector = classif",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:476  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:283  \\\"tools/make_public_repo.js:1010  const elsewhere = classify",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:477  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:284  \\\"tools/make_public_repo.js:1011  const innocent = classifyG",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:478  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:285  \\\"tools/make_public_repo.js:1275  gateA_gamess_source_artifa",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:479  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:286  \\\"tools/make_public_repo.js:1301  note_word_only_gamess: wor",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:480  \"evidence/release_qa/20261023T115505Z_ship_qa_plan.out:339  \\\"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:481  \"evidence/release_qa/MANIFEST.sha256:9  ba3807804a34ac71d5077c89c46b2471924875abb174c1d3b2ac011f307a8ba7 *20260929T21355",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:482  \"evidence/release_qa/NOTE_wheel_rebuild_route_20261013.md:46  | GAMESS/许可泄漏闸门 | **rc=1**，命中 `dist-info/METADATA:43` 的 \\\"",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:483  \"evidence/release_qa/README.md:29  | `20260929T212552Z_gate_selftest.out` | `tools/audit_no_gamess.js` 自己 | `--selftest`",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:484  \"evidence/release_qa/README.md:30  | `20260929T213552Z_no_gamess_scan_after_allow.out` | 同上，加了第 2 条具名规则之后 | 同一次真装真扫 | 7/",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:485  \"evidence/release_qa/README.md:58  `tools/audit_no_gamess.js --selftest` 里有一条专门验\\\"同一个文件里的非免责句不放行\\\"。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:486  \"evidence/release_qa/gate_selftest_20260930.txt:2  对象：tools/make_public_repo.js 与 tools/audit_no_gamess.js 本轮改动后的实测状态。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:487  \"evidence/release_qa/gate_selftest_20260930.txt:31  == 3. 发布卫生扫描（tools/audit_no_gamess.js）==\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:488  \"evidence/release_qa/gate_selftest_20260930.txt:34  20260929T213552Z_no_gamess_scan_after_allow.out：加了第 2 条具名规则后重跑，\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:489  \"evidence/release_qa/run_audit_on_staged_wheel.sh:2  # 对**暂存 wheel** 跑 GAMESS/许可泄漏闸门并归档。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:490  \"evidence/release_qa/run_audit_on_staged_wheel.sh:3  # 为什么要单独一份：`node tools/audit_no_gamess.js` 自己会 `pip install --targe",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:491  \"evidence/release_qa/run_audit_on_staged_wheel.sh:14  node tools/audit_no_gamess.js --target \\\"$TDIR\\\" --src \\\"$WHL\\\" > ",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:492  \"nlcsplit/__init__.py:3  不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:493  \"paper/joss/paper.md:33  GAMESS source, and reproduces every number it documents from a single named script whose\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:494  \"tools/audit_no_gamess.js:1  /* 发布前硬检查：README、LICENSE 段与软件文都写着\\\"不含任何 GAMESS 代码\\\"。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:495  \"tools/audit_no_gamess.js:8  *   (2) 对装出来的**每一个文件**逐行扫 GAMESS 标识、GAMESS 专有量名与源码文件名；\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:496  \"tools/audit_no_gamess.js:13  *   node tools/audit_no_gamess.js                       # 装当前目录到 /tmp/nlcsplit_audit 再扫\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:497  \"tools/audit_no_gamess.js:14  *   node tools/audit_no_gamess.js --target DIR --src PATH\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:498  \"tools/audit_no_gamess.js:15  *   node tools/audit_no_gamess.js --selftest            # 只验判据本身有没有分辨力，不安装\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:499  \"tools/audit_no_gamess.js:30  // NEEDLE 是\\\"GAMESS 才有的东西\\\"：程序名、专有量名、源码文件名。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:500  \"tools/audit_no_gamess.js:31  // 命中不等于有罪（免责声明里就会出现 \\\"GAMESS\\\" 这个词），但也不能靠\\\"我看了一眼觉得没事\\\"。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:501  \"tools/audit_no_gamess.js:34  const NEEDLE = /gamess|ab initio|libddis\\\\.|inputst|outputst|dfl\\\\.h|gfile|intcos/i;\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:502  \"tools/audit_no_gamess.js:37  // 唯一的合法形态：我们在声明\\\"本包不含 GAMESS 代码\\\"。这句话出现在包 docstring，\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:503  \"tools/audit_no_gamess.js:42  { name: '免责声明：本包不含 GAMESS 代码',\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:504  \"tools/audit_no_gamess.js:44  line: /不含任何 ?GAMESS ?代码|no ?GAMESS code/i },\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:505  \"tools/audit_no_gamess.js:49  // 少了这一句，\\\"url 里恰好写着 GAMESS\\\"就会连带把同一行里别的 GAMESS 内容一起放过。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:506  \"tools/audit_no_gamess.js:71  // 真 GAMESS 工件：必须判违规\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:507  \"tools/audit_no_gamess.js:72  { rel: 'nlcsplit/nlc.py', line: 'c  ported from GAMESS src/lib/libddis.F', want: null },\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:508  \"tools/audit_no_gamess.js:75  { rel: 'nlcsplit/__init__.py', line: '不含任何 GAMESS 代码；依赖 PySCF。', want: '免责声明：本包不含 GAMESS 代",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:509  \"tools/audit_no_gamess.js:76  { rel: 'x-0.1.0.dist-info/METADATA', line: '**不含任何 GAMESS 代码**', want: '免责声明：本包不含 GAMESS 代",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:510  \"tools/audit_no_gamess.js:78  { rel: 'nlcsplit/__init__.py', line: 'helper parses GAMESS $VM1 / INTGC blocks', want: nul",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:511  \"tools/audit_no_gamess.js:81  line: '{\\\"dir_info\\\": {}, \\\"url\\\": \\\"file:///some/machine/Project/GAMESS\\\"}',\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:512  \"tools/audit_no_gamess.js:85  line: '{\\\"dir_info\\\": {}, \\\"url\\\": \\\"file:///tmp/x\\\", \\\"note\\\": \\\"reads GAMESS INPUTST\\\"}'",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:513  \"tools/audit_no_gamess.js:133  for (const h of hits) console.log('  GAMESS? ' + h);\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:514  \"tools/audit_no_gamess.js:135  console.log(`\\\\n结论：具名豁免 ${exempt.length} 条，GAMESS 相关 ${hits.length} 条，许可冲突信号 ${licHits.le",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:515  \"tools/audit_no_gamess.js:136  console.log('豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。');\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:516  \"tools/make_public_repo.js:12  *   A 无 GAMESS 源码工件        B 无密钥/内网串（含工作机绝对路径、集群端口、账号串）\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:517  \"tools/make_public_repo.js:124  const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js', 'audit_share_rule.js'];\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:518  \"tools/make_public_repo.js:129  const SELF_DETECT = ['tools/make_public_repo.js', 'tools/audit_no_gamess.js'];\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:519  \"tools/make_public_repo.js:567  // ---------------------------------------------------------------- 闸门 A：无 GAMESS **源码**",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:520  \"tools/make_public_repo.js:568  // 注意：/gamess/i 一律命中是**误报**——README/CONTRIBUTING/__init__ 里出现这个词，\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:521  \"tools/make_public_repo.js:569  // 正是因为我们在声明\\\"本包不含 GAMESS 代码\\\"。一个永远失败的门禁和一个不会失败的门禁一样没用。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:522  \"tools/make_public_repo.js:570  // 所以这里只抓真正的 GAMESS 源码工件；\\\"gamess\\\"这个词的出现另列为 info，人工过一眼即可。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:523  \"tools/make_public_repo.js:571  const gamessPats = [/\\\\$gnum/i, /\\\\bintgc\\\\b/, /\\\\bdiana\\\\b/, /rhfuhf/, /\\\\bgameSS\\\\.src",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:524  \"tools/make_public_repo.js:572  /ps\\\\/src\\\\//, /GAMESS\\\\.src/, /getscr|erscf[0-9]/];\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:525  \"tools/make_public_repo.js:573  // 逐行判一条GAMESS 判据命中，并决定它是\\\"检测器自己的判据定义\\\"还是\\\"真工件\\\"。\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:526  \"tools/make_public_repo.js:576  function classifyGamess(rel, line) {\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:527  \"tools/make_public_repo.js:577  for (const [j, re] of gamessPats.entries()) {\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:528  \"tools/make_public_repo.js:583  function checkGamessSource(root, treeList) {\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:529  \"tools/make_public_repo.js:591  const v = classifyGamess(rel, line);\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:530  \"tools/make_public_repo.js:593  const tag = v.exempt ? '<- 具名豁免「检测器自身的判据定义」' : '<- GAMESS 源码工件';\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:531  \"tools/make_public_repo.js:597  if (/gamess/i.test(line)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:532  \"tools/make_public_repo.js:602  const gA = checkGamessSource(OUT, tree);\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:533  \"tools/make_public_repo.js:655  // （与闸门 A 的 classifyGamess 同一标准）。只按文件名豁免 = 给这两个文件开空白支票，\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:534  \"tools/make_public_repo.js:699  gamess_exempt: gA.exempt.length,\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:535  \"tools/make_public_repo.js:703  && selfScan.gamess_exempt > 0 && emailSelftest.all_correct;\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:536  \"tools/make_public_repo.js:1028  const line = String(gamessPats[0]);                    // 真实的一条判据定义\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:537  \"tools/make_public_repo.js:1029  const inDetector = classifyGamess('tools/make_public_repo.js', line);\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:538  \"tools/make_public_repo.js:1030  const elsewhere = classifyGamess('nlcsplit/nlc.py', line);\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:539  \"tools/make_public_repo.js:1031  const innocent = classifyGamess('tools/make_public_repo.js', 'x = 1');\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:540  \"tools/make_public_repo.js:1304  gateA_gamess_source_artifacts: ga,\",",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:541  \"tools/make_public_repo.js:1330  note_word_only_gamess: wordOnly,\"",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out:594  \"evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out\",",
+  "evidence/release_qa/MANIFEST.sha256:9  ba3807804a34ac71d5077c89c46b2471924875abb174c1d3b2ac011f307a8ba7 *20260929T213552Z_no_gamess_scan_after_allow.out",
+  "evidence/release_qa/NOTE_wheel_rebuild_route_20261013.md:46  | GAMESS/许可泄漏闸门 | **rc=1**，命中 `dist-info/METADATA:43` 的 \"No GAMESS source is…\" 一句**不在具名豁免账里**（10-09 那次通过的那份豁免的是导出树 READM",
+  "evidence/release_qa/README.md:29  | `20260929T212552Z_gate_selftest.out` | `tools/audit_no_gamess.js` 自己 | `--selftest` 判据 + 一次真装真扫 | 5/5（当时）；装出来 45 个文件，具",
+  "evidence/release_qa/README.md:30  | `20260929T213552Z_no_gamess_scan_after_allow.out` | 同上，加了第 2 条具名规则之后 | 同一次真装真扫 | 7/7；具名豁免 3 条，违规 0 条，冲突信号 0 条，rc=0 |",
+  "evidence/release_qa/README.md:58  `tools/audit_no_gamess.js --selftest` 里有一条专门验\"同一个文件里的非免责句不放行\"。",
+  "evidence/release_qa/gate_selftest_20260930.txt:2  对象：tools/make_public_repo.js 与 tools/audit_no_gamess.js 本轮改动后的实测状态。",
+  "evidence/release_qa/gate_selftest_20260930.txt:31  == 3. 发布卫生扫描（tools/audit_no_gamess.js）==",
+  "evidence/release_qa/gate_selftest_20260930.txt:34  20260929T213552Z_no_gamess_scan_after_allow.out：加了第 2 条具名规则后重跑，",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh:2  # 对**暂存 wheel** 跑 GAMESS/许可泄漏闸门并归档。",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh:3  # 为什么要单独一份：`node tools/audit_no_gamess.js` 自己会 `pip install --target`，",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh:14  node tools/audit_no_gamess.js --target \"$TDIR\" --src \"$WHL\" > \"$OUT\" 2>&1",
+  "nlcsplit/__init__.py:3  不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "paper/joss/paper.md:33  GAMESS source, and reproduces every number it documents from a single named script whose",
+  "tools/audit_no_gamess.js:1  /* 发布前硬检查：README、LICENSE 段与软件文都写着\"不含任何 GAMESS 代码\"。",
+  "tools/audit_no_gamess.js:8  *   (2) 对装出来的**每一个文件**逐行扫 GAMESS 标识、GAMESS 专有量名与源码文件名；",
+  "tools/audit_no_gamess.js:13  *   node tools/audit_no_gamess.js                       # 装当前目录到 /tmp/nlcsplit_audit 再扫",
+  "tools/audit_no_gamess.js:14  *   node tools/audit_no_gamess.js --target DIR --src PATH",
+  "tools/audit_no_gamess.js:15  *   node tools/audit_no_gamess.js --selftest            # 只验判据本身有没有分辨力，不安装",
+  "tools/audit_no_gamess.js:30  // NEEDLE 是\"GAMESS 才有的东西\"：程序名、专有量名、源码文件名。",
+  "tools/audit_no_gamess.js:31  // 命中不等于有罪（免责声明里就会出现 \"GAMESS\" 这个词），但也不能靠\"我看了一眼觉得没事\"。",
+  "tools/audit_no_gamess.js:34  const NEEDLE = /gamess|ab initio|libddis\\.|inputst|outputst|dfl\\.h|gfile|intcos/i;",
+  "tools/audit_no_gamess.js:37  // 唯一的合法形态：我们在声明\"本包不含 GAMESS 代码\"。这句话出现在包 docstring，",
+  "tools/audit_no_gamess.js:42  { name: '免责声明：本包不含 GAMESS 代码',",
+  "tools/audit_no_gamess.js:44  line: /不含任何 ?GAMESS ?代码|no ?GAMESS code/i },",
+  "tools/audit_no_gamess.js:49  // 少了这一句，\"url 里恰好写着 GAMESS\"就会连带把同一行里别的 GAMESS 内容一起放过。",
+  "tools/audit_no_gamess.js:71  // 真 GAMESS 工件：必须判违规",
+  "tools/audit_no_gamess.js:72  { rel: 'nlcsplit/nlc.py', line: 'c  ported from GAMESS src/lib/libddis.F', want: null },",
+  "tools/audit_no_gamess.js:75  { rel: 'nlcsplit/__init__.py', line: '不含任何 GAMESS 代码；依赖 PySCF。', want: '免责声明：本包不含 GAMESS 代码' },",
+  "tools/audit_no_gamess.js:76  { rel: 'x-0.1.0.dist-info/METADATA', line: '**不含任何 GAMESS 代码**', want: '免责声明：本包不含 GAMESS 代码' },",
+  "tools/audit_no_gamess.js:78  { rel: 'nlcsplit/__init__.py', line: 'helper parses GAMESS $VM1 / INTGC blocks', want: null },",
+  "tools/audit_no_gamess.js:81  line: '{\"dir_info\": {}, \"url\": \"file:///some/machine/Project/GAMESS\"}',",
+  "tools/audit_no_gamess.js:85  line: '{\"dir_info\": {}, \"url\": \"file:///tmp/x\", \"note\": \"reads GAMESS INPUTST\"}',",
+  "tools/audit_no_gamess.js:133  for (const h of hits) console.log('  GAMESS? ' + h);",
+  "tools/audit_no_gamess.js:135  console.log(`\\n结论：具名豁免 ${exempt.length} 条，GAMESS 相关 ${hits.length} 条，许可冲突信号 ${licHits.length} 条`);",
+  "tools/audit_no_gamess.js:136  console.log('豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。');",
+  "tools/make_public_repo.js:12  *   A 无 GAMESS 源码工件        B 无密钥/内网串（含工作机绝对路径、集群端口、账号串）",
+  "tools/make_public_repo.js:124  const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js', 'audit_share_rule.js'];",
+  "tools/make_public_repo.js:129  const SELF_DETECT = ['tools/make_public_repo.js', 'tools/audit_no_gamess.js'];",
+  "tools/make_public_repo.js:567  // ---------------------------------------------------------------- 闸门 A：无 GAMESS **源码**",
+  "tools/make_public_repo.js:568  // 注意：/gamess/i 一律命中是**误报**——README/CONTRIBUTING/__init__ 里出现这个词，",
+  "tools/make_public_repo.js:569  // 正是因为我们在声明\"本包不含 GAMESS 代码\"。一个永远失败的门禁和一个不会失败的门禁一样没用。",
+  "tools/make_public_repo.js:570  // 所以这里只抓真正的 GAMESS 源码工件；\"gamess\"这个词的出现另列为 info，人工过一眼即可。",
+  "tools/make_public_repo.js:571  const gamessPats = [/\\$gnum/i, /\\bintgc\\b/, /\\bdiana\\b/, /rhfuhf/, /\\bgameSS\\.src\\b/i,",
+  "tools/make_public_repo.js:572  /ps\\/src\\//, /GAMESS\\.src/, /getscr|erscf[0-9]/];",
+  "tools/make_public_repo.js:573  // 逐行判一条GAMESS 判据命中，并决定它是\"检测器自己的判据定义\"还是\"真工件\"。",
+  "tools/make_public_repo.js:576  function classifyGamess(rel, line) {",
+  "tools/make_public_repo.js:577  for (const [j, re] of gamessPats.entries()) {",
+  "tools/make_public_repo.js:581  // 这类行是报告，不是 GAMESS 源码工件。2026-10-23 的四条误报就是它。",
+  "tools/make_public_repo.js:587  function checkGamessSource(root, treeList) {",
+  "tools/make_public_repo.js:595  const v = classifyGamess(rel, line);",
+  "tools/make_public_repo.js:597  const tag = v.exempt ? '<- 具名豁免「检测器自身的判据定义」' : '<- GAMESS 源码工件';",
+  "tools/make_public_repo.js:601  if (/gamess/i.test(line)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);",
+  "tools/make_public_repo.js:606  const gA = checkGamessSource(OUT, tree);",
+  "tools/make_public_repo.js:659  // （与闸门 A 的 classifyGamess 同一标准）。只按文件名豁免 = 给这两个文件开空白支票，",
+  "tools/make_public_repo.js:703  gamess_exempt: gA.exempt.length,",
+  "tools/make_public_repo.js:707  && selfScan.gamess_exempt > 0 && emailSelftest.all_correct;",
+  "tools/make_public_repo.js:1032  const line = String(gamessPats[0]);                    // 真实的一条判据定义",
+  "tools/make_public_repo.js:1033  const inDetector = classifyGamess('tools/make_public_repo.js', line);",
+  "tools/make_public_repo.js:1034  const elsewhere = classifyGamess('nlcsplit/nlc.py', line);",
+  "tools/make_public_repo.js:1035  const innocent = classifyGamess('tools/make_public_repo.js', 'x = 1');",
+  "tools/make_public_repo.js:1037  const ledger = classifyGamess('evidence/release_qa/x_ship_qa_plan.out',",
+  "tools/make_public_repo.js:1039  const real = classifyGamess('evidence/release_qa/x_ship_qa_plan.out', 'E = $GNUM');",
+  "tools/make_public_repo.js:1315  gateA_gamess_source_artifacts: ga,",
+  "tools/make_public_repo.js:1341  note_word_only_gamess: wordOnly,"
+ ],
+ "note_internal_only_citations": [],
+ "note_gateD_skipped": null,
+ "note_evidence_dirs_without_source_manifest": [],
+ "scrubbed_files": [
+  "nlcsplit/figures.py",
+  "nlcsplit/step_m_ccsdt.py",
+  "nlcsplit/tests/test_regression.py",
+  "nlcsplit/run_all.sh",
+  "nlcsplit/logs/orca_anchor.json",
+  "nlcsplit/logs/step_h.json",
+  "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out",
+  "evidence/l2cp/20260929T051849Z_l2_benzmeth-wsl.out",
+  "evidence/l2cp/20260929T051849Z_wsl2121-benzmeth-l2cp.json",
+  "evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out",
+  "evidence/l2cp/20260929T051912Z_centos2140-benzmeth-l2cp.json",
+  "evidence/l2cp/20261003T0804Z_snnu51028-guard_FAIL.out",
+  "evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out",
+  "evidence/l2cp/20261003T0911Z_wsl2140-cp_levels.out",
+  "evidence/l2cp/20261003T1025Z_wsl2121-dtot_aromatic.out",
+  "evidence/l2cp/20261003T1747Z_snnu51052-sbatch.out",
+  "evidence/l2cp/20261004T0100Z_cross_version_pair_benzmeth.out",
+  "evidence/l2cp/20261004T0120Z_snnu51025_dft_avdz_ASSERT.out",
+  "evidence/l2cp/20261004T0328Z_snnu51083-sbatch.out",
+  "evidence/l2cp/cp_version_probe.py",
+  "evidence/l2cp/cp_version_runner.py",
+  "evidence/l2cp/dtot_2121_aromatic.py",
+  "evidence/centos/20260928T193520Z_centos-step_h_benz_l0.out",
+  "evidence/centos/20260928T193520Z_centos-step_h_l1.out",
+  "evidence/centos/MANIFEST.txt",
+  "evidence/retrieval_calibration/oa_stab.js",
+  "evidence/retrieval_calibration/xref_calib2.js",
+  "evidence/retrieval_calibration/xref_r3.js",
+  "evidence/recompute/20260929T110830Z_libxc_referee.out",
+  "evidence/recompute/20260930T191014Z_stepg-official.out",
+  "evidence/recompute/20261005T0340Z_benzene_dimer_label_measure.out",
+  "evidence/recompute/20261018T120810Z_libxc_version_census.out",
+  "evidence/recompute/run_libxc_version_census.sh",
+  "evidence/scaling/20260929T1340Z_step_j_scaling.out",
+  "evidence/population/20260929T131055Z_stepk_pop-constructed.out",
+  "evidence/population/20260929T131530Z_stepk_pop-official.out",
+  "evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out",
+  "evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out",
+  "evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt",
+  "evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-8.out",
+  "evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out",
+  "evidence/coretail/20260929T122714Z_coretail.out",
+  "evidence/fastpair_ab/20260929T112236Z_a2b_verify.out",
+  "evidence/fastpair_ab/fastpair_ide_validation.json",
+  "evidence/bound_forms/20260929T112656Z_hybrid_nearfield.out",
+  "evidence/release_qa/20260929T170302Z_wheelclean_pyargs.out",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out",
+  "evidence/release_qa/20260930T181000Z_wheel_pyargs_44_firstrun.out",
+  "evidence/release_qa/20261001T112436Z_ci_dryrun_pyscf212_full.out",
+  "evidence/release_qa/20261001T112436Z_ci_dryrun_pyscf214_full.out",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out",
+  "evidence/release_qa/20261002T0815Z_wheel_install_pytest_out_of_tree.txt",
+  "evidence/release_qa/20261005T0429Z_suite74_full.out",
+  "evidence/release_qa/20261005T0512Z_suite74_after_figure_fixes.out",
+  "evidence/release_qa/20261013T142600Z_build.out",
+  "evidence/release_qa/20261013T142600Z_wheel_install_pytest_notslow.out",
+  "evidence/release_qa/20261013T142600Z_wheel_member_diff.out",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out",
+  "evidence/release_qa/20261013T150059Z_build.out",
+  "evidence/release_qa/20261013T150059Z_wheel_install_pytest_notslow.out",
+  "evidence/release_qa/20261013T150059Z_wheel_member_diff.out",
+  "evidence/release_qa/20261018T122724Z_utf8_census.out",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out",
+  "evidence/release_qa/20261023T120958Z_ship_qa_plan.out",
+  "evidence/release_qa/README.md",
+  "evidence/release_qa/publish_record_20260930.txt",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh",
+  "evidence/release_qa/run_test_count_census.sh",
+  "evidence/release_qa/run_tests_after_src_edit.sh",
+  "evidence/release_qa/run_utf8_census.sh",
+  "evidence/release_qa/run_wheel_rebuild_qa.sh",
+  "evidence/bib_provenance/20261009T122601Z_bib_all25_crossref_check.js",
+  "evidence/bib_provenance/20261009T124519Z_bib_all25_issue_year_check.out",
+  "evidence/bib_provenance/20261009T124738Z_bib_all25_issue_year_check_after_fix.out",
+  "evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js",
+  "evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_check.py",
+  "evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_check.py",
+  "evidence/attribution_referee/README.md",
+  "evidence/attribution_referee/outputs/probe_quadrature.txt",
+  "evidence/attribution_referee/probe_quadrature.py",
+  "evidence/attribution_referee/run.py",
+  "evidence/attribution_referee/summarize.py",
+  "evidence/ccsdt/20261001T044833Z_orca_crosscheck.out",
+  "evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out",
+  "evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out",
+  "evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out",
+  "evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out",
+  "evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out",
+  "evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out",
+  "evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out",
+  "evidence/ccsdt/20261002T1030Z_snnu_benzene_dimer_B.out",
+  "evidence/ccsdt/20261002T1208Z_snnu_sandwich_avdz_SUPERSEDED.out",
+  "evidence/ccsdt/20261003T0605Z_stepm_dimers_ghostcp_local.out",
+  "evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out",
+  "evidence/ccsdt/20261003T0653Z_ghost_monomer_scf_check.out",
+  "evidence/ccsdt/20261003T0700Z_snnu_cp_rebuild_compare.out",
+  "evidence/ccsdt/20261003T0731Z_orca_crosscheck_ghostcp_run1.out",
+  "evidence/ccsdt/20261003T0752Z_orca_crosscheck_ghostcp.out",
+  "evidence/ccsdt/20261003T0758Z_snnu_pi_three_avdz_ghostcp.out",
+  "evidence/ccsdt/20261003T0925Z_cp_rebuild_compare_2121.out",
+  "evidence/ccsdt/20261003T1212Z_snnu_sandwich_avdz_ghostcp.out",
+  "evidence/ccsdt/20261004T0110Z_cp_rebuild_compare_derived.out",
+  "evidence/ccsdt/README.md",
+  "evidence/ccsdt/snnu_benzene_B.sh",
+  "evidence/ccsdt/snnu_benzene_avdz.sh",
+  "evidence/ccsdt/snnu_benzene_dimer.sh",
+  "evidence/ccsdt/snnu_benzene_runner.sh",
+  "evidence/ccsdt/snnu_cp_rebuild_631.sh",
+  "evidence/ccsdt/snnu_dft_cp_dimer.py",
+  "evidence/nlc_cp/20261006T0657Z_nlc_bsse_three_small_dimers.out",
+  "evidence/common_grid/20261006T085207Z_ownership_vs_quadrature_l1_small.out",
+  "evidence/common_grid/20261006T090714Z_ownership_vs_quadrature_l1_benzenex.out",
+  "evidence/common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_04_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_08_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_16_l1_small.out",
+  "evidence/common_grid/20261013T155004Z_s22_full_certificate_S22_09_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_10_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_12_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_17_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_18_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_19_l1_small.out",
+  "evidence/common_grid/20261013T160450Z_verify_s22_folder_identity.out",
+  "evidence/common_grid/20261013T160621Z_verify_s22_folder_identity.out",
+  "evidence/common_grid/20261013T161955Z_w4_closeout.out",
+  "evidence/common_grid/20261013T174321Z_s22_full_certificate_S22_05_l1_small.out",
+  "evidence/common_grid/20261013T174321Z_s22_full_certificate_S22_11_l1_small.out",
+  "evidence/common_grid/20261013T174321Z_s22_full_certificate_S22_13_l1_small.out",
+  "evidence/common_grid/20261013T193551Z_verify_s22_folder_identity.out",
+  "evidence/common_grid/20261013T202511Z_w4_closeout.out",
+  "evidence/common_grid/20261013T205228Z_s22_full_certificate_S22_06_l1_small.out",
+  "evidence/common_grid/20261013T205228Z_s22_full_certificate_S22_20_l1_small.out",
+  "evidence/common_grid/20261013T205228Z_s22_full_certificate_S22_22_l1_small.out",
+  "evidence/common_grid/20261013T220106Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T220139Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T220306Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T220452Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T225548Z_s22_full_certificate_S22_14_l1_small.out",
+  "evidence/common_grid/20261013T225548Z_s22_full_certificate_S22_21_l1_small.out",
+  "evidence/common_grid/20261014T004111Z_s22_full_certificate_S22_07_l1_small.out",
+  "evidence/common_grid/20261014T004111Z_s22_full_certificate_S22_15_l1_small.out",
+  "evidence/common_grid/20261014T025620Z_w4_closeout.out",
+  "evidence/common_grid/20261018T111430Z_selftest_certification_gate.out",
+  "evidence/common_grid/20261018T111923Z_w4_closeout.out",
+  "evidence/common_grid/20261018T112316Z_spherical_promolecule_thread_probe.out",
+  "evidence/common_grid/20261018T114738Z_spherical_promolecule_thread_probe.out",
+  "evidence/common_grid/20261018T114837Z_spherical_promolecule_thread_probe.out",
+  "evidence/common_grid/20261018T121833Z_w4_closeout.out",
+  "evidence/common_grid/20261021T094231Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T094231Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T104857Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T104857Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T104954Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T104954Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T122019Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T122019Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T122147Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T122147Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T122429Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T122429Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T203202Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T203202Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261023T0527Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261023T0527Z_grid_convergence_scoped.out",
+  "evidence/common_grid/NOTE_s22_official_names_20261013.md",
+  "evidence/common_grid/check_batch_health.sh",
+  "evidence/common_grid/run_after_unitfix_summary.sh",
+  "evidence/common_grid/run_certificate_reproduction.sh",
+  "evidence/common_grid/run_certificate_reproduction_cell.sh",
+  "evidence/common_grid/run_certify.sh",
+  "evidence/common_grid/run_crossfamily_check.sh",
+  "evidence/common_grid/run_crossfamily_level0_currentcode.sh",
+  "evidence/common_grid/run_crossfamily_level0_pisystem.sh",
+  "evidence/common_grid/run_crossfamily_level2_benzwater.sh",
+  "evidence/common_grid/run_crossfamily_level2_three_cells.sh",
+  "evidence/common_grid/run_crossfamily_level2_three_pi_cells.sh",
+  "evidence/common_grid/run_crossfamily_level2_water.sh",
+  "evidence/common_grid/run_free_atom_cross_thread.sh",
+  "evidence/common_grid/run_grid_convergence_archive.sh",
+  "evidence/common_grid/run_probe_hirshfeld_equivalence.sh",
+  "evidence/common_grid/run_probe_spherical_column_price.sh",
+  "evidence/common_grid/run_probe_spherical_promolecule.sh",
+  "evidence/common_grid/run_record_cell_thread_config.sh",
+  "evidence/common_grid/run_s22_full_batch.sh",
+  "evidence/common_grid/run_s22_summary.sh",
+  "evidence/common_grid/run_selftest_certification_gate.sh",
+  "evidence/common_grid/run_single_thread_repeat_check.sh",
+  "evidence/common_grid/run_summarize_s22_full.sh",
+  "evidence/common_grid/run_thread_sweep.sh",
+  "evidence/common_grid/run_verify_s22_identity.sh",
+  "evidence/common_grid/run_verify_s22_names.sh",
+  "evidence/common_grid/run_w2_benzwater_pricing.sh",
+  "evidence/common_grid/run_w4_remaining_after_unitfix.sh",
+  "evidence/common_grid/s22_full_batch_20261013T152010Z.log",
+  "evidence/common_grid/s22_full_batch_20261013T152306Z.log",
+  "evidence/common_grid/verify_s22_official_names.py",
+  "evidence/common_grid/verify_s22_xyz_upstream.sh",
+  "evidence/common_grid/w4_batch_20261012.log",
+  "evidence/common_grid/watch_batch_until_done.sh",
+  "docs/tables_and_provenance.md"
+ ],
+ "excluded_by_design": [
+  "nlcsplit/centos_run.sh",
+  "nlcsplit/centos_run2.sh",
+  "nlcsplit/centos_run3.sh",
+  "nlcsplit/centos_run4.sh",
+  "nlcsplit/centos_run5.sh",
+  "nlcsplit/centos_setup.sh",
+  "tools/intranet_patterns.private.js",
+  "PROGRESS-*.md",
+  "HANDOFF-*.md",
+  "STEP0-*.md",
+  "scratch/**",
+  "paper/**（唯一例外 joss/：JOSS 投稿稿必须在仓库里，JOSS 从仓内路径构建）",
+  "figs/**（唯一例外 fig1_xc_split.png：字节拷贝进 paper/joss/，可由随包的 nlcsplit/figures.py 重生成）"
+ ],
+ "relocated_into_docs": {
+  "RESEARCH-20260929-lit.md": "docs/literature_search_20260929.md",
+  "MAIN-skeleton.md": "docs/tables_and_provenance.md"
+ },
+ "note_relocated_passthrough": [],
+ "shipped": false,
+ "kept_stale": [
+  {
+   "f": "nlcsplit-0.1.0-py3-none-any.whl",
+   "sha256": "72e61ab5363f7ef9c5d4ef8420068d3f404d342ce1cf6051b76fab15cadc9260",
+   "mtime": "2026-10-09T12:58:08.683Z"
+  },
+  {
+   "f": "nlcsplit-0.1.0.tar.gz",
+   "sha256": "b859ada217f889fd2773bcb7a3b21831ceb9131c53b49130cdbbdc403b2fa8e2",
+   "mtime": "2026-10-09T12:58:11.503Z"
+  }
+ ]
+}
+
+GATE FAILED: 9 条命中，不出货（exit 1）。上面每个数组都是 file:line。
+dist/ 里的旧 wheel/sdist 保持原样：nlcsplit-0.1.0-py3-none-any.whl, nlcsplit-0.1.0.tar.gz
+!! make_public_repo.js 非零（它自带 15 道闸门，先读它的判语再重试）
+# exit=1 at 2026-10-23T12:15:27Z

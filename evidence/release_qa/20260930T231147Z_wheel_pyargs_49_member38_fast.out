@@ -1,0 +1,45 @@
+== ARCHIVE: the 38-member wheel (seven test modules), not-slow subset run outside the source tree ==
+
+Object under test:
+  nlcsplit-0.1.0-py3-none-any.whl  SHA-256 55033716eb9b104a8aeb0d27b6fca0e39cab7e7b249e094ae39d2e69cbe9e911 (the build produced by the export
+  run whose thirteen fatal gates came back empty)
+  wheel members 38, seven test modules plus conftest.py and __init__.py, zero .pyc.
+  Against the previous build (37 members, six test modules) the only additions are this
+  test module and the refactor of nlcsplit/step_m_ccsdt.py.
+
+Install: pip3 install --no-deps --target <dir>, then PYTHONPATH=<dir> with the working
+directory inside <dir>, so nothing on sys.path is the repository.
+
+    $ pytest --pyargs nlcsplit --collect-only -q
+    49 tests collected
+    $ pytest --pyargs nlcsplit -m "not slow" -q
+    30 passed, 1 skipped, 18 deselected in 25.72s
+
+(The first execution of the same subset, minutes earlier, reported 25.25 s.)
+
+49 collected = 31 under `not slow` + 18 under `slow`. The single skip is the designed one:
+test_geometry.py passes without the S22 official geometry download.
+
+The 18 slow tests were not re-run on this wheel, and the carry-over is checkable rather
+than assumed: the eight test files they live in are byte-identical to the ones on the
+37-member wheel that was run in full at 2026-09-30T20:54Z (44 passed, 1 skipped -
+`20260930T220142Z_wheel_pyargs_45_member37.out`), and `git diff --name-only afdefba HEAD --
+nlcsplit/` shows that no library module they import changed since; the only paths added
+under nlcsplit/ are step_m_ccsdt.py and the new test_cc_convention.py, and step_m_ccsdt.py
+is imported only by the new test. Re-running the 18 would cost ~8 minutes to re-measure
+unchanged code, so it is stated as a carry-over instead of performed and quietly implied.
+
+Collection counts are the point of this log, not wall clock: 322 s, 505 s and 25 s have
+been measured for overlapping subsets of the same suite under different thread settings
+and different degrees of machine load, and none of them is "the" wheel test time.
+
+--- verbatim pytest output below ---
+$ pytest --pyargs nlcsplit --collect-only -q
+49 tests collected in 0.45s
+
+$ pytest --pyargs nlcsplit -m 'not slow' -q
+............s..................                                          [100%]
+=========================== short test summary info ============================
+SKIPPED [1] nlcsplit/tests/test_geometry.py:72: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+30 passed, 1 skipped, 18 deselected in 25.72s
+EXIT=0

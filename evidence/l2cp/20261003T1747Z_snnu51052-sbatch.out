@@ -1,0 +1,22 @@
+== host=cpu1 cpus=16 threads=16 maxmem=970845MB ==
+3.10.19 pyscf 2.12.1
+d40c6bdaa9bae118d5b949152b8b159a3a9ee747e0eff3ead1f0bb49f27c6cd8  <CLUSTER_HOME>/nlcc-<CLUSTER>/snnu_dft_cp_avdz.py
+1ccff8766f56670be2fe9931d8b054ce8f50e259ef67beb408013af2a9464b52  <CLUSTER_HOME>/nlcc-<CLUSTER>/.publish/nlcsplit/nlcsplit/step_h_s22.py
+== running @ 2026-10-03T17:05:23Z ==
+   rc=0 lines=15 @ 2026-10-03T17:47:03Z
+== omegaB97X-V counterpoise at two bases, level 2 ==
+  DFT_SET=pi -> 3 systems: 苯-水, 苯-氨, 苯-甲烷
+  basis from NCBAS=6-31g* ; module reads it at import, so the guard below is the only place the small basis is used
+    复合物(反泊松参照)   N= 38944  E_xc(其余)=-11757.5328  E_NLC=  +52.9345  其中β∫ρ= +60.8295  E_coul= +70255.0515  NLC两实现差=5.3e-06 闭合=0.0e+00 kcal/mol
+guard  水二聚体     6-31g* nao=36 DFT=-6.1526 vs archived -6.1526 -> 0.0000 PASS
+    复合物(反泊松参照)   N=110288  E_xc(其余)=-26256.0181  E_NLC= +125.7984  其中β∫ρ=+158.1569  E_coul=+251986.2641  NLC两实现差=2.2e-05 闭合=3.6e-11 kcal/mol
+guard  苯-甲烷     6-31g* nao=118 DFT=-1.3406 vs archived -1.3406 -> 0.0000 PASS
+== BASIS=aug-cc-pvdz LEVEL=2 ==
+    复合物(反泊松参照)   N=106088  E_xc(其余)=-27746.5141  E_NLC= +126.3891  其中β∫ρ=+158.1566  E_coul=+263439.6913  NLC两实现差=8.3e-05 闭合=2.1e-10 kcal/mol
+  苯-水        nao= 233 DFT=  -3.3184
+    复合物(反泊松参照)   N=110504  E_xc(其余)=-26933.8033  E_NLC= +125.8970  其中β∫ρ=+158.1566  E_coul=+257068.0055  NLC两实现差=8.7e-05 闭合=2.7e-09 kcal/mol
+  苯-氨        nao= 242 DFT=  -2.3353
+    复合物(反泊松参照)   N=115136  E_xc(其余)=-26237.0422  E_NLC= +125.5732  其中β∫ρ=+158.1569  E_coul=+251737.1588  NLC两实现差=1.3e-04 闭合=1.3e-09 kcal/mol
+  苯-甲烷       nao= 251 DFT=  -1.5556
+== DONE DFT_SET=pi ==
+a5318a100d876eb2dcff29d4af6f4ca5a3fa3dbd3b4bb394bf9a5eab07c93845  dft_cp_avdz.log

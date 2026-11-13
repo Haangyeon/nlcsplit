@@ -1,0 +1,21 @@
+=== node tools/audit_no_gamess.js --selftest ===
+  ok   nlcsplit/nlc.py | c  ported from GAMESS src/lib/libddis.F -> null (want null)
+  ok   nlcsplit/io.py |   read INPUTST from the gfile -> null (want null)
+  ok   nlcsplit/__init__.py | 不含任何 GAMESS 代码；依赖 PySCF。 -> "免责声明：本包不含 GAMESS 代码" (want "免责声明：本包不含 GAMESS 代码")
+  ok   x-0.1.0.dist-info/METADATA | **不含任何 GAMESS 代码** -> "免责声明：本包不含 GAMESS 代码" (want "免责声明：本包不含 GAMESS 代码")
+  ok   nlcsplit/__init__.py | helper parses GAMESS $VM1 / INTGC blocks -> null (want null)
+selftest: 5/5 通过
+rc=0
+
+=== node tools/audit_no_gamess.js (real install scan) ===
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+扫 45 个装出来的文件（含 0 个 .pyc）
+  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。
+  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | **不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发），也不依赖 GAMESS。
+  GAMESS? nlcsplit-0.1.0.dist-info/direct_url.json:1  {"dir_info": {}, "url": "file://<REPO>"}
+
+结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条
+豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。
+rc=1

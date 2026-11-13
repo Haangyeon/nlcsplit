@@ -1,0 +1,48 @@
+== ARCHIVE: the rebuilt wheel, tested outside the source tree, 45 tests ==
+
+Object under test (built by `node tools/make_public_repo.js` on 2026-10-01, the run whose
+thirteen fatal gates came back empty):
+  nlcsplit-0.1.0-py3-none-any.whl  SHA-256 149e727be193ca8ddbead00e19979f713c2df7b15ad7b6f6dbed2a8bd22816ee
+  nlcsplit-0.1.0.tar.gz            SHA-256 09ebcbd1942d1a68f95b98513d08bebca3c14913c57f4aa3615bfd7b3290ff65
+  wheel members 36, of which six test modules plus conftest.py and __init__.py; zero .pyc.
+
+Install: pip3 install --no-deps --target <extraction dir>, then PYTHONPATH=<that dir> with
+the working directory set inside it, so nothing on sys.path is the repository.
+`pytest --pyargs nlcsplit` therefore exercises the installed package, not the source tree.
+
+Collected from the installed package: 45 = 27 under `-m "not slow"` + 18 under `-m slow`.
+That is one more than each of the two wheels archived before it, which collected 43 and 44.
+The two steps are two named tests in `nlcsplit/tests/test_partition_factors.py`, and the
+file now holds six test functions where it held five at the previous commit:
+  43 -> 44  test_soft_attribution_owner_masked_matches_analytic_gaussian (the owner-masked
+            soft attribution against the analytic pi^{3/2} of the same Gaussian)
+  44 -> 45  test_base_w_on_real_density_is_not_a_measure_at_all (the same base_w table fed
+            the SCF density, where the implied factor is neither natm nor a constant)
+The attribution referee round added no test to the shipped modules; its scripts live under
+evidence/ and are data, not package code.
+
+Environment: PySCF 2.12.1, Python 3.10.12 (WSL), numpy 2.2.6, scipy 1.15.3.
+Result: 44 passed, 1 skipped, 322.21 s. The skip is the designed one - `test_geometry.py`
+passes without the S22 official geometry download - and it is the only skip in the suite.
+
+The export was run again after this test, which rebuilt the wheel to container hash
+27aadd3c55c547c5ed5e1f8ba5c5d8f4346dc11343c941429f03d9d078269a59. All 31 packaged members
+of that rebuild are byte-identical to the ones installed here (compared file by file with
+SHA-256; zero mismatches, zero absent), so this run does describe the shipped content of
+the newest build even though its container hash no longer matches. That is the point of
+naming the hash: the container moves with mtimes, the packaged bytes did not move at all.
+
+Wall clock is 322 s here against 406-656 s for the wheels that collected 43 and 44. The
+extra test does not account for that - one test in 45 cannot explain a factor of two - and
+the logs themselves give the reason: both earlier commands are recorded with
+`OMP_NUM_THREADS=2` in their headers, while this run left the thread variables unset on a
+20-core box, so its BLAS calls ran multi-threaded. The timings are therefore listed per log
+and never pooled into one "wheel test time"; only the pass/skip counts are comparable
+across them.
+
+--- verbatim pytest output below ---
+...............s.............................                            [100%]
+=========================== short test summary info ============================
+SKIPPED [1] nlcsplit/tests/test_geometry.py:72: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+44 passed, 1 skipped in 322.21s (0:05:22)
+EXIT=0

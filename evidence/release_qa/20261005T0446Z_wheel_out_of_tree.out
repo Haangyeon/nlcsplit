@@ -1,0 +1,10 @@
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+9ecfc5eedb01fc9ab0456ed862b05173bf45c494c2370dcf543b044e079a4fa3 *dist/nlcsplit-0.1.0-py3-none-any.whl
+......s...............ss..............................                   [100%]
+=========================== short test summary info ============================
+SKIPPED [1] nlcsplit/tests/test_cc_convention.py:133: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+SKIPPED [1] nlcsplit/tests/test_geometry.py:101: S22 官方几何未取回（跑 tools/get_s22.sh）
+SKIPPED [1] nlcsplit/tests/test_geometry.py:126: S22 官方几何未取回（跑 nlcsplit/tools/get_s22.sh）
+51 passed, 3 skipped in 306.16s (0:05:06)

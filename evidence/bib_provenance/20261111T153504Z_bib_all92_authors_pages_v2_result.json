@@ -1,0 +1,462 @@
+[
+ {
+  "key": "kruse2019dna",
+  "status": "MISMATCH",
+  "detail": "bib=Holger Kruse and Pavel Ban\\'{a}\\v{s} and Ji\\v{r}\\'{\\i} \\v{S}poner | cr=Kruse Holger ; Banáš Pavel ; Šponer Jiřı́"
+ },
+ {
+  "key": "sinha2015fdevdw",
+  "status": "OK",
+  "detail": "authors=2 pages=084120"
+ },
+ {
+  "key": "hujo2011hbond",
+  "status": "OK",
+  "detail": "authors=2 pages=13942"
+ },
+ {
+  "key": "hamada2011c60au",
+  "status": "OK",
+  "detail": "authors=2 pages=245437"
+ },
+ {
+  "key": "becke1988",
+  "status": "OK",
+  "detail": "authors=1 pages=2547-2553"
+ },
+ {
+  "key": "treutler1995",
+  "status": "OK",
+  "detail": "authors=2 pages=346-354"
+ },
+ {
+  "key": "stratmann1996",
+  "status": "OK",
+  "detail": "authors=3 pages=213-223"
+ },
+ {
+  "key": "dion2004",
+  "status": "OK",
+  "detail": "authors=5 pages=246401"
+ },
+ {
+  "key": "mardirossian2014wb97xv",
+  "status": "OK",
+  "detail": "authors=2 pages=9904"
+ },
+ {
+  "key": "mardirossian2016wb97mv",
+  "status": "OK",
+  "detail": "authors=2 pages=214110"
+ },
+ {
+  "key": "lazic2010junolo",
+  "status": "OK",
+  "detail": "authors=6 pages=371-379"
+ },
+ {
+  "key": "dasgupta2023",
+  "status": "OK",
+  "detail": "authors=4 pages=49-67"
+ },
+ {
+  "key": "calbo2015vv10review",
+  "status": "OK",
+  "detail": "authors=4 pages=37-102"
+ },
+ {
+  "key": "goerigk2017gmtkn55",
+  "status": "OK",
+  "detail": "authors=6 pages=32184-32215"
+ },
+ {
+  "key": "vydrov2009vv10",
+  "status": "OK",
+  "detail": "authors=2 pages=063004"
+ },
+ {
+  "key": "vydrov2010simple",
+  "status": "OK",
+  "detail": "authors=2 pages=244103"
+ },
+ {
+  "key": "hyldgaard2014interp",
+  "status": "OK",
+  "detail": "authors=3 pages=075148"
+ },
+ {
+  "key": "hesselmann2013nldft",
+  "status": "OK",
+  "detail": "authors=1 pages=273-283"
+ },
+ {
+  "key": "harris2020numpy",
+  "status": "OK",
+  "detail": "authors=26 pages=357-362"
+ },
+ {
+  "key": "sun2018pyscf",
+  "status": "OK",
+  "detail": "authors=12 pages=e1340"
+ },
+ {
+  "key": "sun2020pyscf",
+  "status": "OK",
+  "detail": "authors=49 pages=024109"
+ },
+ {
+  "key": "lehtola2018libxc",
+  "status": "OK",
+  "detail": "authors=4 pages=1-5"
+ },
+ {
+  "key": "jurecka2006s22",
+  "status": "OK",
+  "detail": "authors=4 pages=1985-1993"
+ },
+ {
+  "key": "takatani2010s22",
+  "status": "MISMATCH",
+  "detail": "bib=Taku Takatani and Edward G. Hohenstein and Krzysztof Malagoli and\n             Michael W. Marshall and Charles D. Sherrill | cr=Takatani Tait ; Hohenstein Edward G. ; Malagoli Massimo ; Marshall Michael S. ; Sherrill C. David"
+ },
+ {
+  "key": "altun2018dlpno",
+  "status": "MISMATCH",
+  "detail": "bib=Zekeriya Altun and Frank Neese and Agnieszka Bistoni | cr=Altun Ahmet ; Neese Frank ; Bistoni Giovanni"
+ },
+ {
+  "key": "lehtola2022illbehaved",
+  "status": "OK",
+  "detail": "authors=2 pages=174114"
+ },
+ {
+  "key": "andres2019ninequestions",
+  "status": "OK",
+  "detail": "authors=30 pages=2248-2283"
+ },
+ {
+  "key": "rezac2016bench",
+  "status": "OK",
+  "detail": "authors=2 pages=5038-5071"
+ },
+ {
+  "key": "hirshfeld1977",
+  "status": "OK",
+  "detail": "authors=1 pages=129-138"
+ },
+ {
+  "key": "boys1970",
+  "status": "OK",
+  "detail": "authors=2 pages=553-566"
+ },
+ {
+  "key": "jeziorski1994",
+  "status": "OK",
+  "detail": "authors=3 pages=1887-1930"
+ },
+ {
+  "key": "khaliullin2007",
+  "status": "OK",
+  "detail": "authors=5 pages=8753-8765"
+ },
+ {
+  "key": "sabatini2013",
+  "status": "OK",
+  "detail": "authors=3 pages=041108"
+ },
+ {
+  "key": "grimme2010d3",
+  "status": "OK",
+  "detail": "authors=4 pages=154104"
+ },
+ {
+  "key": "neese2020orca",
+  "status": "OK",
+  "detail": "authors=4 pages=224108"
+ },
+ {
+  "key": "barca2020gamess",
+  "status": "OK",
+  "detail": "authors=42 pages=154102"
+ },
+ {
+  "key": "smith2020psi4",
+  "status": "MISMATCH",
+  "detail": "bib=Daniel G. A. Smith and Lori A. Burns and Andrew C. Simmonett and Robert M. Parrish and Matthew C. Schieber and Raimondas Galvelis and Peter Kraus and Holger Kruse and Roberto Di Remigio and Asem Alenaizan and Andrew M. James and Susi Lehtola and Jonathon P. Misiewicz and Maximilian Scheurer and Robert A. Shaw and Jeffrey B. Schriber and Yi Xie and Zachary L. Glick and Dominic A. Sirianni and Joseph Senan O'Brien and Jonathan M. Waldrop and Ashutosh Kumar and Edward G. Hohenstein and Benjamin P. Pritchard and Bernard R. Brooks and Henry F. Schaefer and Alexander Yu. Sokolov and Konrad Patkowski and A. Eugene DePrince and U\\u{g}ur Bozkaya and Rollin A. King and Francesco A. Evangelista and Justin M. Turney and T. Daniel Crawford and C. David Sherrill | cr=Smith Daniel G. A. ; Burns Lori A. ; Simmonett Andrew C. ; Parrish Robert M. ; Schieber Matthew C. ; Galvelis Raimondas ; Kraus Peter ; Kruse Holger ; Di Remigio Roberto ; Alenaizan Asem ; James Andrew M. ; Lehtola Susi ; Misiewicz Jonathon P. ; Scheurer Maximilian ; Shaw Robert A. ; Schriber Jeffrey B. ; Xie Yi ; Glick Zachary L. ; Sirianni Dominic A. ; O’Brien Joseph Senan ; Waldrop Jonathan M. ; Kumar Ashutosh ; Hohenstein Edward G. ; Pritchard Benjamin P. ; Brooks Bernard R. ; Schaefer Henry F. ; Sokolov Alexander Yu. ; Patkowski Konrad ; DePrince A. Eugene ; Bozkaya Uğur ; King Rollin A. ; Evangelista Francesco A. ; Turney Justin M. ; Crawford T. Daniel ; Sherrill C. David"
+ },
+ {
+  "key": "peng2011repro",
+  "status": "OK",
+  "detail": "authors=1 pages=1226-1227"
+ },
+ {
+  "key": "smith2016software",
+  "status": "OK",
+  "detail": "authors=4 pages=e86"
+ },
+ {
+  "key": "lebedev1976",
+  "status": "OK",
+  "detail": "authors=1 pages=10-24"
+ },
+ {
+  "key": "adamo1999pbe0",
+  "status": "OK",
+  "detail": "authors=2 pages=6158-6170"
+ },
+ {
+  "key": "zhang1998revpbe",
+  "status": "OK",
+  "detail": "authors=2 pages=890-890"
+ },
+ {
+  "key": "ambrosetti2014",
+  "status": "OK",
+  "detail": "authors=4 pages=18A508"
+ },
+ {
+  "key": "becke1993b3lyp",
+  "status": "OK",
+  "detail": "authors=1 pages=5648-5652"
+ },
+ {
+  "key": "becke2005disp",
+  "status": "OK",
+  "detail": "authors=2 pages=154101"
+ },
+ {
+  "key": "bultinck2007",
+  "status": "OK",
+  "detail": "authors=4 pages=144111"
+ },
+ {
+  "key": "burns2017bfdb",
+  "status": "OK",
+  "detail": "authors=9 pages=161727"
+ },
+ {
+  "key": "caldeweyher2017d3",
+  "status": "OK",
+  "detail": "authors=3 pages=034112"
+ },
+ {
+  "key": "caldeweyher2019d4",
+  "status": "OK",
+  "detail": "authors=7 pages=154122"
+ },
+ {
+  "key": "chai2008wb97x",
+  "status": "OK",
+  "detail": "authors=2 pages=084106"
+ },
+ {
+  "key": "chai2008wb97xd",
+  "status": "OK",
+  "detail": "authors=2 pages=6615"
+ },
+ {
+  "key": "chien2006sg0",
+  "status": "OK",
+  "detail": "authors=2 pages=730-739"
+ },
+ {
+  "key": "cohen2012challenges",
+  "status": "OK",
+  "detail": "authors=3 pages=289-320"
+ },
+ {
+  "key": "dunning1989",
+  "status": "OK",
+  "detail": "authors=1 pages=1007-1023"
+ },
+ {
+  "key": "francisco2006",
+  "status": "OK",
+  "detail": "authors=3 pages=90-102"
+ },
+ {
+  "key": "gill1993",
+  "status": "OK",
+  "detail": "authors=3 pages=506-512"
+ },
+ {
+  "key": "goerigk2011benchmark",
+  "status": "OK",
+  "detail": "authors=2 pages=6670"
+ },
+ {
+  "key": "grimme2006jcc",
+  "status": "OK",
+  "detail": "authors=1 pages=1787-1799"
+ },
+ {
+  "key": "grimme2011damping",
+  "status": "OK",
+  "detail": "authors=3 pages=1456-1465"
+ },
+ {
+  "key": "grimme2011wires",
+  "status": "OK",
+  "detail": "authors=1 pages=211-228"
+ },
+ {
+  "key": "hobza1999",
+  "status": "OK",
+  "detail": "authors=2 pages=3247-3276"
+ },
+ {
+  "key": "hohenstein2010df",
+  "status": "OK",
+  "detail": "authors=2 pages=014101"
+ },
+ {
+  "key": "hujo2011performance",
+  "status": "OK",
+  "detail": "authors=2 pages=3866-3871"
+ },
+ {
+  "key": "hunter2007matplotlib",
+  "status": "OK",
+  "detail": "authors=1 pages=90-95"
+ },
+ {
+  "key": "kendall1992",
+  "status": "OK",
+  "detail": "authors=3 pages=6796-6806"
+ },
+ {
+  "key": "klimes2012perspective",
+  "status": "OK",
+  "detail": "authors=2 pages=120901"
+ },
+ {
+  "key": "knizia2013",
+  "status": "OK",
+  "detail": "authors=1 pages=4834-4843"
+ },
+ {
+  "key": "lee1988lyp",
+  "status": "OK",
+  "detail": "authors=3 pages=785-789"
+ },
+ {
+  "key": "mardirossian2017review",
+  "status": "OK",
+  "detail": "authors=2 pages=2315-2372"
+ },
+ {
+  "key": "marshall2011",
+  "status": "OK",
+  "detail": "authors=3 pages=194102"
+ },
+ {
+  "key": "martinpendas2004",
+  "status": "OK",
+  "detail": "authors=3 pages=4581-4592"
+ },
+ {
+  "key": "mentel2014cp",
+  "status": "OK",
+  "detail": "authors=2 pages=252-267"
+ },
+ {
+  "key": "mitoraj2009",
+  "status": "OK",
+  "detail": "authors=3 pages=962-975"
+ },
+ {
+  "key": "neese2012orca",
+  "status": "OK",
+  "detail": "authors=1 pages=73-78"
+ },
+ {
+  "key": "neese2018orca",
+  "status": "OK",
+  "detail": "authors=1 pages=e1327"
+ },
+ {
+  "key": "perdew1996pbe",
+  "status": "OK",
+  "detail": "authors=3 pages=3865-3868"
+ },
+ {
+  "key": "rezac2011s66",
+  "status": "OK",
+  "detail": "authors=3 pages=2427-2438"
+ },
+ {
+  "key": "riley2011",
+  "status": "OK",
+  "detail": "authors=2 pages=3-17"
+ },
+ {
+  "key": "steinmann2011ddsc",
+  "status": "OK",
+  "detail": "authors=2 pages=044117"
+ },
+ {
+  "key": "szalewicz2012",
+  "status": "OK",
+  "detail": "authors=1 pages=254-272"
+ },
+ {
+  "key": "tao2003tpss",
+  "status": "OK",
+  "detail": "authors=4 pages=146401"
+ },
+ {
+  "key": "tkatchenko2009",
+  "status": "OK",
+  "detail": "authors=2 pages=073005"
+ },
+ {
+  "key": "tkatchenko2012mbd",
+  "status": "OK",
+  "detail": "authors=4 pages=236402"
+ },
+ {
+  "key": "vanduijneveldt1994cp",
+  "status": "OK",
+  "detail": "authors=3 pages=1873-1885"
+ },
+ {
+  "key": "virtanen2020scipy",
+  "status": "OK",
+  "detail": "authors=112 pages=261-272"
+ },
+ {
+  "key": "weigend2005def2",
+  "status": "OK",
+  "detail": "authors=2 pages=3297"
+ },
+ {
+  "key": "wheeler2014",
+  "status": "OK",
+  "detail": "authors=2 pages=6133-6147"
+ },
+ {
+  "key": "wilkinson2016fair",
+  "status": "OK",
+  "detail": "authors=53 pages=160018"
+ },
+ {
+  "key": "xantheas1996",
+  "status": "OK",
+  "detail": "authors=1 pages=8821-8824"
+ },
+ {
+  "key": "zhao2008m06",
+  "status": "OK",
+  "detail": "authors=2 pages=215-241"
+ },
+ {
+  "key": "ziegler1977",
+  "status": "OK",
+  "detail": "authors=2 pages=1-10"
+ },
+ {
+  "key": "halkier1998",
+  "status": "OK",
+  "detail": "authors=7 pages=243-252"
+ }
+]

@@ -1,0 +1,30 @@
+{
+ "basis": "6-31g*",
+ "level": 2,
+ "cpcorr": true,
+ "geometry_source": "<REPO>/scratch/lit/s22",
+ "rows": [
+  {
+   "name": "苯-甲烷",
+   "natm": 17,
+   "dmin": 2.9764097429286487,
+   "dtot": -1.780045202016293,
+   "dcp": -1.3406016029810375,
+   "dxc": -2.324589572205929,
+   "dnlc": -1.4046666688504081,
+   "pint": {
+    "becke": -1.4414158192006465,
+    "becke-becke-rad": -1.228252421443443,
+    "becke-treutler": -1.298534864685604,
+    "stratmann": -1.4392418892279992
+   },
+   "span": 0.2131633977572036,
+   "level": 2,
+   "basis": "6-31g*",
+   "cpcorr": true,
+   "run_utc": "2026-09-29T06:04:03Z",
+   "pyscf_version": "2.12.1",
+   "host": "<OPERATOR>"
+  }
+ ]
+}

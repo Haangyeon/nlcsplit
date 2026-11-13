@@ -1,0 +1,105 @@
+== ARCHIVE: 苯二聚体(A) 的 ωB97X-V/6-31g* 反泊松结合能（level 2 与 level 1 两档）==
+
+为什么必须补这一栏。CCSD(T) 那一侧已经归档（`20261002T0630Z_snnu_benzene_dimer_ccsdt.out`，
+冻核 −1.4999、全电子 −1.5851 kcal/mol），但主表 `nlcsplit/logs/step_h.json` 里苯二聚体(A)
+的 `dcp` 是 **null** —— 这个几何只跑过未校正的 dtot = −3.5803（level 1），反泊松那一步
+从未做过。没有同基组同档位的 DFT 反泊松值，§3.2 那条"偏差 = DFT − 参考"对它写不出来，
+所以它此前只能留在六个体系之外。
+
+机器与条件：<CLUSTER> Slurm 作业 50969（partition cpu，节点 cpu1，16 CPUs，
+State=COMPLETED，ExitCode=0:0，Elapsed=00:38:07），Python 3.10.19 / PySCF 2.12.1，
+官方 S22 初始几何 S22_11.xyz（苯 sandwich，片间最短 3.3748 A），6-31g*，反泊松，
+生产者脚本 `snnu_dft_cp_dimer.py`（只借 `nlcsplit/step_h_s22.py` 的 counterpoise 函数，
+不写那个模块的生产侧车）。脚本先复现苯-甲烷 level 2 的归档值再往下跑：
+    guard 苯-甲烷 level2 nao=118 DFT= -1.3406
+    guard: |-1.3406 - (-1.3406)| = 0.0000 <= 0.0002 -> PASS
+
+结果（kcal/mol；CCSD(T) 是同一几何同一基组的冻核反泊松 −1.4999，两档共用这一个参考）：
+
+    LEVEL=2  DFT = -1.9403   DFT-CC = -0.440   （对全电子参考 -0.355）
+    LEVEL=1  DFT = -0.7233   DFT-CC = +0.777   （对全电子参考 +0.862）
+
+**只改网格档位，偏差移动 1.217 kcal/mol 并且翻转符号。** 这是这份归档里最重的一件事，
+也是全文关于"档位是一个谁都能拧的旋钮"的最强证据：此前在三个苯系复合物上量到的是
+0.127 / 0.103 / 0.0017 kcal/mol，而这里——体系最大、色散最重的那个——网格步进
+比那些大一个量级，符号还翻了。同一批数字也说明档位效应既不正比于体系大小、
+也不单调：苯-甲烷 0.0017 对苯 sandwich 1.217，差 700 倍以上。
+
+顺带的 BSSE 参照（口径写明，不混源）：level 1 的未校正值来自主表侧车
+`nlcsplit/logs/step_h.json`（−3.5803，同一基组同一档位），与该档反泊松值 −0.7233 相减
+得 BSSE = 2.857 kcal/mol——6-31g* 下的 24 原子 π 堆叠复合物，这个数不小，也是"未校正
+不能拿来判结合能"的又一例。
+
+这份归档**不主张**的东西：
+  · **不主张 level 2 已经网格收敛**：1→2 移动了 1.217 并不意味着 2→3 不动，本文件没有
+    第三档，正文也只把"档位能移动多少"当作事实，不把它当作收敛性结论。
+  · 不是 CBS 极限，也没有与文献 S22 的 CCSD(T)/CBS 值比较（那是弛豫几何 + 外推，
+    口径不同）。
+  · 不含苯二聚体(B)（S22_20，平行位移几何），它仍是欠项。
+  · 不主张 DFT 那一栏"对/不对"：本文件只提供同一约定下的成对读数，判不判是 §3.2 的事。
+
+--- verbatim output follows ---
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'QueryFormat')
+    复合物(反泊松参照)   N=110288  E_xc(其余)=-26256.0181  E_NLC= +125.7984  其中β∫ρ=+158.1569  E_coul=+251986.2641  NLC两实现差=2.2e-05 闭合=0.0e+00 kcal/mol
+guard 苯-甲烷 level2 nao=118 DFT= -1.3406
+guard: |-1.3406 - (-1.3406)| = 0.0000 <= 0.0002 -> PASS
+    复合物(反泊松参照)   N=163488  E_xc(其余)=-43804.0489  E_NLC= +198.0855  其中β∫ρ=+255.4835  E_coul=+532648.1775  NLC两实现差=2.4e-05 闭合=7.1e-11 kcal/mol
+LEVEL=2 苯二聚体(A) nao=192 DFT= -1.9403 CCSD(T)= -1.4999 DFT-CC= -0.440  (AE  -1.585 -> DFT-AE  -0.355)
+    复合物(反泊松参照)   N= 77072  E_xc(其余)=-43804.0785  E_NLC= +198.0774  其中β∫ρ=+255.4842  E_coul=+532648.6990  NLC两实现差=2.6e-05 闭合=7.1e-11 kcal/mol
+LEVEL=1 苯二聚体(A) nao=192 DFT= -0.7233 CCSD(T)= -1.4999 DFT-CC= +0.777  (AE  -1.585 -> DFT-AE  +0.862)
+
+	===== 生产者脚本逐字副本（另见 snnu_dft_cp_dimer.py 同名入库件） =====
+script
+"""苯二聚体(A) 在 6-31g* 下的 omegaB97X-V 反泊松结合能，level 1 与 level 2 各一档。
+
+为什么还缺这一栏。CCSD(T) 那一侧刚刚在 <CLUSTER> 算完（`evidence/ccsdt/` 的 50945：
+冻核 -1.4999、全电子 -1.5851 kcal/mol），但 §3.2 的比法是"同一基组同一档位下，
+泛函对参考值偏了多少"，所以配对的另一侧必须有人算：主表里苯 sandwich 只在 **level 1**
+跑过反泊松，而六体系那条并列用的是 level 2。这一跑把 level 2 的那一档补上，
+顺便在第七个体系上再量一次"只改网格档位"的移动。
+
+仍不碰生产侧车：`nlcsplit/step_h_s22.py` 的输出路径写死在 nlcsplit/logs/step_h.json，
+那是主表 S3 的载体，这里只 import 它的 counterpoise 函数。
+
+阶段 0 先复现苯-甲烷 level 2 的 -1.3406（`20261002T0620Z_snnu_benzene_methane_l2.out`），
+红了就说明约定/版本不是那一档，不押机时。
+"""
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("."))
+from pyscf import gto
+from nlcsplit import geomlib, step_h_s22 as H
+
+NAME = "苯二聚体(A)"
+CC_FROZEN = -1.4999      # evidence/ccsdt/ 50945，6-31g* 冻核反泊松
+CC_AE = -1.5851          # 同一次 run 的全电子档
+
+def cp(name, lvl):
+    atoms, frags = geomlib.s22_system(name, H.DATA)
+    mol = gto.M(atom=[(s, c) for s, c in atoms], basis=H.BASIS, unit="Angstrom", verbose=0)
+    return mol.nao, H.counterpoise(mol, frags, lvl)
+
+# 阶段 0：守卫（跑两个档位里便宜的那个，只判 level 2 一行）
+nao0, chk = cp("苯-甲烷", 2)
+print("guard 苯-甲烷 level2 nao=%d DFT=%+8.4f" % (nao0, chk))
+d = abs(chk - (-1.3406))
+print("guard: |%.4f - (-1.3406)| = %.4f %s 0.0002 -> %s"
+      % (chk, d, "<=" if d <= 0.0002 else ">", "PASS" if d <= 0.0002 else "FAIL"))
+if d > 0.0002:
+    print("GUARD_FAIL：不跑苯二聚体"); sys.exit(5)
+
+for lvl in (2, 1):
+    nao, dft = cp(NAME, lvl)
+    print("LEVEL=%d %s nao=%d DFT=%+8.4f CCSD(T)=%+8.4f DFT-CC=%+7.3f  (AE %+7.3f -> DFT-AE %+7.3f)"
+          % (lvl, NAME, nao, dft, CC_FROZEN, dft - CC_FROZEN, CC_AE, dft - CC_AE))
+
+	===== sacct / 远端哈希 =====
+sacct
+JobID|JobName|State|ExitCode|Elapsed|AllocCPUS|NodeList
+50969|wrap|COMPLETED|0:0|00:38:07|16|cpu1
+50969.batch|batch|COMPLETED|0:0|00:38:07|16|cpu1
+50969.extern|extern|COMPLETED|0:0|00:38:07|16|cpu1
+sha
+a9d5edffec39eb2b716086f7772c509add5f29239c06942480c424e634035d13  <CLUSTER_HOME>/nlcc-<CLUSTER>/dft_cp_dimer.py

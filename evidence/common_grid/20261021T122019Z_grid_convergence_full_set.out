@@ -1,0 +1,116 @@
+# stamper host clock UTC : 20261021T122010Z
+# stamper WSL  clock UTC : 2026-10-21T12:20:19Z
+# runner                 : evidence/common_grid/run_grid_convergence_archive.sh
+# command                : evidence/common_grid/grid_level_convergence.py
+# level-2 water archive exit evidence: .rc=0
+# level-0 currentcode archive exit evidence: .rc=0
+# grid-convergence of the cross-scheme attribution spread -- READ-ONLY, recomputed
+# python 3.10.12  cwd <REPO>
+# gate on |delta(family span)| between adjacent distinct levels = 0.005 kcal/mol (GATE); tie-out allows one unit in the last place of the printed value
+
+# file 20261009T152500Z_hirshfeld_crossfamily_l1_small.out  bytes=4269  sha256=3ec2e9ebc2fc5d74  partition=d57ab021..  head=1699e1eb  rc-file=0  exit-line=None  -> SUPERSEDED: run before the grid-coordinate fix; its out-of-family columns are the wrong-unit values that the '_after_position_fix' file replaced
+
+# file 20261009T155042Z_hirshfeld_crossfamily_l0_after_position_fix.out  bytes=2509  sha256=274cc7d5990ba435  partition=d57ab021..  head=0d405206  rc-file=0  exit-line=None  -> `.rc` present but the `.out` lacks its own `# exit=` line
+
+# file 20261009T155508Z_hirshfeld_crossfamily_l1_small_after_position_fix.out  bytes=3368  sha256=7025482550fffd84  partition=d57ab021..  head=0d405206  rc-file=0  exit-line=None  -> `.rc` present but the `.out` lacks its own `# exit=` line
+
+# file 20261009T193232Z_hirshfeld_crossfamily_l1_benzene_dimers.out  bytes=2455  sha256=42b1de3ccb8bd598  partition=d57ab021..  head=None  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out  bytes=3295  sha256=4336143ee39da597  partition=d57ab021..  head=None  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out  bytes=1585  sha256=aa88e5fa7ceeafd8  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out  bytes=1589  sha256=8257b2685826119d  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out  bytes=1684  sha256=91d10dcf704f1766  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out  bytes=1593  sha256=84a6e2ac06fdb9cb  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out  bytes=1585  sha256=4c8c7fca786d92a1  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_苯-甲烷_after_unitfix.out  bytes=1588  sha256=6a8b4c51f549d576  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体A_after_unitfix.out  bytes=1593  sha256=3660415c97d27c1c  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体B_after_unitfix.out  bytes=1593  sha256=280e105cae27e609  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261021T091653Z_hirshfeld_crossfamily_l2_water.out  bytes=1862  sha256=ddde4adaf3361241  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out  bytes=3052  sha256=a8f609108f0c0f14  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out  bytes=6366  sha256=cdc6dee745745509  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+# file 20261021T094326Z_hirshfeld_crossfamily_l2_benzwater.out  bytes=2253  sha256=591fe1b69d962467  partition=ec6c0c56..  head=df8ff668  rc-file=0  exit-line=0  -> FINAL
+
+== accounting: glob saw 17 archives; 14 admitted as FINAL; 3 excluded; 0 unparseable
+   EXCLUDED 20261009T152500Z_hirshfeld_crossfamily_l1_small.out : SUPERSEDED: run before the grid-coordinate fix; its out-of-family columns are the wrong-unit values that the '_after_position_fix' file replaced
+   EXCLUDED 20261009T155042Z_hirshfeld_crossfamily_l0_after_position_fix.out : `.rc` present but the `.out` lacks its own `# exit=` line
+   EXCLUDED 20261009T155508Z_hirshfeld_crossfamily_l1_small_after_position_fix.out : `.rc` present but the `.out` lacks its own `# exit=` line
+== tie-out of recomputed spans against the spans printed in the same file: 46 comparisons, max deviation 1 last digit(s) of the printed value, 0 over tolerance 1
+   dev=1  20261009T193232Z_hirshfeld_crossfamily_l1_benzene_dimers.out 苯二聚体(B)      level 1  fam  recomputed 0.219600  printed 0.2195
+   dev=1  20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out       苯-水          level 1  fam  recomputed 0.246900  printed 0.2468
+   dev=1  20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out       苯-水          level 1  all  recomputed 0.389900  printed 0.3898
+   dev=1  20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out       苯-甲烷         level 1  fam  recomputed 0.214200  printed 0.2143
+   dev=1  20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out 苯-水          level 1  fam  recomputed 0.246900  printed 0.2468
+
+== ladders grouped by (partition sha256 prefix, system) ==
+code       system             lvl     Npts   fam span    all-six   ratio       E_NL  file
+ec6c0c56   氨二聚体                 0     5600     0.0285     0.0334    1.17    -8.9145  20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out
+ec6c0c56   氨二聚体                 1    22616     0.0284     0.0332    1.17    -8.9057  20261012T054743Z_hirshfeld_crossfamily_l1_氨二聚体_after_unitfix.out
+  -> rung level 0 to 1, 氨二聚体 / code ec6c0c56: fam span 0.0285 -> 0.0284 (delta -0.0001, |delta| 0.0001 <= gate); all-six delta -0.0002; E_NL delta +0.0088
+  => 氨二聚体 / code ec6c0c56: grid-stable over levels [0, 1] (worst adjacent |delta fam span| 0.0001).
+ec6c0c56   水二聚体                 0     4440     0.0430     0.0430    1.00    -7.8738  20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out
+ec6c0c56   水二聚体                 1    18336     0.0433     0.0433    1.00    -7.8950  20261012T054743Z_hirshfeld_crossfamily_l1_水二聚体_after_unitfix.out
+ec6c0c56   水二聚体                 2    38944     0.0433     0.0433    1.00    -7.8951  20261021T091653Z_hirshfeld_crossfamily_l2_water.out
+  -> rung level 0 to 1, 水二聚体 / code ec6c0c56: fam span 0.0430 -> 0.0433 (delta +0.0003, |delta| 0.0003 <= gate); all-six delta +0.0003; E_NL delta -0.0212
+  -> rung level 1 to 2, 水二聚体 / code ec6c0c56: fam span 0.0433 -> 0.0433 (delta +0.0000, |delta| 0.0000 <= gate); all-six delta +0.0000; E_NL delta -0.0001
+  => 水二聚体 / code ec6c0c56: grid-stable over levels [0, 1, 2] (worst adjacent |delta fam span| 0.0003).
+ec6c0c56   甲烷二聚体                0     6736     0.0045     0.0107    2.38    -9.4164  20261021T092258Z_hirshfeld_crossfamily_l0_currentcode.out
+ec6c0c56   甲烷二聚体                1    26536     0.0034     0.0088    2.59    -9.3976  20261012T054743Z_hirshfeld_crossfamily_l1_甲烷二聚体_after_unitfix.out
+  -> rung level 0 to 1, 甲烷二聚体 / code ec6c0c56: fam span 0.0045 -> 0.0034 (delta -0.0011, |delta| 0.0011 <= gate); all-six delta -0.0019; E_NL delta +0.0188
+  => 甲烷二聚体 / code ec6c0c56: grid-stable over levels [0, 1] (worst adjacent |delta fam span| 0.0011).
+d57ab021   苯-氨                  1    50104     0.2219     0.2792    1.26   -31.9582  20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out
+  -> 苯-氨 under code d57ab021: only level 1 => grid convergence NOT MEASURED
+ec6c0c56   苯-氨                  0    12104     0.2225     0.2843    1.28   -32.0123  20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out
+ec6c0c56   苯-氨                  1    50104     0.2219     0.2373    1.07   -31.9582  20261012T054743Z_hirshfeld_crossfamily_l1_苯-氨_after_unitfix.out
+  -> rung level 0 to 1, 苯-氨 / code ec6c0c56: fam span 0.2225 -> 0.2219 (delta -0.0006, |delta| 0.0006 <= gate); all-six delta -0.0470; E_NL delta +0.0541
+  => 苯-氨 / code ec6c0c56: grid-stable over levels [0, 1] (worst adjacent |delta fam span| 0.0006).
+d57ab021   苯-水                  1    47920     0.2469     0.3899    1.58   -31.4256  20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out
+  -> 苯-水 under code d57ab021: only level 1 => grid convergence NOT MEASURED
+ec6c0c56   苯-水                  0    11528     0.2545     0.3234    1.27   -31.4834  20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out
+ec6c0c56   苯-水                  1    47920     0.2469     0.2747    1.11   -31.4256  20261012T050216Z_hirshfeld_crossfamily_l1_benzwater_after_unitfix.out
+ec6c0c56   苯-水                  2   101400     0.2478     0.2661    1.07   -31.4238  20261021T094326Z_hirshfeld_crossfamily_l2_benzwater.out
+  -> rung level 0 to 1, 苯-水 / code ec6c0c56: fam span 0.2545 -> 0.2469 (delta -0.0076, |delta| 0.0076 > gate); all-six delta -0.0487; E_NL delta +0.0578
+  -> rung level 1 to 2, 苯-水 / code ec6c0c56: fam span 0.2469 -> 0.2478 (delta +0.0009, |delta| 0.0009 <= gate); all-six delta -0.0086; E_NL delta +0.0018
+  => 苯-水 / code ec6c0c56: NOT grid-stable under the pre-registered gate.
+d57ab021   苯-甲烷                 1    52040     0.2142     0.2445    1.14   -32.3624  20261010T061455Z_hirshfeld_crossfamily_l1_benzex.out
+  -> 苯-甲烷 under code d57ab021: only level 1 => grid convergence NOT MEASURED
+ec6c0c56   苯-甲烷                 0    12648     0.2101     0.2427    1.16   -32.3955  20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out
+ec6c0c56   苯-甲烷                 1    52040     0.2142     0.2445    1.14   -32.3624  20261012T054743Z_hirshfeld_crossfamily_l1_苯-甲烷_after_unitfix.out
+  -> rung level 0 to 1, 苯-甲烷 / code ec6c0c56: fam span 0.2101 -> 0.2142 (delta +0.0041, |delta| 0.0041 <= gate); all-six delta +0.0018; E_NL delta +0.0331
+  => 苯-甲烷 / code ec6c0c56: grid-stable over levels [0, 1] (worst adjacent |delta fam span| 0.0041).
+d57ab021   苯二聚体(A)              1    77072     0.0274     0.2208    8.06   -57.4068  20261009T193232Z_hirshfeld_crossfamily_l1_benzene_dimers.out
+  -> 苯二聚体(A) under code d57ab021: only level 1 => grid convergence NOT MEASURED
+ec6c0c56   苯二聚体(A)              0    18448     0.0120     0.0733    6.11   -57.6447  20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out
+ec6c0c56   苯二聚体(A)              1    77072     0.0274     0.0667    2.43   -57.4068  20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体A_after_unitfix.out
+  -> rung level 0 to 1, 苯二聚体(A) / code ec6c0c56: fam span 0.0120 -> 0.0274 (delta +0.0154, |delta| 0.0154 > gate); all-six delta -0.0066; E_NL delta +0.2379
+  => 苯二聚体(A) / code ec6c0c56: NOT grid-stable under the pre-registered gate.
+d57ab021   苯二聚体(B)              1    77464     0.2196     0.2373    1.08   -55.4262  20261009T193232Z_hirshfeld_crossfamily_l1_benzene_dimers.out
+  -> 苯二聚体(B) under code d57ab021: only level 1 => grid convergence NOT MEASURED
+ec6c0c56   苯二聚体(B)              0    18592     0.2196     0.2718    1.24   -55.5296  20261021T094319Z_hirshfeld_crossfamily_l0_pisystem_currentcode.out
+ec6c0c56   苯二聚体(B)              1    77464     0.2196     0.2373    1.08   -55.4262  20261012T054743Z_hirshfeld_crossfamily_l1_苯二聚体B_after_unitfix.out
+  -> rung level 0 to 1, 苯二聚体(B) / code ec6c0c56: fam span 0.2196 -> 0.2196 (delta -0.0000, |delta| 0.0000 <= gate); all-six delta -0.0345; E_NL delta +0.1034
+  => 苯二聚体(B) / code ec6c0c56: grid-stable over levels [0, 1] (worst adjacent |delta fam span| 0.0000).
+
+!! ladders that are single-rung, so convergence is NOT MEASURED for them:
+   - 苯-氨 under partition.py d57ab021..
+   - 苯-水 under partition.py d57ab021..
+   - 苯-甲烷 under partition.py d57ab021..
+   - 苯二聚体(A) under partition.py d57ab021..
+   - 苯二聚体(B) under partition.py d57ab021..
+   (a coverage statement, not a verdict of stability)
+
+ladders measured: 8; single-rung groups: 5
+VERDICT rc=3 -- 0 every admissible ladder stable; 3 a delta exceeds the gate; 2 something could not be measured
+# no cross-system sum appears above; per-system quantities stay per-system.
+# exit=3 at 2026-10-21T12:20:19Z

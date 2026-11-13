@@ -1,0 +1,38 @@
+发布记录 2026-09-30（首个远端 push）
+
+对象：`dist/nlcsplit` 的导出树，经 `tools/publish_github.js` 重复制到
+`.publish/nlcsplit` 后推送。母仓从未有过 remote，本次也没有加。
+
+    远端  https://github.com/<OPERATOR>/nlcsplit   （private，default branch = main）
+    main  0b903ab32048954b7f1a9600a0cbc0d4fa9f63fc
+    核对  本地导出树 121 个 blob ↔ 远端 121 个 blob，逐 SHA 相同；仅本地 0、仅远端 0
+
+核对命令（可复跑，只读，不需要重新推送、也不会造第二条历史）：
+
+    node tools/make_public_repo.js
+    NLCSPLIT_GH_TOKEN_FILE=<一次性凭据> node tools/publish_github.js \
+        --push --verify-only --owner <OPERATOR> --repo nlcsplit --visibility private
+
+`?recursive=1` 那次返回 144 条 = 121 blob + 23 条目录项；比对只取 blob，目录条数单独打印。
+这条本来会把"远端多了 23 个文件"当成不一致而谎报——见 tools/publish_github.js 的注释。
+
+凭据生命周期（全部实测，不是计划）：
+  · 只建了一枚 classic PAT，note `pub-once-0930`（id 5627585409），过期 30 天，档 `repo`；
+    因树里有 `.github/workflows/ci.yml`，GitHub 拒收（"refusing to allow a Personal Access
+    Token to create or update workflow … without `workflow` scope"），于是就地给同一枚
+    token 勾上 `workflow` 档——没有新建第二枚 secret。
+  · 推送用的值经 `NLCSPLIT_GH_TOKEN_FILE` → `--config-env`，不进命令行、不进 remote URL。
+    但**第一轮失败时 node 把整条 git 命令行印进了异常**，那一行里 token 是明文——
+    这条泄漏路径已经在脚本里堵掉（catch 里自己 die，不复述命令行）。
+  · 收工：该 token 已在 Settings 删除；删后用文件里那份值再打一次 `GET /user` → **401**，
+    证明确实失效（不是我以为失效）。本机两份明文均已覆写删除：
+    `.publish/gh_token.tmp`（gitignore 覆盖）与浏览器落到
+    `C:\\Users\\Administrator\\Downloads\\nlcsplit_gh_token.txt` 的那份——第二份是
+    Chrome 把 blob 下载改名留下的，第一次清理脚本按别的文件名找，没删掉，复查才发现。
+
+仍未闭环（不能靠这台机器单方面做完）：
+  · CI 一次都没跑过。这次 push 是第一次有可能触发，但 Actions 页在本机这个内置浏览器里
+    没渲染出来，**我没有看到任何运行记录**——所以 software.md 里"CI 会跑两道"仍然只是
+    配置已发布，不是已执行。下次有凭据时用 `gh run list` 或直接看 /actions 认定。
+  · 仓库仍是 private。JOSS/SoftwareX 要求投稿时公开；`CITATION.cff` 的
+    `repository-code` 也因此仍留空——公开与补这个字段应当是同一步，由他决定。

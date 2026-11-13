@@ -1,0 +1,19 @@
+# 水单体 ωB97X-V/6-31G* 非局域项：这一行全部由本脚本生成，正文只引本档
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# KCAL = 627.509474
+# 归档 evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt sha256=f17fbb8a5e3a8e08cf042ff1f5b500d4c847ed273edcbd29f92afc45eae2934e
+# 归档 evidence/orca_control/h2o_wb97xv.out sha256=cf3ea42edcae47240c23b497f7f6d01d3c0b85618d700d78b8b44543b8ac9fe2
+# 模块 nlcsplit/nlc.py sha256=ab6241e45571ef331faf18c0bf9ae70f585442b4c316022a02936d867e70a421
+# 模块 nlcsplit/partition.py sha256=d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+# 模块 nlcsplit/geomlib.py sha256=1573e4d8c008dd62256a7b92dd04b35b6203e56f656d7d6592be525a41ea48f6
+# 模块 nlcsplit/step_e_kernel.py sha256=4c60352a374b77791bd5c99e3aa935ea8f892f6134f78f9bc41cf0f885fdbced
+# git HEAD cfc23b6796c8ab4e44e6fa1d2ae0f175e0503d77
+
+对照（都从跟踪归档解析，不手抄）：
+  独立脚本 sweep(1) level 9, npts 430768 : +0.042650981 Ha = +26.763895 kcal/mol
+    它最后四档在最后一位上摆：0.042650981, 0.042650982, 0.042650983  ⇒ '收敛到某一位'只到 1e-9 Ha
+  ORCA 6.0.1 E(C,NL)                : +0.042653837 Ha = +26.765687 kcal/mol
+
+本包（显式和 + Becke 分区网格，单片段=整个单体）：
+  level 1  nao=18  npts=9968  E_nl=-0.005814767  E_loc=+0.048468971  E_total=+0.042654204 Ha  = +26.765917 kcal/mol   Δ vs ORCA = +0.000231 kcal/mol
+  level 2  nao=18  npts=21604  E_nl=-0.005815517  E_loc=+0.048468952  E_total=+0.042653435 Ha  = +26.765435 kcal/mol   Δ vs ORCA = -0.000252 kcal/mol

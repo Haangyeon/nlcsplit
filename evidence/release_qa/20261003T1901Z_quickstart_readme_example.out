@@ -1,0 +1,16 @@
+# quickstart.py stdout, run verbatim, for README / software.md worked example
+# python   : 3.10.12
+# pyscf    : 2.12.1
+# numpy    : 2.2.6
+# host     : Linux 6.6.87.2-microsoft-standard-WSL2 x86_64
+# sha256 nlcsplit/examples/quickstart.py = 7bfd78735fedcadd6484aa8635d45a9fb9d8917181df5d9d6f146cfad4689e26
+# sha256 nlcsplit/nlc.py = ab6241e45571ef331faf18c0bf9ae70f585442b4c316022a02936d867e70a421
+# sha256 nlcsplit/partition.py = d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+# sha256 nlcsplit/geomlib.py = 1573e4d8c008dd62256a7b92dd04b35b6203e56f656d7d6592be525a41ea48f6
+# git HEAD : ee1124b4291b1eaa616d55585d1499c6457c6243
+# ---- verbatim stdout below ----
+inter[(0,1)] = -0.5237 kcal/mol
+intra        = -3.5457 -3.7437
+E_nl         = -7.8130   E_loc = 60.8303   E_total = 53.0172
+# ---- verbatim stderr below ----
+# exit_code=0

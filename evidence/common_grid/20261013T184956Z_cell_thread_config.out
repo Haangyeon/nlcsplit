@@ -1,0 +1,28 @@
+# S22 满表各格线程配置记录（**派生自批日志，不是原件自报**）
+# 生成 2026-10-13T18:49:56.981444+00:00  批日志 2 份
+
+| 格 | 线程 | 原件 | .rc | 档内 # exit= | 状态 |
+|---|---|---|---|---|---|
+| S22_01 | 3 | `20261013T152306Z_s22_full_certificate_S22_01_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_02 | 3 | `20261013T152306Z_s22_full_certificate_S22_02_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_03 | 6 | `20261013T152010Z_s22_full_certificate_S22_03_l1_small.out` | 缺 | 无 | 已被同格重跑取代 |
+| S22_03 | 3 | `20261013T152306Z_s22_full_certificate_S22_03_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_04 | 3 | `20261013T152306Z_s22_full_certificate_S22_04_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_05 | 6 | `20261013T174321Z_s22_full_certificate_S22_05_l1_small.out` | 缺 | 无 | 在跑中 |
+| S22_08 | 3 | `20261013T152306Z_s22_full_certificate_S22_08_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_09 | 3 | `20261013T155004Z_s22_full_certificate_S22_09_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_10 | 4 | `20261013T160222Z_s22_full_certificate_S22_10_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_11 | 6 | `20261013T174321Z_s22_full_certificate_S22_11_l1_small.out` | 缺 | 无 | 在跑中 |
+| S22_12 | 4 | `20261013T160222Z_s22_full_certificate_S22_12_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_13 | 6 | `20261013T174321Z_s22_full_certificate_S22_13_l1_small.out` | 缺 | 无 | 在跑中 |
+| S22_16 | 3 | `20261013T152306Z_s22_full_certificate_S22_16_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_17 | 4 | `20261013T160222Z_s22_full_certificate_S22_17_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_18 | 4 | `20261013T160222Z_s22_full_certificate_S22_18_l1_small.out` | 0 | 0 | rc=0 已落档 |
+| S22_19 | 4 | `20261013T160222Z_s22_full_certificate_S22_19_l1_small.out` | 0 | 0 | rc=0 已落档 |
+
+# 已提交 15 格（含重跑），其中 rc=0 12 份；批日志来源：s22_full_batch_20261013T152010Z.log, s22_full_batch_20261013T152306Z.log
+# 有 rc=0 原件的格：12/22 → S22_01 S22_02 S22_03 S22_04 S22_08 S22_09 S22_10 S22_12 S22_16 S22_17 S22_18 S22_19
+# 同一格提交过多次（重跑）：S22_03 —— 汇总脚本按「最新 rc=0」取，旧档不删
+
+VERDICT NOTE —— 本脚本不判通过与否：线程缺失是已知事实，不是新发现。
+# exit=0 at 2026-10-13T18:49:57Z

@@ -1,0 +1,22 @@
+== ARCHIVE: step_h S22 subset run, taken from the cluster working copy ==
+Archived 2026-10-01. docs/tables_and_provenance.md (MAIN-skeleton) cites the water level-1
+uncorrected interaction energy (-7.816) and the benzene level-0 XC/NLC split (-4.457 / -4.448
+/ -0.009) straight out of this stdout, which lived only under nlcsplit/logs/ - gitignored, so a
+reader could not open it. Body below is verbatim; the geometry-source path on its first line is a
+cluster working directory and the exporter publishes a path-scrubbed copy with a ledger entry,
+which is the normal route for these files. Source SHA-256: 122b3820b69e05722c0e515813775fd66c49b219a83ded6597ada9793a701071
+
+--- verbatim stdout below ---
+== S22 子集 ωB97X-V/6-31g* level=0，几何来源 <S22_GEOMETRY_DIR> ==
+    复合物          N= 20472  E_xc(其余)=-43883.8835  E_NLC= +198.0920  其中β∫ρ=+255.7368  E_coul=+532697.4905  NLC两实现差=4.4e-05 闭合=3.6e-11 kcal/mol
+    单体           N= 10240  E_xc(其余)=-21941.9373  E_NLC= +101.2698  其中β∫ρ=+127.8528  E_coul=+196710.1235  NLC两实现差=3.3e-05 闭合=1.8e-11 kcal/mol
+    单体           N= 10240  E_xc(其余)=-21941.9373  E_NLC= +101.2698  其中β∫ρ=+127.8528  E_coul=+196710.1235  NLC两实现差=3.3e-05 闭合=8.9e-11 kcal/mol
+  苯二聚体(A)    原子 24 片间min 3.37Å  ΔE_int  -3.795  ΔE_xc  -4.457  ΔE_NLC  -4.448  P_frz[becke]  -4.062  方案跨度  0.072  P/CP  0.91   1067s
+    复合物          N= 20472  E_xc(其余)=-43884.9948  E_NLC= +200.1810  其中β∫ρ=+255.7106  E_coul=+509577.7822  NLC两实现差=4.5e-05 闭合=0.0e+00 kcal/mol
+    单体           N= 10240  E_xc(其余)=-21941.5660  E_NLC= +101.2905  其中β∫ρ=+127.8534  E_coul=+196691.6290  NLC两实现差=2.9e-05 闭合=3.6e-11 kcal/mol
+    单体           N= 10240  E_xc(其余)=-21941.3653  E_NLC= +101.2914  其中β∫ρ=+127.8533  E_coul=+196680.7160  NLC两实现差=2.9e-05 闭合=7.1e-11 kcal/mol
+  苯二聚体(B)    原子 24 片间min 2.80Å  ΔE_int  -3.095  ΔE_xc  -4.464  ΔE_NLC  -2.401  P_frz[becke]  -2.454  方案跨度  0.310  P/CP  1.02   1048s
+
+  汇总
+    苯二聚体(A)    ΔE_NLC  -4.448   P_frz 跨度  0.072 (  1.8%)
+    苯二聚体(B)    ΔE_NLC  -2.401   P_frz 跨度  0.310 ( 12.6%)

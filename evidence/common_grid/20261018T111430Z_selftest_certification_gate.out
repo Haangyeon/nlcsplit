@@ -1,0 +1,19 @@
+# artifact_kind=selftest —— 守卫自测，不是测量结果，数字不得进任何正文
+# 生成 2026-10-18T11:14:31.020117+00:00
+# 被测文件 summarize_s22_full.py（sha256=3625c4f64c031ec4）
+# 宿主时钟 UTC=20261018T111431Z
+Traceback (most recent call last):
+  File "<REPO>/evidence/common_grid/selftest_certification_gate.py", line 165, in <module>
+    sys.exit(main())
+  File "<REPO>/evidence/common_grid/selftest_certification_gate.py", line 94, in main
+    rc, art = run(m, dst)
+  File "<REPO>/evidence/common_grid/selftest_certification_gate.py", line 55, in run
+    rc = m.main()
+  File "<REPO>/evidence/common_grid/summarize_s22_full.py", line 249, in main
+    if selftest_parser_against_producer():
+  File "<REPO>/evidence/common_grid/summarize_s22_full.py", line 238, in selftest_parser_against_producer
+    from s22_full_certificate import FMT_LINE
+  File "/tmp/certgate_d9mbell2/common_grid/s22_full_certificate.py", line 25, in <module>
+    from nlcsplit import certificate, geomlib, partition   # noqa: E402
+ModuleNotFoundError: No module named 'nlcsplit'
+# exit=1 at 2026-10-18T11:14:33Z

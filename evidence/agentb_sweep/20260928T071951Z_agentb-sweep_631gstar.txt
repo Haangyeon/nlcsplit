@@ -1,0 +1,42 @@
+# basis = 6-31g* (CARTESIAN), nlc_pars=(b=6.0, C=0.01), beta=0.00484690030782
+# nao(cartesian) = 19
+
+== (1) SELF-CONSISTENT sweep: SCF redone at each grids.level ==
+level     npts     int_rho       E_local      E_nonlocal     E_NLC_total
+   0      2216  10.0056112  +0.048496200   -0.005803529  +0.042692671
+   1      9184   9.9999603  +0.048468811   -0.005817857  +0.042650953
+   2     19520   9.9999990  +0.048468998   -0.005818020  +0.042650978
+   3     29984  10.0000000  +0.048469003   -0.005818023  +0.042650980
+   4     53080  10.0000000  +0.048469003   -0.005818021  +0.042650982
+   5     80200  10.0000000  +0.048469003   -0.005818021  +0.042650983
+   6    117144  10.0000000  +0.048469003   -0.005818021  +0.042650982
+   7    165128  10.0000000  +0.048469003   -0.005818021  +0.042650982
+   8    205960  10.0000000  +0.048469003   -0.005818021  +0.042650983
+   9    430768  10.0000000  +0.048469003   -0.005818022  +0.042650981
+
+== (2) ISOLATED sweep: one level-9 DM, NLC quadrature only ==
+# reference SCF total energy (level 9) = -76.378428450475
+level     npts     int_rho       E_local      E_nonlocal     E_NLC_total
+   0      2328  10.0056043  +0.048496167   -0.005801982  +0.042694185
+   1     10128   9.9999603  +0.048468811   -0.005817860  +0.042650951
+   2     21952   9.9999990  +0.048468998   -0.005818020  +0.042650978
+   3     33704  10.0000000  +0.048469003   -0.005818023  +0.042650980
+   4     59680  10.0000000  +0.048469003   -0.005818021  +0.042650982
+   5     90064  10.0000000  +0.048469003   -0.005818021  +0.042650983
+   6    132384  10.0000000  +0.048469003   -0.005818021  +0.042650982
+   7    187064  10.0000000  +0.048469003   -0.005818021  +0.042650982
+   8    233536  10.0000000  +0.048469003   -0.005818021  +0.042650983
+   9    489832  10.0000000  +0.048469003   -0.005818022  +0.042650981
+
+== (3) atom_grid (nr, ntheta) sweep on the same converged DM ==
+atom_grid                    npts     int_rho       E_local      E_nonlocal     E_NLC_total
+atom_grid(20,6)               360  10.1794929  +0.049338987   -0.006135440  +0.043203547
+Traceback (most recent call last):
+  File "<REPO>/ref/agentB/pyscf_grid_sweep.py", line 98, in <module>
+    g.build()
+  File "<CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/dft/gen_grid.py", line 561, in build
+    atom_grids_tab = self.gen_atomic_grids(
+  File "<string>", line 6, in gen_atomic_grids
+  File "<CLUSTER_HOME>/.local/lib/python3.10/site-packages/pyscf/dft/gen_grid.py", line 239, in gen_atomic_grids
+    raise ValueError('Unsupported angular grids %d' % n_ang)
+ValueError: Unsupported angular grids 10

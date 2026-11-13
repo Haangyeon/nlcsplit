@@ -1,0 +1,104 @@
+# S22 文件夹号 ↔ 官方标签 核对（正文“体系”列的出处）
+# 官方参考值表 URL   https://raw.githubusercontent.com/grimme-lab/GMTKN55/v1/S22/.res
+# 本地副本           scratch/lit/gmtkn55_S22.res
+# sha256             a43c93f575d15233298275b473977d7755010a619809a3b6c720c4699c888bd7
+# 几何目录           <REPO>/scratch/lit/s22（与满批同一份，各格 sha 见 2026*_s22_full_certificate_*.out 抬头）
+# 分子式写法         复用生产者 `s22_full_certificate.formula`（Hill），不在这儿重新发明
+
+## 官方 .res 原文（逐字节 cat，不靠终端回显拼图）
+   | if [ "$TMER" == "" ]
+   | then
+   |   tmer=tmer2++
+   | else
+   |   tmer=$TMER
+   | fi
+   | f=$1
+   | w=$2
+   | 
+   | #Revised reference values by Sherrill and co-workers (S22B)
+   | #J Chem. Phys 135, 194102 (2011).
+   | $tmer 01{,a}/$f    x -1 2    $w 3.133   0   1  nh3
+   | $tmer 02{,a}/$f    x -1 2    $w 4.989   0   1  h2o
+   | $tmer 03{,a}/$f    x -1 2    $w 18.753  0   1  formac
+   | $tmer 04{,a}/$f    x -1 2    $w 16.062  0   1  formam
+   | $tmer 05{,a}/$f    x -1 2    $w 20.641  0   1  uracil
+   | $tmer 06{,a,b}/$f  x -1 1 1  $w 16.934  0   1  pyridone 
+   | $tmer 07{,a,b}/$f  x -1 1 1  $w 16.66  0   1  AT
+   | ##
+   | $tmer 08{,a}/$f    x -1 2    $w 0.527  0  1 ch4
+   | $tmer 09{,a}/$f    x -1 2    $w 1.472  0  1 ethene
+   | $tmer 10{,a,b}/$f  x -1 1 1  $w 1.448  0  1 bzch4
+   | $tmer 11{,a}/$f    x -1 2    $w 2.654  0  1 bzpd
+   | $tmer 12{,a}/$f    x -1 2    $w 4.255  0  1 pyraz 
+   | $tmer 13{,a}/$f    x -1 2    $w 9.805 0  1 uracil
+   | $tmer 14{,a,b}/$f  x -1 1 1  $w 4.524  0  1 indolebz
+   | $tmer 15{,a,b}/$f  x -1 1 1  $w 11.73 0  1 AT S
+   | ##
+   | $tmer 16{,a,b}/$f  x -1 1 1  $w 1.496  0 1 ethenine
+   | $tmer 17{,a,b}/$f  x -1 1 1  $w 3.275  0 1 bzh2o
+   | $tmer 18{,a,b}/$f  x -1 1 1  $w 2.312  0 1 bznh3
+   | $tmer 19{,a,b}/$f  x -1 1 1  $w 4.541  0 1 bzhcn
+   | $tmer 20{,a,b}/$f  x -1 1 1  $w 2.717  0 1 bzT 
+   | $tmer 21{,a,b}/$f  x -1 1 1  $w 5.627  0 1 indolbz
+   | $tmer 22{,a,b}/$f  x -1 1 1  $w 7.097  0 1 phenol
+
+## 逐格核对：标签读法的化学式 vs 盘上几何切出的片段式
+   号    官方标签      参考值       最短 dmin    片段式（几何）        指纹
+   01   nh3       3.133     2.15       H3N + H3N      一致  氢键 2 条，C···C≤4.0 A 0 对
+   02   h2o       4.989     1.95       H2O + H2O      一致  氢键 5 条，C···C≤4.0 A 0 对
+   03   formac    18.753    1.67       CH2O2 + CH2O2  一致  氢键 4 条，C···C≤4.0 A 1 对，环面夹角 0°
+   04   formam    16.062    1.84       CH3NO + CH3NO  一致  氢键 4 条，C···C≤4.0 A 0 对，环面夹角 0°
+   05   uracil    20.641    1.77       C4H4N2O2 + C4H4N2O2 一致  氢键 4 条，C···C≤4.0 A 0 对，环面夹角 0°
+   06   pyridone  16.934    1.86       C5H5NO + C5H6N2 一致  氢键 3 条，C···C≤4.0 A 0 对，环面夹角 20°
+   07   AT        16.660    1.82       C5H5N5 + C5H6N2O2 一致  氢键 3 条，C···C≤4.0 A 0 对，环面夹角 2°
+   08   ch4       0.527     3.16       CH4 + CH4      一致  氢键 0 条，C···C≤4.0 A 1 对
+   09   ethene    1.472     2.56       C2H4 + C2H4    一致  氢键 8 条，C···C≤4.0 A 4 对
+   10   bzch4     1.448     2.98       C6H6 + CH4     一致  氢键 0 条，C···C≤4.0 A 6 对
+   11   bzpd      2.654     3.37       C6H6 + C6H6    一致  氢键 0 条，C···C≤4.0 A 17 对，环面夹角 0°
+   12   pyraz     4.255     3.27       C4H4N2 + C4H4N2 一致  氢键 0 条，C···C≤4.0 A 10 对，环面夹角 2°
+   13   uracil    9.805     2.71       C4H4N2O2 + C4H4N2O2 一致  氢键 0 条，C···C≤4.0 A 11 对，环面夹角 16°
+   14   indolebz  4.524     3.20       C6H6 + C8H7N   一致  氢键 0 条，C···C≤4.0 A 24 对，环面夹角 5°
+   15   AT S      11.730    2.68       C5H5N5 + C5H6N2O2 一致  氢键 0 条，C···C≤4.0 A 17 对，环面夹角 5°
+   16   ethenine  1.496     2.83       C2H2 + C2H4    一致  氢键 0 条，C···C≤4.0 A 2 对
+   17   bzh2o     3.275     2.60       C6H6 + H2O     一致  氢键 0 条，C···C≤4.0 A 0 对
+   18   bznh3     2.312     2.76       C6H6 + H3N     一致  氢键 0 条，C···C≤4.0 A 0 对
+   19   bzhcn     4.541     2.67       C6H6 + CHN     一致  氢键 0 条，C···C≤4.0 A 6 对
+   20   bzT       2.717     2.80       C6H6 + C6H6    一致  氢键 0 条，C···C≤4.0 A 6 对，环面夹角 90°
+   21   indolbz   5.627     2.59       C6H6 + C8H7N   一致  氢键 0 条，C···C≤4.0 A 2 对，环面夹角 90°
+   22   phenol    7.097     1.94       C6H6O + C6H6O  一致  氢键 3 条，C···C≤4.0 A 3 对，环面夹角 61°
+
+## 判据 2：同式不同几何的四对，指纹必须分得开
+   C4H4N2O2 + C4H4N2O2：S22_05(dmin 1.77, 氢键 4, 堆积 0, 夹角 0°) / S22_13(dmin 2.71, 氢键 0, 堆积 11, 夹角 16°) ⇒ 分得开
+      同标签 'uracil' 两格：参考值大的是 S22_05(20.641)、小的是 S22_13(9.805)；要求前者氢键不少于后者且 dmin 不大于 ⇒ 自洽
+   C5H5N5 + C5H6N2O2：S22_07(dmin 1.82, 氢键 3, 堆积 0, 夹角 2°) / S22_15(dmin 2.68, 氢键 0, 堆积 17, 夹角 5°) ⇒ 分得开
+   C6H6 + C6H6：S22_11(dmin 3.37, 氢键 0, 堆积 17, 夹角 0°) / S22_20(dmin 2.80, 氢键 0, 堆积 6, 夹角 90°) ⇒ 分得开
+   C6H6 + C8H7N：S22_14(dmin 3.20, 氢键 0, 堆积 24, 夹角 5°) / S22_21(dmin 2.59, 氢键 0, 堆积 2, 夹角 90°) ⇒ 分得开
+
+## 正文可用名（官方标签 + 文件夹号 + 参考值；标签有歧义的按几何描述补）
+   S22_01  nh3       参考 3.133 kcal/mol  几何：H3N + H3N
+   S22_02  h2o       参考 4.989 kcal/mol  几何：H2O + H2O
+   S22_03  formac    参考 18.753 kcal/mol  几何：CH2O2 + CH2O2
+   S22_04  formam    参考 16.062 kcal/mol  几何：CH3NO + CH3NO
+   S22_05  uracil    参考 20.641 kcal/mol  几何：C4H4N2O2 + C4H4N2O2
+   S22_06  pyridone  参考 16.934 kcal/mol  几何：C5H5NO + C5H6N2
+   S22_07  AT        参考 16.660 kcal/mol  几何：C5H5N5 + C5H6N2O2
+   S22_08  ch4       参考 0.527 kcal/mol  几何：CH4 + CH4
+   S22_09  ethene    参考 1.472 kcal/mol  几何：C2H4 + C2H4
+   S22_10  bzch4     参考 1.448 kcal/mol  几何：C6H6 + CH4
+   S22_11  bzpd      参考 2.654 kcal/mol  几何：C6H6 + C6H6
+   S22_12  pyraz     参考 4.255 kcal/mol  几何：C4H4N2 + C4H4N2
+   S22_13  uracil    参考 9.805 kcal/mol  几何：C4H4N2O2 + C4H4N2O2
+   S22_14  indolebz  参考 4.524 kcal/mol  几何：C6H6 + C8H7N
+   S22_15  AT S      参考 11.730 kcal/mol  几何：C5H5N5 + C5H6N2O2
+   S22_16  ethenine  参考 1.496 kcal/mol  几何：C2H2 + C2H4
+   S22_17  bzh2o     参考 3.275 kcal/mol  几何：C6H6 + H2O
+   S22_18  bznh3     参考 2.312 kcal/mol  几何：C6H6 + H3N
+   S22_19  bzhcn     参考 4.541 kcal/mol  几何：C6H6 + CHN
+   S22_20  bzT       参考 2.717 kcal/mol  几何：C6H6 + C6H6
+   S22_21  indolbz   参考 5.627 kcal/mol  几何：C6H6 + C8H7N
+   S22_22  phenol    参考 7.097 kcal/mol  几何：C6H6O + C6H6O
+   （注意：1 组同式且**同标签**，正文引用时必须带文件夹号或几何描述，不能只写标签）
+
+VERDICT OK —— 22 格官方标签与几何化学式逐格一致；四对同式兄弟指纹可分；同标签复现的那对物理自洽
+# 这份核对只定“名字↔几何”这一层，不含任何 ωB97X-V 读数；表里的数值仍由各格 .out 原件供。
+# exit=0 at 2026-10-13T22:01:40Z

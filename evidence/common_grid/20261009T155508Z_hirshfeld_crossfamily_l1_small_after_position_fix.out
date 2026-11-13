@@ -1,0 +1,49 @@
+# 家族外分区：同一公共网格上换归属构造（Voronoi / Hirshfeld）
+# python 3.10.12  pyscf 2.12.1  numpy 2.2.6
+# git HEAD 0d405206a9674d3b193567df704022640c84aa1f
+# sha256 nlcsplit/partition.py      = d57ab021af161ab99564b80e7aa068c3fe577e888c7639948a127dd4cde80f11
+# sha256 nlcsplit/nlc.py            = 2817acd6fd37a2f68bd40540e7a094c004b4de5e67449621bdfb6e425e1c2f79
+# sha256 nlcsplit/step_h_s22.py     = 9bccd14baff0e86b16d7ae3a78b8aac8ba8eb1844df33e9088a8d78fc91d5482
+# level = 1  b = 6  C = 0.01  Hirshfeld 自由原子：基态多重度/UHF/不球平均
+
+== 水二聚体  level=1  原子 6  公共网格 N=18336  片间min 1.95 Å
+   家族内 becke            E_AB =   -0.6010  E_NL =    -7.8950
+   家族内 becke-becke-rad  E_AB =   -0.5577  E_NL =    -7.8950
+   家族内 becke-treutler   E_AB =   -0.5747  E_NL =    -7.8950
+   家族内 stratmann        E_AB =   -0.5989  E_NL =    -7.8950
+   Voronoi(最近原子硬指派)  E_AB =   -0.5836  E_NL =    -7.8950
+   Hirshfeld(自由原子库存化) E_AB =   -0.6227  E_NL =    -7.8950
+   （对照，不计入判据）等权 1/natm E_AB =   -3.9475  E_NL =    -7.8950
+   → 家族内跨度 = 0.0433 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0650 kcal/mol
+   → 比值（含家族外 / 家族内） = 1.50（预登记：≤2 不许升级措辞；>10 必须按跨构造写）
+   护栏：nearest(公共网格) E_NL 与普查归档 -7.8950 之差 = 0.0000（门 0.005）OK
+   （用时 846.2 s）
+
+== 氨二聚体  level=1  原子 8  公共网格 N=22616  片间min 2.15 Å
+   家族内 becke            E_AB =   -0.6486  E_NL =    -8.9057
+   家族内 becke-becke-rad  E_AB =   -0.6202  E_NL =    -8.9057
+   家族内 becke-treutler   E_AB =   -0.6300  E_NL =    -8.9057
+   家族内 stratmann        E_AB =   -0.6473  E_NL =    -8.9057
+   Voronoi(最近原子硬指派)  E_AB =   -0.6398  E_NL =    -8.9057
+   Hirshfeld(自由原子库存化) E_AB =   -0.6811  E_NL =    -8.9057
+   （对照，不计入判据）等权 1/natm E_AB =   -4.4529  E_NL =    -8.9057
+   → 家族内跨度 = 0.0284 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0609 kcal/mol
+   → 比值（含家族外 / 家族内） = 2.15（预登记：≤2 不许升级措辞；>10 必须按跨构造写）
+   （用时 978.6 s）
+
+== 甲烷二聚体  level=1  原子 10  公共网格 N=26536  片间min 3.16 Å
+   家族内 becke            E_AB =   -0.4746  E_NL =    -9.3976
+   家族内 becke-becke-rad  E_AB =   -0.4771  E_NL =    -9.3976
+   家族内 becke-treutler   E_AB =   -0.4737  E_NL =    -9.3976
+   家族内 stratmann        E_AB =   -0.4744  E_NL =    -9.3976
+   Voronoi(最近原子硬指派)  E_AB =   -0.4709  E_NL =    -9.3976
+   Hirshfeld(自由原子库存化) E_AB =   -0.5123  E_NL =    -9.3976
+   （对照，不计入判据）等权 1/natm E_AB =   -4.6988  E_NL =    -9.3976
+   → 家族内跨度 = 0.0034 kcal/mol（四方案，同一网格同一权重）
+   → 含两个家族外构造的总跨度 = 0.0414 kcal/mol
+   → 比值（含家族外 / 家族内） = 12.17（预登记：≤2 不许升级措辞；>10 必须按跨构造写）
+   （用时 799.9 s）
+
+VERDICT DONE —— 数值都已打印；判读按预登记的三档，比值与其分母（家族内跨度）同时报出

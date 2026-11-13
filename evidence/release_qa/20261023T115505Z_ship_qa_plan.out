@@ -1,0 +1,531 @@
+# 验收第 2 条：出货件 QA 流水线
+# 生成 2026-10-23T11:55:05Z   临时安装目录 /tmp/nlcsplit_shipqa_to5f4N
+
+## 步 1：从导出树出货
+<CLUSTER_HOME>/.local/lib/python3.10/site-packages/wheel/bdist_wheel.py:4: FutureWarning: The 'wheel' package is no longer the canonical location of the 'bdist_wheel' command, and will be removed in a future release. Please update to setuptools v70.1 or later which contains an integrated version of this command.
+  warn(
+warning: check: missing required meta-data: name, url
+
+warning: check: missing meta-data: either (author and author_email) or (maintainer and maintainer_email) should be supplied
+
+running bdist_wheel
+running build
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_egg_info
+running egg_info
+creating UNKNOWN.egg-info
+writing UNKNOWN.egg-info/PKG-INFO
+writing dependency_links to UNKNOWN.egg-info/dependency_links.txt
+writing top-level names to UNKNOWN.egg-info/top_level.txt
+writing manifest file 'UNKNOWN.egg-info/SOURCES.txt'
+reading manifest file 'UNKNOWN.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'UNKNOWN.egg-info/SOURCES.txt'
+Copying UNKNOWN.egg-info to build/bdist.linux-x86_64/wheel/UNKNOWN-0.0.0.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/UNKNOWN-0.0.0.dist-info/WHEEL
+creating '<REPO>/dist/.newartifacts/tmpqvbfjb0f/UNKNOWN-0.0.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'UNKNOWN-0.0.0.dist-info/LICENSE'
+adding 'UNKNOWN-0.0.0.dist-info/METADATA'
+adding 'UNKNOWN-0.0.0.dist-info/WHEEL'
+adding 'UNKNOWN-0.0.0.dist-info/top_level.txt'
+adding 'UNKNOWN-0.0.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+built: UNKNOWN-0.0.0-py3-none-any.whl
+running sdist
+running egg_info
+writing UNKNOWN.egg-info/PKG-INFO
+writing dependency_links to UNKNOWN.egg-info/dependency_links.txt
+writing top-level names to UNKNOWN.egg-info/top_level.txt
+reading manifest file 'UNKNOWN.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'UNKNOWN.egg-info/SOURCES.txt'
+running check
+creating UNKNOWN-0.0.0
+creating UNKNOWN-0.0.0/UNKNOWN.egg-info
+copying files to UNKNOWN-0.0.0...
+copying LICENSE -> UNKNOWN-0.0.0
+copying README.md -> UNKNOWN-0.0.0
+copying pyproject.toml -> UNKNOWN-0.0.0
+copying UNKNOWN.egg-info/PKG-INFO -> UNKNOWN-0.0.0/UNKNOWN.egg-info
+copying UNKNOWN.egg-info/SOURCES.txt -> UNKNOWN-0.0.0/UNKNOWN.egg-info
+copying UNKNOWN.egg-info/dependency_links.txt -> UNKNOWN-0.0.0/UNKNOWN.egg-info
+copying UNKNOWN.egg-info/top_level.txt -> UNKNOWN-0.0.0/UNKNOWN.egg-info
+Writing UNKNOWN-0.0.0/setup.cfg
+Creating tar archive
+removing 'UNKNOWN-0.0.0' (and everything under it)
+built: UNKNOWN-0.0.0.tar.gz
+{
+ "out": "<REPO>/dist/nlcsplit",
+ "files": 750,
+ "treeFiles": 752,
+ "artifacts": [
+  "UNKNOWN-0.0.0-py3-none-any.whl",
+  "UNKNOWN-0.0.0.tar.gz"
+ ],
+ "ledger": "<REPO>/dist/PATH-SCRUB-LEDGER.txt",
+ "gateA_gamess_source_artifacts": [],
+ "gateB_intranet": [
+  "evidence/common_grid/run_w4_remaining_after_unitfix.sh:5  <- 账号串 | #   2026-10-12 实测 `squeue -u <OPERATOR>`：51334 p1_dftX RUNNING 且 TIME_LEFT=6-21:13:12，",
+  "evidence/release_qa/20261013T142600Z_build.out:42  <- 账号串 | drwxrwxrwx 1 <OPERATOR> <OPERATOR>    512 Oct 13 22:25 .",
+  "evidence/release_qa/20261013T142600Z_build.out:43  <- 账号串 | drwxrwxrwx 1 <OPERATOR> <OPERATOR>    512 Oct 13 22:25 ..",
+  "evidence/release_qa/20261013T142600Z_build.out:44  <- 账号串 | -rwxrwxrwx 1 <OPERATOR> <OPERATOR> 180621 Oct 13 22:25 nlcsplit-0.1.0-py3-none-any.whl",
+  "evidence/release_qa/20261013T150059Z_build.out:42  <- 账号串 | drwxrwxrwx 1 <OPERATOR> <OPERATOR>    512 Oct 13 23:00 .",
+  "evidence/release_qa/20261013T150059Z_build.out:43  <- 账号串 | drwxrwxrwx 1 <OPERATOR> <OPERATOR>    512 Oct 13 23:00 ..",
+  "evidence/release_qa/20261013T150059Z_build.out:44  <- 账号串 | -rwxrwxrwx 1 <OPERATOR> <OPERATOR> 187664 Oct 13 23:00 nlcsplit-0.1.0-py3-none-any.whl"
+ ],
+ "gateB_exempt_ledger": [],
+ "gateB_email_exempt_ledger": [
+  "CITATION.cff:32  <- 具名豁免「作者本人的机构邮箱」地址=<OPERATOR>@<CLUSTER>.edu.cn；放过的是 账号串、校内标识串 | email: <OPERATOR>@<CLUSTER>.edu.cn   # 本人 2026-09-30 给的通讯地址（长安校区）",
+  "pyproject.toml:16  <- 具名豁免「作者本人的机构邮箱」地址=<OPERATOR>@<CLUSTER>.edu.cn；放过的是 账号串、校内标识串 | { name = \"Angran Xia\", email = \"<OPERATOR>@<CLUSTER>.edu.cn\" },"
+ ],
+ "gateB_email_selftest": {
+  "all_correct": true,
+  "ran": 8,
+  "public_cases": 2,
+  "mixed_line_control": true,
+  "failures": []
+ },
+ "gateA_exempt_ledger": [
+  "tools/make_public_repo.js:563  <- 具名豁免「检测器自身的判据定义」 模式#0 /\\$gnum/i | const gamessPats = [/\\$gnum/i, /\\bintgc\\b/, /\\bdiana\\b/, /rhfuhf/, /\\bgameSS\\.src\\b/i,",
+  "tools/make_public_repo.js:564  <- 具名豁免「检测器自身的判据定义」 模式#7 /getscr|erscf[0-9]/ | /ps\\/src\\//, /GAMESS\\.src/, /getscr|erscf[0-9]/];"
+ ],
+ "note_detector_selfscan": {
+  "in_tree": [
+   "tools/make_public_repo.js",
+   "tools/audit_no_gamess.js"
+  ],
+  "intranet_exempt": 0,
+  "email_exempt": 2,
+  "gamess_exempt": 2,
+  "files_with_exempt": [
+   "tools/make_public_repo.js",
+   "CITATION.cff",
+   "pyproject.toml"
+  ]
+ },
+ "note_private_rules_loaded": 10,
+ "gateC_evidence_hashes_vs_published": [],
+ "gateC2_scrub_digit_invariance": [
+  "evidence/release_qa/20261023T115448Z_ship_qa_plan.out: 母仓该目录有 MANIFEST.sha256，但这份文件没登记进去",
+  "evidence/release_qa/20261023T115448Z_ship_qa_plan.out.rc: 母仓该目录有 MANIFEST.sha256，但这份文件没登记进去",
+  "evidence/release_qa/20261023T115505Z_ship_qa_plan.out: 母仓该目录有 MANIFEST.sha256，但这份文件没登记进去"
+ ],
+ "gateD_cited_but_unshipped": [],
+ "gateE_undeclared_imports": [
+  "evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_check.py: import urllib.parse，但 pyproject 未声明 \"urllib\"",
+  "evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_check.py: import urllib.request，但 pyproject 未声明 \"urllib\"",
+  "evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_check.py: import urllib.parse，但 pyproject 未声明 \"urllib\"",
+  "evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_check.py: import urllib.request，但 pyproject 未声明 \"urllib\"",
+  "evidence/common_grid/grid_level_convergence.py: import fnmatch，但 pyproject 未声明 \"fnmatch\"",
+  "evidence/common_grid/probe_hirshfeld_recipe_equivalence.py: import ast，但 pyproject 未声明 \"ast\"",
+  "evidence/common_grid/selftest_certification_gate.py: import contextlib，但 pyproject 未声明 \"contextlib\"",
+  "evidence/common_grid/selftest_certification_gate.py: import fnmatch，但 pyproject 未声明 \"fnmatch\""
+ ],
+ "gateE_selftest": {
+  "fired": true,
+  "sibling_and_stdlib_silent": true,
+  "reported": [
+   "evidence/x/run.py: import nosuchdistribution，但 pyproject 未声明 \"nosuchdistribution\""
+  ]
+ },
+ "gateF_wheel_sdist_members": [],
+ "gateG_license": [],
+ "gateR_tree_residue": [],
+ "gateT_not_in_export_manifest": [],
+ "gateU_import_closure": [],
+ "gateX_runner_coverage": [],
+ "gateX_selftest": {
+  "step_scripts": 14,
+  "fired": true,
+  "truncated_reports": 10,
+  "clean_input_silent": true,
+  "real_tree_missing": 0
+ },
+ "gateU_selftest": {
+  "fired": true,
+  "silent_on_valid": true,
+  "reported": [
+   "nlcsplit/step_z.py: 引用 nlcsplit.notshipped，但它不在导出树里"
+  ]
+ },
+ "gateV_install_vs_release": [],
+ "gateW_share_rule_in_docs": [],
+ "note_gateW_selftest": {
+  "fired": true,
+  "silent_on_valid": true
+ },
+ "gateY_joss_links": [],
+ "gateY_selftest": {
+  "fired": true,
+  "silent_on_valid": true
+ },
+ "gateV_selftest": {
+  "fired": true,
+  "silent_on_named": true,
+  "clean_input_silent": true,
+  "reported": [
+   "nlcsplit/ghost_module.py"
+  ]
+ },
+ "note_internal_only_modules": {
+  "nlcsplit/fastpair_ide.py": "同行(ide-qoder)的独立实现，冻结对照，故意不发布",
+  "nlcsplit/tests/test_fastpair_ide.py": "上面那份实现的测试，随它一起不发布",
+  "nlcsplit/examples/check_screen_bound_ide.py": "它的验算脚本（import fastpair_ide）",
+  "nlcsplit/examples/coretail_bound.py": "核/尾界判死测量，产出归档在 evidence/coretail/",
+  "nlcsplit/examples/hybrid_nearfield.py": "近场占比测量，产出归档在 evidence/bound_forms/",
+  "nlcsplit/examples/probe_bound_forms.py": "球界/盒界单调性探针，产出归档在 evidence/bound_forms/"
+ },
+ "note_word_only_gamess": [
+  ".github/workflows/ci.yml:26  # A 无 GAMESS 源码工件 / B 无内网串 / C 证据哈希双向闭合 /",
+  ".github/workflows/ci.yml:47  - run: node tools/audit_no_gamess.js --selftest",
+  "CONTRIBUTING.md:54  ## \"不含 GAMESS 代码\"这句话怎么守",
+  "CONTRIBUTING.md:56  README、`LICENSE` 段与软件文都写着**不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发）。",
+  "CONTRIBUTING.md:60  node tools/audit_no_gamess.js            # 独立目录 pip install --target 后逐文件扫装出来的东西",
+  "CONTRIBUTING.md:61  node tools/audit_no_gamess.js --selftest # 只验判据本身有没有分辨力，不安装",
+  "CONTRIBUTING.md:65  命中项一律具名记账：唯一合法的 GAMESS 出现是包 docstring 与 `dist-info/METADATA`",
+  "CONTRIBUTING.md:67  具名豁免 2 条、GAMESS 相关 0 条、GPL/AGPL 类冲突信号 0 条（`--selftest` 5/5，",
+  "CONTRIBUTING.md:69  `tools/audit_no_gamess.js` 自己随包发布，所以这三条命令对读者也是可跑的。",
+  "EXPORT-MANIFEST.txt:577  evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out",
+  "EXPORT-MANIFEST.txt:749  tools/audit_no_gamess.js",
+  "README.md:22  Pure Python and NumPy on top of [PySCF](https://pyscf.org). Apache-2.0. No GAMESS source is",
+  "docs/tables_and_provenance.md:433  包 `nlcsplit`（Apache-2.0，无 GAMESS 代码），每个表对应一个 `step_*.py`，",
+  "evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_result.out:37  barca2020gamess              OK                                            10.1063/5.0005188",
+  "evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_result.out:37  barca2020gamess              OK                                            10.1063/5.0005188",
+  "evidence/common_grid/verify_s22_xyz_upstream.sh:18  cd /e/Project/GAMESS 2>/dev/null || cd \"$(dirname \"$0\")/../..\" || exit 2",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:1  === node tools/audit_no_gamess.js --selftest ===",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:2  ok   nlcsplit/nlc.py | c  ported from GAMESS src/lib/libddis.F -> null (want null)",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:4  ok   nlcsplit/__init__.py | 不含任何 GAMESS 代码；依赖 PySCF。 -> \"免责声明：本包不含 GAMESS 代码\" (want \"免责声明：本包不含 GAMESS 代码\")",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:5  ok   x-0.1.0.dist-info/METADATA | **不含任何 GAMESS 代码** -> \"免责声明：本包不含 GAMESS 代码\" (want \"免责声明：本包不含 GAMESS 代码\")",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:6  ok   nlcsplit/__init__.py | helper parses GAMESS $VM1 / INTGC blocks -> null (want null)",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:10  === node tools/audit_no_gamess.js (real install scan) ===",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:15  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:16  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | **不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发），也不依赖 GA",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:17  GAMESS? nlcsplit-0.1.0.dist-info/direct_url.json:1  {\"dir_info\": {}, \"url\": \"file://<REPO>\"}",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:19  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out:20  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:6  EXEMPT nlcsplit-0.1.0.dist-info/METADATA:28  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | **不含任何 GAMESS 代码**（GAMESS 许可证不允许再分发），也不依赖 GA",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:9  结论：具名豁免 3 条，GAMESS 相关 0 条，许可冲突信号 0 条",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:34  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:51  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:75  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:92  step 12  Run node tools/audit_no_gamess.js --selftest  -> skipped",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:115  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:131  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:154  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:170  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:193  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out:209  step 11  Run node tools/audit_no_gamess.js --selftest  -> success",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:5  EXEMPT nlcsplit/__init__.py:3  <- 具名豁免「免责声明：本包不含 GAMESS 代码」 | 不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:7  GAMESS? nlcsplit-0.1.0.dist-info/METADATA:43  Pure Python and NumPy on top of [PySCF](https://pyscf.org). Apache-2.0. No",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:9  结论：具名豁免 2 条，GAMESS 相关 1 条，许可冲突信号 0 条",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out:10  豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。",
+  "evidence/release_qa/MANIFEST.sha256:9  ba3807804a34ac71d5077c89c46b2471924875abb174c1d3b2ac011f307a8ba7 *20260929T213552Z_no_gamess_scan_after_allow.out",
+  "evidence/release_qa/NOTE_wheel_rebuild_route_20261013.md:46  | GAMESS/许可泄漏闸门 | **rc=1**，命中 `dist-info/METADATA:43` 的 \"No GAMESS source is…\" 一句**不在具名豁免账里**（10-09 那次通过的那份豁免的是导出树 READM",
+  "evidence/release_qa/README.md:29  | `20260929T212552Z_gate_selftest.out` | `tools/audit_no_gamess.js` 自己 | `--selftest` 判据 + 一次真装真扫 | 5/5（当时）；装出来 45 个文件，具",
+  "evidence/release_qa/README.md:30  | `20260929T213552Z_no_gamess_scan_after_allow.out` | 同上，加了第 2 条具名规则之后 | 同一次真装真扫 | 7/7；具名豁免 3 条，违规 0 条，冲突信号 0 条，rc=0 |",
+  "evidence/release_qa/README.md:58  `tools/audit_no_gamess.js --selftest` 里有一条专门验\"同一个文件里的非免责句不放行\"。",
+  "evidence/release_qa/gate_selftest_20260930.txt:2  对象：tools/make_public_repo.js 与 tools/audit_no_gamess.js 本轮改动后的实测状态。",
+  "evidence/release_qa/gate_selftest_20260930.txt:31  == 3. 发布卫生扫描（tools/audit_no_gamess.js）==",
+  "evidence/release_qa/gate_selftest_20260930.txt:34  20260929T213552Z_no_gamess_scan_after_allow.out：加了第 2 条具名规则后重跑，",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh:2  # 对**暂存 wheel** 跑 GAMESS/许可泄漏闸门并归档。",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh:3  # 为什么要单独一份：`node tools/audit_no_gamess.js` 自己会 `pip install --target`，",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh:14  node tools/audit_no_gamess.js --target \"$TDIR\" --src \"$WHL\" > \"$OUT\" 2>&1",
+  "nlcsplit/__init__.py:3  不含任何 GAMESS 代码；依赖 PySCF（Apache-2.0）。",
+  "paper/joss/paper.md:33  GAMESS source, and reproduces every number it documents from a single named script whose",
+  "tools/audit_no_gamess.js:1  /* 发布前硬检查：README、LICENSE 段与软件文都写着\"不含任何 GAMESS 代码\"。",
+  "tools/audit_no_gamess.js:8  *   (2) 对装出来的**每一个文件**逐行扫 GAMESS 标识、GAMESS 专有量名与源码文件名；",
+  "tools/audit_no_gamess.js:13  *   node tools/audit_no_gamess.js                       # 装当前目录到 /tmp/nlcsplit_audit 再扫",
+  "tools/audit_no_gamess.js:14  *   node tools/audit_no_gamess.js --target DIR --src PATH",
+  "tools/audit_no_gamess.js:15  *   node tools/audit_no_gamess.js --selftest            # 只验判据本身有没有分辨力，不安装",
+  "tools/audit_no_gamess.js:30  // NEEDLE 是\"GAMESS 才有的东西\"：程序名、专有量名、源码文件名。",
+  "tools/audit_no_gamess.js:31  // 命中不等于有罪（免责声明里就会出现 \"GAMESS\" 这个词），但也不能靠\"我看了一眼觉得没事\"。",
+  "tools/audit_no_gamess.js:34  const NEEDLE = /gamess|ab initio|libddis\\.|inputst|outputst|dfl\\.h|gfile|intcos/i;",
+  "tools/audit_no_gamess.js:37  // 唯一的合法形态：我们在声明\"本包不含 GAMESS 代码\"。这句话出现在包 docstring，",
+  "tools/audit_no_gamess.js:42  { name: '免责声明：本包不含 GAMESS 代码',",
+  "tools/audit_no_gamess.js:44  line: /不含任何 ?GAMESS ?代码|no ?GAMESS code/i },",
+  "tools/audit_no_gamess.js:49  // 少了这一句，\"url 里恰好写着 GAMESS\"就会连带把同一行里别的 GAMESS 内容一起放过。",
+  "tools/audit_no_gamess.js:71  // 真 GAMESS 工件：必须判违规",
+  "tools/audit_no_gamess.js:72  { rel: 'nlcsplit/nlc.py', line: 'c  ported from GAMESS src/lib/libddis.F', want: null },",
+  "tools/audit_no_gamess.js:75  { rel: 'nlcsplit/__init__.py', line: '不含任何 GAMESS 代码；依赖 PySCF。', want: '免责声明：本包不含 GAMESS 代码' },",
+  "tools/audit_no_gamess.js:76  { rel: 'x-0.1.0.dist-info/METADATA', line: '**不含任何 GAMESS 代码**', want: '免责声明：本包不含 GAMESS 代码' },",
+  "tools/audit_no_gamess.js:78  { rel: 'nlcsplit/__init__.py', line: 'helper parses GAMESS $VM1 / INTGC blocks', want: null },",
+  "tools/audit_no_gamess.js:81  line: '{\"dir_info\": {}, \"url\": \"file:///some/machine/Project/GAMESS\"}',",
+  "tools/audit_no_gamess.js:85  line: '{\"dir_info\": {}, \"url\": \"file:///tmp/x\", \"note\": \"reads GAMESS INPUTST\"}',",
+  "tools/audit_no_gamess.js:133  for (const h of hits) console.log('  GAMESS? ' + h);",
+  "tools/audit_no_gamess.js:135  console.log(`\\n结论：具名豁免 ${exempt.length} 条，GAMESS 相关 ${hits.length} 条，许可冲突信号 ${licHits.length} 条`);",
+  "tools/audit_no_gamess.js:136  console.log('豁免账之外的命中都是违规：唯一合法的 GAMESS 出现就是上面逐条列出的免责声明。');",
+  "tools/make_public_repo.js:12  *   A 无 GAMESS 源码工件        B 无密钥/内网串（含工作机绝对路径、集群端口、账号串）",
+  "tools/make_public_repo.js:116  const TOOLS = ['make_public_repo.js', 'audit_no_gamess.js', 'audit_share_rule.js'];",
+  "tools/make_public_repo.js:121  const SELF_DETECT = ['tools/make_public_repo.js', 'tools/audit_no_gamess.js'];",
+  "tools/make_public_repo.js:559  // ---------------------------------------------------------------- 闸门 A：无 GAMESS **源码**",
+  "tools/make_public_repo.js:560  // 注意：/gamess/i 一律命中是**误报**——README/CONTRIBUTING/__init__ 里出现这个词，",
+  "tools/make_public_repo.js:561  // 正是因为我们在声明\"本包不含 GAMESS 代码\"。一个永远失败的门禁和一个不会失败的门禁一样没用。",
+  "tools/make_public_repo.js:562  // 所以这里只抓真正的 GAMESS 源码工件；\"gamess\"这个词的出现另列为 info，人工过一眼即可。",
+  "tools/make_public_repo.js:563  const gamessPats = [/\\$gnum/i, /\\bintgc\\b/, /\\bdiana\\b/, /rhfuhf/, /\\bgameSS\\.src\\b/i,",
+  "tools/make_public_repo.js:564  /ps\\/src\\//, /GAMESS\\.src/, /getscr|erscf[0-9]/];",
+  "tools/make_public_repo.js:565  // 逐行判一条GAMESS 判据命中，并决定它是\"检测器自己的判据定义\"还是\"真工件\"。",
+  "tools/make_public_repo.js:568  function classifyGamess(rel, line) {",
+  "tools/make_public_repo.js:569  for (const [j, re] of gamessPats.entries()) {",
+  "tools/make_public_repo.js:575  function checkGamessSource(root, treeList) {",
+  "tools/make_public_repo.js:583  const v = classifyGamess(rel, line);",
+  "tools/make_public_repo.js:585  const tag = v.exempt ? '<- 具名豁免「检测器自身的判据定义」' : '<- GAMESS 源码工件';",
+  "tools/make_public_repo.js:589  if (/gamess/i.test(line)) words.push(`${rel}:${i + 1}  ${line.trim().slice(0, 120)}`);",
+  "tools/make_public_repo.js:594  const gA = checkGamessSource(OUT, tree);",
+  "tools/make_public_repo.js:647  // （与闸门 A 的 classifyGamess 同一标准）。只按文件名豁免 = 给这两个文件开空白支票，",
+  "tools/make_public_repo.js:691  gamess_exempt: gA.exempt.length,",
+  "tools/make_public_repo.js:695  && selfScan.gamess_exempt > 0 && emailSelftest.all_correct;",
+  "tools/make_public_repo.js:1008  const line = String(gamessPats[0]);                    // 真实的一条判据定义",
+  "tools/make_public_repo.js:1009  const inDetector = classifyGamess('tools/make_public_repo.js', line);",
+  "tools/make_public_repo.js:1010  const elsewhere = classifyGamess('nlcsplit/nlc.py', line);",
+  "tools/make_public_repo.js:1011  const innocent = classifyGamess('tools/make_public_repo.js', 'x = 1');",
+  "tools/make_public_repo.js:1275  gateA_gamess_source_artifacts: ga,",
+  "tools/make_public_repo.js:1301  note_word_only_gamess: wordOnly,"
+ ],
+ "note_internal_only_citations": [],
+ "note_gateD_skipped": null,
+ "note_evidence_dirs_without_source_manifest": [],
+ "scrubbed_files": [
+  "nlcsplit/figures.py",
+  "nlcsplit/step_m_ccsdt.py",
+  "nlcsplit/tests/test_regression.py",
+  "nlcsplit/run_all.sh",
+  "nlcsplit/logs/orca_anchor.json",
+  "nlcsplit/logs/step_h.json",
+  "evidence/l2cp/20260928T213839Z_centos-step_h_l2cp.out",
+  "evidence/l2cp/20260929T051849Z_l2_benzmeth-wsl.out",
+  "evidence/l2cp/20260929T051849Z_wsl2121-benzmeth-l2cp.json",
+  "evidence/l2cp/20260929T051912Z_centos-l2_benzmeth_cp.out",
+  "evidence/l2cp/20260929T051912Z_centos2140-benzmeth-l2cp.json",
+  "evidence/l2cp/20261003T0804Z_snnu51028-guard_FAIL.out",
+  "evidence/l2cp/20261003T0907Z_wsl2121-cp_levels.out",
+  "evidence/l2cp/20261003T0911Z_wsl2140-cp_levels.out",
+  "evidence/l2cp/20261003T1025Z_wsl2121-dtot_aromatic.out",
+  "evidence/l2cp/20261003T1747Z_snnu51052-sbatch.out",
+  "evidence/l2cp/20261004T0100Z_cross_version_pair_benzmeth.out",
+  "evidence/l2cp/20261004T0120Z_snnu51025_dft_avdz_ASSERT.out",
+  "evidence/l2cp/20261004T0328Z_snnu51083-sbatch.out",
+  "evidence/l2cp/cp_version_probe.py",
+  "evidence/l2cp/cp_version_runner.py",
+  "evidence/l2cp/dtot_2121_aromatic.py",
+  "evidence/centos/20260928T193520Z_centos-step_h_benz_l0.out",
+  "evidence/centos/20260928T193520Z_centos-step_h_l1.out",
+  "evidence/centos/MANIFEST.txt",
+  "evidence/retrieval_calibration/oa_stab.js",
+  "evidence/retrieval_calibration/xref_calib2.js",
+  "evidence/retrieval_calibration/xref_r3.js",
+  "evidence/recompute/20260929T110830Z_libxc_referee.out",
+  "evidence/recompute/20260930T191014Z_stepg-official.out",
+  "evidence/recompute/20261005T0340Z_benzene_dimer_label_measure.out",
+  "evidence/recompute/20261018T120810Z_libxc_version_census.out",
+  "evidence/recompute/run_libxc_version_census.sh",
+  "evidence/scaling/20260929T1340Z_step_j_scaling.out",
+  "evidence/population/20260929T131055Z_stepk_pop-constructed.out",
+  "evidence/population/20260929T131530Z_stepk_pop-official.out",
+  "evidence/population/20260930T200927Z_stepk_soft-vs-hard-official.out",
+  "evidence/population/20260930T201142Z_stepk_soft-vs-hard-constructed.out",
+  "evidence/agentb_sweep/20260928T071951Z_agentb-sweep_631gstar.txt",
+  "evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-8.out",
+  "evidence/agentb_sweep/20260929T151414Z_step_l_sweep_compare_levels0-9.out",
+  "evidence/coretail/20260929T122714Z_coretail.out",
+  "evidence/fastpair_ab/20260929T112236Z_a2b_verify.out",
+  "evidence/fastpair_ab/fastpair_ide_validation.json",
+  "evidence/bound_forms/20260929T112656Z_hybrid_nearfield.out",
+  "evidence/release_qa/20260929T170302Z_wheelclean_pyargs.out",
+  "evidence/release_qa/20260929T212552Z_gate_selftest.out",
+  "evidence/release_qa/20260929T213552Z_no_gamess_scan_after_allow.out",
+  "evidence/release_qa/20260930T181000Z_wheel_pyargs_44_firstrun.out",
+  "evidence/release_qa/20261001T112436Z_ci_dryrun_pyscf212_full.out",
+  "evidence/release_qa/20261001T112436Z_ci_dryrun_pyscf214_full.out",
+  "evidence/release_qa/20261001T150706Z_github_actions_first_runs.out",
+  "evidence/release_qa/20261002T0815Z_wheel_install_pytest_out_of_tree.txt",
+  "evidence/release_qa/20261005T0429Z_suite74_full.out",
+  "evidence/release_qa/20261005T0512Z_suite74_after_figure_fixes.out",
+  "evidence/release_qa/20261013T142600Z_wheel_install_pytest_notslow.out",
+  "evidence/release_qa/20261013T142600Z_wheel_member_diff.out",
+  "evidence/release_qa/20261013T143000Z_audit_on_staged_wheel.out",
+  "evidence/release_qa/20261013T150059Z_wheel_install_pytest_notslow.out",
+  "evidence/release_qa/20261013T150059Z_wheel_member_diff.out",
+  "evidence/release_qa/20261018T122724Z_utf8_census.out",
+  "evidence/release_qa/README.md",
+  "evidence/release_qa/publish_record_20260930.txt",
+  "evidence/release_qa/run_audit_on_staged_wheel.sh",
+  "evidence/release_qa/run_test_count_census.sh",
+  "evidence/release_qa/run_tests_after_src_edit.sh",
+  "evidence/release_qa/run_utf8_census.sh",
+  "evidence/release_qa/run_wheel_rebuild_qa.sh",
+  "evidence/bib_provenance/20261009T122601Z_bib_all25_crossref_check.js",
+  "evidence/bib_provenance/20261009T124519Z_bib_all25_issue_year_check.out",
+  "evidence/bib_provenance/20261009T124738Z_bib_all25_issue_year_check_after_fix.out",
+  "evidence/bib_provenance/20261011T114318Z_p0a_precedents_crossref_check.js",
+  "evidence/bib_provenance/20261022T1404Z_bib_all39_crossref_check.py",
+  "evidence/bib_provenance/20261022T1440Z_bib_all42_crossref_check.py",
+  "evidence/attribution_referee/README.md",
+  "evidence/attribution_referee/outputs/probe_quadrature.txt",
+  "evidence/attribution_referee/probe_quadrature.py",
+  "evidence/attribution_referee/run.py",
+  "evidence/attribution_referee/summarize.py",
+  "evidence/ccsdt/20261001T044833Z_orca_crosscheck.out",
+  "evidence/ccsdt/20261001T052943Z_orca_crosscheck_three_systems.out",
+  "evidence/ccsdt/20261002T043400Z_snnu_benzene_ladder.out",
+  "evidence/ccsdt/20261002T0528Z_snnu_benzene_dft_cp.out",
+  "evidence/ccsdt/20261002T0620Z_snnu_benzene_methane_l2.out",
+  "evidence/ccsdt/20261002T0630Z_snnu_benzene_dimer_ccsdt.out",
+  "evidence/ccsdt/20261002T0715Z_snnu_benzene_avdz.out",
+  "evidence/ccsdt/20261002T0905Z_snnu_benzene_dimer_dft_cp.out",
+  "evidence/ccsdt/20261002T1030Z_snnu_benzene_dimer_B.out",
+  "evidence/ccsdt/20261002T1208Z_snnu_sandwich_avdz_SUPERSEDED.out",
+  "evidence/ccsdt/20261003T0605Z_stepm_dimers_ghostcp_local.out",
+  "evidence/ccsdt/20261003T0652Z_snnu_cp_rebuild_631.out",
+  "evidence/ccsdt/20261003T0653Z_ghost_monomer_scf_check.out",
+  "evidence/ccsdt/20261003T0700Z_snnu_cp_rebuild_compare.out",
+  "evidence/ccsdt/20261003T0731Z_orca_crosscheck_ghostcp_run1.out",
+  "evidence/ccsdt/20261003T0752Z_orca_crosscheck_ghostcp.out",
+  "evidence/ccsdt/20261003T0758Z_snnu_pi_three_avdz_ghostcp.out",
+  "evidence/ccsdt/20261003T0925Z_cp_rebuild_compare_2121.out",
+  "evidence/ccsdt/20261003T1212Z_snnu_sandwich_avdz_ghostcp.out",
+  "evidence/ccsdt/20261004T0110Z_cp_rebuild_compare_derived.out",
+  "evidence/ccsdt/README.md",
+  "evidence/ccsdt/snnu_benzene_B.sh",
+  "evidence/ccsdt/snnu_benzene_avdz.sh",
+  "evidence/ccsdt/snnu_benzene_dimer.sh",
+  "evidence/ccsdt/snnu_benzene_runner.sh",
+  "evidence/ccsdt/snnu_cp_rebuild_631.sh",
+  "evidence/ccsdt/snnu_dft_cp_dimer.py",
+  "evidence/nlc_cp/20261006T0657Z_nlc_bsse_three_small_dimers.out",
+  "evidence/common_grid/20261006T085207Z_ownership_vs_quadrature_l1_small.out",
+  "evidence/common_grid/20261006T090714Z_ownership_vs_quadrature_l1_benzenex.out",
+  "evidence/common_grid/20261013T152010Z_s22_full_certificate_S22_03_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_01_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_02_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_03_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_04_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_08_l1_small.out",
+  "evidence/common_grid/20261013T152306Z_s22_full_certificate_S22_16_l1_small.out",
+  "evidence/common_grid/20261013T155004Z_s22_full_certificate_S22_09_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_10_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_12_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_17_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_18_l1_small.out",
+  "evidence/common_grid/20261013T160222Z_s22_full_certificate_S22_19_l1_small.out",
+  "evidence/common_grid/20261013T160450Z_verify_s22_folder_identity.out",
+  "evidence/common_grid/20261013T160621Z_verify_s22_folder_identity.out",
+  "evidence/common_grid/20261013T161955Z_w4_closeout.out",
+  "evidence/common_grid/20261013T174321Z_s22_full_certificate_S22_05_l1_small.out",
+  "evidence/common_grid/20261013T174321Z_s22_full_certificate_S22_11_l1_small.out",
+  "evidence/common_grid/20261013T174321Z_s22_full_certificate_S22_13_l1_small.out",
+  "evidence/common_grid/20261013T193551Z_verify_s22_folder_identity.out",
+  "evidence/common_grid/20261013T202511Z_w4_closeout.out",
+  "evidence/common_grid/20261013T205228Z_s22_full_certificate_S22_06_l1_small.out",
+  "evidence/common_grid/20261013T205228Z_s22_full_certificate_S22_20_l1_small.out",
+  "evidence/common_grid/20261013T205228Z_s22_full_certificate_S22_22_l1_small.out",
+  "evidence/common_grid/20261013T220106Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T220139Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T220306Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T220452Z_verify_s22_official_names.out",
+  "evidence/common_grid/20261013T225548Z_s22_full_certificate_S22_14_l1_small.out",
+  "evidence/common_grid/20261013T225548Z_s22_full_certificate_S22_21_l1_small.out",
+  "evidence/common_grid/20261014T004111Z_s22_full_certificate_S22_07_l1_small.out",
+  "evidence/common_grid/20261014T004111Z_s22_full_certificate_S22_15_l1_small.out",
+  "evidence/common_grid/20261014T025620Z_w4_closeout.out",
+  "evidence/common_grid/20261018T111430Z_selftest_certification_gate.out",
+  "evidence/common_grid/20261018T111923Z_w4_closeout.out",
+  "evidence/common_grid/20261018T112316Z_spherical_promolecule_thread_probe.out",
+  "evidence/common_grid/20261018T114738Z_spherical_promolecule_thread_probe.out",
+  "evidence/common_grid/20261018T114837Z_spherical_promolecule_thread_probe.out",
+  "evidence/common_grid/20261018T121833Z_w4_closeout.out",
+  "evidence/common_grid/20261021T094231Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T094231Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T104857Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T104857Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T104954Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T104954Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T122019Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T122019Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T122147Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T122147Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T122429Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T122429Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261021T203202Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261021T203202Z_grid_convergence_scoped.out",
+  "evidence/common_grid/20261023T0527Z_grid_convergence_full_set.out",
+  "evidence/common_grid/20261023T0527Z_grid_convergence_scoped.out",
+  "evidence/common_grid/NOTE_s22_official_names_20261013.md",
+  "evidence/common_grid/check_batch_health.sh",
+  "evidence/common_grid/run_after_unitfix_summary.sh",
+  "evidence/common_grid/run_certificate_reproduction.sh",
+  "evidence/common_grid/run_certificate_reproduction_cell.sh",
+  "evidence/common_grid/run_certify.sh",
+  "evidence/common_grid/run_crossfamily_check.sh",
+  "evidence/common_grid/run_crossfamily_level0_currentcode.sh",
+  "evidence/common_grid/run_crossfamily_level0_pisystem.sh",
+  "evidence/common_grid/run_crossfamily_level2_benzwater.sh",
+  "evidence/common_grid/run_crossfamily_level2_three_cells.sh",
+  "evidence/common_grid/run_crossfamily_level2_three_pi_cells.sh",
+  "evidence/common_grid/run_crossfamily_level2_water.sh",
+  "evidence/common_grid/run_free_atom_cross_thread.sh",
+  "evidence/common_grid/run_grid_convergence_archive.sh",
+  "evidence/common_grid/run_probe_hirshfeld_equivalence.sh",
+  "evidence/common_grid/run_probe_spherical_column_price.sh",
+  "evidence/common_grid/run_probe_spherical_promolecule.sh",
+  "evidence/common_grid/run_record_cell_thread_config.sh",
+  "evidence/common_grid/run_s22_full_batch.sh",
+  "evidence/common_grid/run_s22_summary.sh",
+  "evidence/common_grid/run_selftest_certification_gate.sh",
+  "evidence/common_grid/run_single_thread_repeat_check.sh",
+  "evidence/common_grid/run_summarize_s22_full.sh",
+  "evidence/common_grid/run_thread_sweep.sh",
+  "evidence/common_grid/run_verify_s22_identity.sh",
+  "evidence/common_grid/run_verify_s22_names.sh",
+  "evidence/common_grid/run_w2_benzwater_pricing.sh",
+  "evidence/common_grid/run_w4_remaining_after_unitfix.sh",
+  "evidence/common_grid/s22_full_batch_20261013T152010Z.log",
+  "evidence/common_grid/s22_full_batch_20261013T152306Z.log",
+  "evidence/common_grid/verify_s22_official_names.py",
+  "evidence/common_grid/verify_s22_xyz_upstream.sh",
+  "evidence/common_grid/w4_batch_20261012.log",
+  "evidence/common_grid/watch_batch_until_done.sh",
+  "docs/tables_and_provenance.md"
+ ],
+ "excluded_by_design": [
+  "nlcsplit/centos_run.sh",
+  "nlcsplit/centos_run2.sh",
+  "nlcsplit/centos_run3.sh",
+  "nlcsplit/centos_run4.sh",
+  "nlcsplit/centos_run5.sh",
+  "nlcsplit/centos_setup.sh",
+  "tools/intranet_patterns.private.js",
+  "PROGRESS-*.md",
+  "HANDOFF-*.md",
+  "STEP0-*.md",
+  "scratch/**",
+  "paper/**（唯一例外 joss/：JOSS 投稿稿必须在仓库里，JOSS 从仓内路径构建）",
+  "figs/**（唯一例外 fig1_xc_split.png：字节拷贝进 paper/joss/，可由随包的 nlcsplit/figures.py 重生成）"
+ ],
+ "relocated_into_docs": {
+  "RESEARCH-20260929-lit.md": "docs/literature_search_20260929.md",
+  "MAIN-skeleton.md": "docs/tables_and_provenance.md"
+ },
+ "note_relocated_passthrough": [],
+ "shipped": false,
+ "kept_stale": [
+  {
+   "f": "nlcsplit-0.1.0-py3-none-any.whl",
+   "sha256": "72e61ab5363f7ef9c5d4ef8420068d3f404d342ce1cf6051b76fab15cadc9260",
+   "mtime": "2026-10-09T12:58:08.683Z"
+  },
+  {
+   "f": "nlcsplit-0.1.0.tar.gz",
+   "sha256": "b859ada217f889fd2773bcb7a3b21831ceb9131c53b49130cdbbdc403b2fa8e2",
+   "mtime": "2026-10-09T12:58:11.503Z"
+  }
+ ]
+}
+
+GATE FAILED: 18 条命中，不出货（exit 1）。上面每个数组都是 file:line。
+dist/ 里的旧 wheel/sdist 保持原样：nlcsplit-0.1.0-py3-none-any.whl, nlcsplit-0.1.0.tar.gz
+!! make_public_repo.js 非零（它自带 15 道闸门，先读它的判语再重试）
+# exit=1 at 2026-10-23T11:56:17Z

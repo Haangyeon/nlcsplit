@@ -1,0 +1,16 @@
+{
+ "checked_main_cited_names": 376,
+ "missing_after_fix": 0,
+ "fixes_applied": [
+  "Jiř Klimeš→Jiří Klimeš",
+  "Banás→Banáš",
+  "Sponer→Šponer (kruse/jurecka)",
+  "Jiř Šponer→Jiří Šponer (hobza)",
+  "Jurecka→Jurečka",
+  "Ugur→Uğur",
+  "Sol`a→Solà",
+  "'Emilie Laure Zins→Émilie-Laure Zins",
+  "Schr\"oder→Schröder"
+ ],
+ "note": "peer 11-12 accent pass left these; PDF (bibtex) unaffected; DOCX fixed by qoder, backup scratch/VV10_backup_before_qoder_namefix.docx"
+}

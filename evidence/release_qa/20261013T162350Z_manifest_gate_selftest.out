@@ -1,0 +1,23 @@
+# tools/make_evidence_manifest.sh 四向自检  2026-10-13T16:23:50Z
+
+## A：旧清单含一条**磁盘上不存在**的子目录原件 ⇒ 必须拒、rc≠0、原清单一字不动
+!! evidence/.manifest_gate_selftest 拒绝替换：旧清单登记过、现在磁盘上没有的子目录原件 1 条
+       outputs/GONE.out
+有 1 个目录没重生成：.manifest_gate_selftest（上面列了每个目录为什么被拒）
+   rc=1  清单 未被改动 OK
+
+## B/C：只剩**存在**的子目录原件 ⇒ B 必须放行(rc=0)；C 必须证明那条被结转、没被静默删
+evidence/.manifest_gate_selftest/MANIFEST.sha256  3 条（含结转的子目录条目 1 条）
+   B rc=0
+   C 结转子目录条目 1 条（应为 1）；第一层 3 行里有 2 条第一层登记（应为 2）
+   C rc=0
+
+## D：登记过的第一层文件被删 ⇒ 必须拒（真丢了，不是格式问题）
+!! evidence/.manifest_gate_selftest 拒绝替换：旧清单里有 1 条第一层登记已不在磁盘上
+       two.out
+有 1 个目录没重生成：.manifest_gate_selftest（上面列了每个目录为什么被拒）
+   rc=1
+
+VERDICT DONE
+# 判据：A 拒且不改、B 放行、C 子目录条目必须**还在**、D 第一层真丢了要拒。
+# exit=0 at 2026-10-13T16:23:51Z

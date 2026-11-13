@@ -1,0 +1,52 @@
+# 出货前置核对（只读，不写任何文件）
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# PKG 7 项 / TESTS 12 项 / 具名不发 6 项
+
+tests 目录里 test_*.py 共 11 个：
+   test_cc_convention.py            随包
+   test_certificate.py              随包
+   test_crossfamily_schemes.py      随包
+   test_fastpair.py                 随包
+   test_fastpair_ide.py             具名不发
+   test_geometry.py                 随包
+   test_kernel.py                   随包
+   test_nlc_closure.py              随包
+   test_partition_factors.py        随包
+   test_regression.py               随包
+   test_tolerance_probe.py          随包
+
+# 正文该填的数（由本脚本给）：
+#   随包测试模块 WHEEL_TEST_MODULES = 10
+#   随包包内模块 PKG 数            = 7（含 certificate.py：true）
+#   具名不发                         = nlcsplit/fastpair_ide.py, nlcsplit/tests/test_fastpair_ide.py, nlcsplit/examples/check_screen_bound_ide.py, nlcsplit/examples/coretail_bound.py, nlcsplit/examples/hybrid_nearfield.py, nlcsplit/examples/probe_bound_forms.py
+
+VERDICT OK —— 名单齐、文件都在、每个测试都有着落
+# exit=0 at 2026-10-13T16:29:40Z
+# 出货前置核对（只读，不写任何文件）
+# git HEAD df8ff6680556d74f88454148245f361294fdfed8
+# PKG 7 项 / TESTS 11 项 / 具名不发 6 项
+
+tests 目录里 test_*.py 共 11 个：
+   test_cc_convention.py            随包
+   test_certificate.py              **没人管**
+   test_crossfamily_schemes.py      随包
+   test_fastpair.py                 随包
+   test_fastpair_ide.py             具名不发
+   test_geometry.py                 随包
+   test_kernel.py                   随包
+   test_nlc_closure.py              随包
+   test_partition_factors.py        随包
+   test_regression.py               随包
+   test_tolerance_probe.py          随包
+!! 1 个测试模块既不在 TESTS 也不在 INTERNAL_ONLY_MODULES ⇒ 出货会静默少发：
+   test_certificate.py
+   修法：随包就加进 TESTS；确属对照件/内部件就加进 INTERNAL_ONLY_MODULES 并在那里写清理由。
+
+# 正文该填的数（由本脚本给）：
+#   随包测试模块 WHEEL_TEST_MODULES = 9
+#   随包包内模块 PKG 数            = 7（含 certificate.py：true）
+#   具名不发                         = nlcsplit/fastpair_ide.py, nlcsplit/tests/test_fastpair_ide.py, nlcsplit/examples/check_screen_bound_ide.py, nlcsplit/examples/coretail_bound.py, nlcsplit/examples/hybrid_nearfield.py, nlcsplit/examples/probe_bound_forms.py
+
+VERDICT NOTCLEAN —— 见上面 !! 行
+# 阴性对照 rc=1（必须非 0，且输出里点名 test_certificate.py）at 2026-10-13T16:29:41Z
+VERDICT DONE

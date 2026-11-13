@@ -1,0 +1,146 @@
+# hybrid_nearfield measuring pass
+# utc=2026-09-29T11:27:00Z  host=<OPERATOR>
+# python=3.10.12  OMP_NUM_THREADS=3  os.cpu_count=20
+# pyscf=2.12.1  numpy=2.2.6
+# accuracy budget = 1.0e-06 kcal/mol actual error; tau = 1e-12 Ha per node-pair
+# gate: a timed sample is invalid when OTHER processes used >= 0.5 CPU-cores during its window (own BLAS threads excluded, raw uptime/loadavg still printed)
+# idle-window contention check: external 12.25 cores, loadavg ['11.74', '14.16', '14.61'], 19:27:03 up 31 min,  1 user,  load average: 11.74, 14.16, 14.61
+
+====================================================================================================
+=== benzene_sandwich   level=0  basis=6-31g*  xc=wb97x_v  scheme=becke  tau=1e-12 Ha (6.3e-10 kcal/mol budget=1e-06)
+
+################ NOTE (operator, archived 20260929T2005Z) ################
+# The benzene_sandwich level-0 section of THIS process was aborted while still inside the
+# shared omegaB97x-V/6-31G* SCF. The box carried 4-5 concurrent agent jobs for the whole
+# window (external 9-12 CPU-cores sustained, /proc load 11-15 on 20 cores): the benzene
+# SCF had run 40+ min wall / 5786 CPU-s without converging, versus 152.6 s for the water
+# level-1 SCF below. No benzene timing sample is archived here. Benzene-side evidence used
+# for the verdict is the frozen clean-window pass
+# nlcsplit/logs/20260929T101447Z_probe_bound_forms.out (same geometry/level/basis/xc):
+# 276/276 cross atom pairs print root box gap 0.00 A; 0/276 pairs have a root bound
+# <= 1e-8 Ha; atom-block full path 5.03 s vs pure tree at tau=1e-12 25.9 s, with only 8.6%
+# of cross point pairs dropped.
+#
+# What follows is the COMPLETE water-dimer level-1 section, produced by the same file
+# nlcsplit/examples/hybrid_nearfield.py report() with identical parameters (tau=1e-12 Ha,
+# min_pts 32/256/1024, 6-31G*, wb97x_v, becke) in a second process launched in parallel so
+# that at least one system finished; its tag reads h2o_dimer(PARALLEL).
+###############################################################################
+
+
+====================================================================================================
+=== h2o_dimer(PARALLEL)   level=1  basis=6-31g*  xc=wb97x_v  scheme=becke  tau=1e-12 Ha (6.3e-10 kcal/mol budget=1e-06)
+    SCF (shared by all four paths, never inside a timed window): 152.6 s
+    grid+density fields (shared, outside timed windows): 0.05 s   n_grid=19936 kept=17227  atoms=6
+    library tau-screened anchor (for validating this harness, not timed): E_pair=-0.0124508751655712 cert=5.248e-09 Kept_pp=98636494
+    cross point pairs = 120415263   self point pairs = 55939003   total = 176354266
+    tree build min_pts=  32:   0.15 s   leaves=697
+    tree build min_pts= 256:   0.08 s   leaves=233
+    tree build min_pts=1024:   0.02 s   leaves=37
+    ROOT OVERLAP census: 15/15 cross atom pairs have box_sep(root)=0
+      -> those pairs hold 120415263/120415263 cross point pairs = 100.0000% of the cross work
+      -> and 68.2803% of (cross+self) total point pairs
+      root box_sep (A) min 0.0000  median 0.0000  max 0.0000 ; #pairs with D<0.05A: 15  D<0.2A: 15  D==0: 15
+      root bound (x2) range: 2.213e+02 .. 8.397e+03 Ha  =  1.389e+05 .. 5.269e+06 kcal/mol
+      tau/1e6 = 1.000e-18 Ha  ->  smallest root bound is 2.213e+14 x larger than tau
+      pairs with root bound <= tau: 0/15  (root-accepts without any descent)
+    classification thresholds Bclass (far = root bound <= Bclass):
+      Bclass so ~25% of cross point pairs are far: 1.241e+03 Ha (7.785e+05 kcal/mol)
+      Bclass so ~50% of cross point pairs are far: 1.394e+03 Ha (8.748e+05 kcal/mol)
+      Bclass so ~75% of cross point pairs are far: 1.653e+03 Ha (1.037e+06 kcal/mol)
+
+  -- exact  atom-block full (screen=None)
+     exact  atom-block full (screen=None) wall=  5.898s own=2.95 cores ext=8.87 cores load=11.94/12.03 valid=False | exact  atom-block full (screen=None) wall=  7.381s own=2.99 cores ext=10.04 cores load=12.03/12.10 valid=False | exact  atom-block full (screen=None) wall=  7.412s own=2.90 cores ext=10.03 cores load=12.10/12.16 valid=False
+     library anchor E_pair=-0.0124508758393825  mine=-0.0124508758393825  bit-identical=True
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  -- tree   min_pts=32 (pure tree)
+     tree   min_pts=32 (pure tree) wall= 22.892s own=1.16 cores ext=8.88 cores load=12.16/11.52 valid=False | tree   min_pts=32 (pure tree) wall= 28.623s own=1.17 cores ext=9.67 cores load=11.52/11.41 valid=False
+     harness check vs library screen=tau: dE=0.000e+00 Ha  dcert=0.000e+00 Ha
+     cert_err=5.248e-09 Ha  |dE|=6.738e-10 Ha (4.228e-07 kcal/mol)  budget_ok=True
+     point pairs kept 154575497/176354266 = 87.651%   atom pairs near/far = 0/15
+     tree node-pairs: accepted=19157 evaluated(leafpairs)=138042 visited=157184
+
+  -- hybrid min_pts=32 near=root-box-overlap
+     hybrid min_pts=32 near=root-box-overlap wall=  9.241s own=2.83 cores ext=10.15 cores load=11.41/11.74 valid=False | hybrid min_pts=32 near=root-box-overlap wall=  9.437s own=2.91 cores ext=9.96 cores load=11.74/12.01 valid=False
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  -- hybrid min_pts=32 near=overlap or bnd>Bclass(q50)
+     hybrid min_pts=32 near=overlap or bnd>Bclass(q50) wall= 10.411s own=2.87 cores ext=10.03 cores load=12.01/12.16 valid=False | hybrid min_pts=32 near=overlap or bnd>Bclass(q50) wall=  7.420s own=3.00 cores ext=10.06 cores load=12.16/12.29 valid=False
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  -- hybrid min_pts=32 near=overlap or bnd>Bclass(q75)
+     hybrid min_pts=32 near=overlap or bnd>Bclass(q75) wall=  7.787s own=3.01 cores ext=10.05 cores load=12.29/12.35 valid=False
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  -- tree   min_pts=256
+     tree   min_pts=256 wall=  9.804s own=1.54 cores ext=10.01 cores load=12.35/12.36 valid=False
+     cert_err=2.857e-10 Ha  |dE|=3.265e-11 Ha (2.049e-08 kcal/mol)  budget_ok=True
+     point pairs kept 173222013/176354266 = 98.224%   atom pairs near/far = 0/15
+     tree node-pairs: accepted=1060 evaluated(leafpairs)=20601 visited=21646
+
+  -- hybrid min_pts=256 near=root-box-overlap
+     hybrid min_pts=256 near=root-box-overlap wall=  8.023s own=3.00 cores ext=10.02 cores load=12.36/12.46 valid=False
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  -- hybrid min_pts=256 near=overlap or bnd>Bclass(q50)
+     hybrid min_pts=256 near=overlap or bnd>Bclass(q50) wall=  8.004s own=2.86 cores ext=10.10 cores load=12.46/12.51 valid=False
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  -- tree   min_pts=1024
+     tree   min_pts=1024 wall=  6.594s own=2.35 cores ext=10.09 cores load=12.51/12.50 valid=False
+     cert_err=1.229e-12 Ha  |dE|=4.925e-14 Ha (3.090e-11 kcal/mol)  budget_ok=True
+     point pairs kept 176299802/176354266 = 99.969%   atom pairs near/far = 0/15
+     tree node-pairs: accepted=11 evaluated(leafpairs)=525 visited=521
+
+  -- hybrid min_pts=1024 near=overlap or bnd>Bclass(q50)
+     hybrid min_pts=1024 near=overlap or bnd>Bclass(q50) wall=  8.956s own=2.93 cores ext=9.99 cores load=12.50/12.54 valid=False
+     cert_err=0.000e+00 Ha  |dE|=0.000e+00 Ha (0.000e+00 kcal/mol)  budget_ok=True
+     point pairs kept 176354266/176354266 = 100.000%   atom pairs near/far = 15/0
+     tree node-pairs: accepted=0 evaluated(leafpairs)=0 visited=0
+
+  ---- summary for h2o_dimer(PARALLEL) ----
+    baseline(exact): 3 samples, 0 valid; median(valid)=NONE  median(all)=7.381 s  own cores=2.95  external cores=10.03
+    !!! no valid baseline sample: the timing window is contended. Absolute seconds below are medians over contended samples and make no claim about this machine's speed; only the vs_base ratio (same window, same contention) is usable, and only to first order.
+  path                                                 wall_s   raw_s  nval  ownCo  extCo    cert_Ha   |dE|_kcal    kept%   vs_base  bud
+  exact  atom-block full (screen=None)                 CONTAM   7.381     0   2.95  10.03   0.00e+00    0.00e+00 100.0000    1.000x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  tree   min_pts=32 (pure tree)                        CONTAM  25.758     0   1.16   9.28   5.25e-09    4.23e-07  87.6506    3.490x   OK
+       cross-point-pairs kept 81.9136% (near atom pairs 0, far 15)
+  hybrid min_pts=32 near=root-box-overlap              CONTAM   9.339     0   2.87  10.06   0.00e+00    0.00e+00 100.0000    1.265x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  hybrid min_pts=32 near=overlap or bnd>Bclass(q50)    CONTAM   8.916     0   2.94  10.05   0.00e+00    0.00e+00 100.0000    1.208x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  hybrid min_pts=32 near=overlap or bnd>Bclass(q75)    CONTAM   7.787     0   3.01  10.05   0.00e+00    0.00e+00 100.0000    1.055x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  tree   min_pts=256                                   CONTAM   9.804     0   1.54  10.01   2.86e-10    2.05e-08  98.2239    1.328x   OK
+       cross-point-pairs kept 97.3988% (near atom pairs 0, far 15)
+  hybrid min_pts=256 near=root-box-overlap             CONTAM   8.023     0   3.00  10.02   0.00e+00    0.00e+00 100.0000    1.087x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  hybrid min_pts=256 near=overlap or bnd>Bclass(q50)   CONTAM   8.004     0   2.86  10.10   0.00e+00    0.00e+00 100.0000    1.085x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  tree   min_pts=1024                                  CONTAM   6.594     0   2.35  10.09   1.23e-12    3.09e-11  99.9691    0.893x   OK
+       cross-point-pairs kept 99.9548% (near atom pairs 0, far 15)
+  hybrid min_pts=1024 near=overlap or bnd>Bclass(q50)   CONTAM   8.956     0   2.93   9.99   0.00e+00    0.00e+00 100.0000    1.213x   OK
+       cross-point-pairs kept 100.0000% (near atom pairs 15, far 0)
+  configs with |dE|<=1.0e-06 kcal/mol AND wall < baseline: [('tree   min_pts=1024', 6.594)]
+
+  per-pair cost census at min_pts=32 (single replicate, same trees):
+    all-pairs exact loop 4.85 s   all-pairs tree loop 23.78 s   (tree build 0.15 s)
+    atom pairs where the tree is FASTER than the big gemm: 0/15 (0.0%)
+    ORACLE ceiling (route each pair to its cheaper path, upper bound for any whole-pair classifier): 4.85 s pair loop, 5.00 s incl. tree build
+    vs measured baseline pair loop 4.85 s  ->  max achievable saving 0.0%
+    median per-pair cost: exact 305.5759 ms   tree 1606.9475 ms   ratio 5.26x
+    tree cost per retained point pair: exact 4.028e+01 ms/1e6pp  tree 1.974e+02 ms/1e6pp
