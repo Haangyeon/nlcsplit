@@ -6345,3 +6345,5 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 后续留意：Manuscript ID 分配通知邮件；proof 阶段统一邮编（710119 vs 表单 710062）与显示名 Angren/Angran。
 - [18:3x] 仪表盘展开信息取得 Submission ID: 5E565A02-52F7-4598-9984-20CF7978095D（Awaiting Manuscript ID 期间以此指代本投稿）。
 - 上传文件核验证据链：① 上传前本地 md5 基准（DOCX 70f556b4…/SI 34e981b4…/CL c802ac5f…）；② 文件对话框实测 DOCX 修改时间 17:17、大小 1,449KB 与本地一致；③ 提交前审查页三件文件名+类型逐一点名；④ 提交后状态 Submitted。服务器侧字节级回下载因作者正在使用浏览器（物理输入持续打断自动化）未执行，如实记。
+- [18:4x] 编辑部已收稿并分配稿件号 **ct-2026-02426r**，状态 Editorial Review（Received 13 Nov 2026）；详情页路由 /app/manuscript?id=7434256&journal=acs-ct。
+- 服务器侧字节级回下载未完成：草稿路由提交后失效（"trouble retrieving"），manuscript 详情路由会话过期跳登录；不代填凭据，待作者本人登录后再补。现有证据链（上传时实测文件属性＋审查页点名＋Submitted＋稿件号分配）已支持上传无误。
