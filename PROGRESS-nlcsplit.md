@@ -6329,3 +6329,11 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 过程一次瞬时 "Something went wrong while trying to save"（删旧 SI 时），关闭提示后重试成功，最终 Saved 确认。
 - 红线不变：六法律勾选+Submit 仍等作者本人。
 - [17:52] 像素比对方法学修正：旧 eq_pixel_compare 的 float64 积分图在大页面上大数相消致方差失真（eq3 被压到 0.746）。改 FFT 窗口统计稳定版（scratch/eq_pixel_stable.py）后 cross ncc eq1-4 = 0.783/0.797/0.904/0.843、diffpix 4.9/5.0/2.3/4.9%；零偏移真自匹配=1.0000 证实匹配器正确。残差为 Word/LaTeX 两套光栅化抗锯齿差异，非内容错位；几何断言（中心306/右缘540/式2变宽）独立佐证同源。
+
+## [2026-11-13 18:0x] [agent=qwen] [done] 收尾残差扫描：抓修 PDF 参考文献人名连字符根因
+- 扫描器先喂已知阳性自证不盲；PDF(main+SI) 与 DOCX 全文：重音残差/LaTeX 命令残差/?? 均 0；Šponer/Solà/Émilie-Laure 双件齐备、无裸写；DOCX 图 116=101 行内+4 式体+4 编号+7 图。
+- 抓到一处真残差：PDF 参考文献 "Émilie Laure Zins" 缺连字符（DOCX 有）。根因=unsrtnat.bst 对"重音命令+连字符"组合丢 '-'（探针证实：无重音的 Emilie-Laure/Jean-Paul 均保留）。bib 改 \'{E}milie{-}Laure 保护，全量重建后 PDF 含 Émilie-Laure；新 PDF md5 d957c5885bbedd46f550a2558287cb0b（37页0错0 overfull）。SI 不引用该文献，未动（34e981b4）。
+- SI 两条 badness 10000 为等宽代码/输出行断行，实测右缘 501/530<540 无溢出，非错误，不修。
+- claim_gate rc=0（静默=clean）；表行溯源 VERDICT OK；内容比对表值 0 缺失、88 文献全锚定。
+- 公式目检：eq2/eq3 上下分式 LaTeX 行与 Word 行逐式一致。
+- 结论口径：可机器验证项全绿；不打包票"绝对正确"，剩余未知属同行评审范畴。
