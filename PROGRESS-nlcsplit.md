@@ -6328,3 +6328,4 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 重传：主稿槽换 70f556b4 版 DOCX（Upload file only 保留表单）；Other Files 换同版 SI（designation=Supporting Information for Publication）；Cover Letter 保持 c802ac5f 版。Save 成功，Last Saved 17:39。
 - 过程一次瞬时 "Something went wrong while trying to save"（删旧 SI 时），关闭提示后重试成功，最终 Saved 确认。
 - 红线不变：六法律勾选+Submit 仍等作者本人。
+- [17:52] 像素比对方法学修正：旧 eq_pixel_compare 的 float64 积分图在大页面上大数相消致方差失真（eq3 被压到 0.746）。改 FFT 窗口统计稳定版（scratch/eq_pixel_stable.py）后 cross ncc eq1-4 = 0.783/0.797/0.904/0.843、diffpix 4.9/5.0/2.3/4.9%；零偏移真自匹配=1.0000 证实匹配器正确。残差为 Word/LaTeX 两套光栅化抗锯齿差异，非内容错位；几何断言（中心306/右缘540/式2变宽）独立佐证同源。
