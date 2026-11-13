@@ -6343,3 +6343,5 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - 审查页逐项核对：三件（DOCX 70f556b4 版/封面信 c802ac5f 版/SI 34e981b4 版）、标题、收窄版摘要、作者两位、OA/COI/Previous 均 No；六条法律声明勾选后点 Submit form。
 - 仪表盘核验：Awaiting Submission 0；Under Consideration 1 = Submitted / Awaiting Manuscript ID（JCTC，Created 13 Nov 2026）。投稿完成，进入编辑部流程。
 - 后续留意：Manuscript ID 分配通知邮件；proof 阶段统一邮编（710119 vs 表单 710062）与显示名 Angren/Angran。
+- [18:3x] 仪表盘展开信息取得 Submission ID: 5E565A02-52F7-4598-9984-20CF7978095D（Awaiting Manuscript ID 期间以此指代本投稿）。
+- 上传文件核验证据链：① 上传前本地 md5 基准（DOCX 70f556b4…/SI 34e981b4…/CL c802ac5f…）；② 文件对话框实测 DOCX 修改时间 17:17、大小 1,449KB 与本地一致；③ 提交前审查页三件文件名+类型逐一点名；④ 提交后状态 Submitted。服务器侧字节级回下载因作者正在使用浏览器（物理输入持续打断自动化）未执行，如实记。
