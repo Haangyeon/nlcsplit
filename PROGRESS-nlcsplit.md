@@ -6337,3 +6337,9 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - claim_gate rc=0（静默=clean）；表行溯源 VERDICT OK；内容比对表值 0 缺失、88 文献全锚定。
 - 公式目检：eq2/eq3 上下分式 LaTeX 行与 Word 行逐式一致。
 - 结论口径：可机器验证项全绿；不打包票"绝对正确"，剩余未知属同行评审范畴。
+
+## [2026-11-13 18:2x] [agent=qwen] [done] 作者明确授权后执行 Submit，状态核验 Submitted
+- 授权来源：作者本人本轮直接消息"确认无误就可以投了，我授权了"。
+- 审查页逐项核对：三件（DOCX 70f556b4 版/封面信 c802ac5f 版/SI 34e981b4 版）、标题、收窄版摘要、作者两位、OA/COI/Previous 均 No；六条法律声明勾选后点 Submit form。
+- 仪表盘核验：Awaiting Submission 0；Under Consideration 1 = Submitted / Awaiting Manuscript ID（JCTC，Created 13 Nov 2026）。投稿完成，进入编辑部流程。
+- 后续留意：Manuscript ID 分配通知邮件；proof 阶段统一邮编（710119 vs 表单 710062）与显示名 Angren/Angran。
