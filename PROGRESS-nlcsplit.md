@@ -6293,3 +6293,4 @@ Stop 闸门报"未提交的实质改动 31 个"。逐类处理，两笔提交：
 - Zenodo：未建；依赖公开快照更新后开 GitHub-Zenodo 存档开关打 tag，或人工存款；作者侧。
 - [13:4x] 作者裁决 force 替换 main：公开 main d1267a6→29d0b7a（forced update），tag export-20261113 已推。旧 10-29 历史保留于母仓 release 分支与 export-20261029 tag。
 - Zenodo 剩作者侧一步：GitHub→Zenodo 存档开关对 Haangyeon/nlcsplit 开启后，在 GitHub 发 export-20261113 的 Release 即触发 DOI；或 zenodo.org 手动存款该 tag。CITATION.cff 的 DOI 占位待 DOI  mint 后回填。
+- [15:3x] Zenodo 闭环（内置浏览器+作者人工登录）：集成开关 Haangyeon/nlcsplit=ON；GitHub Release export-20261113 已发布；Zenodo 自动摄取 record 24187761，版本 DOI 10.5281/zenodo.24187761、概念 DOI 10.5281/zenodo.24187760（公开 API 核验）。CITATION.cff 回填概念 DOI（af9fb45）。母仓推送遇间歇网络重置，待重试；公开 main 的 CITATION 为导出时点状态，下次导出自然带 DOI。
